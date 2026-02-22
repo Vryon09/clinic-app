@@ -6,7 +6,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "../ui/sidebar";
 import { Link, Outlet } from "react-router";
 
 export function AppLayout() {

@@ -1,5 +1,5 @@
-import { LoginForm } from "@/components/login-form";
-import { SignupForm } from "@/components/signup-form";
+import { LoginForm } from "@/ui/login-form";
+import { SignupForm } from "@/ui/signup-form";
 import { useState } from "react";
 
 export function AuthPage() {
@@ -11,7 +11,7 @@ export function AuthPage() {
 
   return (
     <div>
-      <div className="w-[500px] mx-auto">
+      <div className="w-125 mx-auto">
         {form === "signup" ? (
           <SignupForm switchMode={switchMode} />
         ) : (

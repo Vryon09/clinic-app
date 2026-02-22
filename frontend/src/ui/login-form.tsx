@@ -1,20 +1,16 @@
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+
+import { useNavigate } from "react-router";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { useNavigate } from "react-router";
+} from "./ui/card";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "./ui/field";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 interface LoginFormProps {
   switchMode: () => void;
