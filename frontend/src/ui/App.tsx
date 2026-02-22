@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
-import { AuthPage } from "./components/auth/AuthPage";
-import { HomePage } from "./components/home/HomePage";
-import { AppLayout } from "./components/AppLayout";
+import { AuthPage } from "./pages/auth/AuthPage";
+import { HomePage } from "./pages/home/HomePage";
+import { AppLayout } from "./pages/AppLayout";
 
 function App() {
   return (
