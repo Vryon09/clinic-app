@@ -11,6 +11,7 @@ export function AuthPage() {
 
   return (
     <div>
+      hello
       <div className="w-[500px] mx-auto">
         {form === "signup" ? (
           <SignupForm switchMode={switchMode} />
