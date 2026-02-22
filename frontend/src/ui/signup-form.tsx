@@ -1,60 +1,76 @@
 import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
+
+import { useNavigate } from "react-router";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 interface SignupFormProps {
   switchMode: () => void;
 }
 
 export function SignupForm({ switchMode }: SignupFormProps) {
+  const navigate = useNavigate();
+
   return (
-    <form className={cn("flex flex-col gap-6 py-4")}>
-      <FieldGroup>
-        <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="text-2xl font-bold">Create your account</h1>
-          <p className="text-muted-foreground text-sm text-balance">
-            Fill in the form below to create your account
-          </p>
-        </div>
-        <Field>
-          <FieldLabel htmlFor="name">Full Name</FieldLabel>
-          <Input id="name" type="text" placeholder="John Doe" required />
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input id="email" type="email" placeholder="m@example.com" required />
-          <FieldDescription>
-            We&apos;ll use this to contact you. We will not share your email
-            with anyone else.
-          </FieldDescription>
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="password">Password</FieldLabel>
-          <Input id="password" type="password" required />
-          <FieldDescription>
-            Must be at least 8 characters long.
-          </FieldDescription>
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="confirm-password">Confirm Password</FieldLabel>
-          <Input id="confirm-password" type="password" required />
-          <FieldDescription>Please confirm your password.</FieldDescription>
-        </Field>
-        <Field>
-          <Button type="submit" onClick={() => switchMode()}>
-            Create Account
-          </Button>
-        </Field>
-        <Field>
-          <FieldDescription className="px-6 text-center">
-            Already have an account?
-            <a onClick={() => switchMode()} href="#">
-              Sign in
-            </a>
-          </FieldDescription>
-        </Field>
-      </FieldGroup>
-    </form>
+    <div className={cn("flex w-full flex-col gap-6")}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Sign Up</CardTitle>
+          <CardDescription>Create your account</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="name">Name</FieldLabel>
+                <Input id="name" type="text" placeholder="John Doe" required />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="m@example.com"
+                  required
+                />
+              </Field>
+              <Field>
+                <div className="flex items-center">
+                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                </div>
+                <Input id="password" type="password" required />
+              </Field>
+              <Field>
+                <div className="flex items-center">
+                  <FieldLabel htmlFor="confirm-password">
+                    Confirm Password
+                  </FieldLabel>
+                </div>
+                <Input id="confirm-password" type="password" required />
+              </Field>
+              <Field>
+                <Button type="submit" onClick={() => navigate("/home")}>
+                  Create Account
+                </Button>
+                <FieldDescription className="text-center">
+                  Already have an account?{" "}
+                  <a onClick={switchMode} href="#">
+                    Log in
+                  </a>
+                </FieldDescription>
+              </Field>
+            </FieldGroup>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

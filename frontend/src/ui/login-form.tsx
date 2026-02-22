@@ -20,7 +20,7 @@ export function LoginForm({ switchMode }: LoginFormProps) {
   const navigate = useNavigate();
 
   return (
-    <div className={cn("flex flex-col gap-6")}>
+    <div className={cn("flex w-full flex-col gap-6")}>
       <Card>
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
