@@ -1,0 +1,15 @@
+{
+  "appId": "com.vryonantonio.clinic-app",
+  "files": ["dist-electron", "dist-react"],
+  "icon": "./lab_coat.png",
+  "win": {
+    "target": ["portable", "msi"]
+  },
+  "mac": {
+    "target": "dmg"
+  },
+  "linux": {
+    "target": "AppImage",
+    "category": "Utility"
+  }
+}
