@@ -7,10 +7,15 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "./ui/field";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+} from "./components/card";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from "./components/field";
+import { Input } from "./components/input";
+import { Button } from "./components/button";
 
 interface LoginFormProps {
   switchMode: () => void;
