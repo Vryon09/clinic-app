@@ -5,6 +5,7 @@ export function HomePage() {
   const navigate = useNavigate();
   return (
     <div>
+      dasdada
       <Button onClick={() => navigate("/")}>Logout</Button>
     </div>
   );
