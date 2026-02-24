@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { prisma } from "./config/prisma";
+import patientRoutes from "./routes/patientRoutes.ts";
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use("/api/auth", authRoutes);
+app.use("/api/patients", patientRoutes);
 // app.use("/api/habits", habitRoutes);
 // app.use("/api/moods", moodRoutes);
 // app.use("/api/tags", tagRoutes);
