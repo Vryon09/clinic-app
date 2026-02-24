@@ -14,7 +14,7 @@
   "rtl": false,
   "aliases": {
     "components": "@/ui",
-    "ui": "@/ui/components",
+    "ui": "@/ui/components/shadcn",
     "utils": "@/lib/utils",
     "lib": "@/lib",
     "hooks": "@/hooks"

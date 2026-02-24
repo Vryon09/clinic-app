@@ -1,14 +1,12 @@
 import { Route, Routes } from "react-router";
-import { AuthPage } from "./pages/auth/AuthPage";
-import { HomePage } from "./pages/home/HomePage";
-import { AppLayout } from "./pages/AppLayout";
+import { AppLayout } from "./components/layout/AppLayout";
+import PatientsPage from "./components/pages/patients/PatientsPage";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<AuthPage />} />
       <Route element={<AppLayout />}>
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<PatientsPage />} />
       </Route>
     </Routes>
   );
