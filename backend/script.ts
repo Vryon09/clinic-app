@@ -1,19 +1,6 @@
-import { prisma } from "./lib/prisma";
+import { prisma } from "./src/config/prisma";
 
-async function main() {
-  const patient = await prisma.patient.create({
-    data: {
-      name: "Vryon",
-      phone: "09676767676",
-      age: 20,
-    },
-  });
-  console.log("Created patient:", patient);
-
-  // Fetch all users with their posts
-  const allPatients = await prisma.patient.findMany({});
-  console.log("All users:", JSON.stringify(allPatients));
-}
+async function main() {}
 
 main()
   .then(async () => {
