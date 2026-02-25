@@ -1,3 +1,4 @@
+import type { IPatient } from "@/types/PatientType";
 import {
   Table,
   TableBody,
@@ -8,7 +9,9 @@ import {
   TableRow,
 } from "../../shadcn/table";
 
-function PatientsTable() {
+function PatientsTable({ patients }: { patients?: IPatient[] }) {
+  console.log(patients);
+
   return (
     <Table>
       <TableCaption>A list of your patients.</TableCaption>
@@ -17,20 +20,18 @@ function PatientsTable() {
           <TableHead className="w-25">ID</TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Age</TableHead>
-          <TableHead>Birthday</TableHead>
-          <TableHead>Address</TableHead>
           <TableHead>Phone</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
-          <TableCell className="font-medium">001</TableCell>
-          <TableCell>John Doe</TableCell>
-          <TableCell>31</TableCell>
-          <TableCell>January 1, 1967</TableCell>
-          <TableCell>United Estados</TableCell>
-          <TableCell>09676767676</TableCell>
-        </TableRow>
+        {patients?.map((patient) => (
+          <TableRow key={patient.id}>
+            <TableCell className="font-medium">{patient.id}</TableCell>
+            <TableCell>{patient.name}</TableCell>
+            <TableCell>{patient.age}</TableCell>
+            <TableCell>{patient.phone}</TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );
