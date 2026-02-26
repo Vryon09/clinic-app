@@ -1,4 +1,4 @@
-import { ChevronDownIcon, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "../../shadcn/button";
 import { useState } from "react";
 import {
@@ -9,11 +9,28 @@ import {
 } from "../../shadcn/dialog";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "../../shadcn/field";
 import { Input } from "../../shadcn/input";
-import { Popover, PopoverContent, PopoverTrigger } from "../../shadcn/popover";
-import { Calendar } from "../../shadcn/calendar";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  createPatientSchema,
+  type CreatePatientInput,
+} from "@/schemas/patientSchema";
+import { useAddPatient } from "@/services/apiPatients";
 
 function AddPatient() {
   const [isAdding, setIsAdding] = useState<boolean>(false);
+  const { register, handleSubmit, reset } = useForm({
+    resolver: zodResolver(createPatientSchema),
+  });
+
+  const { mutate: handleAddPatient } = useAddPatient();
+
+  function onSubmit(newPatient: CreatePatientInput) {
+    handleAddPatient(newPatient);
+    reset();
+    setIsAdding(false);
+  }
+
   return (
     <>
       <div className="mb-4 flex justify-end">
@@ -28,62 +45,32 @@ function AddPatient() {
             <DialogTitle>Add Patient</DialogTitle>
           </DialogHeader>
 
-          <FieldSet className="w-full">
-            <FieldGroup>
-              <div className="grid grid-cols-3">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <FieldSet className="w-full">
+              <FieldGroup>
                 <Field>
-                  <FieldLabel htmlFor="first-name">First Name</FieldLabel>
-                  <Input id="first-name" type="text" />
+                  <FieldLabel htmlFor="name">Name</FieldLabel>
+                  <Input id="name" {...register("name")} type="text" />
                 </Field>
-                <Field>
-                  <FieldLabel htmlFor="middle-name">Middle Name</FieldLabel>
-                  <Input id="middle-name" type="text" />
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor="last-name">Last Name</FieldLabel>
-                  <Input id="last-name" type="text" />
-                </Field>
-              </div>
 
-              <div className="grid grid-cols-2">
-                <Field>
-                  <FieldLabel>Birthday</FieldLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        //   data-empty={!date}
-                        className="data-[empty=true]:text-muted-foreground w-53 justify-between text-left font-normal"
-                      >
-                        {/* {date ? format(date, "PPP") : <span>Pick a date</span>} */}
-                        <span>Pick a date</span>
-                        <ChevronDownIcon />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        //   selected={date}
-                        //   onSelect={setDate}
-                        //   defaultMonth={date}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </Field>
-                <Field>
-                  <FieldLabel>Phone</FieldLabel>
-                  <Input type="text" />
-                </Field>
-              </div>
+                <div className="grid grid-cols-2">
+                  <Field>
+                    <FieldLabel htmlFor="age">Age</FieldLabel>
+                    <Input id="age" {...register("age")} type="number" />
+                  </Field>
 
-              <Field>
-                <FieldLabel htmlFor="address">Address</FieldLabel>
-                <Input id="address" type="text" placeholder="123 Main St" />
-              </Field>
-            </FieldGroup>
-          </FieldSet>
+                  <Field>
+                    <FieldLabel>Phone</FieldLabel>
+                    <Input {...register("phone")} type="text" />
+                  </Field>
+                </div>
+              </FieldGroup>
+            </FieldSet>
 
-          <Button className="cursor-pointer">Submit</Button>
+            <Button type="submit" className="cursor-pointer">
+              Submit
+            </Button>
+          </form>
         </DialogContent>
       </Dialog>
     </>

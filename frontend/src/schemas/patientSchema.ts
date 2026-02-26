@@ -5,8 +5,11 @@ export const createPatientSchema = z.object({
     .string()
     .min(2, "Name must be at least 2 characters")
     .max(50, "Name cannot exceed 50 characters"),
-  age: z.number(),
-  phone: z.string().min(11).max(11),
+  age: z.preprocess(
+    (val) => (val !== undefined ? Number(val) : undefined),
+    z.number(),
+  ),
+  phone: z.string(),
 });
 
 export const updatePatientSchema = createPatientSchema.partial();
