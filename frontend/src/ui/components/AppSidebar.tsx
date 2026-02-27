@@ -14,7 +14,7 @@ import { ChevronRight, LogOut, PillBottle, Stethoscope } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./shadcn/avatar";
 
-const modules = [{ url: "", label: "Patients", icon: PillBottle }];
+const modules = [{ url: "patients", label: "Patients", icon: PillBottle }];
 
 function AppSidebar() {
   const navigate = useNavigate();
@@ -53,7 +53,7 @@ function AppSidebar() {
                     asChild
                     className={cn(
                       `flex w-full items-center gap-3 rounded-lg px-3 py-6 text-sm font-medium transition-all`,
-                      location.pathname === `/${module.url}`
+                      location.pathname.includes(`${module.url}`)
                         ? "bg-blue-50 text-blue-600"
                         : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
                     )}
@@ -62,13 +62,13 @@ function AppSidebar() {
                       <module.icon
                         size={18}
                         className={
-                          location.pathname === `/${module.url}`
+                          location.pathname.includes(`${module.url}`)
                             ? "text-blue-600"
                             : "text-slate-400"
                         }
                       />
                       {module.label}
-                      {location.pathname === `/${module.url}` && (
+                      {location.pathname.includes(`${module.url}`) && (
                         <div className="ml-auto">
                           <ChevronRight size={14} />
                         </div>

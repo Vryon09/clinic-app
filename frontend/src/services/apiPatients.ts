@@ -8,6 +8,12 @@ export async function handleGetPatients() {
   return res.data ?? [];
 }
 
+export async function handleGetPatient({ id }: { id: string }) {
+  const res = await axios.get(`http://localhost:3000/api/patients/${id}`);
+
+  return res.data ?? {};
+}
+
 async function handleAddPatient({ name, age, phone }: CreatePatientInput) {
   const newPatient = { name, age, phone };
 

@@ -8,11 +8,29 @@ import {
   TableHeader,
   TableRow,
 } from "../../shadcn/table";
+import { useNavigate } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import { handleGetPatients } from "@/services/apiPatients";
 
-function PatientsTable({ patients }: { patients?: IPatient[] }) {
+function PatientsTable() {
+  const { data: patients, isPending: isPatientsLoading } = useQuery<IPatient[]>(
+    {
+      queryFn: handleGetPatients,
+      queryKey: ["patients"],
+    },
+  );
+
+  const navigate = useNavigate();
+
+  if (isPatientsLoading) return <p>Loading...</p>;
+
   return (
     <Table>
-      <TableCaption>A list of your patients.</TableCaption>
+      <TableCaption>
+        {patients?.length
+          ? "A list of your patients."
+          : "Add your first patient by clicking the Add Patient Button."}
+      </TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>
@@ -22,7 +40,11 @@ function PatientsTable({ patients }: { patients?: IPatient[] }) {
       </TableHeader>
       <TableBody>
         {patients?.map((patient) => (
-          <TableRow key={patient.id}>
+          <TableRow
+            key={patient.id}
+            className="cursor-pointer hover:bg-neutral-200"
+            onClick={() => navigate(`/patients/${patient.id}`)}
+          >
             <TableCell>{patient.name}</TableCell>
             <TableCell>{patient.age}</TableCell>
             <TableCell>{patient.phone}</TableCell>
