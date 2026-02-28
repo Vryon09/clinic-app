@@ -9,17 +9,18 @@ import {
 } from "../../shadcn/dialog";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "../../shadcn/field";
 import { Input } from "../../shadcn/input";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createPatientSchema,
   type CreatePatientInput,
 } from "@/schemas/patientSchema";
 import { useAddPatient } from "@/services/apiPatients";
+import { RadioGroup, RadioGroupItem } from "../../shadcn/radio-group";
 
 function AddPatient() {
   const [isAdding, setIsAdding] = useState<boolean>(false);
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, control } = useForm({
     resolver: zodResolver(createPatientSchema),
   });
 
@@ -48,20 +49,76 @@ function AddPatient() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <FieldSet className="w-full">
               <FieldGroup>
-                <Field>
-                  <FieldLabel htmlFor="name">Name</FieldLabel>
-                  <Input id="name" {...register("name")} type="text" />
-                </Field>
+                <div className="grid grid-cols-3">
+                  <Field>
+                    <FieldLabel htmlFor="firstName">firstName</FieldLabel>
+                    <Input
+                      id="firstName"
+                      {...register("firstName")}
+                      type="text"
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="middleName">middleName</FieldLabel>
+                    <Input
+                      id="middleName"
+                      {...register("middleName")}
+                      type="text"
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="lastName">lastName</FieldLabel>
+                    <Input
+                      id="lastName"
+                      {...register("lastName")}
+                      type="text"
+                    />
+                  </Field>
+                </div>
 
                 <div className="grid grid-cols-2">
                   <Field>
-                    <FieldLabel htmlFor="age">Age</FieldLabel>
-                    <Input id="age" {...register("age")} type="number" />
+                    <FieldLabel htmlFor="dateOfBirth">dateOfBirth</FieldLabel>
+                    <Input
+                      id="dateOfBirth"
+                      {...register("dateOfBirth")}
+                      type="date"
+                    />
                   </Field>
 
                   <Field>
                     <FieldLabel>Phone</FieldLabel>
                     <Input {...register("phone")} type="text" />
+                  </Field>
+                </div>
+                <div className="grid grid-cols-2">
+                  <Field>
+                    <FieldLabel htmlFor="address">address</FieldLabel>
+                    <Input id="address" {...register("address")} type="text" />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="sex">sex</FieldLabel>
+                    <Controller
+                      name="sex"
+                      control={control} // you need to extract `control` from useForm
+                      defaultValue="MALE"
+                      render={({ field }) => (
+                        <RadioGroup
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          className="flex space-x-4"
+                        >
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="MALE" id="male" />
+                            <label htmlFor="male">Male</label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="FEMALE" id="female" />
+                            <label htmlFor="female">Female</label>
+                          </div>
+                        </RadioGroup>
+                      )}
+                    />
                   </Field>
                 </div>
               </FieldGroup>

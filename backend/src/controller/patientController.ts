@@ -8,6 +8,7 @@ export async function getPatients(req: Request, res: Response) {
 
     res.status(200).json(patients);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Internal Server Error!" });
   }
 }

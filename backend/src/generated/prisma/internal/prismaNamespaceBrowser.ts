@@ -73,9 +73,13 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const PatientScalarFieldEnum = {
   id: 'id',
-  name: 'name',
+  firstName: 'firstName',
+  middleName: 'middleName',
+  lastName: 'lastName',
   phone: 'phone',
-  age: 'age',
+  address: 'address',
+  sex: 'sex',
+  dateOfBirth: 'dateOfBirth',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -86,6 +90,10 @@ export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeo
 export const RecordScalarFieldEnum = {
   id: 'id',
   patientId: 'patientId',
+  visitDate: 'visitDate',
+  chiefComplaint: 'chiefComplaint',
+  diagnosis: 'diagnosis',
+  notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -107,4 +115,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

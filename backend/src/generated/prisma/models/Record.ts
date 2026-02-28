@@ -20,30 +20,28 @@ export type RecordModel = runtime.Types.Result.DefaultSelection<Prisma.$RecordPa
 
 export type AggregateRecord = {
   _count: RecordCountAggregateOutputType | null
-  _avg: RecordAvgAggregateOutputType | null
-  _sum: RecordSumAggregateOutputType | null
   _min: RecordMinAggregateOutputType | null
   _max: RecordMaxAggregateOutputType | null
 }
 
-export type RecordAvgAggregateOutputType = {
-  id: number | null
-}
-
-export type RecordSumAggregateOutputType = {
-  id: number | null
-}
-
 export type RecordMinAggregateOutputType = {
-  id: number | null
+  id: string | null
   patientId: string | null
+  visitDate: Date | null
+  chiefComplaint: string | null
+  diagnosis: string | null
+  notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type RecordMaxAggregateOutputType = {
-  id: number | null
+  id: string | null
   patientId: string | null
+  visitDate: Date | null
+  chiefComplaint: string | null
+  diagnosis: string | null
+  notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -51,23 +49,23 @@ export type RecordMaxAggregateOutputType = {
 export type RecordCountAggregateOutputType = {
   id: number
   patientId: number
+  visitDate: number
+  chiefComplaint: number
+  diagnosis: number
+  notes: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
 
-export type RecordAvgAggregateInputType = {
-  id?: true
-}
-
-export type RecordSumAggregateInputType = {
-  id?: true
-}
-
 export type RecordMinAggregateInputType = {
   id?: true
   patientId?: true
+  visitDate?: true
+  chiefComplaint?: true
+  diagnosis?: true
+  notes?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -75,6 +73,10 @@ export type RecordMinAggregateInputType = {
 export type RecordMaxAggregateInputType = {
   id?: true
   patientId?: true
+  visitDate?: true
+  chiefComplaint?: true
+  diagnosis?: true
+  notes?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +84,10 @@ export type RecordMaxAggregateInputType = {
 export type RecordCountAggregateInputType = {
   id?: true
   patientId?: true
+  visitDate?: true
+  chiefComplaint?: true
+  diagnosis?: true
+  notes?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -125,18 +131,6 @@ export type RecordAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: RecordAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: RecordSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: RecordMinAggregateInputType
@@ -167,20 +161,20 @@ export type RecordGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   _count?: RecordCountAggregateInputType | true
-  _avg?: RecordAvgAggregateInputType
-  _sum?: RecordSumAggregateInputType
   _min?: RecordMinAggregateInputType
   _max?: RecordMaxAggregateInputType
 }
 
 export type RecordGroupByOutputType = {
-  id: number
+  id: string
   patientId: string
+  visitDate: Date
+  chiefComplaint: string | null
+  diagnosis: string | null
+  notes: string | null
   createdAt: Date
   updatedAt: Date
   _count: RecordCountAggregateOutputType | null
-  _avg: RecordAvgAggregateOutputType | null
-  _sum: RecordSumAggregateOutputType | null
   _min: RecordMinAggregateOutputType | null
   _max: RecordMaxAggregateOutputType | null
 }
@@ -204,8 +198,12 @@ export type RecordWhereInput = {
   AND?: Prisma.RecordWhereInput | Prisma.RecordWhereInput[]
   OR?: Prisma.RecordWhereInput[]
   NOT?: Prisma.RecordWhereInput | Prisma.RecordWhereInput[]
-  id?: Prisma.IntFilter<"Record"> | number
+  id?: Prisma.StringFilter<"Record"> | string
   patientId?: Prisma.StringFilter<"Record"> | string
+  visitDate?: Prisma.DateTimeFilter<"Record"> | Date | string
+  chiefComplaint?: Prisma.StringNullableFilter<"Record"> | string | null
+  diagnosis?: Prisma.StringNullableFilter<"Record"> | string | null
+  notes?: Prisma.StringNullableFilter<"Record"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Record"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Record"> | Date | string
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
@@ -214,17 +212,25 @@ export type RecordWhereInput = {
 export type RecordOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  visitDate?: Prisma.SortOrder
+  chiefComplaint?: Prisma.SortOrderInput | Prisma.SortOrder
+  diagnosis?: Prisma.SortOrderInput | Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   patient?: Prisma.PatientOrderByWithRelationInput
 }
 
 export type RecordWhereUniqueInput = Prisma.AtLeast<{
-  id?: number
+  id?: string
   AND?: Prisma.RecordWhereInput | Prisma.RecordWhereInput[]
   OR?: Prisma.RecordWhereInput[]
   NOT?: Prisma.RecordWhereInput | Prisma.RecordWhereInput[]
   patientId?: Prisma.StringFilter<"Record"> | string
+  visitDate?: Prisma.DateTimeFilter<"Record"> | Date | string
+  chiefComplaint?: Prisma.StringNullableFilter<"Record"> | string | null
+  diagnosis?: Prisma.StringNullableFilter<"Record"> | string | null
+  notes?: Prisma.StringNullableFilter<"Record"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Record"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Record"> | Date | string
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
@@ -233,66 +239,103 @@ export type RecordWhereUniqueInput = Prisma.AtLeast<{
 export type RecordOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  visitDate?: Prisma.SortOrder
+  chiefComplaint?: Prisma.SortOrderInput | Prisma.SortOrder
+  diagnosis?: Prisma.SortOrderInput | Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.RecordCountOrderByAggregateInput
-  _avg?: Prisma.RecordAvgOrderByAggregateInput
   _max?: Prisma.RecordMaxOrderByAggregateInput
   _min?: Prisma.RecordMinOrderByAggregateInput
-  _sum?: Prisma.RecordSumOrderByAggregateInput
 }
 
 export type RecordScalarWhereWithAggregatesInput = {
   AND?: Prisma.RecordScalarWhereWithAggregatesInput | Prisma.RecordScalarWhereWithAggregatesInput[]
   OR?: Prisma.RecordScalarWhereWithAggregatesInput[]
   NOT?: Prisma.RecordScalarWhereWithAggregatesInput | Prisma.RecordScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"Record"> | number
+  id?: Prisma.StringWithAggregatesFilter<"Record"> | string
   patientId?: Prisma.StringWithAggregatesFilter<"Record"> | string
+  visitDate?: Prisma.DateTimeWithAggregatesFilter<"Record"> | Date | string
+  chiefComplaint?: Prisma.StringNullableWithAggregatesFilter<"Record"> | string | null
+  diagnosis?: Prisma.StringNullableWithAggregatesFilter<"Record"> | string | null
+  notes?: Prisma.StringNullableWithAggregatesFilter<"Record"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Record"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Record"> | Date | string
 }
 
 export type RecordCreateInput = {
+  id?: string
+  visitDate?: Date | string
+  chiefComplaint?: string | null
+  diagnosis?: string | null
+  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   patient: Prisma.PatientCreateNestedOneWithoutRecordsInput
 }
 
 export type RecordUncheckedCreateInput = {
-  id?: number
+  id?: string
   patientId: string
+  visitDate?: Date | string
+  chiefComplaint?: string | null
+  diagnosis?: string | null
+  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type RecordUpdateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.PatientUpdateOneRequiredWithoutRecordsNestedInput
 }
 
 export type RecordUncheckedUpdateInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RecordCreateManyInput = {
-  id?: number
+  id?: string
   patientId: string
+  visitDate?: Date | string
+  chiefComplaint?: string | null
+  diagnosis?: string | null
+  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type RecordUpdateManyMutationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RecordUncheckedUpdateManyInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -310,17 +353,21 @@ export type RecordOrderByRelationAggregateInput = {
 export type RecordCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  visitDate?: Prisma.SortOrder
+  chiefComplaint?: Prisma.SortOrder
+  diagnosis?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type RecordAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
 }
 
 export type RecordMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  visitDate?: Prisma.SortOrder
+  chiefComplaint?: Prisma.SortOrder
+  diagnosis?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -328,12 +375,12 @@ export type RecordMaxOrderByAggregateInput = {
 export type RecordMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
+  visitDate?: Prisma.SortOrder
+  chiefComplaint?: Prisma.SortOrder
+  diagnosis?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type RecordSumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
 }
 
 export type RecordCreateNestedManyWithoutPatientInput = {
@@ -379,12 +426,21 @@ export type RecordUncheckedUpdateManyWithoutPatientNestedInput = {
 }
 
 export type RecordCreateWithoutPatientInput = {
+  id?: string
+  visitDate?: Date | string
+  chiefComplaint?: string | null
+  diagnosis?: string | null
+  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type RecordUncheckedCreateWithoutPatientInput = {
-  id?: number
+  id?: string
+  visitDate?: Date | string
+  chiefComplaint?: string | null
+  diagnosis?: string | null
+  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -419,31 +475,52 @@ export type RecordScalarWhereInput = {
   AND?: Prisma.RecordScalarWhereInput | Prisma.RecordScalarWhereInput[]
   OR?: Prisma.RecordScalarWhereInput[]
   NOT?: Prisma.RecordScalarWhereInput | Prisma.RecordScalarWhereInput[]
-  id?: Prisma.IntFilter<"Record"> | number
+  id?: Prisma.StringFilter<"Record"> | string
   patientId?: Prisma.StringFilter<"Record"> | string
+  visitDate?: Prisma.DateTimeFilter<"Record"> | Date | string
+  chiefComplaint?: Prisma.StringNullableFilter<"Record"> | string | null
+  diagnosis?: Prisma.StringNullableFilter<"Record"> | string | null
+  notes?: Prisma.StringNullableFilter<"Record"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Record"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Record"> | Date | string
 }
 
 export type RecordCreateManyPatientInput = {
-  id?: number
+  id?: string
+  visitDate?: Date | string
+  chiefComplaint?: string | null
+  diagnosis?: string | null
+  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type RecordUpdateWithoutPatientInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RecordUncheckedUpdateWithoutPatientInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RecordUncheckedUpdateManyWithoutPatientInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  chiefComplaint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -453,6 +530,10 @@ export type RecordUncheckedUpdateManyWithoutPatientInput = {
 export type RecordSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   patientId?: boolean
+  visitDate?: boolean
+  chiefComplaint?: boolean
+  diagnosis?: boolean
+  notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
@@ -461,6 +542,10 @@ export type RecordSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type RecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   patientId?: boolean
+  visitDate?: boolean
+  chiefComplaint?: boolean
+  diagnosis?: boolean
+  notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
@@ -469,6 +554,10 @@ export type RecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type RecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   patientId?: boolean
+  visitDate?: boolean
+  chiefComplaint?: boolean
+  diagnosis?: boolean
+  notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
@@ -477,11 +566,15 @@ export type RecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type RecordSelectScalar = {
   id?: boolean
   patientId?: boolean
+  visitDate?: boolean
+  chiefComplaint?: boolean
+  diagnosis?: boolean
+  notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type RecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "createdAt" | "updatedAt", ExtArgs["result"]["record"]>
+export type RecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "visitDate" | "chiefComplaint" | "diagnosis" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["record"]>
 export type RecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
 }
@@ -498,8 +591,12 @@ export type $RecordPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     patient: Prisma.$PatientPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: number
+    id: string
     patientId: string
+    visitDate: Date
+    chiefComplaint: string | null
+    diagnosis: string | null
+    notes: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["record"]>
@@ -926,8 +1023,12 @@ export interface Prisma__RecordClient<T, Null = never, ExtArgs extends runtime.T
  * Fields of the Record model
  */
 export interface RecordFieldRefs {
-  readonly id: Prisma.FieldRef<"Record", 'Int'>
+  readonly id: Prisma.FieldRef<"Record", 'String'>
   readonly patientId: Prisma.FieldRef<"Record", 'String'>
+  readonly visitDate: Prisma.FieldRef<"Record", 'DateTime'>
+  readonly chiefComplaint: Prisma.FieldRef<"Record", 'String'>
+  readonly diagnosis: Prisma.FieldRef<"Record", 'String'>
+  readonly notes: Prisma.FieldRef<"Record", 'String'>
   readonly createdAt: Prisma.FieldRef<"Record", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Record", 'DateTime'>
 }

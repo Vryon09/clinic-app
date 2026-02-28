@@ -14,8 +14,24 @@ export async function handleGetPatient({ id }: { id: string }) {
   return res.data ?? {};
 }
 
-async function handleAddPatient({ name, age, phone }: CreatePatientInput) {
-  const newPatient = { name, age, phone };
+async function handleAddPatient({
+  firstName,
+  middleName,
+  lastName,
+  phone,
+  address,
+  sex,
+  dateOfBirth,
+}: CreatePatientInput) {
+  const newPatient = {
+    firstName,
+    middleName,
+    lastName,
+    phone,
+    address,
+    sex,
+    dateOfBirth,
+  };
 
   const res = await axios.post(
     "http://localhost:3000/api/patients",

@@ -11,6 +11,7 @@ import {
 import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { handleGetPatients } from "@/services/apiPatients";
+import dayjs from "dayjs";
 
 function PatientsTable() {
   const { data: patients, isPending: isPatientsLoading } = useQuery<IPatient[]>(
@@ -24,6 +25,8 @@ function PatientsTable() {
 
   if (isPatientsLoading) return <p>Loading...</p>;
 
+  console.log(patients);
+
   return (
     <Table>
       <TableCaption>
@@ -35,7 +38,7 @@ function PatientsTable() {
         <TableRow>
           <TableHead>Name</TableHead>
           <TableHead>Age</TableHead>
-          <TableHead>Phone</TableHead>
+          {/* <TableHead>Phone</TableHead> */}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -45,9 +48,10 @@ function PatientsTable() {
             className="cursor-pointer hover:bg-neutral-200"
             onClick={() => navigate(`/patients/${patient.id}`)}
           >
-            <TableCell>{patient.name}</TableCell>
-            <TableCell>{patient.age}</TableCell>
-            <TableCell>{patient.phone}</TableCell>
+            <TableCell>{`${patient.lastName}, ${patient.firstName}`}</TableCell>
+            <TableCell>
+              {dayjs().diff(dayjs(patient.dateOfBirth), "year")}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

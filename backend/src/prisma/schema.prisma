@@ -13,20 +13,37 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Sex {
+  MALE
+  FEMALE
+}
+
 model Patient {
-  id        String   @id @default(uuid())
-  name      String
-  phone     String
-  age       Int
-  records   Record[]
+  id          String   @id @default(uuid())
+  firstName   String
+  middleName  String?
+  lastName    String
+  phone       String
+  address     String
+  sex         Sex
+  dateOfBirth DateTime
+
+  records Record[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Record {
-  id        Int      @id @default(autoincrement())
-  patient   Patient  @relation(fields: [patientId], references: [id])
-  patientId String
+  id             String   @id @default(uuid())
+  patientId      String
+  visitDate      DateTime @default(now())
+  chiefComplaint String?
+  diagnosis      String?
+  notes          String?
+
+  patient Patient @relation(fields: [patientId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }

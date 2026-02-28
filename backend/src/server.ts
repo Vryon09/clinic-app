@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { prisma } from "./config/prisma";
 import patientRoutes from "./routes/patientRoutes.ts";
+import recordRoutes from "./routes/recordRoutes.ts";
 
 const app = express();
 
@@ -16,12 +17,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/patients", patientRoutes);
-// app.use("/api/habits", habitRoutes);
-// app.use("/api/moods", moodRoutes);
-// app.use("/api/tags", tagRoutes);
-// app.use("/api/pomodoro", pomodoroRoutes);
-// app.use("/api/journals", journalRoutes);
-// app.use("/api/transactions", transactionRoutes);
+app.use("/api/records", recordRoutes);
 
 // app.use(errorHandler);
 
