@@ -7,6 +7,7 @@ import PatientPage from "./components/pages/patients/PatientPage";
 import ConsultationPage from "./components/pages/consultations/ConsultationPage";
 import ConsultationsForm from "./components/pages/consultations/ConsultationsForm";
 import SelectPatient from "./components/pages/consultations/SelectPatient";
+import Dashboard from "./components/pages/home/Dashboard";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,6 +22,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Routes>
         <Route element={<AppLayout />}>
+          <Route index element={<Dashboard />} />
           <Route path="patients" element={<PatientsPage />}>
             <Route index element={<PatientsHome />} />
             <Route path="/patients/:id" element={<PatientPage />} />

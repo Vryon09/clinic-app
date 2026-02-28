@@ -2,12 +2,16 @@ import type { CreateRecordInput } from "@/schemas/recordSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
+interface IHandleAddRecord extends CreateRecordInput {
+  patientId: string;
+}
+
 async function handleAddRecord({
   patientId,
   chiefComplaint,
   diagnosis,
   notes,
-}: CreateRecordInput) {
+}: IHandleAddRecord) {
   const newRecord = { patientId, chiefComplaint, diagnosis, notes };
   const res = await axios.post(`http://localhost:3000/api/records`, newRecord);
 

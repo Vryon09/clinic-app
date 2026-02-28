@@ -49,7 +49,10 @@ export async function getPatient(req: Request, res: Response) {
       return res.status(400).json({ error: "No id found" });
     }
 
-    const patient = await prisma.patient.findUnique({ where: { id } });
+    const patient = await prisma.patient.findUnique({
+      where: { id },
+      include: { records: true },
+    });
 
     res.status(200).json(patient);
   } catch (error) {

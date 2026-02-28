@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useNavigate, useParams } from "react-router";
 import { Button } from "../../shadcn/button";
+import { Card } from "../../shadcn/card";
 
 function PatientPage() {
   const { id } = useParams() as { id: string };
@@ -14,6 +15,8 @@ function PatientPage() {
   });
 
   const navigate = useNavigate();
+
+  console.log(patient);
 
   if (isPending) return <p>Loading...</p>;
 
@@ -45,6 +48,17 @@ function PatientPage() {
       >
         Add Consultation
       </Button>
+
+      <div className="space-y-1">
+        {patient?.records?.map((record) => (
+          <Card className="flex cursor-pointer flex-row justify-between px-4 py-1 hover:bg-neutral-200">
+            <p className="text-xs">{record.chiefComplaint}</p>
+            <p className="text-xs">
+              {dayjs(record.createdAt).format("MMMM DD, YYYY")}
+            </p>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
