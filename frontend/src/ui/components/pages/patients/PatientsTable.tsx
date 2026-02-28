@@ -25,8 +25,6 @@ function PatientsTable() {
 
   if (isPatientsLoading) return <p>Loading...</p>;
 
-  console.log(patients);
-
   return (
     <Table>
       <TableCaption>
