@@ -14,6 +14,14 @@ export async function handleGetPatient({ id }: { id: string }) {
   return res.data ?? {};
 }
 
+export async function handleSearchPatients({ search }: { search: string }) {
+  const res = await axios.get(
+    `http://localhost:3000/api/patients/search?search=${search.trim()}`,
+  );
+
+  return res.data ?? [];
+}
+
 async function handleAddPatient({
   firstName,
   middleName,

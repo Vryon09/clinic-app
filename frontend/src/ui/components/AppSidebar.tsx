@@ -14,7 +14,10 @@ import { ChevronRight, LogOut, PillBottle, Stethoscope } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./shadcn/avatar";
 
-const modules = [{ url: "patients", label: "Patients", icon: PillBottle }];
+const modules = [
+  { url: "patients", label: "Patients", icon: PillBottle },
+  { url: "consultations", label: "Consultations", icon: PillBottle },
+];
 
 function AppSidebar() {
   const navigate = useNavigate();

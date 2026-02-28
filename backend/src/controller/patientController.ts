@@ -15,6 +15,32 @@ export async function getPatients(req: Request, res: Response) {
   }
 }
 
+export async function searchPatients(req: Request, res: Response) {
+  try {
+    const searchInput = (req.query.search as string) || "";
+
+    if (searchInput === "") {
+      return res.status(200).json([]);
+    }
+
+    const patients = await prisma.patient.findMany({
+      where: {
+        OR: [
+          { firstName: { contains: searchInput, mode: "insensitive" } },
+          { middleName: { contains: searchInput, mode: "insensitive" } },
+          { lastName: { contains: searchInput, mode: "insensitive" } },
+          { phone: { contains: searchInput, mode: "insensitive" } },
+        ],
+      },
+    });
+
+    res.status(200).json(patients);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}
+
 export async function getPatient(req: Request, res: Response) {
   try {
     const { id } = req.params as { id: string };

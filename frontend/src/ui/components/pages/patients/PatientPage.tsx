@@ -2,7 +2,7 @@ import { handleGetPatient } from "@/services/apiPatients";
 import type { IPatient } from "@/types/PatientType";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Button } from "../../shadcn/button";
 
 function PatientPage() {
@@ -12,6 +12,8 @@ function PatientPage() {
     queryKey: ["patient", id],
     queryFn: () => handleGetPatient({ id }),
   });
+
+  const navigate = useNavigate();
 
   if (isPending) return <p>Loading...</p>;
 
@@ -37,7 +39,12 @@ function PatientPage() {
         </div>
       </div>
 
-      <Button className="cursor-pointer">Add Consultation</Button>
+      <Button
+        className="cursor-pointer"
+        onClick={() => navigate(`/consultations/${patient?.id}`)}
+      >
+        Add Consultation
+      </Button>
     </div>
   );
 }
