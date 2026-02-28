@@ -4,7 +4,9 @@ import { prisma } from "../config/prisma";
 export async function getPatients(req: Request, res: Response) {
   try {
     // await prisma.patient.deleteMany({});
-    const patients = await prisma.patient.findMany();
+    const patients = await prisma.patient.findMany({
+      include: { records: true },
+    });
 
     res.status(200).json(patients);
   } catch (error) {

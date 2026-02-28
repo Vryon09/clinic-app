@@ -38,7 +38,7 @@ function PatientsTable() {
         <TableRow>
           <TableHead>Name</TableHead>
           <TableHead>Age</TableHead>
-          {/* <TableHead>Phone</TableHead> */}
+          <TableHead>Sex</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -48,10 +48,11 @@ function PatientsTable() {
             className="cursor-pointer hover:bg-neutral-200"
             onClick={() => navigate(`/patients/${patient.id}`)}
           >
-            <TableCell>{`${patient.lastName}, ${patient.firstName}`}</TableCell>
+            <TableCell>{`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>
             <TableCell>
               {dayjs().diff(dayjs(patient.dateOfBirth), "year")}
             </TableCell>
+            <TableCell>{patient.sex.slice(0, 1)}</TableCell>
           </TableRow>
         ))}
       </TableBody>
