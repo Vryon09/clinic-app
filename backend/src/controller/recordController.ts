@@ -7,8 +7,6 @@ export async function getRecords(req: Request, res: Response) {
       where: { patientId: req.params.id as string },
     });
 
-    console.log(records);
-
     res.status(200).json(records);
   } catch (error) {
     console.log(error);

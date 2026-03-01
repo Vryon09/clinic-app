@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   addPatient,
+  deletePatient,
   getPatient,
   getPatients,
   searchPatients,
@@ -13,5 +14,7 @@ router.get("/search", searchPatients);
 router.get("/:id", getPatient);
 
 router.post("/", addPatient);
+
+router.delete("/:id", deletePatient);
 
 export default router;

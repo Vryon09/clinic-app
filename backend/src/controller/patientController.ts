@@ -4,6 +4,7 @@ import { prisma } from "../config/prisma";
 export async function getPatients(req: Request, res: Response) {
   try {
     // await prisma.patient.deleteMany({});
+    // await prisma.record.deleteMany({});
     const patients = await prisma.patient.findMany({
       include: { records: true },
     });
@@ -66,6 +67,22 @@ export async function addPatient(req: Request, res: Response) {
     const newPatient = await prisma.patient.create({ data: { ...req.body } });
 
     res.status(201).json(newPatient);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}
+
+export async function deletePatient(req: Request, res: Response) {
+  try {
+    const patientId = req.params.id as string;
+
+    await prisma.$transaction([
+      prisma.record.deleteMany({ where: { patientId } }),
+      prisma.patient.delete({ where: { id: patientId } }),
+    ]);
+
+    res.status(200).json({ message: "Deleted Successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error!" });

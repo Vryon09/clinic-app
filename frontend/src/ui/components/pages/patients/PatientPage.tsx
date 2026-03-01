@@ -25,8 +25,6 @@ function PatientPage() {
 
   if (isPatientPending || isRecordsPending) return <p>Loading...</p>;
 
-  console.log(records);
-
   return (
     <div>
       {/* Patient Card */}

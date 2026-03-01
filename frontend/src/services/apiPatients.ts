@@ -50,3 +50,21 @@ export function useAddPatient() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["patients"] }),
   });
 }
+
+async function handleDeletePatient(id: string) {
+  const res = await api.delete(`/api/patients/${id}`);
+
+  console.log(res.data.message);
+}
+
+export function useDeletePatient() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleDeletePatient,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["patients"] });
+      queryClient.invalidateQueries({ queryKey: ["records"] });
+    },
+  });
+}

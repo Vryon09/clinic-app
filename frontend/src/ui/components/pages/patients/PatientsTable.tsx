@@ -10,8 +10,10 @@ import {
 } from "../../shadcn/table";
 import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { handleGetPatients } from "@/services/apiPatients";
+import { handleGetPatients, useDeletePatient } from "@/services/apiPatients";
 import dayjs from "dayjs";
+import { Button } from "../../shadcn/button";
+import { Trash } from "lucide-react";
 
 function PatientsTable() {
   const { data: patients, isPending: isPatientsLoading } = useQuery<IPatient[]>(
@@ -20,6 +22,8 @@ function PatientsTable() {
       queryKey: ["patients"],
     },
   );
+
+  const { mutate: handleDeletePatient } = useDeletePatient();
 
   const navigate = useNavigate();
 
@@ -51,6 +55,17 @@ function PatientsTable() {
               {dayjs().diff(dayjs(patient.dateOfBirth), "year")}
             </TableCell>
             <TableCell>{patient.sex.slice(0, 1)}</TableCell>
+
+            <Button
+              size="icon-sm"
+              className="cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeletePatient(patient.id);
+              }}
+            >
+              <Trash />
+            </Button>
           </TableRow>
         ))}
       </TableBody>
