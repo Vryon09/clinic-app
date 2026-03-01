@@ -97,7 +97,7 @@ function PatientPage() {
             middleName: patient?.middleName || "",
           }}
           isOpen={isEditing}
-          setIsOpen={setIsEditing}
+          setIsOpen={() => setIsEditing((prev) => !prev)}
         />
       )}
     </div>

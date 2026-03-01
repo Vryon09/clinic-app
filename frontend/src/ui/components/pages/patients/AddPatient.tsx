@@ -30,7 +30,7 @@ function AddPatient() {
           middleName: "",
         }}
         isOpen={isAdding}
-        setIsOpen={setIsAdding}
+        setIsOpen={() => setIsAdding((prev) => !prev)}
       />
     </>
   );

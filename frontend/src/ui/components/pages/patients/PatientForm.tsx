@@ -23,7 +23,7 @@ import { RadioGroup, RadioGroupItem } from "../../shadcn/radio-group";
 
 interface PatientFormProps {
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: () => void;
   action: "create" | "update";
   initialValues: CreatePatientInput;
   handlePatient: (data: CreatePatientInput) => void;
@@ -55,7 +55,7 @@ function PatientForm({
   function onSubmit(data: CreatePatientInput) {
     handlePatient(data);
     reset();
-    setIsOpen(false);
+    setIsOpen();
   }
 
   console.log(initialValues.dateOfBirth.toISOString());
