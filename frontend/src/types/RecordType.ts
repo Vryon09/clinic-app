@@ -3,5 +3,6 @@ import type { IDate } from "./DateType";
 
 export interface IRecord extends CreateRecordInput, IDate {
   id: string;
+  patientId: string;
   visitDate: Date;
 }

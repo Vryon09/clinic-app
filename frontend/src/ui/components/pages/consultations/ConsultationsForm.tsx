@@ -65,7 +65,9 @@ function ConsultationsForm() {
               </Field>
             </FieldGroup>
           </FieldSet>
-          <Button type="submit">Submit</Button>
+          <Button disabled={isPending} type="submit">
+            Submit
+          </Button>
         </form>
       </Card>
     </div>

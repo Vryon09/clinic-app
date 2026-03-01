@@ -1,6 +1,19 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
 
+export async function getRecords(req: Request, res: Response) {
+  try {
+    const records = await prisma.record.findMany({
+      where: { patientId: req.query.id as string },
+    });
+
+    res.status(200).json(records);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}
+
 export async function addRecord(req: Request, res: Response) {
   try {
     if (!req.body.patientId)
