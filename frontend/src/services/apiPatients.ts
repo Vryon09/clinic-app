@@ -106,6 +106,9 @@ export function useUpdatePatient() {
 
   return useMutation({
     mutationFn: handleUpdatePatient,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["patients"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["patients"] });
+      queryClient.invalidateQueries({ queryKey: ["patient"] });
+    },
   });
 }

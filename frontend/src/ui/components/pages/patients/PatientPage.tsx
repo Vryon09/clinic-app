@@ -1,4 +1,4 @@
-import { handleGetPatient } from "@/services/apiPatients";
+import { handleGetPatient, useUpdatePatient } from "@/services/apiPatients";
 import type { IPatient } from "@/types/PatientType";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -7,8 +7,12 @@ import { Button } from "../../shadcn/button";
 import { Card } from "../../shadcn/card";
 import { handleGetRecords } from "@/services/apiRecords";
 import type { IRecord } from "@/types/RecordType";
+import { Pen } from "lucide-react";
+import { useState } from "react";
+import PatientForm from "./PatientForm";
 
 function PatientPage() {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const { id } = useParams() as { id: string };
 
   const { data: patient, isPending: isPatientPending } = useQuery<IPatient>({
@@ -20,6 +24,8 @@ function PatientPage() {
     queryKey: ["records", id],
     queryFn: () => handleGetRecords(id),
   });
+
+  const { mutate: handleUpdatePatient } = useUpdatePatient();
 
   const navigate = useNavigate();
 
@@ -44,6 +50,16 @@ function PatientPage() {
             <p>{patient?.phone}</p>
           </div>
         </div>
+        <Button
+          size="icon-sm"
+          className="cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsEditing(true);
+          }}
+        >
+          <Pen />
+        </Button>
       </div>
 
       <Button
@@ -66,6 +82,24 @@ function PatientPage() {
           </Card>
         ))}
       </div>
+
+      {isEditing && (
+        <PatientForm
+          action="update"
+          handlePatient={(data) => handleUpdatePatient({ ...data, id })}
+          initialValues={{
+            firstName: patient!.firstName,
+            lastName: patient!.lastName,
+            phone: patient!.phone,
+            address: patient!.address,
+            sex: patient!.sex,
+            dateOfBirth: new Date(patient!.dateOfBirth),
+            middleName: patient?.middleName || "",
+          }}
+          isOpen={isEditing}
+          setIsOpen={setIsEditing}
+        />
+      )}
     </div>
   );
 }

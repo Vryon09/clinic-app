@@ -44,7 +44,12 @@ function PatientForm({
     formState: { errors },
   } = useForm({
     resolver: zodResolver(createPatientSchema),
-    defaultValues: initialValues,
+    defaultValues: {
+      ...initialValues,
+      dateOfBirth: initialValues.dateOfBirth
+        ? initialValues.dateOfBirth.toISOString().split("T")[0]
+        : "",
+    },
   });
 
   function onSubmit(data: CreatePatientInput) {
@@ -52,6 +57,8 @@ function PatientForm({
     reset();
     setIsOpen(false);
   }
+
+  console.log(initialValues.dateOfBirth.toISOString());
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
