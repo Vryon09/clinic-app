@@ -88,3 +88,18 @@ export async function deletePatient(req: Request, res: Response) {
     res.status(500).json({ error: "Internal Server Error!" });
   }
 }
+
+export async function updatePatient(req: Request, res: Response) {
+  try {
+    const patientId = req.params.id as string;
+    const updatedPatient = await prisma.patient.update({
+      where: { id: patientId },
+      data: req.body,
+    });
+
+    res.status(200).json(updatedPatient);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}

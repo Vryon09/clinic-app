@@ -24,7 +24,6 @@ function PatientPage() {
   const navigate = useNavigate();
 
   if (isPatientPending || isRecordsPending) return <p>Loading...</p>;
-
   return (
     <div>
       {/* Patient Card */}

@@ -1,5 +1,8 @@
 import api from "@/lib/api";
-import type { CreatePatientInput } from "@/schemas/patientSchema";
+import type {
+  CreatePatientInput,
+  UpdatePatientInput,
+} from "@/schemas/patientSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export async function handleGetPatients() {
@@ -66,5 +69,43 @@ export function useDeletePatient() {
       queryClient.invalidateQueries({ queryKey: ["patients"] });
       queryClient.invalidateQueries({ queryKey: ["records"] });
     },
+  });
+}
+
+interface IHandleUpdatePatient extends UpdatePatientInput {
+  id: string;
+}
+
+async function handleUpdatePatient({
+  id,
+  firstName,
+  middleName,
+  lastName,
+  address,
+  dateOfBirth,
+  phone,
+  sex,
+}: IHandleUpdatePatient) {
+  const updatedPatientData = {
+    firstName,
+    middleName,
+    lastName,
+    address,
+    dateOfBirth,
+    phone,
+    sex,
+  };
+
+  const res = await api.patch(`/api/patients/${id}`, updatedPatientData);
+
+  console.log(res.data);
+}
+
+export function useUpdatePatient() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleUpdatePatient,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["patients"] }),
   });
 }
