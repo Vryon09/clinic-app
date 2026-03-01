@@ -1,23 +1,21 @@
+import api from "@/lib/api";
 import type { CreatePatientInput } from "@/schemas/patientSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 
 export async function handleGetPatients() {
-  const res = await axios.get("http://localhost:3000/api/patients");
+  const res = await api.get("/api/patients");
 
   return res.data ?? [];
 }
 
 export async function handleGetPatient({ id }: { id: string }) {
-  const res = await axios.get(`http://localhost:3000/api/patients/${id}`);
+  const res = await api.get(`/api/patients/${id}`);
 
   return res.data ?? {};
 }
 
 export async function handleSearchPatients({ search }: { search: string }) {
-  const res = await axios.get(
-    `http://localhost:3000/api/patients/search?search=${search.trim()}`,
-  );
+  const res = await api.get(`/api/patients/search?search=${search.trim()}`);
 
   return res.data ?? [];
 }
@@ -41,10 +39,7 @@ async function handleAddPatient({
     dateOfBirth,
   };
 
-  const res = await axios.post(
-    "http://localhost:3000/api/patients",
-    newPatient,
-  );
+  const res = await api.post("/api/patients", newPatient);
   return res.data;
 }
 

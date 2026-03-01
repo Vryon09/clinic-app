@@ -25,6 +25,8 @@ function PatientPage() {
 
   if (isPatientPending || isRecordsPending) return <p>Loading...</p>;
 
+  console.log(records);
+
   return (
     <div>
       {/* Patient Card */}
@@ -56,7 +58,10 @@ function PatientPage() {
 
       <div className="space-y-1">
         {records?.map((record) => (
-          <Card className="flex cursor-pointer flex-row justify-between px-4 py-1 hover:bg-neutral-200">
+          <Card
+            key={record.id}
+            className="flex cursor-pointer flex-row justify-between px-4 py-1 hover:bg-neutral-200"
+          >
             <p className="text-xs">{record.chiefComplaint}</p>
             <p className="text-xs">
               {dayjs(record.createdAt).format("MMMM DD, YYYY")}
