@@ -29,3 +29,18 @@ export async function addRecord(req: Request, res: Response) {
     res.status(500).json({ error: "Internal Server Error!" });
   }
 }
+
+export async function deleteRecord(req: Request, res: Response) {
+  try {
+    const recordId = req.params.id as string;
+
+    const deletedRecord = await prisma.record.delete({
+      where: { id: recordId },
+    });
+
+    res.status(200).json(deletedRecord);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}
