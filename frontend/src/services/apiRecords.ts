@@ -28,6 +28,27 @@ export function useAddRecord() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: handleAddRecord,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["patients"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["patient"] });
+      queryClient.invalidateQueries({ queryKey: ["records"] });
+    },
+  });
+}
+
+async function handleDeleteRecord(recordId: string) {
+  const res = await api.delete(`/api/records/${recordId}`);
+
+  console.log(res.data);
+}
+
+export function useDeleteRecord() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleDeleteRecord,
+    onSuccess: () => {
+      // queryClient.invalidateQueries({ queryKey: ["patient"] });
+      queryClient.invalidateQueries({ queryKey: ["records"] });
+    },
   });
 }
