@@ -5,9 +5,9 @@ import dayjs from "dayjs";
 import { useNavigate, useParams } from "react-router";
 import { Button } from "../../shadcn/button";
 import { Card } from "../../shadcn/card";
-import { handleGetRecords } from "@/services/apiRecords";
+import { handleGetRecords, useDeleteRecord } from "@/services/apiRecords";
 import type { IRecord } from "@/types/RecordType";
-import { Pen } from "lucide-react";
+import { Pen, Trash } from "lucide-react";
 import { useState } from "react";
 import PatientForm from "./PatientForm";
 
@@ -26,6 +26,7 @@ function PatientPage() {
   });
 
   const { mutate: handleUpdatePatient } = useUpdatePatient();
+  const { mutate: handleDeleteRecord } = useDeleteRecord();
 
   const navigate = useNavigate();
 
@@ -76,9 +77,17 @@ function PatientPage() {
             className="flex cursor-pointer flex-row justify-between px-4 py-1 hover:bg-neutral-200"
           >
             <p className="text-xs">{record.chiefComplaint}</p>
-            <p className="text-xs">
-              {dayjs(record.createdAt).format("MMMM DD, YYYY")}
-            </p>
+            <div className="flex items-center space-x-2">
+              <p className="text-xs">
+                {dayjs(record.createdAt).format("MMMM DD, YYYY")}
+              </p>
+              <Button
+                size="icon-sm"
+                onClick={() => handleDeleteRecord(record.id)}
+              >
+                <Trash />
+              </Button>
+            </div>
           </Card>
         ))}
       </div>
