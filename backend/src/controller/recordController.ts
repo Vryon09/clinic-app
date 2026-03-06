@@ -14,6 +14,19 @@ export async function getRecords(req: Request, res: Response) {
   }
 }
 
+export async function getRecord(req: Request, res: Response) {
+  try {
+    const record = await prisma.record.findUnique({
+      where: { id: req.params.id as string },
+    });
+
+    res.status(200).json(record);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}
+
 export async function addRecord(req: Request, res: Response) {
   try {
     if (!req.body.patientId)

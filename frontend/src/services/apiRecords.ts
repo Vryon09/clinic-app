@@ -8,6 +8,12 @@ export async function handleGetRecords(id: string) {
   return res.data || [];
 }
 
+export async function handleGetRecord(id: string) {
+  const res = await api.get(`/api/records/${id}/record`);
+
+  return res.data || {};
+}
+
 interface IHandleAddRecord extends CreateRecordInput {
   patientId: string;
 }

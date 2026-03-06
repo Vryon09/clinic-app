@@ -25,11 +25,19 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="patients" element={<PatientsPage />}>
             <Route index element={<PatientsHome />} />
-            <Route path="/patients/:id" element={<PatientPage />} />
+            <Route path=":patientId" element={<PatientPage />} />
+            <Route
+              path=":patientId/consultations/new"
+              element={<ConsultationsForm />}
+            />
+            <Route
+              path=":patientId/consultations/:consultationId/edit"
+              element={<ConsultationsForm />}
+            />
           </Route>
           <Route path="consultations" element={<ConsultationPage />}>
             <Route index element={<SelectPatient />} />
-            <Route path="/consultations/:id" element={<ConsultationsForm />} />
+            {/* <Route path=":id" element={<ConsultationsForm />} /> */}
           </Route>
         </Route>
       </Routes>

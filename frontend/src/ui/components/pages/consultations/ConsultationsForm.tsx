@@ -1,6 +1,6 @@
 import { handleGetPatient } from "@/services/apiPatients";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Card } from "../../shadcn/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "../../shadcn/field";
 import { Input } from "../../shadcn/input";
@@ -12,28 +12,59 @@ import {
   type CreateRecordInput,
 } from "@/schemas/recordSchema";
 import { Button } from "../../shadcn/button";
-import { useAddRecord } from "@/services/apiRecords";
+import { handleGetRecord, useAddRecord } from "@/services/apiRecords";
+import type { IRecord } from "@/types/RecordType";
+import { useEffect } from "react";
 
 function ConsultationsForm() {
-  const { id } = useParams() as { id: string };
+  const { patientId, consultationId } = useParams() as {
+    patientId: string;
+    consultationId: string;
+  };
 
-  const { data: patient, isPending } = useQuery({
-    queryFn: () => handleGetPatient({ id }),
-    queryKey: ["patient", id],
+  const { data: patient, isPending: isPatientLoading } = useQuery({
+    queryFn: () => handleGetPatient({ id: patientId }),
+    queryKey: ["patient", patientId],
+  });
+
+  const { data: record, isPending: isRecordLoading } = useQuery<IRecord>({
+    queryFn: () => handleGetRecord(consultationId),
+    queryKey: ["record", consultationId],
   });
 
   const { register, handleSubmit, reset } = useForm({
     resolver: zodResolver(createRecordSchema),
+    defaultValues: {
+      chiefComplaint: "",
+      diagnosis: "",
+      notes: "",
+    },
   });
+
+  useEffect(() => {
+    if (record?.chiefComplaint !== "") {
+      reset({
+        chiefComplaint: record?.chiefComplaint || "",
+        diagnosis: record?.diagnosis || "",
+        notes: record?.notes || "",
+      });
+    }
+  }, [record, reset]);
 
   const { mutate: handleAddRecord } = useAddRecord();
 
+  const navigate = useNavigate();
+
   function onSubmit(newRecord: CreateRecordInput) {
-    handleAddRecord({ ...newRecord, patientId: id });
+    if (!record?.chiefComplaint) {
+      handleAddRecord({ ...newRecord, patientId });
+    }
+
+    navigate(`/patients/${patientId}`);
     reset();
   }
 
-  if (isPending) return <p>Loading...</p>;
+  if (isPatientLoading || isRecordLoading) return <p>Loading...</p>;
 
   return (
     <div>
@@ -65,7 +96,7 @@ function ConsultationsForm() {
               </Field>
             </FieldGroup>
           </FieldSet>
-          <Button disabled={isPending} type="submit">
+          <Button disabled={isPatientLoading || isRecordLoading} type="submit">
             Submit
           </Button>
         </form>

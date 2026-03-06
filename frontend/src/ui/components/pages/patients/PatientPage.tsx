@@ -13,16 +13,16 @@ import PatientForm from "./PatientForm";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const { id } = useParams() as { id: string };
+  const { patientId } = useParams() as { patientId: string };
 
   const { data: patient, isPending: isPatientPending } = useQuery<IPatient>({
-    queryKey: ["patient", id],
-    queryFn: () => handleGetPatient({ id }),
+    queryKey: ["patient", patientId],
+    queryFn: () => handleGetPatient({ id: patientId }),
   });
 
   const { data: records, isPending: isRecordsPending } = useQuery<IRecord[]>({
-    queryKey: ["records", id],
-    queryFn: () => handleGetRecords(id),
+    queryKey: ["records", patientId],
+    queryFn: () => handleGetRecords(patientId),
   });
 
   const { mutate: handleUpdatePatient } = useUpdatePatient();
@@ -65,7 +65,7 @@ function PatientPage() {
 
       <Button
         className="cursor-pointer"
-        onClick={() => navigate(`/consultations/${patient?.id}`)}
+        onClick={() => navigate(`/patients/${patient?.id}/consultations/new`)}
       >
         Add Consultation
       </Button>
@@ -87,6 +87,16 @@ function PatientPage() {
               >
                 <Trash />
               </Button>
+              <Button
+                size="icon-sm"
+                onClick={() =>
+                  navigate(
+                    `/patients/${record.patientId}/consultations/${record.id}/edit`,
+                  )
+                }
+              >
+                <Pen />
+              </Button>
             </div>
           </Card>
         ))}
@@ -95,7 +105,9 @@ function PatientPage() {
       {isEditing && (
         <PatientForm
           action="update"
-          handlePatient={(data) => handleUpdatePatient({ ...data, id })}
+          handlePatient={(data) =>
+            handleUpdatePatient({ ...data, id: patientId })
+          }
           initialValues={{
             firstName: patient!.firstName,
             lastName: patient!.lastName,
