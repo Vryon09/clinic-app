@@ -4,6 +4,7 @@ import {
   deleteRecord,
   getRecord,
   getRecords,
+  updateRecord,
 } from "../controller/recordController";
 
 const router = Router();
@@ -12,5 +13,6 @@ router.get("/:id", getRecords);
 router.get("/:id/record", getRecord);
 router.post("/", addRecord);
 router.delete("/:id", deleteRecord);
+router.patch("/:id", updateRecord);
 
 export default router;

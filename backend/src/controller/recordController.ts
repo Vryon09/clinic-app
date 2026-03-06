@@ -57,3 +57,18 @@ export async function deleteRecord(req: Request, res: Response) {
     res.status(500).json({ error: "Internal Server Error!" });
   }
 }
+
+export async function updateRecord(req: Request, res: Response) {
+  try {
+    const { chiefComplaint, diagnosis, notes } = req.body;
+    const updatedRecord = await prisma.record.update({
+      where: { id: req.params.id as string },
+      data: { chiefComplaint, diagnosis, notes },
+    });
+
+    res.status(200).json(updatedRecord);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}

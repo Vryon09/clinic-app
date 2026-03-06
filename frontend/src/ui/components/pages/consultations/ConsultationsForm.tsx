@@ -12,7 +12,11 @@ import {
   type CreateRecordInput,
 } from "@/schemas/recordSchema";
 import { Button } from "../../shadcn/button";
-import { handleGetRecord, useAddRecord } from "@/services/apiRecords";
+import {
+  handleGetRecord,
+  useAddRecord,
+  useUpdateRecord,
+} from "@/services/apiRecords";
 import type { IRecord } from "@/types/RecordType";
 import { useEffect } from "react";
 
@@ -52,12 +56,15 @@ function ConsultationsForm() {
   }, [record, reset]);
 
   const { mutate: handleAddRecord } = useAddRecord();
+  const { mutate: handleUpdateRecord } = useUpdateRecord();
 
   const navigate = useNavigate();
 
-  function onSubmit(newRecord: CreateRecordInput) {
+  function onSubmit(recordData: CreateRecordInput) {
     if (!record?.chiefComplaint) {
-      handleAddRecord({ ...newRecord, patientId });
+      handleAddRecord({ ...recordData, patientId });
+    } else {
+      handleUpdateRecord({ ...recordData, consultationId });
     }
 
     navigate(`/patients/${patientId}`);

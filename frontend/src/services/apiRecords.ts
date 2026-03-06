@@ -1,5 +1,8 @@
 import api from "@/lib/api";
-import type { CreateRecordInput } from "@/schemas/recordSchema";
+import type {
+  CreateRecordInput,
+  UpdateRecordInput,
+} from "@/schemas/recordSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export async function handleGetRecords(id: string) {
@@ -52,6 +55,38 @@ export function useDeleteRecord() {
 
   return useMutation({
     mutationFn: handleDeleteRecord,
+    onSuccess: () => {
+      // queryClient.invalidateQueries({ queryKey: ["patient"] });
+      queryClient.invalidateQueries({ queryKey: ["records"] });
+    },
+  });
+}
+
+interface IHandleUpdateRecord extends UpdateRecordInput {
+  consultationId: string;
+}
+
+async function handleUpdateRecord({
+  consultationId,
+  chiefComplaint,
+  diagnosis,
+  notes,
+}: IHandleUpdateRecord) {
+  const updatedRecordData = { chiefComplaint, diagnosis, notes };
+
+  const res = await api.patch(
+    `/api/records/${consultationId}`,
+    updatedRecordData,
+  );
+
+  console.log(res.data);
+}
+
+export function useUpdateRecord() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleUpdateRecord,
     onSuccess: () => {
       // queryClient.invalidateQueries({ queryKey: ["patient"] });
       queryClient.invalidateQueries({ queryKey: ["records"] });
