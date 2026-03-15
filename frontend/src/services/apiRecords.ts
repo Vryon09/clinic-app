@@ -23,11 +23,11 @@ interface IHandleAddRecord extends CreateRecordInput {
 
 async function handleAddRecord({
   patientId,
-  chiefComplaint,
+  symptoms,
   diagnosis,
-  notes,
+  signs,
 }: IHandleAddRecord) {
-  const newRecord = { patientId, chiefComplaint, diagnosis, notes };
+  const newRecord = { patientId, symptoms, diagnosis, signs };
   const res = await api.post(`/api/records`, newRecord);
 
   return res.data || {};
@@ -68,11 +68,11 @@ interface IHandleUpdateRecord extends UpdateRecordInput {
 
 async function handleUpdateRecord({
   consultationId,
-  chiefComplaint,
+  symptoms,
+  signs,
   diagnosis,
-  notes,
 }: IHandleUpdateRecord) {
-  const updatedRecordData = { chiefComplaint, diagnosis, notes };
+  const updatedRecordData = { symptoms, signs, diagnosis };
 
   const res = await api.patch(
     `/api/records/${consultationId}`,

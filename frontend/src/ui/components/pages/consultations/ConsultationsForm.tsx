@@ -1,9 +1,8 @@
 import { handleGetPatient } from "@/services/apiPatients";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { Card } from "../../shadcn/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "../../shadcn/field";
-import { Input } from "../../shadcn/input";
 import { Textarea } from "../../shadcn/textarea";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,6 +25,10 @@ function ConsultationsForm() {
     consultationId: string;
   };
 
+  const location = useLocation();
+  const pathName = location.pathname.split("/");
+  const formType = pathName.at(-1);
+
   const { data: patient, isPending: isPatientLoading } = useQuery({
     queryFn: () => handleGetPatient({ id: patientId }),
     queryKey: ["patient", patientId],
@@ -39,21 +42,21 @@ function ConsultationsForm() {
   const { register, handleSubmit, reset } = useForm({
     resolver: zodResolver(createRecordSchema),
     defaultValues: {
-      chiefComplaint: "",
+      symptoms: "",
+      signs: "",
       diagnosis: "",
-      notes: "",
     },
   });
 
   useEffect(() => {
-    if (record?.chiefComplaint !== "") {
+    if (formType === "edit") {
       reset({
-        chiefComplaint: record?.chiefComplaint || "",
+        symptoms: record?.symptoms || "",
+        signs: record?.signs || "",
         diagnosis: record?.diagnosis || "",
-        notes: record?.notes || "",
       });
     }
-  }, [record, reset]);
+  }, [record, reset, formType]);
 
   const { mutate: handleAddRecord } = useAddRecord();
   const { mutate: handleUpdateRecord } = useUpdateRecord();
@@ -61,7 +64,7 @@ function ConsultationsForm() {
   const navigate = useNavigate();
 
   function onSubmit(recordData: CreateRecordInput) {
-    if (!record?.chiefComplaint) {
+    if (formType === "new") {
       handleAddRecord({ ...recordData, patientId });
     } else {
       handleUpdateRecord({ ...recordData, consultationId });
@@ -88,18 +91,18 @@ function ConsultationsForm() {
           <FieldSet>
             <FieldGroup>
               <Field>
-                <FieldLabel>Chief Complaint</FieldLabel>
-                <Input type="text" {...register("chiefComplaint")} />
+                <FieldLabel>Symptoms</FieldLabel>
+                <Textarea {...register("symptoms")} />
+              </Field>
+
+              <Field>
+                <FieldLabel>Signs</FieldLabel>
+                <Textarea {...register("signs")} />
               </Field>
 
               <Field>
                 <FieldLabel>Diagnosis</FieldLabel>
                 <Textarea {...register("diagnosis")} />
-              </Field>
-
-              <Field>
-                <FieldLabel>Notes</FieldLabel>
-                <Textarea {...register("notes")} />
               </Field>
             </FieldGroup>
           </FieldSet>

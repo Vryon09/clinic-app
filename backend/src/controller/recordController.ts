@@ -60,10 +60,9 @@ export async function deleteRecord(req: Request, res: Response) {
 
 export async function updateRecord(req: Request, res: Response) {
   try {
-    const { chiefComplaint, diagnosis, notes } = req.body;
     const updatedRecord = await prisma.record.update({
       where: { id: req.params.id as string },
-      data: { chiefComplaint, diagnosis, notes },
+      data: req.body,
     });
 
     res.status(200).json(updatedRecord);
