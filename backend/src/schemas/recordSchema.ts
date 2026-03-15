@@ -2,6 +2,8 @@ import { z } from "zod";
 import { createVitalSignsSchema } from "./vitalSignsSchema";
 
 export const createRecordSchema = z.object({
+  patientId: z.uuid(),
+
   symptoms: z
     .string()
     .trim()

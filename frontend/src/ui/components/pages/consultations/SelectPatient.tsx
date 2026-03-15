@@ -31,7 +31,9 @@ function SelectPatient() {
           <Card key={patient.id} className="flex flex-row justify-between">
             <p>{patient.firstName}</p>
             <Button
-              onClick={() => navigate(`/consultations/${patient.id}`)}
+              onClick={() =>
+                navigate(`/patients/${patient.id}/consultations/new`)
+              }
               className="cursor-pointer"
             >
               Select Patient
