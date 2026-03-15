@@ -180,7 +180,7 @@ export type PatientGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type PatientGroupByOutputType = {
   id: string
   firstName: string
-  middleName: string | null
+  middleName: string
   lastName: string
   phone: string
   address: string
@@ -214,7 +214,7 @@ export type PatientWhereInput = {
   NOT?: Prisma.PatientWhereInput | Prisma.PatientWhereInput[]
   id?: Prisma.StringFilter<"Patient"> | string
   firstName?: Prisma.StringFilter<"Patient"> | string
-  middleName?: Prisma.StringNullableFilter<"Patient"> | string | null
+  middleName?: Prisma.StringFilter<"Patient"> | string
   lastName?: Prisma.StringFilter<"Patient"> | string
   phone?: Prisma.StringFilter<"Patient"> | string
   address?: Prisma.StringFilter<"Patient"> | string
@@ -228,7 +228,7 @@ export type PatientWhereInput = {
 export type PatientOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
-  middleName?: Prisma.SortOrderInput | Prisma.SortOrder
+  middleName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
@@ -245,7 +245,7 @@ export type PatientWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PatientWhereInput[]
   NOT?: Prisma.PatientWhereInput | Prisma.PatientWhereInput[]
   firstName?: Prisma.StringFilter<"Patient"> | string
-  middleName?: Prisma.StringNullableFilter<"Patient"> | string | null
+  middleName?: Prisma.StringFilter<"Patient"> | string
   lastName?: Prisma.StringFilter<"Patient"> | string
   phone?: Prisma.StringFilter<"Patient"> | string
   address?: Prisma.StringFilter<"Patient"> | string
@@ -259,7 +259,7 @@ export type PatientWhereUniqueInput = Prisma.AtLeast<{
 export type PatientOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   firstName?: Prisma.SortOrder
-  middleName?: Prisma.SortOrderInput | Prisma.SortOrder
+  middleName?: Prisma.SortOrder
   lastName?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
@@ -278,7 +278,7 @@ export type PatientScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PatientScalarWhereWithAggregatesInput | Prisma.PatientScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Patient"> | string
   firstName?: Prisma.StringWithAggregatesFilter<"Patient"> | string
-  middleName?: Prisma.StringNullableWithAggregatesFilter<"Patient"> | string | null
+  middleName?: Prisma.StringWithAggregatesFilter<"Patient"> | string
   lastName?: Prisma.StringWithAggregatesFilter<"Patient"> | string
   phone?: Prisma.StringWithAggregatesFilter<"Patient"> | string
   address?: Prisma.StringWithAggregatesFilter<"Patient"> | string
@@ -291,7 +291,7 @@ export type PatientScalarWhereWithAggregatesInput = {
 export type PatientCreateInput = {
   id?: string
   firstName: string
-  middleName?: string | null
+  middleName: string
   lastName: string
   phone: string
   address: string
@@ -305,7 +305,7 @@ export type PatientCreateInput = {
 export type PatientUncheckedCreateInput = {
   id?: string
   firstName: string
-  middleName?: string | null
+  middleName: string
   lastName: string
   phone: string
   address: string
@@ -319,7 +319,7 @@ export type PatientUncheckedCreateInput = {
 export type PatientUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
@@ -333,7 +333,7 @@ export type PatientUpdateInput = {
 export type PatientUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
@@ -347,7 +347,7 @@ export type PatientUncheckedUpdateInput = {
 export type PatientCreateManyInput = {
   id?: string
   firstName: string
-  middleName?: string | null
+  middleName: string
   lastName: string
   phone: string
   address: string
@@ -360,7 +360,7 @@ export type PatientCreateManyInput = {
 export type PatientUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
@@ -373,7 +373,7 @@ export type PatientUpdateManyMutationInput = {
 export type PatientUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
@@ -431,10 +431,6 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type EnumSexFieldUpdateOperationsInput = {
   set?: $Enums.Sex
 }
@@ -460,7 +456,7 @@ export type PatientUpdateOneRequiredWithoutRecordsNestedInput = {
 export type PatientCreateWithoutRecordsInput = {
   id?: string
   firstName: string
-  middleName?: string | null
+  middleName: string
   lastName: string
   phone: string
   address: string
@@ -473,7 +469,7 @@ export type PatientCreateWithoutRecordsInput = {
 export type PatientUncheckedCreateWithoutRecordsInput = {
   id?: string
   firstName: string
-  middleName?: string | null
+  middleName: string
   lastName: string
   phone: string
   address: string
@@ -502,7 +498,7 @@ export type PatientUpdateToOneWithWhereWithoutRecordsInput = {
 export type PatientUpdateWithoutRecordsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
@@ -515,7 +511,7 @@ export type PatientUpdateWithoutRecordsInput = {
 export type PatientUncheckedUpdateWithoutRecordsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   firstName?: Prisma.StringFieldUpdateOperationsInput | string
-  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.StringFieldUpdateOperationsInput | string
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
@@ -626,7 +622,7 @@ export type $PatientPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     firstName: string
-    middleName: string | null
+    middleName: string
     lastName: string
     phone: string
     address: string

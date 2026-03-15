@@ -52,7 +52,9 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Patient: 'Patient',
-  Record: 'Record'
+  Record: 'Record',
+  VitalSigns: 'VitalSigns',
+  RecordMedication: 'RecordMedication'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -91,14 +93,40 @@ export const RecordScalarFieldEnum = {
   id: 'id',
   patientId: 'patientId',
   visitDate: 'visitDate',
-  chiefComplaint: 'chiefComplaint',
+  symptoms: 'symptoms',
+  signs: 'signs',
   diagnosis: 'diagnosis',
-  notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type RecordScalarFieldEnum = (typeof RecordScalarFieldEnum)[keyof typeof RecordScalarFieldEnum]
+
+
+export const VitalSignsScalarFieldEnum = {
+  id: 'id',
+  recordId: 'recordId',
+  bloodPressureSystolic: 'bloodPressureSystolic',
+  bloodPressureDiastolic: 'bloodPressureDiastolic',
+  temperature: 'temperature',
+  weightKg: 'weightKg'
+} as const
+
+export type VitalSignsScalarFieldEnum = (typeof VitalSignsScalarFieldEnum)[keyof typeof VitalSignsScalarFieldEnum]
+
+
+export const RecordMedicationScalarFieldEnum = {
+  id: 'id',
+  recordId: 'recordId',
+  name: 'name',
+  dosage: 'dosage',
+  frequency: 'frequency',
+  durationDays: 'durationDays',
+  instructions: 'instructions',
+  createdAt: 'createdAt'
+} as const
+
+export type RecordMedicationScalarFieldEnum = (typeof RecordMedicationScalarFieldEnum)[keyof typeof RecordMedicationScalarFieldEnum]
 
 
 export const SortOrder = {

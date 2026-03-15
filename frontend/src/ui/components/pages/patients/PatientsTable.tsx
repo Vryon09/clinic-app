@@ -50,6 +50,7 @@ function PatientsTable() {
             <TableHead>Name</TableHead>
             <TableHead>Age</TableHead>
             <TableHead>Sex</TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -65,27 +66,28 @@ function PatientsTable() {
               </TableCell>
               <TableCell>{patient.sex.slice(0, 1)}</TableCell>
 
-              <Button
-                size="icon-sm"
-                className="cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeletePatient(patient.id);
-                }}
-              >
-                <Trash />
-              </Button>
-
-              <Button
-                size="icon-sm"
-                className="cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedPatient(patient);
-                }}
-              >
-                <Pen />
-              </Button>
+              <TableCell>
+                <Button
+                  size="icon-sm"
+                  className="cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeletePatient(patient.id);
+                  }}
+                >
+                  <Trash />
+                </Button>
+                <Button
+                  size="icon-sm"
+                  className="cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedPatient(patient);
+                  }}
+                >
+                  <Pen />
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

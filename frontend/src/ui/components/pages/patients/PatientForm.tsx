@@ -58,8 +58,6 @@ function PatientForm({
     setIsOpen();
   }
 
-  console.log(initialValues.dateOfBirth.toISOString());
-
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent>

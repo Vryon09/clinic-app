@@ -21,7 +21,7 @@ enum Sex {
 model Patient {
   id          String   @id @default(uuid())
   firstName   String
-  middleName  String?
+  middleName  String
   lastName    String
   phone       String
   address     String
@@ -35,15 +35,44 @@ model Patient {
 }
 
 model Record {
-  id             String   @id @default(uuid())
-  patientId      String
-  visitDate      DateTime @default(now())
-  chiefComplaint String?
-  diagnosis      String?
-  notes          String?
+  id        String   @id @default(uuid())
+  patientId String
+  visitDate DateTime @default(now())
+
+  symptoms  String?
+  signs     String?
+  diagnosis String?
 
   patient Patient @relation(fields: [patientId], references: [id])
 
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @default(now()) @updatedAt
+  vitalSigns        VitalSigns?
+  recordMedications RecordMedication[]
+}
+
+model VitalSigns {
+  id       String @id @default(uuid())
+  recordId String @unique
+  record   Record @relation(fields: [recordId], references: [id])
+
+  bloodPressureSystolic  Int?
+  bloodPressureDiastolic Int?
+
+  temperature Decimal? @db.Decimal(4, 1)
+  weightKg    Decimal? @db.Decimal(5, 2)
+}
+
+model RecordMedication {
+  id       String @id @default(uuid())
+  record   Record @relation(fields: [recordId], references: [id])
+  recordId String
+
+  name         String
+  dosage       String
+  frequency    String
+  durationDays Int?
+  instructions String?
+
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
 }
