@@ -8,6 +8,7 @@ import ConsultationPage from "./components/pages/consultations/ConsultationPage"
 import ConsultationsForm from "./components/pages/consultations/ConsultationsForm";
 import SelectPatient from "./components/pages/consultations/SelectPatient";
 import Dashboard from "./components/pages/home/Dashboard";
+import ConsultationDetails from "./components/pages/consultations/ConsultationDetails";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,10 +35,13 @@ function App() {
               path=":patientId/consultations/:consultationId/edit"
               element={<ConsultationsForm />}
             />
+            <Route
+              path=":patientId/consultations/:consultationId/details"
+              element={<ConsultationDetails />}
+            />
           </Route>
           <Route path="consultations" element={<ConsultationPage />}>
             <Route index element={<SelectPatient />} />
-            {/* <Route path=":id" element={<ConsultationsForm />} /> */}
           </Route>
         </Route>
       </Routes>

@@ -29,6 +29,7 @@ const modules = [
 function AppSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const currTab = location.pathname.split("/").slice(1)[0];
 
   return (
     <Sidebar>
@@ -65,8 +66,7 @@ function AppSidebar() {
                       `flex w-full items-center gap-3 rounded-lg px-3 py-6 text-sm font-medium transition-all`,
                       (module.label === "Dashboard" &&
                         location.pathname === "/") ||
-                        (location.pathname.includes(`${module.url}`) &&
-                          module.label !== "Dashboard")
+                        (module.url === currTab && module.label !== "Dashboard")
                         ? "bg-blue-50 text-blue-600"
                         : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
                     )}
@@ -77,7 +77,7 @@ function AppSidebar() {
                         className={
                           (module.label === "Dashboard" &&
                             location.pathname === "/") ||
-                          (location.pathname.includes(`${module.url}`) &&
+                          (module.url === currTab &&
                             module.label !== "Dashboard")
                             ? "text-blue-600"
                             : "text-slate-400"
@@ -86,7 +86,7 @@ function AppSidebar() {
                       {module.label}
                       {(module.label === "Dashboard" &&
                         location.pathname === "/") ||
-                        (location.pathname.includes(`${module.url}`) &&
+                        (module.url === currTab &&
                           module.label !== "Dashboard" && (
                             <div className="ml-auto">
                               <ChevronRight size={14} />

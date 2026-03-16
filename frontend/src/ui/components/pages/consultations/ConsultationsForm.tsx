@@ -1,7 +1,7 @@
 import { handleGetPatient } from "@/services/apiPatients";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
-import VisitDetailsForm from "./visitDetailsForm";
+import VisitDetailsForm from "./VisitDetailsForm";
 import VitalSignsForm from "./VitalSignsForm";
 
 function ConsultationsForm() {

@@ -73,6 +73,11 @@ function PatientPage() {
       <div className="space-y-1">
         {records?.map((record) => (
           <Card
+            onClick={() =>
+              navigate(
+                `/patients/${record.patientId}/consultations/${record.id}/details`,
+              )
+            }
             key={record.id}
             className="flex cursor-pointer flex-row justify-between px-4 py-1 hover:bg-neutral-200"
           >
