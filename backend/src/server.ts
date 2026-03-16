@@ -4,6 +4,7 @@ import cors from "cors";
 import { prisma } from "./config/prisma";
 import patientRoutes from "./routes/patientRoutes.ts";
 import recordRoutes from "./routes/recordRoutes.ts";
+import vitalSignsRoutes from "./routes/vitalSignsRoutes.ts";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
 
 app.use("/api/patients", patientRoutes);
 app.use("/api/records", recordRoutes);
+app.use("/api/vitalSigns", recordRoutes);
 
 // app.use(errorHandler);
 

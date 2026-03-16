@@ -17,7 +17,7 @@ export async function handleGetRecord(id: string) {
   return res.data || {};
 }
 
-interface IHandleAddRecord extends CreateRecordInput {
+export interface IHandleAddRecord extends CreateRecordInput {
   patientId: string;
 }
 
@@ -28,9 +28,7 @@ async function handleAddRecord({
   signs,
 }: IHandleAddRecord) {
   const newRecord = { patientId, symptoms, diagnosis, signs };
-  const res = await api.post(`/api/records`, newRecord);
-
-  return res.data || {};
+  await api.post(`/api/records`, newRecord);
 }
 
 export function useAddRecord() {
@@ -62,7 +60,7 @@ export function useDeleteRecord() {
   });
 }
 
-interface IHandleUpdateRecord extends UpdateRecordInput {
+export interface IHandleUpdateRecord extends UpdateRecordInput {
   consultationId: string;
 }
 
