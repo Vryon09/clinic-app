@@ -1,7 +1,6 @@
 import z from "zod";
 
 export const createVitalSignsSchema = z.object({
-  recordId: z.uuid(),
   bloodPressureSystolic: z.number().int().optional(),
   bloodPressureDiastolic: z.number().int().optional(),
   temperature: z.number().optional(),

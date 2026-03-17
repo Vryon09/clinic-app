@@ -1,11 +1,22 @@
 import z from "zod";
 
+const optionalInt = z
+  .number()
+  .int()
+  .optional()
+  .or(z.nan())
+  .transform((v) => (isNaN(v as number) ? undefined : v));
+const optionalFloat = z
+  .number()
+  .optional()
+  .or(z.nan())
+  .transform((v) => (isNaN(v as number) ? undefined : v));
+
 export const createVitalSignsSchema = z.object({
-  recordId: z.uuid(),
-  bloodPressureSystolic: z.number().int().optional(),
-  bloodPressureDiastolic: z.number().int().optional(),
-  temperature: z.number().optional(),
-  weightKg: z.number().optional(),
+  bloodPressureSystolic: optionalInt,
+  bloodPressureDiastolic: optionalInt,
+  temperature: optionalFloat,
+  weightKg: optionalFloat,
 });
 
 export const updateVitalSignsSchema = createVitalSignsSchema.partial();

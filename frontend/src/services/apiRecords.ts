@@ -26,9 +26,12 @@ async function handleAddRecord({
   symptoms,
   diagnosis,
   signs,
+  vitalSigns,
 }: IHandleAddRecord) {
-  const newRecord = { patientId, symptoms, diagnosis, signs };
-  await api.post(`/api/records`, newRecord);
+  const newRecord = { patientId, symptoms, diagnosis, signs, vitalSigns };
+  const res = await api.post(`/api/records`, newRecord);
+
+  return res.data || {};
 }
 
 export function useAddRecord() {
@@ -43,9 +46,7 @@ export function useAddRecord() {
 }
 
 async function handleDeleteRecord(recordId: string) {
-  const res = await api.delete(`/api/records/${recordId}`);
-
-  console.log(res.data);
+  await api.delete(`/api/records/${recordId}`);
 }
 
 export function useDeleteRecord() {

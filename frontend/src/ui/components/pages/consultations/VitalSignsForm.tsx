@@ -1,42 +1,53 @@
 import { Card } from "../../shadcn/card";
 import { Field, FieldGroup, FieldLabel, FieldSet } from "../../shadcn/field";
-import { Button } from "../../shadcn/button";
 import { Input } from "../../shadcn/input";
+import type { IRecordForm } from "@/types/RecordType";
 
-function VitalSignsForm() {
+function VitalSignsForm({ register }: IRecordForm) {
   return (
     <Card className="w-full px-4 py-2">
       <p>Vital Signs</p>
-      <form>
-        <FieldSet>
-          <FieldGroup>
-            <div className="grid grid-cols-2 gap-2">
-              <Field>
-                <FieldLabel>bloodPressureSystolic</FieldLabel>
-                <Input type="text" />
-              </Field>
+      <FieldSet>
+        <FieldGroup>
+          <div className="grid grid-cols-2 gap-2">
+            <Field>
+              <FieldLabel>bloodPressureSystolic</FieldLabel>
+              <Input
+                type="number"
+                {...register("vitalSigns.bloodPressureSystolic", {
+                  valueAsNumber: true,
+                })}
+              />
+            </Field>
 
-              <Field>
-                <FieldLabel>bloodPressureDiastolic</FieldLabel>
-                <Input type="text" />
-              </Field>
+            <Field>
+              <FieldLabel>bloodPressureDiastolic</FieldLabel>
+              <Input
+                type="number"
+                {...register("vitalSigns.bloodPressureDiastolic", {
+                  valueAsNumber: true,
+                })}
+              />
+            </Field>
 
-              <Field>
-                <FieldLabel>temperature</FieldLabel>
-                <Input type="text" />
-              </Field>
+            <Field>
+              <FieldLabel>temperature</FieldLabel>
+              <Input
+                type="number"
+                {...register("vitalSigns.temperature", { valueAsNumber: true })}
+              />
+            </Field>
 
-              <Field>
-                <FieldLabel>weightKg</FieldLabel>
-                <Input type="text" />
-              </Field>
-            </div>
-          </FieldGroup>
-        </FieldSet>
-        <Button className="mt-4" type="submit">
-          Submit
-        </Button>
-      </form>
+            <Field>
+              <FieldLabel>weightKg</FieldLabel>
+              <Input
+                type="number"
+                {...register("vitalSigns.weightKg", { valueAsNumber: true })}
+              />
+            </Field>
+          </div>
+        </FieldGroup>
+      </FieldSet>
     </Card>
   );
 }

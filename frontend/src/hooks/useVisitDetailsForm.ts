@@ -36,23 +36,20 @@ export function useVisitDetailsForm({
   handleAddRecord,
   handleUpdateRecord,
 }: IUseVisitDetailsForm) {
-  //   const { patientId, consultationId } = useParams() as {
-  //     patientId: string;
-  //     consultationId: string;
-  //   };
-
   const { register, handleSubmit, reset } = useForm({
     resolver: zodResolver(createRecordSchema),
     defaultValues: {
       symptoms: "",
       signs: "",
       diagnosis: "",
+      vitalSigns: {
+        bloodPressureDiastolic: undefined,
+        bloodPressureSystolic: undefined,
+        temperature: undefined,
+        weightKg: undefined,
+      },
     },
   });
-
-  //   const location = useLocation();
-  //   const pathName = location.pathname.split("/");
-  //   const formType = pathName.at(-1);
 
   const { data: record, isPending: isRecordLoading } = useQuery<IRecord>({
     queryFn: () => handleGetRecord(consultationId),
@@ -65,14 +62,17 @@ export function useVisitDetailsForm({
         symptoms: record?.symptoms || "",
         signs: record?.signs || "",
         diagnosis: record?.diagnosis || "",
+        vitalSigns: {
+          bloodPressureDiastolic:
+            record?.vitalSigns?.bloodPressureDiastolic || undefined,
+          bloodPressureSystolic:
+            record?.vitalSigns?.bloodPressureSystolic || undefined,
+          temperature: record?.vitalSigns?.temperature || undefined,
+          weightKg: record?.vitalSigns?.weightKg || undefined,
+        },
       });
     }
   }, [record, reset, formType]);
-
-  //   const { mutate: handleAddRecord } = useAddRecord();
-  //   const { mutate: handleUpdateRecord } = useUpdateRecord();
-
-  //   const navigate = useNavigate();
 
   function onSubmit(recordData: CreateRecordInput) {
     if (formType === "new") {
@@ -85,5 +85,10 @@ export function useVisitDetailsForm({
     reset();
   }
 
-  return { handleSubmit, register, isRecordLoading, onSubmit };
+  return {
+    handleSubmit,
+    register,
+    isRecordLoading,
+    onSubmit,
+  };
 }

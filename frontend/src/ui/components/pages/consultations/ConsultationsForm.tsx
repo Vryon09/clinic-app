@@ -55,7 +55,7 @@ function ConsultationsForm() {
       <form onSubmit={visitDetailsHandleSubmit(visitDetailsOnSubmit)}>
         <div className="flex w-full gap-4">
           <VisitDetailsForm register={visitDetailsRegister} />
-          <VitalSignsForm />
+          <VitalSignsForm register={visitDetailsRegister} />
         </div>
 
         <div className="flex justify-end gap-4">

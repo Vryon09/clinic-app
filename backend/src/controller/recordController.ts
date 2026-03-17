@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
+import { regex } from "zod";
+import { text } from "node:stream/consumers";
 
 export async function getRecords(req: Request, res: Response) {
   try {
@@ -29,14 +31,24 @@ export async function getRecord(req: Request, res: Response) {
 
 export async function addRecord(req: Request, res: Response) {
   try {
+    const { patientId, symptoms, signs, diagnosis, vitalSigns } = req.body;
+
     if (!req.body.patientId)
       return res.status(400).json({ error: "patientId not found." });
 
-    const newRecord = await prisma.record.create({
-      data: req.body,
+    const record = await prisma.$transaction(async (tx) => {
+      const newRecord = await tx.record.create({
+        data: { patientId, symptoms, signs, diagnosis },
+      });
+
+      if (vitalSigns) {
+        await tx.vitalSigns.create({
+          data: { recordId: newRecord.id, ...vitalSigns },
+        });
+      }
     });
 
-    res.status(201).json(newRecord);
+    res.status(201).json(record);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error!" });
@@ -47,11 +59,14 @@ export async function deleteRecord(req: Request, res: Response) {
   try {
     const recordId = req.params.id as string;
 
-    const deletedRecord = await prisma.record.delete({
-      where: { id: recordId },
-    });
+    await prisma.$transaction([
+      prisma.vitalSigns.delete({ where: { recordId } }),
+      prisma.record.delete({
+        where: { id: recordId },
+      }),
+    ]);
 
-    res.status(200).json(deletedRecord);
+    res.status(200).json({ message: "Record deleted successfully!" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error!" });
