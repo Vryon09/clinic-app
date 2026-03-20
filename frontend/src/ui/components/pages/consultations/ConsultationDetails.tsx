@@ -1,4 +1,5 @@
 import { handleGetPatient } from "@/services/apiPatients";
+import { handleGetRecordMedications } from "@/services/apiRecordMedications";
 import { handleGetRecord } from "@/services/apiRecords";
 import type { IPatient } from "@/types/PatientType";
 import type { IRecord } from "@/types/RecordType";
@@ -21,6 +22,13 @@ function ConsultationDetails() {
     queryFn: () => handleGetRecord(consultationId),
     queryKey: ["record", consultationId],
   });
+
+  const { data: recordMedications } = useQuery({
+    queryFn: () => handleGetRecordMedications(consultationId),
+    queryKey: ["recordMedications", consultationId],
+  });
+
+  console.log(recordMedications);
 
   return (
     <div>
