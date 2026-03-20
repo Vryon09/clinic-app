@@ -70,6 +70,13 @@ export function useVisitDetailsForm({
           temperature: record?.vitalSigns?.temperature || undefined,
           weightKg: record?.vitalSigns?.weightKg || undefined,
         },
+        recordMedication: {
+          name: record?.recordMedication?.name || "",
+          dosage: record?.recordMedication?.dosage || "",
+          frequency: record?.recordMedication?.frequency || "",
+          durationDays: record?.recordMedication?.durationDays || undefined,
+          instructions: record?.recordMedication?.instructions || undefined,
+        },
       });
     }
   }, [record, reset, formType]);

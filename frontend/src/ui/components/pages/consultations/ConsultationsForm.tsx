@@ -6,6 +6,7 @@ import { Button } from "../../shadcn/button";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useAddRecord, useUpdateRecord } from "@/services/apiRecords";
 import { useVisitDetailsForm } from "@/hooks/useVisitDetailsForm";
+import RecordMedicationForm from "./RecordMedicationForm";
 
 function ConsultationsForm() {
   const { patientId, consultationId } = useParams() as {
@@ -30,7 +31,7 @@ function ConsultationsForm() {
     handleSubmit: visitDetailsHandleSubmit,
     onSubmit: visitDetailsOnSubmit,
     isRecordLoading,
-    register: visitDetailsRegister,
+    register,
   } = useVisitDetailsForm({
     consultationId,
     patientId,
@@ -53,9 +54,10 @@ function ConsultationsForm() {
       </div>
 
       <form onSubmit={visitDetailsHandleSubmit(visitDetailsOnSubmit)}>
-        <div className="flex w-full gap-4">
-          <VisitDetailsForm register={visitDetailsRegister} />
-          <VitalSignsForm register={visitDetailsRegister} />
+        <div className="grid w-full grid-cols-2 gap-4">
+          <VisitDetailsForm register={register} />
+          <VitalSignsForm register={register} />
+          <RecordMedicationForm register={register} />
         </div>
 
         <div className="flex justify-end gap-4">

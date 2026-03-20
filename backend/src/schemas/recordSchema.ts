@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createVitalSignsSchema } from "./vitalSignsSchema";
+import { createRecordMedicationSchema } from "./recordMedication";
 
 export const createRecordSchema = z.object({
   patientId: z.uuid(),
@@ -23,6 +24,8 @@ export const createRecordSchema = z.object({
     .optional(),
 
   vitalSigns: createVitalSignsSchema.optional(),
+
+  recordMedication: createRecordMedicationSchema.optional(),
 });
 
 export const updateRecordSchema = createRecordSchema.partial();

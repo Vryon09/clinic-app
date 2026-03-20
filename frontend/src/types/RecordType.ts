@@ -21,5 +21,14 @@ export interface IRecordForm {
           weightKg?: number | undefined;
         }
       | undefined;
+    recordMedication?:
+      | {
+          name: string;
+          dosage: string;
+          frequency: string;
+          durationDays?: number | undefined;
+          instructions?: string | undefined;
+        }
+      | undefined;
   }>;
 }

@@ -31,7 +31,14 @@ export async function getRecord(req: Request, res: Response) {
 
 export async function addRecord(req: Request, res: Response) {
   try {
-    const { patientId, symptoms, signs, diagnosis, vitalSigns } = req.body;
+    const {
+      patientId,
+      symptoms,
+      signs,
+      diagnosis,
+      vitalSigns,
+      recordMedication,
+    } = req.body;
 
     if (!req.body.patientId)
       return res.status(400).json({ error: "patientId not found." });
@@ -44,6 +51,12 @@ export async function addRecord(req: Request, res: Response) {
       if (vitalSigns) {
         await tx.vitalSigns.create({
           data: { recordId: newRecord.id, ...vitalSigns },
+        });
+      }
+
+      if (recordMedication) {
+        await tx.recordMedication.create({
+          data: { recordId: newRecord.id, ...recordMedication },
         });
       }
     });
@@ -60,7 +73,7 @@ export async function deleteRecord(req: Request, res: Response) {
     const recordId = req.params.id as string;
 
     await prisma.$transaction([
-      prisma.vitalSigns.delete({ where: { recordId } }),
+      // prisma.vitalSigns.delete({ where: { recordId } }),
       prisma.record.delete({
         where: { id: recordId },
       }),

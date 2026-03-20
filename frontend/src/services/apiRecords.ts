@@ -27,8 +27,16 @@ async function handleAddRecord({
   diagnosis,
   signs,
   vitalSigns,
+  recordMedication,
 }: IHandleAddRecord) {
-  const newRecord = { patientId, symptoms, diagnosis, signs, vitalSigns };
+  const newRecord = {
+    patientId,
+    symptoms,
+    diagnosis,
+    signs,
+    vitalSigns,
+    recordMedication,
+  };
   const res = await api.post(`/api/records`, newRecord);
 
   return res.data || {};
