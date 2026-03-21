@@ -34,9 +34,6 @@ function ConsultationDetails() {
     queryKey: ["vitalSign", consultationId],
   });
 
-  console.log(vitalSign);
-  console.log(recordMedications);
-
   return (
     <div>
       <div>

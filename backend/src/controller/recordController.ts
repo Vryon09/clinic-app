@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
 import { regex } from "zod";
 import { text } from "node:stream/consumers";
+import { IRecordMedication } from "../types/RecordMedication";
 
 export async function getRecords(req: Request, res: Response) {
   try {
@@ -37,7 +38,7 @@ export async function addRecord(req: Request, res: Response) {
       signs,
       diagnosis,
       vitalSigns,
-      recordMedication,
+      recordMedications,
     } = req.body;
 
     if (!req.body.patientId)
@@ -54,9 +55,11 @@ export async function addRecord(req: Request, res: Response) {
         });
       }
 
-      if (recordMedication) {
-        await tx.recordMedication.create({
-          data: { recordId: newRecord.id, ...recordMedication },
+      if (recordMedications.length >= 1) {
+        await tx.recordMedication.createMany({
+          data: recordMedications.map((medication: IRecordMedication) => {
+            return { ...medication, recordId: newRecord.id };
+          }),
         });
       }
     });
@@ -73,7 +76,8 @@ export async function deleteRecord(req: Request, res: Response) {
     const recordId = req.params.id as string;
 
     await prisma.$transaction([
-      // prisma.vitalSigns.delete({ where: { recordId } }),
+      prisma.vitalSigns.delete({ where: { recordId } }),
+      prisma.recordMedication.deleteMany({ where: { recordId } }),
       prisma.record.delete({
         where: { id: recordId },
       }),

@@ -27,7 +27,7 @@ async function handleAddRecord({
   diagnosis,
   signs,
   vitalSigns,
-  recordMedication,
+  recordMedications,
 }: IHandleAddRecord) {
   const newRecord = {
     patientId,
@@ -35,7 +35,7 @@ async function handleAddRecord({
     diagnosis,
     signs,
     vitalSigns,
-    recordMedication,
+    recordMedications,
   };
   const res = await api.post(`/api/records`, newRecord);
 

@@ -1,6 +1,13 @@
 import type { CreateRecordInput } from "@/schemas/recordSchema";
 import type { IDate } from "./DateType";
-import type { UseFormRegister } from "react-hook-form";
+import type {
+  FieldArrayWithId,
+  UseFieldArrayAppend,
+  UseFieldArrayRemove,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 
 export interface IRecord extends CreateRecordInput, IDate {
   id: string;
@@ -21,7 +28,7 @@ export interface IRecordForm {
           weightKg?: number | undefined;
         }
       | undefined;
-    recordMedication?:
+    medicationInput?:
       | {
           name: string;
           dosage: string;
@@ -29,6 +36,132 @@ export interface IRecordForm {
           durationDays?: number | undefined;
           instructions?: string | undefined;
         }
+      | undefined;
+    recordMedications?:
+      | {
+          name: string;
+          dosage: string;
+          frequency: string;
+          durationDays?: number | undefined;
+          instructions?: string | undefined;
+        }[]
+      | undefined;
+  }>;
+}
+
+export interface IRecordMedicationForm extends IRecordForm {
+  recordMedicationField: FieldArrayWithId<
+    {
+      symptoms?: string | undefined;
+      signs?: string | undefined;
+      diagnosis?: string | undefined;
+      vitalSigns?:
+        | {
+            bloodPressureSystolic?: number | undefined;
+            bloodPressureDiastolic?: number | undefined;
+            temperature?: number | undefined;
+            weightKg?: number | undefined;
+          }
+        | undefined;
+      recordMedications?:
+        | {
+            name: string;
+            dosage: string;
+            frequency: string;
+            durationDays?: number | undefined;
+            instructions?: string | undefined;
+          }[]
+        | undefined;
+    },
+    "recordMedications",
+    "id"
+  >[];
+  addMedication: UseFieldArrayAppend<
+    {
+      symptoms?: string | undefined;
+      signs?: string | undefined;
+      diagnosis?: string | undefined;
+      vitalSigns?:
+        | {
+            bloodPressureSystolic?: number | undefined;
+            bloodPressureDiastolic?: number | undefined;
+            temperature?: number | undefined;
+            weightKg?: number | undefined;
+          }
+        | undefined;
+      recordMedications?:
+        | {
+            name: string;
+            dosage: string;
+            frequency: string;
+            durationDays?: number | undefined;
+            instructions?: string | undefined;
+          }[]
+        | undefined;
+    },
+    "recordMedications"
+  >;
+  deleteMedication: UseFieldArrayRemove;
+  getValues: UseFormGetValues<{
+    symptoms?: string | undefined;
+    signs?: string | undefined;
+    diagnosis?: string | undefined;
+    vitalSigns?:
+      | {
+          bloodPressureSystolic?: number | undefined;
+          bloodPressureDiastolic?: number | undefined;
+          temperature?: number | undefined;
+          weightKg?: number | undefined;
+        }
+      | undefined;
+    medicationInput?:
+      | {
+          name: string;
+          dosage: string;
+          frequency: string;
+          durationDays?: number | undefined;
+          instructions?: string | undefined;
+        }
+      | undefined;
+    recordMedications?:
+      | {
+          name: string;
+          dosage: string;
+          frequency: string;
+          durationDays?: number | undefined;
+          instructions?: string | undefined;
+        }[]
+      | undefined;
+  }>;
+  setValue: UseFormSetValue<{
+    symptoms?: string | undefined;
+    signs?: string | undefined;
+    diagnosis?: string | undefined;
+    vitalSigns?:
+      | {
+          bloodPressureSystolic?: number | undefined;
+          bloodPressureDiastolic?: number | undefined;
+          temperature?: number | undefined;
+          weightKg?: number | undefined;
+        }
+      | undefined;
+    medicationInput?:
+      | {
+          name: string;
+          dosage: string;
+          frequency: string;
+          durationDays?: number | undefined;
+          instructions?: string | undefined;
+        }
+      | undefined;
+    recordMedications?:
+      | {
+          name: string;
+          dosage: string;
+          frequency: string;
+          durationDays?: number | undefined;
+          instructions?: string | undefined;
+        }[]
       | undefined;
   }>;
 }

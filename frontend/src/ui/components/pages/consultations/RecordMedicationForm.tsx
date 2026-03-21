@@ -1,44 +1,93 @@
-import type { IRecordForm } from "@/types/RecordType";
+// import type { IRecordForm } from "@/types/RecordType";
+import type { IRecordMedicationForm } from "@/types/RecordType";
 import { Card } from "../../shadcn/card";
-import { Field, FieldGroup, FieldLabel, FieldSet } from "../../shadcn/field";
+import { Field, FieldLabel } from "../../shadcn/field";
 import { Input } from "../../shadcn/input";
 import { Textarea } from "../../shadcn/textarea";
+import { Button } from "../../shadcn/button";
 
-function RecordMedicationForm({ register }: IRecordForm) {
+function RecordMedicationForm({
+  recordMedicationField,
+  addMedication,
+  deleteMedication,
+  register,
+  getValues,
+  setValue,
+}: IRecordMedicationForm) {
   return (
     <Card className="col-span-2">
-      <p>Record Medication</p>
-      <FieldSet>
-        <FieldGroup>
-          <div>
+      <div className="flex flex-col">
+        <p>Record Medication</p>
+        <div>
+          <p>Added medication</p>
+          {recordMedicationField.map((field, i) => (
+            <div key={field.id} className="flex gap-2">
+              <p>{field.name}</p>
+              <p>{field.dosage}</p>
+              <p>{field.frequency}</p>
+              <p>{field.durationDays} days</p>
+              <p>{field.instructions}</p>
+
+              <Button variant="destructive" onClick={() => deleteMedication(i)}>
+                Delete medication
+              </Button>
+            </div>
+          ))}
+        </div>
+        <div className="mb-4 border-b pb-4">
+          <div className="grid grid-cols-2 gap-4">
             <Field>
               <FieldLabel>Medication Name</FieldLabel>
-              <Input type="text" {...register("recordMedication.name")} />
+              <Input {...register(`medicationInput.name`)} />
             </Field>
             <Field>
               <FieldLabel>Dosage</FieldLabel>
-              <Input type="text" {...register("recordMedication.dosage")} />
+              <Input {...register(`medicationInput.dosage`)} />
             </Field>
             <Field>
               <FieldLabel>Frequency</FieldLabel>
-              <Input type="text" {...register("recordMedication.frequency")} />
+              <Input {...register(`medicationInput.frequency`)} />
             </Field>
             <Field>
               <FieldLabel>Duration days</FieldLabel>
               <Input
-                type="number"
-                {...register("recordMedication.durationDays", {
+                {...register(`medicationInput.durationDays`, {
                   valueAsNumber: true,
                 })}
               />
             </Field>
-            <Field>
+            <Field className="col-span-2">
               <FieldLabel>Instruction</FieldLabel>
-              <Textarea {...register("recordMedication.instructions")} />
+              <Textarea {...register(`medicationInput.instructions`)} />
             </Field>
           </div>
-        </FieldGroup>
-      </FieldSet>
+        </div>
+        <Button
+          onClick={() => {
+            const values = getValues("medicationInput");
+
+            if (
+              !values ||
+              !values.name.trim() ||
+              !values.dosage.trim() ||
+              !values.frequency.trim()
+            )
+              return;
+
+            addMedication(values);
+
+            setValue("medicationInput", {
+              name: "",
+              dosage: "",
+              frequency: "",
+              durationDays: 0,
+              instructions: "",
+            });
+          }}
+        >
+          Add Medication
+        </Button>
+      </div>
     </Card>
   );
 }

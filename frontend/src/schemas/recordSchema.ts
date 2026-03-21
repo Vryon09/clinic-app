@@ -23,7 +23,9 @@ export const createRecordSchema = z.object({
 
   vitalSigns: createVitalSignsSchema.optional(),
 
-  recordMedication: createRecordMedicationSchema.optional(),
+  medicationInput: createRecordMedicationSchema.optional(),
+
+  recordMedications: z.array(createRecordMedicationSchema).default([]),
 });
 
 export const updateRecordSchema = createRecordSchema.partial();

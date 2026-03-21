@@ -7,3 +7,7 @@ export const createRecordMedicationSchema = z.object({
   durationDays: z.number().int().optional(),
   instructions: z.string().optional(),
 });
+
+export type CreateRecordMedicationInput = z.infer<
+  typeof createRecordMedicationSchema
+>;

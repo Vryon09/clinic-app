@@ -11,7 +11,7 @@ import type { IRecord } from "@/types/RecordType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, type UseMutateFunction } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import type { NavigateFunction } from "react-router";
 
 interface IUseVisitDetailsForm {
@@ -36,19 +36,39 @@ export function useVisitDetailsForm({
   handleAddRecord,
   handleUpdateRecord,
 }: IUseVisitDetailsForm) {
-  const { register, handleSubmit, reset } = useForm({
-    resolver: zodResolver(createRecordSchema),
-    defaultValues: {
-      symptoms: "",
-      signs: "",
-      diagnosis: "",
-      vitalSigns: {
-        bloodPressureDiastolic: undefined,
-        bloodPressureSystolic: undefined,
-        temperature: undefined,
-        weightKg: undefined,
+  const { register, handleSubmit, reset, control, getValues, setValue } =
+    useForm({
+      resolver: zodResolver(createRecordSchema),
+      defaultValues: {
+        symptoms: "",
+        signs: "",
+        diagnosis: "",
+        vitalSigns: {
+          bloodPressureDiastolic: undefined,
+          bloodPressureSystolic: undefined,
+          temperature: undefined,
+          weightKg: undefined,
+        },
+
+        medicationInput: {
+          name: "",
+          dosage: "",
+          frequency: "",
+          durationDays: 0,
+          instructions: "",
+        },
+
+        recordMedications: [],
       },
-    },
+    });
+
+  const {
+    fields: recordMedicationField,
+    append: addMedication,
+    remove: deleteMedication,
+  } = useFieldArray({
+    control,
+    name: "recordMedications",
   });
 
   const { data: record, isPending: isRecordLoading } = useQuery<IRecord>({
@@ -70,18 +90,13 @@ export function useVisitDetailsForm({
           temperature: record?.vitalSigns?.temperature || undefined,
           weightKg: record?.vitalSigns?.weightKg || undefined,
         },
-        recordMedication: {
-          name: record?.recordMedication?.name || "",
-          dosage: record?.recordMedication?.dosage || "",
-          frequency: record?.recordMedication?.frequency || "",
-          durationDays: record?.recordMedication?.durationDays || undefined,
-          instructions: record?.recordMedication?.instructions || undefined,
-        },
+        recordMedications: record?.recordMedications || [],
       });
     }
   }, [record, reset, formType]);
 
   function onSubmit(recordData: CreateRecordInput) {
+    console.log(recordData);
     if (formType === "new") {
       handleAddRecord({ ...recordData, patientId });
     } else {
@@ -97,5 +112,10 @@ export function useVisitDetailsForm({
     register,
     isRecordLoading,
     onSubmit,
+    recordMedicationField,
+    addMedication,
+    deleteMedication,
+    getValues,
+    setValue,
   };
 }

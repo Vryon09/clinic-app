@@ -32,6 +32,11 @@ function ConsultationsForm() {
     onSubmit: visitDetailsOnSubmit,
     isRecordLoading,
     register,
+    recordMedicationField,
+    addMedication,
+    deleteMedication,
+    getValues,
+    setValue,
   } = useVisitDetailsForm({
     consultationId,
     patientId,
@@ -57,7 +62,14 @@ function ConsultationsForm() {
         <div className="grid w-full grid-cols-2 gap-4">
           <VisitDetailsForm register={register} />
           <VitalSignsForm register={register} />
-          <RecordMedicationForm register={register} />
+          <RecordMedicationForm
+            recordMedicationField={recordMedicationField}
+            addMedication={addMedication}
+            deleteMedication={deleteMedication}
+            register={register}
+            getValues={getValues}
+            setValue={setValue}
+          />
         </div>
 
         <div className="flex justify-end gap-4">
