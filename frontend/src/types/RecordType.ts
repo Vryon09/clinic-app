@@ -17,6 +17,13 @@ export interface IRecord extends CreateRecordInput, IDate {
 
 export interface IRecordForm {
   register: UseFormRegister<{
+    medicationInput: {
+      name?: string | undefined;
+      dosage?: string | undefined;
+      frequency?: string | undefined;
+      durationDays?: number | undefined;
+      instructions?: string | undefined;
+    };
     symptoms?: string | undefined;
     signs?: string | undefined;
     diagnosis?: string | undefined;
@@ -26,15 +33,6 @@ export interface IRecordForm {
           bloodPressureDiastolic?: number | undefined;
           temperature?: number | undefined;
           weightKg?: number | undefined;
-        }
-      | undefined;
-    medicationInput?:
-      | {
-          name: string;
-          dosage: string;
-          frequency: string;
-          durationDays?: number | undefined;
-          instructions?: string | undefined;
         }
       | undefined;
     recordMedications?:
@@ -78,6 +76,13 @@ export interface IRecordMedicationForm extends IRecordForm {
   >[];
   addMedication: UseFieldArrayAppend<
     {
+      medicationInput: {
+        name?: string | undefined;
+        dosage?: string | undefined;
+        frequency?: string | undefined;
+        durationDays?: number | undefined;
+        instructions?: string | undefined;
+      };
       symptoms?: string | undefined;
       signs?: string | undefined;
       diagnosis?: string | undefined;
@@ -103,6 +108,13 @@ export interface IRecordMedicationForm extends IRecordForm {
   >;
   deleteMedication: UseFieldArrayRemove;
   getValues: UseFormGetValues<{
+    medicationInput: {
+      name?: string | undefined;
+      dosage?: string | undefined;
+      frequency?: string | undefined;
+      durationDays?: number | undefined;
+      instructions?: string | undefined;
+    };
     symptoms?: string | undefined;
     signs?: string | undefined;
     diagnosis?: string | undefined;
@@ -112,15 +124,6 @@ export interface IRecordMedicationForm extends IRecordForm {
           bloodPressureDiastolic?: number | undefined;
           temperature?: number | undefined;
           weightKg?: number | undefined;
-        }
-      | undefined;
-    medicationInput?:
-      | {
-          name: string;
-          dosage: string;
-          frequency: string;
-          durationDays?: number | undefined;
-          instructions?: string | undefined;
         }
       | undefined;
     recordMedications?:
@@ -134,6 +137,13 @@ export interface IRecordMedicationForm extends IRecordForm {
       | undefined;
   }>;
   setValue: UseFormSetValue<{
+    medicationInput: {
+      name?: string | undefined;
+      dosage?: string | undefined;
+      frequency?: string | undefined;
+      durationDays?: number | undefined;
+      instructions?: string | undefined;
+    };
     symptoms?: string | undefined;
     signs?: string | undefined;
     diagnosis?: string | undefined;
@@ -143,15 +153,6 @@ export interface IRecordMedicationForm extends IRecordForm {
           bloodPressureDiastolic?: number | undefined;
           temperature?: number | undefined;
           weightKg?: number | undefined;
-        }
-      | undefined;
-    medicationInput?:
-      | {
-          name: string;
-          dosage: string;
-          frequency: string;
-          durationDays?: number | undefined;
-          instructions?: string | undefined;
         }
       | undefined;
     recordMedications?:

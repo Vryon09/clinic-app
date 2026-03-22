@@ -36,31 +36,40 @@ export function useVisitDetailsForm({
   handleAddRecord,
   handleUpdateRecord,
 }: IUseVisitDetailsForm) {
-  const { register, handleSubmit, reset, control, getValues, setValue } =
-    useForm({
-      resolver: zodResolver(createRecordSchema),
-      defaultValues: {
-        symptoms: "",
-        signs: "",
-        diagnosis: "",
-        vitalSigns: {
-          bloodPressureDiastolic: undefined,
-          bloodPressureSystolic: undefined,
-          temperature: undefined,
-          weightKg: undefined,
-        },
-
-        medicationInput: {
-          name: "",
-          dosage: "",
-          frequency: "",
-          durationDays: 0,
-          instructions: "",
-        },
-
-        recordMedications: [],
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    getValues,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(createRecordSchema),
+    defaultValues: {
+      symptoms: "",
+      signs: "",
+      diagnosis: "",
+      vitalSigns: {
+        bloodPressureDiastolic: undefined,
+        bloodPressureSystolic: undefined,
+        temperature: undefined,
+        weightKg: undefined,
       },
-    });
+
+      medicationInput: {
+        name: "",
+        dosage: "",
+        frequency: "",
+        durationDays: 0,
+        instructions: "",
+      },
+
+      recordMedications: [],
+    },
+  });
+
+  console.log(errors);
 
   const {
     fields: recordMedicationField,

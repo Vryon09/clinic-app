@@ -5,6 +5,8 @@ import { Field, FieldLabel } from "../../shadcn/field";
 import { Input } from "../../shadcn/input";
 import { Textarea } from "../../shadcn/textarea";
 import { Button } from "../../shadcn/button";
+import { useState } from "react";
+import { createRecordMedicationSchema } from "@/schemas/recordMedication";
 
 function RecordMedicationForm({
   recordMedicationField,
@@ -14,6 +16,7 @@ function RecordMedicationForm({
   getValues,
   setValue,
 }: IRecordMedicationForm) {
+  const [isAdding, setIsAdding] = useState<boolean>(false);
   return (
     <Card className="col-span-2">
       <div className="flex flex-col">
@@ -34,59 +37,70 @@ function RecordMedicationForm({
             </div>
           ))}
         </div>
-        <div className="mb-4 border-b pb-4">
-          <div className="grid grid-cols-2 gap-4">
-            <Field>
-              <FieldLabel>Medication Name</FieldLabel>
-              <Input {...register(`medicationInput.name`)} />
-            </Field>
-            <Field>
-              <FieldLabel>Dosage</FieldLabel>
-              <Input {...register(`medicationInput.dosage`)} />
-            </Field>
-            <Field>
-              <FieldLabel>Frequency</FieldLabel>
-              <Input {...register(`medicationInput.frequency`)} />
-            </Field>
-            <Field>
-              <FieldLabel>Duration days</FieldLabel>
-              <Input
-                {...register(`medicationInput.durationDays`, {
-                  valueAsNumber: true,
-                })}
-              />
-            </Field>
-            <Field className="col-span-2">
-              <FieldLabel>Instruction</FieldLabel>
-              <Textarea {...register(`medicationInput.instructions`)} />
-            </Field>
-          </div>
-        </div>
         <Button
-          onClick={() => {
-            const values = getValues("medicationInput");
-
-            if (
-              !values ||
-              !values.name.trim() ||
-              !values.dosage.trim() ||
-              !values.frequency.trim()
-            )
-              return;
-
-            addMedication(values);
-
-            setValue("medicationInput", {
-              name: "",
-              dosage: "",
-              frequency: "",
-              durationDays: 0,
-              instructions: "",
-            });
+          onClick={(e) => {
+            e.preventDefault();
+            setIsAdding((prev) => !prev);
           }}
         >
-          Add Medication
+          {isAdding ? "Finish Adding" : "Show Form"}
         </Button>
+        {isAdding && (
+          <>
+            <div className="mb-4 border-b pb-4">
+              <div className="grid grid-cols-2 gap-4">
+                <Field>
+                  <FieldLabel>Medication Name</FieldLabel>
+                  <Input {...register(`medicationInput.name`)} />
+                </Field>
+                <Field>
+                  <FieldLabel>Dosage</FieldLabel>
+                  <Input {...register(`medicationInput.dosage`)} />
+                </Field>
+                <Field>
+                  <FieldLabel>Frequency</FieldLabel>
+                  <Input {...register(`medicationInput.frequency`)} />
+                </Field>
+                <Field>
+                  <FieldLabel>Duration days</FieldLabel>
+                  <Input
+                    {...register(`medicationInput.durationDays`, {
+                      valueAsNumber: true,
+                    })}
+                  />
+                </Field>
+                <Field className="col-span-2">
+                  <FieldLabel>Instruction</FieldLabel>
+                  <Textarea {...register(`medicationInput.instructions`)} />
+                </Field>
+              </div>
+            </div>
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                const values = getValues("medicationInput");
+
+                const result = createRecordMedicationSchema.safeParse(values);
+
+                if (!result.success) {
+                  return;
+                }
+
+                addMedication(result.data);
+
+                setValue("medicationInput", {
+                  name: "",
+                  dosage: "",
+                  frequency: "",
+                  durationDays: 0,
+                  instructions: "",
+                });
+              }}
+            >
+              Add Medication
+            </Button>
+          </>
+        )}
       </div>
     </Card>
   );

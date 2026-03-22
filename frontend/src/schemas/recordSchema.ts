@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { createVitalSignsSchema } from "./vitalSignsSchema";
-import { createRecordMedicationSchema } from "./recordMedication";
+import {
+  createRecordMedicationSchema,
+  medicationInputSchema,
+} from "./recordMedication";
 
 export const createRecordSchema = z.object({
   symptoms: z
@@ -23,7 +26,7 @@ export const createRecordSchema = z.object({
 
   vitalSigns: createVitalSignsSchema.optional(),
 
-  medicationInput: createRecordMedicationSchema.optional(),
+  medicationInput: medicationInputSchema,
 
   recordMedications: z.array(createRecordMedicationSchema).default([]),
 });
