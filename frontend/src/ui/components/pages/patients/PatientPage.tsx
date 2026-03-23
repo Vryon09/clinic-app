@@ -34,34 +34,35 @@ function PatientPage() {
   return (
     <div>
       {/* Patient Card */}
-      <div>
+      <Card className="mb-4 flex w-fit gap-2 px-4 py-3">
         <div>
-          <p>name</p>
-          <p>{`${patient?.lastName}, ${patient?.firstName}${patient?.middleName ? ` ${patient?.middleName.slice(0, 1)}.` : ""}`}</p>
+          <p className="text-lg font-semibold">Patient Info</p>
+          <p>
+            Name:{" "}
+            {`${patient?.lastName}, ${patient?.firstName}${patient?.middleName ? ` ${patient?.middleName.slice(0, 1)}.` : ""}`}
+          </p>
+          <p>Age: {dayjs().diff(dayjs(patient?.dateOfBirth), "year")}</p>
+          <p>Phone: {patient?.phone}</p>
+          <p>Address: {patient?.address}</p>
+          <p>
+            Sex:{" "}
+            <span className="capitalize">{patient?.sex.toLowerCase()}</span>
+          </p>
         </div>
 
-        <div>
-          <p>Patient Info</p>
-          <div>
-            <p>age</p>
-            <p>{dayjs().diff(dayjs(patient?.dateOfBirth), "year")}</p>
-          </div>
-          <div>
-            <p>phone</p>
-            <p>{patient?.phone}</p>
-          </div>
+        <div className="flex items-center justify-end">
+          <Button
+            size="icon-sm"
+            className="cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsEditing(true);
+            }}
+          >
+            <Pen />
+          </Button>
         </div>
-        <Button
-          size="icon-sm"
-          className="cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsEditing(true);
-          }}
-        >
-          <Pen />
-        </Button>
-      </div>
+      </Card>
 
       <Button
         className="cursor-pointer"

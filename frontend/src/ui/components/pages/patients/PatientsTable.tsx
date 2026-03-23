@@ -66,7 +66,7 @@ function PatientsTable() {
               </TableCell>
               <TableCell>{patient.sex.slice(0, 1)}</TableCell>
 
-              <TableCell>
+              <TableCell className="flex gap-4">
                 <Button
                   size="icon-sm"
                   className="cursor-pointer"
