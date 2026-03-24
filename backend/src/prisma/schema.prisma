@@ -43,7 +43,7 @@ model Record {
   signs     String?
   diagnosis String?
 
-  patient Patient @relation(fields: [patientId], references: [id])
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @default(now()) @updatedAt
@@ -54,7 +54,7 @@ model Record {
 model VitalSigns {
   id       String @id @default(uuid())
   recordId String @unique
-  record   Record @relation(fields: [recordId], references: [id])
+  record   Record @relation(fields: [recordId], references: [id], onDelete: Cascade)
 
   bloodPressureSystolic  Int?
   bloodPressureDiastolic Int?
@@ -65,7 +65,7 @@ model VitalSigns {
 
 model RecordMedication {
   id       String @id @default(uuid())
-  record   Record @relation(fields: [recordId], references: [id])
+  record   Record @relation(fields: [recordId], references: [id], onDelete: Cascade)
   recordId String
 
   name         String

@@ -34,7 +34,7 @@ function PatientPage() {
   return (
     <div>
       {/* Patient Card */}
-      <Card className="mb-4 flex w-fit gap-2 px-4 py-3">
+      <Card className="mb-4 flex w-fit min-w-96 gap-2 px-4 py-3">
         <div>
           <p className="text-lg font-semibold">Patient Info</p>
           <p>
