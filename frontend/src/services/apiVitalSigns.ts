@@ -36,7 +36,7 @@ export function useAddVitalSigns() {
   });
 }
 
-export async function handleGetVitalSign(recordId: string) {
+export async function handleGetVitalSigns(recordId: string) {
   const res = await api.get(`/api/vitalSigns/${recordId}`);
 
   return res.data || {};

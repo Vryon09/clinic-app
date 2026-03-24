@@ -3,12 +3,12 @@ import { validateSchema } from "../middleware/validateSchema";
 import { createVitalSignsSchema } from "../schemas/vitalSignsSchema";
 import {
   addVitalSigns,
-  getVitalSign,
+  getVitalSigns,
 } from "../controller/vitalSignsController";
 
 const router = Router();
 
 router.post("/", validateSchema(createVitalSignsSchema), addVitalSigns);
-router.get("/:recordId", getVitalSign);
+router.get("/:recordId", getVitalSigns);
 
 export default router;

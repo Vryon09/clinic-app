@@ -1,7 +1,5 @@
 import { handleGetPatient } from "@/services/apiPatients";
-import { handleGetRecordMedications } from "@/services/apiRecordMedications";
 import { handleGetRecord } from "@/services/apiRecords";
-import { handleGetVitalSign } from "@/services/apiVitalSigns";
 import type { IPatient } from "@/types/PatientType";
 import type { IRecord } from "@/types/RecordType";
 import { useQuery } from "@tanstack/react-query";
@@ -22,16 +20,6 @@ function ConsultationDetails() {
   const { data: record } = useQuery<IRecord>({
     queryFn: () => handleGetRecord(consultationId),
     queryKey: ["record", consultationId],
-  });
-
-  const { data: recordMedications } = useQuery({
-    queryFn: () => handleGetRecordMedications(consultationId),
-    queryKey: ["recordMedications", consultationId],
-  });
-
-  const { data: vitalSign } = useQuery({
-    queryFn: () => handleGetVitalSign(consultationId),
-    queryKey: ["vitalSign", consultationId],
   });
 
   return (

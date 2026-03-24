@@ -2,12 +2,16 @@ import {
   createRecordSchema,
   type CreateRecordInput,
 } from "@/schemas/recordSchema";
+import { handleGetRecordMedications } from "@/services/apiRecordMedications";
 import {
   handleGetRecord,
   type IHandleAddRecord,
   type IHandleUpdateRecord,
 } from "@/services/apiRecords";
+import { handleGetVitalSigns } from "@/services/apiVitalSigns";
+import type { IRecordMedications } from "@/types/RecordMedications";
 import type { IRecord } from "@/types/RecordType";
+import type { IVitalSigns } from "@/types/VitalSignsType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, type UseMutateFunction } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -43,7 +47,7 @@ export function useVisitDetailsForm({
     control,
     getValues,
     setValue,
-    formState: { errors },
+    // formState: { errors },
   } = useForm({
     resolver: zodResolver(createRecordSchema),
     defaultValues: {
@@ -69,7 +73,7 @@ export function useVisitDetailsForm({
     },
   });
 
-  console.log(errors);
+  // console.log(errors);
 
   const {
     fields: recordMedicationField,
@@ -85,6 +89,16 @@ export function useVisitDetailsForm({
     queryKey: ["record", consultationId],
   });
 
+  const { data: recordMedications } = useQuery<IRecordMedications[]>({
+    queryFn: () => handleGetRecordMedications(consultationId),
+    queryKey: ["recordMedications", consultationId],
+  });
+
+  const { data: vitalSigns } = useQuery<IVitalSigns>({
+    queryFn: () => handleGetVitalSigns(consultationId),
+    queryKey: ["vitalSign", consultationId],
+  });
+
   useEffect(() => {
     if (formType === "edit") {
       reset({
@@ -93,19 +107,24 @@ export function useVisitDetailsForm({
         diagnosis: record?.diagnosis || "",
         vitalSigns: {
           bloodPressureDiastolic:
-            record?.vitalSigns?.bloodPressureDiastolic || undefined,
-          bloodPressureSystolic:
-            record?.vitalSigns?.bloodPressureSystolic || undefined,
-          temperature: record?.vitalSigns?.temperature || undefined,
-          weightKg: record?.vitalSigns?.weightKg || undefined,
+            vitalSigns?.bloodPressureDiastolic || undefined,
+          bloodPressureSystolic: vitalSigns?.bloodPressureSystolic || undefined,
+          temperature: vitalSigns?.temperature || undefined,
+          weightKg: vitalSigns?.weightKg || undefined,
         },
-        recordMedications: record?.recordMedications || [],
+        recordMedications: recordMedications || [],
+        medicationInput: {
+          name: "",
+          dosage: "",
+          frequency: "",
+          durationDays: 0,
+          instructions: "",
+        },
       });
     }
-  }, [record, reset, formType]);
+  }, [record, reset, formType, vitalSigns, recordMedications]);
 
   function onSubmit(recordData: CreateRecordInput) {
-    console.log(recordData);
     if (formType === "new") {
       handleAddRecord({ ...recordData, patientId });
     } else {

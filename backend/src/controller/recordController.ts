@@ -3,6 +3,7 @@ import { prisma } from "../config/prisma";
 import { regex } from "zod";
 import { text } from "node:stream/consumers";
 import { IRecordMedication } from "../types/RecordMedication";
+import { CreateRecordMedicationInput } from "../schemas/recordMedication";
 
 export async function getRecords(req: Request, res: Response) {
   try {
@@ -92,9 +93,38 @@ export async function deleteRecord(req: Request, res: Response) {
 
 export async function updateRecord(req: Request, res: Response) {
   try {
-    const updatedRecord = await prisma.record.update({
-      where: { id: req.params.id as string },
-      data: req.body,
+    const { symptoms, signs, diagnosis, vitalSigns, recordMedications } =
+      req.body;
+
+    console.log("Record Medications:");
+    console.log(recordMedications);
+
+    const updatedRecord = await prisma.$transaction(async (tx) => {
+      await tx.record.update({
+        where: { id: req.params.id as string },
+        data: { symptoms, signs, diagnosis },
+      });
+
+      if (recordMedications) {
+        // fix update record medication
+        await tx.recordMedication.deleteMany({
+          where: { recordId: req.params.id as string },
+        });
+
+        await tx.recordMedication.createMany({
+          data: recordMedications.map(
+            (medication: CreateRecordMedicationInput) => {
+              return { ...medication, recordId: req.params.id as string };
+            },
+          ),
+        });
+      }
+      if (vitalSigns) {
+        await tx.vitalSigns.update({
+          where: { recordId: req.params.id as string },
+          data: vitalSigns,
+        });
+      }
     });
 
     res.status(200).json(updatedRecord);

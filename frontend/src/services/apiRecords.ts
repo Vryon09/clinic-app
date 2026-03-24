@@ -78,13 +78,16 @@ async function handleUpdateRecord({
   symptoms,
   signs,
   diagnosis,
+  vitalSigns,
+  recordMedications,
 }: IHandleUpdateRecord) {
-  const updatedRecordData = { symptoms, signs, diagnosis };
+  const visitDetails = { symptoms, signs, diagnosis };
 
-  const res = await api.patch(
-    `/api/records/${consultationId}`,
-    updatedRecordData,
-  );
+  const res = await api.patch(`/api/records/${consultationId}`, {
+    ...visitDetails,
+    vitalSigns,
+    recordMedications,
+  });
 
   console.log(res.data);
 }

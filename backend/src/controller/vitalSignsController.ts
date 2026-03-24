@@ -12,7 +12,7 @@ export async function addVitalSigns(req: Request, res: Response) {
   }
 }
 
-export async function getVitalSign(req: Request, res: Response) {
+export async function getVitalSigns(req: Request, res: Response) {
   try {
     const vitalSign = await prisma.vitalSigns.findUnique({
       where: { recordId: req.params.recordId as string },
