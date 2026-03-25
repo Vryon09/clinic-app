@@ -10,6 +10,7 @@ import type { IRecord } from "@/types/RecordType";
 import { Pen, Trash } from "lucide-react";
 import { useState } from "react";
 import PatientForm from "./PatientForm";
+import PatientCard from "./PatientCard";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -34,7 +35,21 @@ function PatientPage() {
   return (
     <div>
       {/* Patient Card */}
-      <Card className="mb-4 flex w-fit min-w-96 gap-2 px-4 py-3">
+      <PatientCard patient={patient!}>
+        <div className="flex items-center justify-end">
+          <Button
+            size="icon-sm"
+            className="cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsEditing(true);
+            }}
+          >
+            <Pen />
+          </Button>
+        </div>
+      </PatientCard>
+      {/* <Card className="mb-4 flex w-fit min-w-96 gap-2 px-4 py-3">
         <div>
           <p className="text-lg font-semibold">Patient Info</p>
           <p>
@@ -62,7 +77,7 @@ function PatientPage() {
             <Pen />
           </Button>
         </div>
-      </Card>
+      </Card> */}
 
       <Button
         className="cursor-pointer"

@@ -7,6 +7,7 @@ import { Textarea } from "../../shadcn/textarea";
 import { Button } from "../../shadcn/button";
 import { useState } from "react";
 import { createRecordMedicationSchema } from "@/schemas/recordMedication";
+import { Trash2 } from "lucide-react";
 
 function RecordMedicationForm({
   recordMedicationField,
@@ -24,15 +25,20 @@ function RecordMedicationForm({
         <div>
           <p>Added medication</p>
           {recordMedicationField.map((field, i) => (
-            <div key={field.id} className="flex gap-2">
+            <div key={field.id} className="flex gap-4">
               <p>{field.name}</p>
               <p>{field.dosage}</p>
               <p>{field.frequency}</p>
               <p>{field.durationDays} days</p>
               <p>{field.instructions}</p>
 
-              <Button variant="destructive" onClick={() => deleteMedication(i)}>
-                Delete medication
+              <Button
+                variant="destructive"
+                size="icon-sm"
+                onClick={() => deleteMedication(i)}
+                className="cursor-pointer"
+              >
+                <Trash2 />
               </Button>
             </div>
           ))}

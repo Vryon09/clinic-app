@@ -3,8 +3,8 @@ import { handleGetRecord } from "@/services/apiRecords";
 import type { IPatient } from "@/types/PatientType";
 import type { IRecord } from "@/types/RecordType";
 import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
 import { useParams } from "react-router";
+import PatientCard from "../patients/PatientCard";
 
 function ConsultationDetails() {
   const { patientId, consultationId } = useParams() as {
@@ -12,7 +12,7 @@ function ConsultationDetails() {
     consultationId: string;
   };
 
-  const { data: patient } = useQuery<IPatient>({
+  const { data: patient, isPending: isPatientPending } = useQuery<IPatient>({
     queryFn: () => handleGetPatient({ id: patientId }),
     queryKey: ["patient", patientId],
   });
@@ -24,22 +24,7 @@ function ConsultationDetails() {
 
   return (
     <div>
-      <div>
-        <p>name</p>
-        <p>{`${patient?.lastName}, ${patient?.firstName}${patient?.middleName ? ` ${patient?.middleName.slice(0, 1)}.` : ""}`}</p>
-      </div>
-
-      <div>
-        <p>Patient Info</p>
-        <div>
-          <p>age</p>
-          <p>{dayjs().diff(dayjs(patient?.dateOfBirth), "year")}</p>
-        </div>
-        <div>
-          <p>phone</p>
-          <p>{patient?.phone}</p>
-        </div>
-      </div>
+      {!isPatientPending && <PatientCard patient={patient!} />}
 
       <div className="mt-4">
         <p>Visit Details</p>

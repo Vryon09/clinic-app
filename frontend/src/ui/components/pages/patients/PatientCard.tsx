@@ -1,0 +1,34 @@
+import type { IPatient } from "@/types/PatientType";
+import { Card } from "../../shadcn/card";
+import dayjs from "dayjs";
+import type { ReactNode } from "react";
+
+function PatientCard({
+  patient,
+  children,
+}: {
+  patient: IPatient;
+  children?: ReactNode;
+}) {
+  return (
+    <Card className="mb-4 flex w-fit min-w-96 gap-2 px-4 py-3">
+      <div>
+        <p className="text-lg font-semibold">Patient Info</p>
+        <p>
+          Name:{" "}
+          {`${patient?.lastName}, ${patient?.firstName}${patient?.middleName ? ` ${patient?.middleName.slice(0, 1)}.` : ""}`}
+        </p>
+        <p>Age: {dayjs().diff(dayjs(patient?.dateOfBirth), "year")}</p>
+        <p>Phone: {patient?.phone}</p>
+        <p>Address: {patient?.address}</p>
+        <p>
+          Sex: <span className="capitalize">{patient?.sex.toLowerCase()}</span>
+        </p>
+      </div>
+
+      {children}
+    </Card>
+  );
+}
+
+export default PatientCard;
