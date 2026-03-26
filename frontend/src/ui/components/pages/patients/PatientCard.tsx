@@ -18,9 +18,10 @@ function PatientCard({
           Name:{" "}
           {`${patient?.lastName}, ${patient?.firstName}${patient?.middleName ? ` ${patient?.middleName.slice(0, 1)}.` : ""}`}
         </p>
+        <p>Birthday: {dayjs(patient?.dateOfBirth).format("MMMM DD, YYYY")}</p>
         <p>Age: {dayjs().diff(dayjs(patient?.dateOfBirth), "year")}</p>
-        <p>Phone: {patient?.phone}</p>
         <p>Address: {patient?.address}</p>
+        <p>Phone: {patient?.phone}</p>
         <p>
           Sex: <span className="capitalize">{patient?.sex.toLowerCase()}</span>
         </p>

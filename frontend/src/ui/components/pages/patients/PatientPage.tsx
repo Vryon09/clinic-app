@@ -7,7 +7,7 @@ import { Button } from "../../shadcn/button";
 import { Card } from "../../shadcn/card";
 import { handleGetRecords, useDeleteRecord } from "@/services/apiRecords";
 import type { IRecord } from "@/types/RecordType";
-import { Pen, Trash } from "lucide-react";
+import { Pen, Plus, Trash } from "lucide-react";
 import { useState } from "react";
 import PatientForm from "./PatientForm";
 import PatientCard from "./PatientCard";
@@ -49,42 +49,15 @@ function PatientPage() {
           </Button>
         </div>
       </PatientCard>
-      {/* <Card className="mb-4 flex w-fit min-w-96 gap-2 px-4 py-3">
-        <div>
-          <p className="text-lg font-semibold">Patient Info</p>
-          <p>
-            Name:{" "}
-            {`${patient?.lastName}, ${patient?.firstName}${patient?.middleName ? ` ${patient?.middleName.slice(0, 1)}.` : ""}`}
-          </p>
-          <p>Age: {dayjs().diff(dayjs(patient?.dateOfBirth), "year")}</p>
-          <p>Phone: {patient?.phone}</p>
-          <p>Address: {patient?.address}</p>
-          <p>
-            Sex:{" "}
-            <span className="capitalize">{patient?.sex.toLowerCase()}</span>
-          </p>
-        </div>
 
-        <div className="flex items-center justify-end">
-          <Button
-            size="icon-sm"
-            className="cursor-pointer"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsEditing(true);
-            }}
-          >
-            <Pen />
-          </Button>
-        </div>
-      </Card> */}
-
-      <Button
-        className="cursor-pointer"
-        onClick={() => navigate(`/patients/${patient?.id}/consultations/new`)}
-      >
-        Add Consultation
-      </Button>
+      <div className="mb-4 flex items-center justify-end">
+        <Button
+          className="cursor-pointer"
+          onClick={() => navigate(`/patients/${patient?.id}/consultations/new`)}
+        >
+          <Plus /> Add Consultation
+        </Button>
+      </div>
 
       <div className="space-y-1">
         {records?.map((record) => (
