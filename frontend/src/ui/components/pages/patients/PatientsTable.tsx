@@ -9,9 +9,8 @@ import {
   TableRow,
 } from "../../shadcn/table";
 import { useNavigate } from "react-router";
-import { useQuery } from "@tanstack/react-query";
 import {
-  handleGetPatients,
+  handleSearchPatients,
   useDeletePatient,
   useUpdatePatient,
 } from "@/services/apiPatients";
@@ -20,13 +19,15 @@ import { Button } from "../../shadcn/button";
 import { Pen, Trash } from "lucide-react";
 import { useState } from "react";
 import PatientForm from "./PatientForm";
+import { useQuery } from "@tanstack/react-query";
 
-function PatientsTable() {
+function PatientsTable({ searchInput }: { searchInput: string }) {
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>();
+
   const { data: patients, isPending: isPatientsLoading } = useQuery<IPatient[]>(
     {
-      queryFn: handleGetPatients,
-      queryKey: ["patients"],
+      queryFn: () => handleSearchPatients({ search: searchInput }),
+      queryKey: ["searchedPatients", searchInput],
     },
   );
 
@@ -39,60 +40,61 @@ function PatientsTable() {
 
   return (
     <>
-      <Table>
-        <TableCaption>
-          {patients?.length
-            ? "A list of your patients."
-            : "Add your first patient by clicking the Add Patient Button."}
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Age</TableHead>
-            <TableHead>Sex</TableHead>
-            <TableHead></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {patients?.map((patient) => (
-            <TableRow
-              key={patient.id}
-              className="cursor-pointer hover:bg-neutral-200"
-              onClick={() => navigate(`/patients/${patient.id}`)}
-            >
-              <TableCell>{`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>
-              <TableCell>
-                {dayjs().diff(dayjs(patient.dateOfBirth), "year")}
-              </TableCell>
-              <TableCell>{patient.sex.slice(0, 1)}</TableCell>
-
-              <TableCell className="flex gap-4">
-                <Button
-                  size="icon-sm"
-                  className="cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeletePatient(patient.id);
-                  }}
-                >
-                  <Trash />
-                </Button>
-                <Button
-                  size="icon-sm"
-                  className="cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedPatient(patient);
-                  }}
-                >
-                  <Pen />
-                </Button>
-              </TableCell>
+      <div>
+        <Table>
+          <TableCaption>
+            {patients?.length
+              ? "A list of your patients."
+              : "Add your first patient by clicking the Add Patient Button."}
+          </TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Age</TableHead>
+              <TableHead>Sex</TableHead>
+              <TableHead></TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {patients?.map((patient) => (
+              <TableRow
+                key={patient.id}
+                className="cursor-pointer hover:bg-neutral-200"
+                onClick={() => navigate(`/patients/${patient.id}`)}
+              >
+                <TableCell>{`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>
+                <TableCell>
+                  {dayjs().diff(dayjs(patient.dateOfBirth), "year")}
+                </TableCell>
+                <TableCell>{patient.sex.slice(0, 1)}</TableCell>
 
+                <TableCell className="flex gap-4">
+                  <Button
+                    size="icon-sm"
+                    className="cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeletePatient(patient.id);
+                    }}
+                  >
+                    <Trash />
+                  </Button>
+                  <Button
+                    size="icon-sm"
+                    className="cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedPatient(patient);
+                    }}
+                  >
+                    <Pen />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
       {selectedPatient && (
         <PatientForm
           isOpen={!!selectedPatient}

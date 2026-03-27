@@ -31,28 +31,28 @@ function ConsultationDetails() {
 
   return (
     <div>
-      <p className="mb-4 text-4xl font-bold">Record</p>
-      <div className="grid w-full grid-cols-2 gap-4">
+      {/* <p className="mb-4 text-4xl font-bold">Record</p> */}
+      <div className="grid w-full grid-cols-2 gap-x-8 gap-y-10">
         <div className="flex flex-col gap-2">
           <p className="mb-2 text-2xl font-semibold">Visit Details</p>
           <Card className="flex flex-col gap-4 px-4 py-2">
             <p className="text-lg font-semibold">Symptoms</p>
-            <p className="ml-4 text-neutral-600">{record?.symptoms}</p>
+            <p className="text-neutral-600">{record?.symptoms}</p>
           </Card>
           <Card className="flex flex-col gap-4 px-4 py-2">
             <p className="text-lg font-semibold">Signs</p>
-            <p className="ml-4 text-neutral-600">{record?.signs}</p>
+            <p className="text-neutral-600">{record?.signs}</p>
           </Card>
           <Card className="flex flex-col gap-4 px-4 py-2">
             <p className="text-lg font-semibold">Diagnosis</p>
-            <p className="ml-4 text-neutral-600">{record?.diagnosis}</p>
+            <p className="text-neutral-600">{record?.diagnosis}</p>
           </Card>
         </div>
 
         <div className="flex flex-col gap-2">
           <p className="mb-2 text-2xl font-semibold">Vital Signs</p>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-2">
             <Card className="flex flex-col gap-4 px-4 py-2">
               <p className="text-lg font-semibold">Blood Pressure</p>
               <p className="text-right text-2xl text-neutral-600">
@@ -63,7 +63,7 @@ function ConsultationDetails() {
             <Card className="flex flex-col gap-4 px-4 py-2">
               <p className="text-lg font-semibold">Temperature</p>
               <p className="text-right text-2xl text-neutral-600">
-                {vitalSigns?.temperature}
+                {vitalSigns?.temperature}°C
               </p>
             </Card>
             <Card className="flex flex-col gap-4 px-4 py-2">
@@ -95,7 +95,12 @@ function ConsultationDetails() {
                 <div>
                   <p className="text-sm uppercase">Duration Days</p>
                   <p className="font-semibold">
-                    {medication.durationDays} days
+                    {medication.durationDays}{" "}
+                    {medication.durationDays
+                      ? medication.durationDays > 1
+                        ? "days"
+                        : "day"
+                      : ""}
                   </p>
                 </div>
               </div>

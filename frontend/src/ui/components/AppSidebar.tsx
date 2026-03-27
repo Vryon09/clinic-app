@@ -10,20 +10,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./shadcn/sidebar";
-import {
-  ChevronRight,
-  GitGraph,
-  LogOut,
-  PillBottle,
-  Stethoscope,
-} from "lucide-react";
+import { ChevronRight, GitGraph, LogOut, PillBottle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./shadcn/avatar";
 
 const modules = [
   { url: "", label: "Dashboard", icon: GitGraph },
   { url: "patients", label: "Patients", icon: PillBottle },
-  { url: "consultations", label: "Consultations", icon: PillBottle },
 ];
 
 function AppSidebar() {
@@ -38,16 +31,10 @@ function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <div className="flex items-center gap-3 p-6">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md">
-                  <Stethoscope size={24} />
-                </div>
                 <div>
-                  <h2 className="leading-tight font-bold text-slate-900">
+                  <h2 className="text-xl leading-tight font-semibold text-slate-900">
                     ClinicSync
                   </h2>
-                  <p className="text-[10px] font-semibold tracking-wider text-slate-400 uppercase">
-                    Management
-                  </p>
                 </div>
               </div>
             </SidebarMenuButton>

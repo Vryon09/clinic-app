@@ -20,9 +20,9 @@ export async function searchPatients(req: Request, res: Response) {
   try {
     const searchInput = (req.query.search as string) || "";
 
-    if (searchInput === "") {
-      return res.status(200).json([]);
-    }
+    // if (searchInput === "") {
+    //   return res.status(200).json([]);
+    // }
 
     const patients = await prisma.patient.findMany({
       where: {
