@@ -1,16 +1,15 @@
 import { handleGetPatient, useUpdatePatient } from "@/services/apiPatients";
 import type { IPatient } from "@/types/PatientType";
 import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { Button } from "../../shadcn/button";
-import { Card } from "../../shadcn/card";
-import { handleGetRecords, useDeleteRecord } from "@/services/apiRecords";
+import { handleGetRecords } from "@/services/apiRecords";
 import type { IRecord } from "@/types/RecordType";
-import { Pen, Plus, Trash } from "lucide-react";
+import { Pen } from "lucide-react";
 import { useState } from "react";
 import PatientForm from "./PatientForm";
 import PatientCard from "./PatientCard";
+import ConsultationRecords from "../consultations/ConsultationRecords";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -27,9 +26,6 @@ function PatientPage() {
   });
 
   const { mutate: handleUpdatePatient } = useUpdatePatient();
-  const { mutate: handleDeleteRecord } = useDeleteRecord();
-
-  const navigate = useNavigate();
 
   if (isPatientPending || isRecordsPending) return <p>Loading...</p>;
   return (
@@ -50,56 +46,7 @@ function PatientPage() {
         </div>
       </PatientCard>
 
-      <div className="mb-4 flex items-center justify-end">
-        <Button
-          className="cursor-pointer"
-          onClick={() => navigate(`/patients/${patient?.id}/consultations/new`)}
-        >
-          <Plus /> Add Consultation
-        </Button>
-      </div>
-
-      <div className="space-y-1">
-        {records?.map((record) => (
-          <Card
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(
-                `/patients/${record.patientId}/consultations/${record.id}/details`,
-              );
-            }}
-            key={record.id}
-            className="flex cursor-pointer flex-row items-center justify-between px-4 py-1 hover:bg-neutral-200"
-          >
-            <p className="text-xs">{record.symptoms}</p>
-            <div className="flex items-center space-x-2">
-              <p className="text-xs">
-                {dayjs(record.createdAt).format("MMMM DD, YYYY")}
-              </p>
-              <Button
-                size="icon-sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteRecord(record.id);
-                }}
-              >
-                <Trash />
-              </Button>
-              <Button
-                size="icon-sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(
-                    `/patients/${record.patientId}/consultations/${record.id}/edit`,
-                  );
-                }}
-              >
-                <Pen />
-              </Button>
-            </div>
-          </Card>
-        ))}
-      </div>
+      <ConsultationRecords patient={patient!} records={records!} />
 
       {isEditing && (
         <PatientForm

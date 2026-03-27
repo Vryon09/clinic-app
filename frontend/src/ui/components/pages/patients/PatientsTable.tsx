@@ -27,7 +27,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
   const { data: patients, isPending: isPatientsLoading } = useQuery<IPatient[]>(
     {
       queryFn: () => handleSearchPatients({ search: searchInput }),
-      queryKey: ["searchedPatients", searchInput],
+      queryKey: ["patients", searchInput],
     },
   );
 
@@ -51,6 +51,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Age</TableHead>
+              <TableHead>Phone</TableHead>
               <TableHead>Sex</TableHead>
               <TableHead></TableHead>
             </TableRow>
@@ -66,9 +67,10 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                 <TableCell>
                   {dayjs().diff(dayjs(patient.dateOfBirth), "year")}
                 </TableCell>
+                <TableCell>{patient.phone}</TableCell>
                 <TableCell>{patient.sex.slice(0, 1)}</TableCell>
 
-                <TableCell className="flex gap-4">
+                <TableCell className="flex justify-end gap-4">
                   <Button
                     size="icon-sm"
                     className="cursor-pointer"
