@@ -29,7 +29,7 @@ function PatientPage() {
 
   if (isPatientPending || isRecordsPending) return <p>Loading...</p>;
   return (
-    <div>
+    <div className="grid grid-cols-2">
       {/* Patient Card */}
       <PatientCard patient={patient!}>
         <div className="flex items-center justify-end">

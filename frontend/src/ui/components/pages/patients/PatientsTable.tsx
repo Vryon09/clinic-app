@@ -45,7 +45,9 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
           <TableCaption>
             {patients?.length
               ? "A list of your patients."
-              : "Add your first patient by clicking the Add Patient Button."}
+              : searchInput === ""
+                ? "Add your first patient by clicking the Add Patient Button."
+                : "No patients found."}
           </TableCaption>
           <TableHeader>
             <TableRow>
