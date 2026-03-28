@@ -70,10 +70,11 @@ function PatientForm({
         <form onSubmit={handleSubmit(onSubmit)}>
           <FieldSet className="w-full">
             <FieldGroup>
-              <div className="grid grid-cols-3">
+              <div className="grid grid-cols-3 gap-2">
                 <Field>
-                  <FieldLabel htmlFor="firstName">firstName</FieldLabel>
+                  <FieldLabel htmlFor="firstName">First Name</FieldLabel>
                   <Input
+                    className="border border-neutral-400"
                     id="firstName"
                     {...register("firstName")}
                     type="text"
@@ -86,8 +87,9 @@ function PatientForm({
                   )}
                 </Field>
                 <Field>
-                  <FieldLabel htmlFor="middleName">middleName</FieldLabel>
+                  <FieldLabel htmlFor="middleName">Middle Name</FieldLabel>
                   <Input
+                    className="border border-neutral-400"
                     id="middleName"
                     {...register("middleName")}
                     type="text"
@@ -100,8 +102,13 @@ function PatientForm({
                   )}
                 </Field>
                 <Field>
-                  <FieldLabel htmlFor="lastName">lastName</FieldLabel>
-                  <Input id="lastName" {...register("lastName")} type="text" />
+                  <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
+                  <Input
+                    className="border border-neutral-400"
+                    id="lastName"
+                    {...register("lastName")}
+                    type="text"
+                  />
                   {errors.lastName && (
                     <FieldError
                       className="text-xs"
@@ -111,10 +118,11 @@ function PatientForm({
                 </Field>
               </div>
 
-              <div className="grid grid-cols-2">
+              <div className="grid grid-cols-2 gap-2">
                 <Field>
-                  <FieldLabel htmlFor="dateOfBirth">dateOfBirth</FieldLabel>
+                  <FieldLabel htmlFor="dateOfBirth">Date Of Birth</FieldLabel>
                   <Input
+                    className="border border-neutral-400"
                     id="dateOfBirth"
                     {...register("dateOfBirth")}
                     type="date"
@@ -129,22 +137,32 @@ function PatientForm({
 
                 <Field>
                   <FieldLabel>Phone</FieldLabel>
-                  <Input {...register("phone")} type="text" />
+                  <Input
+                    className="border border-neutral-400"
+                    {...register("phone")}
+                    type="text"
+                  />
                   {errors.phone && (
                     <FieldError className="text-xs" errors={[errors.phone]} />
                   )}
                 </Field>
               </div>
-              <div className="grid grid-cols-2">
+
+              <div className="grid grid-cols-2 gap-2">
                 <Field>
-                  <FieldLabel htmlFor="address">address</FieldLabel>
-                  <Input id="address" {...register("address")} type="text" />
+                  <FieldLabel htmlFor="address">Address</FieldLabel>
+                  <Input
+                    className="border border-neutral-400"
+                    id="address"
+                    {...register("address")}
+                    type="text"
+                  />
                   {errors.address && (
                     <FieldError className="text-xs" errors={[errors.address]} />
                   )}
                 </Field>
                 <Field>
-                  <FieldLabel htmlFor="sex">sex</FieldLabel>
+                  <FieldLabel htmlFor="sex">Sex</FieldLabel>
                   <Controller
                     name="sex"
                     control={control} // you need to extract `control` from useForm
@@ -153,14 +171,22 @@ function PatientForm({
                       <RadioGroup
                         value={field.value}
                         onValueChange={field.onChange}
-                        className="flex space-x-4"
+                        className="flex justify-center space-x-4"
                       >
                         <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="MALE" id="male" />
+                          <RadioGroupItem
+                            value="MALE"
+                            id="male"
+                            className="cursor-pointer border border-neutral-400"
+                          />
                           <label htmlFor="male">Male</label>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="FEMALE" id="female" />
+                          <RadioGroupItem
+                            value="FEMALE"
+                            id="female"
+                            className="cursor-pointer border border-neutral-400"
+                          />
                           <label htmlFor="female">Female</label>
                         </div>
                       </RadioGroup>
@@ -171,9 +197,11 @@ function PatientForm({
             </FieldGroup>
           </FieldSet>
 
-          <Button type="submit" className="cursor-pointer">
-            Submit
-          </Button>
+          <div className="flex justify-end">
+            <Button type="submit" className="mt-4 cursor-pointer">
+              Submit
+            </Button>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

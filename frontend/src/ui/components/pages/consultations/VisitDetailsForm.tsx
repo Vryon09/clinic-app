@@ -5,23 +5,32 @@ import type { IRecordForm } from "@/types/RecordType";
 
 function VisitDetailsForm({ register }: IRecordForm) {
   return (
-    <Card className="w-full px-4 py-2">
-      <p>Visit Details</p>
+    <Card className="w-full px-4 py-3">
+      <p className="mb-2 text-xl font-semibold">Visit Details</p>
       <FieldSet>
-        <FieldGroup>
+        <FieldGroup className="gap-4">
           <Field>
             <FieldLabel>Symptoms</FieldLabel>
-            <Textarea {...register("symptoms")} />
+            <Textarea
+              className="border border-neutral-300"
+              {...register("symptoms")}
+            />
           </Field>
 
           <Field>
             <FieldLabel>Signs</FieldLabel>
-            <Textarea {...register("signs")} />
+            <Textarea
+              className="border border-neutral-300"
+              {...register("signs")}
+            />
           </Field>
 
           <Field>
             <FieldLabel>Diagnosis</FieldLabel>
-            <Textarea {...register("diagnosis")} />
+            <Textarea
+              className="border border-neutral-300"
+              {...register("diagnosis")}
+            />
           </Field>
         </FieldGroup>
       </FieldSet>

@@ -50,11 +50,14 @@ function ConsultationsForm() {
 
   return (
     <div>
-      <div>
-        <p>New Consultation</p>
+      <div className="mb-4 space-y-1">
+        <p className="text-2xl font-semibold">New Consultation</p>
         <p>
           Patient:{" "}
-          {`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}
+          <span className="font-semibold">
+            {" "}
+            {`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}
+          </span>
         </p>
       </div>
 
@@ -72,7 +75,7 @@ function ConsultationsForm() {
           />
         </div>
 
-        <div className="flex justify-end gap-4">
+        <div className="mt-4 flex justify-end gap-4">
           <Button variant="outline" className="cursor-pointer">
             Cancel
           </Button>
