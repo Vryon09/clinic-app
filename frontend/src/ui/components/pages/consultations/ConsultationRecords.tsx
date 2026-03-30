@@ -15,7 +15,7 @@ function ConsultationRecords({
   const navigate = useNavigate();
 
   return (
-    <div className="col-span-2">
+    <div>
       <div className="mb-4 flex items-center justify-end">
         <Button
           className="cursor-pointer"

@@ -10,6 +10,7 @@ import { useState } from "react";
 import PatientForm from "./PatientForm";
 import PatientCard from "./PatientCard";
 import ConsultationRecords from "../consultations/ConsultationRecords";
+import LabResultForm from "../labResult/LabResultForm";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -29,7 +30,7 @@ function PatientPage() {
 
   if (isPatientPending || isRecordsPending) return <p>Loading...</p>;
   return (
-    <div className="grid grid-cols-2">
+    <div className="grid grid-cols-2 gap-4">
       {/* Patient Card */}
       <PatientCard patient={patient!}>
         <div className="flex items-center justify-end">
@@ -46,7 +47,10 @@ function PatientPage() {
         </div>
       </PatientCard>
 
-      <ConsultationRecords patient={patient!} records={records!} />
+      <div className="col-span-2 grid w-full grid-cols-2 gap-x-4">
+        <LabResultForm />
+        <ConsultationRecords patient={patient!} records={records!} />
+      </div>
 
       {isEditing && (
         <PatientForm

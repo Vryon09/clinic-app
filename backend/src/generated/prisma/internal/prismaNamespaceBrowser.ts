@@ -54,7 +54,8 @@ export const ModelName = {
   Patient: 'Patient',
   Record: 'Record',
   VitalSigns: 'VitalSigns',
-  RecordMedication: 'RecordMedication'
+  RecordMedication: 'RecordMedication',
+  labResult: 'labResult'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -127,6 +128,16 @@ export const RecordMedicationScalarFieldEnum = {
 } as const
 
 export type RecordMedicationScalarFieldEnum = (typeof RecordMedicationScalarFieldEnum)[keyof typeof RecordMedicationScalarFieldEnum]
+
+
+export const LabResultScalarFieldEnum = {
+  id: 'id',
+  patientId: 'patientId',
+  filePath: 'filePath',
+  uploadedAt: 'uploadedAt'
+} as const
+
+export type LabResultScalarFieldEnum = (typeof LabResultScalarFieldEnum)[keyof typeof LabResultScalarFieldEnum]
 
 
 export const SortOrder = {

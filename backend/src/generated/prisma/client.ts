@@ -59,3 +59,8 @@ export type VitalSigns = Prisma.VitalSignsModel
  * 
  */
 export type RecordMedication = Prisma.RecordMedicationModel
+/**
+ * Model labResult
+ * 
+ */
+export type labResult = Prisma.labResultModel

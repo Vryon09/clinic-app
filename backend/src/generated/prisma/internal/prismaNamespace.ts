@@ -387,7 +387,8 @@ export const ModelName = {
   Patient: 'Patient',
   Record: 'Record',
   VitalSigns: 'VitalSigns',
-  RecordMedication: 'RecordMedication'
+  RecordMedication: 'RecordMedication',
+  labResult: 'labResult'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -403,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "patient" | "record" | "vitalSigns" | "recordMedication"
+    modelProps: "patient" | "record" | "vitalSigns" | "recordMedication" | "labResult"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -703,6 +704,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    labResult: {
+      payload: Prisma.$labResultPayload<ExtArgs>
+      fields: Prisma.labResultFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.labResultFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$labResultPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.labResultFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$labResultPayload>
+        }
+        findFirst: {
+          args: Prisma.labResultFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$labResultPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.labResultFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$labResultPayload>
+        }
+        findMany: {
+          args: Prisma.labResultFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$labResultPayload>[]
+        }
+        create: {
+          args: Prisma.labResultCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$labResultPayload>
+        }
+        createMany: {
+          args: Prisma.labResultCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.labResultCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$labResultPayload>[]
+        }
+        delete: {
+          args: Prisma.labResultDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$labResultPayload>
+        }
+        update: {
+          args: Prisma.labResultUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$labResultPayload>
+        }
+        deleteMany: {
+          args: Prisma.labResultDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.labResultUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.labResultUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$labResultPayload>[]
+        }
+        upsert: {
+          args: Prisma.labResultUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$labResultPayload>
+        }
+        aggregate: {
+          args: Prisma.LabResultAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLabResult>
+        }
+        groupBy: {
+          args: Prisma.labResultGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LabResultGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.labResultCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LabResultCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -796,6 +871,16 @@ export const RecordMedicationScalarFieldEnum = {
 } as const
 
 export type RecordMedicationScalarFieldEnum = (typeof RecordMedicationScalarFieldEnum)[keyof typeof RecordMedicationScalarFieldEnum]
+
+
+export const LabResultScalarFieldEnum = {
+  id: 'id',
+  patientId: 'patientId',
+  filePath: 'filePath',
+  uploadedAt: 'uploadedAt'
+} as const
+
+export type LabResultScalarFieldEnum = (typeof LabResultScalarFieldEnum)[keyof typeof LabResultScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1010,6 +1095,7 @@ export type GlobalOmitConfig = {
   record?: Prisma.RecordOmit
   vitalSigns?: Prisma.VitalSignsOmit
   recordMedication?: Prisma.RecordMedicationOmit
+  labResult?: Prisma.labResultOmit
 }
 
 /* Types for Logging */
