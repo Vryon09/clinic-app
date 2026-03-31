@@ -5,7 +5,7 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const patientId = req.body.patientId;
 
-    const dir = `../uploads/lab-results/${patientId}`;
+    const dir = `uploads/lab-results/${patientId}`;
 
     // create folder if not exists
     if (!fs.existsSync(dir)) {

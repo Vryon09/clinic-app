@@ -14,6 +14,8 @@ app.use(cors({ origin: ["http://localhost:5123"] }));
 
 app.use(express.json());
 
+app.use("/uploads", express.static("uploads"));
+
 app.use((req, res, next) => {
   console.log(`Request Method: ${req.method}, Request URL: ${req.url}`);
   next();

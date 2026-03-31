@@ -27,7 +27,7 @@ function ConsultationRecords({
 
       <div className="space-y-1">
         {records?.map((record) => (
-          <RecordCard record={record} />
+          <RecordCard key={record.id} record={record} />
         ))}
       </div>
     </div>

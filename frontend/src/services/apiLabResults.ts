@@ -1,6 +1,12 @@
 import api from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+export async function handeGetLabResults({ patientId }: { patientId: string }) {
+  const res = await api.get(`/api/labResults/${patientId}`);
+
+  return res.data || [];
+}
+
 async function handleUploadLabResult({
   patientId,
   file,

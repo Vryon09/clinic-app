@@ -1,6 +1,20 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
 
+export async function getLabResults(req: Request, res: Response) {
+  try {
+    const { patientId } = req.params as { patientId: string };
+    const labResults = await prisma.labResult.findMany({
+      where: { patientId },
+    });
+
+    res.status(200).json(labResults);
+  } catch (error) {
+    res.status(400).json({ error: "Internal Server Error" });
+    console.error(error);
+  }
+}
+
 export async function uploadLabResult(req: Request, res: Response) {
   try {
     const patientId = req.body.patientId;
