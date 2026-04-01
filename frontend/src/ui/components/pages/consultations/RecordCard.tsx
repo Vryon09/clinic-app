@@ -22,7 +22,7 @@ function RecordCard({ record }: { record: IRecord }) {
       key={record.id}
       className="flex cursor-pointer flex-row items-center justify-between px-4 py-1 hover:bg-neutral-200"
     >
-      <p className="text-xs">{record.symptoms}</p>
+      <p className="text-xs font-semibold">{record.symptoms}</p>
       <div className="flex items-center space-x-2">
         <p className="text-xs">
           {dayjs(record.createdAt).format("MMMM DD, YYYY")}

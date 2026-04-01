@@ -1,20 +1,19 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Input } from "../../shadcn/input";
 import { useParams } from "react-router";
 import {
   handeGetLabResults,
+  useDeleteLabResult,
   useUploadLabResult,
 } from "@/services/apiLabResults";
 import { Button } from "../../shadcn/button";
-import { Field, FieldDescription, FieldLabel } from "../../shadcn/field";
-import { Card } from "../../shadcn/card";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import type { ILabResult } from "@/types/LabResultType";
+import { Upload } from "lucide-react";
 // import { shell } from "electron";
 
 function LabResultForm() {
-  const [file, setFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { patientId } = useParams() as { patientId: string };
 
@@ -26,9 +25,39 @@ function LabResultForm() {
   });
 
   const { mutate: handleUploadLabResult } = useUploadLabResult();
+  const { mutate: handleDeleteLabResult } = useDeleteLabResult();
+
+  const handleClick = () => inputRef.current?.click();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    handleUploadLabResult({ patientId, file });
+
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  };
+
+  console.log(labResults);
 
   return (
-    <Card className="border border-neutral-300 px-4 py-3">
+    <div>
+      <div className="mb-4 flex justify-end">
+        <div>
+          <Input
+            ref={inputRef}
+            type="file"
+            className="hidden"
+            onChange={handleChange}
+          />
+          <Button onClick={handleClick} className="cursor-pointer rounded-2xl">
+            <Upload /> Upload File
+          </Button>
+        </div>
+      </div>
+
       {!isLabResultsPending && (
         <div>
           {labResults?.map((result) => {
@@ -43,52 +72,41 @@ function LabResultForm() {
               .split(".")[1]
               .toUpperCase();
             return (
-              <div key={result.id} className="flex justify-between">
-                <p>{date}</p>
-                <p>{fileName}</p>
-                <Button
-                  onClick={() => {
-                    // shell.openPath(result.filePath);
-                    window.open(`http://localhost:3000/${result.filePath}`);
-                  }}
-                >
-                  Open File
-                </Button>
+              <div
+                key={result.id}
+                className="grid grid-cols-3 items-center p-2 hover:bg-neutral-200"
+              >
+                <p className="text-sm">{date}</p>
+                <p className="text-center text-sm">{fileName}</p>
+
+                <div className="flex justify-end">
+                  <Button
+                    onClick={() => {
+                      // shell.openPath(result.filePath);
+                      window.open(`http://localhost:3000/${result.filePath}`);
+                    }}
+                    size="xs"
+                    className="w-fit cursor-pointer"
+                  >
+                    Open
+                  </Button>
+
+                  <Button
+                    onClick={() => {
+                      handleDeleteLabResult(result.id);
+                    }}
+                    size="xs"
+                    className="w-fit cursor-pointer"
+                  >
+                    Delete
+                  </Button>
+                </div>
               </div>
             );
           })}
         </div>
       )}
-      <Field>
-        <FieldLabel className="text-lg">Upload Lab Result</FieldLabel>
-        <Input
-          ref={inputRef}
-          type="file"
-          onChange={(e) => {
-            if (e.target.files && e.target.files.length > 0)
-              setFile(e.target.files[0]);
-          }}
-          className="w-fit"
-        />
-        <FieldDescription>Select Lab Result to upload.</FieldDescription>
-        <Button
-          onClick={() => {
-            if (!file) return;
-            handleUploadLabResult({ patientId, file });
-
-            setFile(null);
-
-            if (inputRef.current) {
-              inputRef.current.value = "";
-            }
-          }}
-          disabled={!file}
-          className="mt-4 cursor-pointer"
-        >
-          {!file ? "Choose File" : "Upload"}
-        </Button>
-      </Field>
-    </Card>
+    </div>
   );
 }
 

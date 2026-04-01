@@ -5,12 +5,14 @@ import { useParams } from "react-router";
 import { Button } from "../../shadcn/button";
 import { handleGetRecords } from "@/services/apiRecords";
 import type { IRecord } from "@/types/RecordType";
-import { Pen } from "lucide-react";
+import { PenBox } from "lucide-react";
 import { useState } from "react";
 import PatientForm from "./PatientForm";
 import PatientCard from "./PatientCard";
 import ConsultationRecords from "../consultations/ConsultationRecords";
 import LabResultForm from "../labResult/LabResultForm";
+import { Card } from "../../shadcn/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn/tabs";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -30,27 +32,42 @@ function PatientPage() {
 
   if (isPatientPending || isRecordsPending) return <p>Loading...</p>;
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="flex gap-4">
       {/* Patient Card */}
       <PatientCard patient={patient!}>
         <div className="flex items-center justify-end">
           <Button
-            size="icon-sm"
-            className="cursor-pointer"
+            className="mt-4 cursor-pointer"
             onClick={(e) => {
               e.stopPropagation();
               setIsEditing(true);
             }}
           >
-            <Pen />
+            <PenBox />
+            Edit
           </Button>
         </div>
       </PatientCard>
 
-      <div className="col-span-2 grid w-full grid-cols-2 gap-x-4">
-        <LabResultForm />
-        <ConsultationRecords patient={patient!} records={records!} />
-      </div>
+      <Card className="w-full border-neutral-300 px-2 pt-1 pb-4">
+        <Tabs defaultValue="consultations">
+          <TabsList variant="line">
+            <TabsTrigger value="consultations" className="cursor-pointer">
+              Consultations
+            </TabsTrigger>
+            <TabsTrigger value="lab-results" className="cursor-pointer">
+              Lab Results
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="consultations">
+            <ConsultationRecords patient={patient!} records={records!} />
+          </TabsContent>
+
+          <TabsContent value="lab-results">
+            <LabResultForm />
+          </TabsContent>
+        </Tabs>
+      </Card>
 
       {isEditing && (
         <PatientForm

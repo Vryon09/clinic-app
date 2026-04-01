@@ -35,3 +35,18 @@ export function useUploadLabResult() {
       queryClient.invalidateQueries({ queryKey: ["labResults"] }),
   });
 }
+
+async function handleDeleteLabResult(id: string) {
+  await api.delete(`/api/labResults/${id}`);
+}
+
+export function useDeleteLabResult() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleDeleteLabResult,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["labResults"] });
+    },
+  });
+}
