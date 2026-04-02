@@ -2,10 +2,12 @@ import type { CreateRecordInput } from "@/schemas/recordSchema";
 import type { IDate } from "./DateType";
 import type {
   FieldArrayWithId,
+  FieldErrors,
   UseFieldArrayAppend,
   UseFieldArrayRemove,
   UseFormGetValues,
   UseFormRegister,
+  UseFormSetError,
   UseFormSetValue,
 } from "react-hook-form";
 
@@ -137,6 +139,64 @@ export interface IRecordMedicationForm extends IRecordForm {
       | undefined;
   }>;
   setValue: UseFormSetValue<{
+    medicationInput: {
+      name?: string | undefined;
+      dosage?: string | undefined;
+      frequency?: string | undefined;
+      durationDays?: number | undefined;
+      instructions?: string | undefined;
+    };
+    symptoms?: string | undefined;
+    signs?: string | undefined;
+    diagnosis?: string | undefined;
+    vitalSigns?:
+      | {
+          bloodPressureSystolic?: number | undefined;
+          bloodPressureDiastolic?: number | undefined;
+          temperature?: number | undefined;
+          weightKg?: number | undefined;
+        }
+      | undefined;
+    recordMedications?:
+      | {
+          name: string;
+          dosage: string;
+          frequency: string;
+          durationDays?: number | undefined;
+          instructions?: string | undefined;
+        }[]
+      | undefined;
+  }>;
+  errors: FieldErrors<{
+    medicationInput: {
+      name?: string | undefined;
+      dosage?: string | undefined;
+      frequency?: string | undefined;
+      durationDays?: number | undefined;
+      instructions?: string | undefined;
+    };
+    symptoms?: string | undefined;
+    signs?: string | undefined;
+    diagnosis?: string | undefined;
+    vitalSigns?:
+      | {
+          bloodPressureSystolic?: number | undefined;
+          bloodPressureDiastolic?: number | undefined;
+          temperature?: number | undefined;
+          weightKg?: number | undefined;
+        }
+      | undefined;
+    recordMedications?:
+      | {
+          name: string;
+          dosage: string;
+          frequency: string;
+          durationDays?: number | undefined;
+          instructions?: string | undefined;
+        }[]
+      | undefined;
+  }>;
+  setError: UseFormSetError<{
     medicationInput: {
       name?: string | undefined;
       dosage?: string | undefined;

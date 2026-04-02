@@ -47,7 +47,8 @@ export function useVisitDetailsForm({
     control,
     getValues,
     setValue,
-    // formState: { errors },
+    formState: { errors },
+    setError,
   } = useForm({
     resolver: zodResolver(createRecordSchema),
     defaultValues: {
@@ -145,5 +146,7 @@ export function useVisitDetailsForm({
     deleteMedication,
     getValues,
     setValue,
+    errors,
+    setError,
   };
 }

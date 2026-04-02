@@ -37,6 +37,8 @@ function ConsultationsForm() {
     deleteMedication,
     getValues,
     setValue,
+    errors,
+    setError,
   } = useVisitDetailsForm({
     consultationId,
     patientId,
@@ -72,6 +74,8 @@ function ConsultationsForm() {
             register={register}
             getValues={getValues}
             setValue={setValue}
+            errors={errors}
+            setError={setError}
           />
         </div>
 

@@ -1,7 +1,7 @@
 // import type { IRecordForm } from "@/types/RecordType";
 import type { IRecordMedicationForm } from "@/types/RecordType";
 import { Card } from "../../shadcn/card";
-import { Field, FieldLabel } from "../../shadcn/field";
+import { Field, FieldError, FieldLabel } from "../../shadcn/field";
 import { Input } from "../../shadcn/input";
 import { Textarea } from "../../shadcn/textarea";
 import { Button } from "../../shadcn/button";
@@ -22,8 +22,12 @@ function RecordMedicationForm({
   register,
   getValues,
   setValue,
+  errors,
+  setError,
 }: IRecordMedicationForm) {
   const [isAdding, setIsAdding] = useState<boolean>(false);
+
+  console.log(errors);
   return (
     <Card className="col-span-2 px-4 py-3">
       <div className="flex flex-col">
@@ -126,14 +130,32 @@ function RecordMedicationForm({
                   <Field>
                     <FieldLabel>Medication Name</FieldLabel>
                     <Input {...register(`medicationInput.name`)} />
+                    {errors.medicationInput?.name && (
+                      <FieldError
+                        className="text-xs"
+                        errors={[errors.medicationInput.name]}
+                      />
+                    )}
                   </Field>
                   <Field>
                     <FieldLabel>Dosage</FieldLabel>
                     <Input {...register(`medicationInput.dosage`)} />
+                    {errors.medicationInput?.dosage && (
+                      <FieldError
+                        className="text-xs"
+                        errors={[errors.medicationInput.dosage]}
+                      />
+                    )}
                   </Field>
                   <Field>
                     <FieldLabel>Frequency</FieldLabel>
                     <Input {...register(`medicationInput.frequency`)} />
+                    {errors.medicationInput?.frequency && (
+                      <FieldError
+                        className="text-xs"
+                        errors={[errors.medicationInput.frequency]}
+                      />
+                    )}
                   </Field>
                   <Field>
                     <FieldLabel>Duration days</FieldLabel>
@@ -142,10 +164,22 @@ function RecordMedicationForm({
                         valueAsNumber: true,
                       })}
                     />
+                    {errors.medicationInput?.durationDays && (
+                      <FieldError
+                        className="text-xs"
+                        errors={[errors.medicationInput.durationDays]}
+                      />
+                    )}
                   </Field>
                   <Field className="col-span-2">
                     <FieldLabel>Instruction</FieldLabel>
                     <Textarea {...register(`medicationInput.instructions`)} />
+                    {errors.medicationInput?.instructions && (
+                      <FieldError
+                        className="text-xs"
+                        errors={[errors.medicationInput.instructions]}
+                      />
+                    )}
                   </Field>
                 </div>
               </div>
@@ -161,6 +195,13 @@ function RecordMedicationForm({
                       createRecordMedicationSchema.safeParse(values);
 
                     if (!result.success) {
+                      result.error.issues.map((issue) => {
+                        const field = issue.path[0] as keyof typeof values;
+
+                        setError(`medicationInput.${field}`, {
+                          message: issue.message,
+                        });
+                      });
                       return;
                     }
 

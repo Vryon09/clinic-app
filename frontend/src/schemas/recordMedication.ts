@@ -1,9 +1,9 @@
 import z from "zod";
 
 export const createRecordMedicationSchema = z.object({
-  name: z.string().min(1),
-  dosage: z.string().min(1),
-  frequency: z.string().min(1),
+  name: z.string().min(1, "Name is required."),
+  dosage: z.string().min(1, "Dosage is required."),
+  frequency: z.string().min(1, "Frequency is required."),
   durationDays: z.number().int().optional(),
   instructions: z.string().optional(),
 });
