@@ -10,13 +10,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./shadcn/sidebar";
-import { ChevronRight, GitGraph, LogOut, PillBottle } from "lucide-react";
+import { ChevronRight, GitGraph, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./shadcn/avatar";
 
 const modules = [
   { url: "", label: "Dashboard", icon: GitGraph },
-  { url: "patients", label: "Patients", icon: PillBottle },
+  { url: "patients", label: "Patients", icon: User },
 ];
 
 function AppSidebar() {

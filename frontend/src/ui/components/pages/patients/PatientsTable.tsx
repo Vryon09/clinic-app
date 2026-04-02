@@ -16,10 +16,17 @@ import {
 } from "@/services/apiPatients";
 import dayjs from "dayjs";
 import { Button } from "../../shadcn/button";
-import { Pen, Trash } from "lucide-react";
+import { MoreHorizontalIcon, Pen, Trash } from "lucide-react";
 import { useState } from "react";
 import PatientForm from "./PatientForm";
 import { useQuery } from "@tanstack/react-query";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../../shadcn/dropdown-menu";
 
 function PatientsTable({ searchInput }: { searchInput: string }) {
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>();
@@ -55,7 +62,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
               <TableHead>Age</TableHead>
               <TableHead>Phone</TableHead>
               <TableHead>Sex</TableHead>
-              <TableHead></TableHead>
+              <TableHead className="text-right"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -72,27 +79,44 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                 <TableCell>{patient.phone}</TableCell>
                 <TableCell>{patient.sex.slice(0, 1)}</TableCell>
 
-                <TableCell className="flex justify-end gap-4">
-                  <Button
-                    size="icon-sm"
-                    className="cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeletePatient(patient.id);
-                    }}
-                  >
-                    <Trash />
-                  </Button>
-                  <Button
-                    size="icon-sm"
-                    className="cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedPatient(patient);
-                    }}
-                  >
-                    <Pen />
-                  </Button>
+                <TableCell className="space-x-4 text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        onClick={(e) => e.stopPropagation()}
+                        variant="ghost"
+                        size="icon"
+                        className="size-8 cursor-pointer"
+                      >
+                        <MoreHorizontalIcon />
+                        <span className="sr-only">Open menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedPatient(patient);
+                        }}
+                      >
+                        <Pen /> Edit
+                      </DropdownMenuItem>
+
+                      <DropdownMenuSeparator />
+
+                      <DropdownMenuItem
+                        className="cursor-pointer"
+                        variant="destructive"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeletePatient(patient.id);
+                        }}
+                      >
+                        <Trash /> Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </TableCell>
               </TableRow>
             ))}

@@ -2,8 +2,8 @@ import { useNavigate } from "react-router";
 import { Button } from "../../shadcn/button";
 import { Plus } from "lucide-react";
 import type { IRecord } from "@/types/RecordType";
-import RecordCard from "./RecordCard";
 import type { IPatient } from "@/types/PatientType";
+import ConsultationRecordsTable from "./ConsultationRecordsTable";
 
 function ConsultationRecords({
   records,
@@ -26,9 +26,7 @@ function ConsultationRecords({
       </div>
 
       <div className="space-y-1">
-        {records?.map((record) => (
-          <RecordCard key={record.id} record={record} />
-        ))}
+        <ConsultationRecordsTable records={records} />
       </div>
     </div>
   );

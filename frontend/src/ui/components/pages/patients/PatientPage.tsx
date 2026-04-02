@@ -10,9 +10,9 @@ import { useState } from "react";
 import PatientForm from "./PatientForm";
 import PatientCard from "./PatientCard";
 import ConsultationRecords from "../consultations/ConsultationRecords";
-import LabResultForm from "../labResult/LabResultForm";
 import { Card } from "../../shadcn/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn/tabs";
+import LabResultSection from "../labResult/LabResultSection";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -64,7 +64,7 @@ function PatientPage() {
           </TabsContent>
 
           <TabsContent value="lab-results">
-            <LabResultForm />
+            <LabResultSection />
           </TabsContent>
         </Tabs>
       </Card>
