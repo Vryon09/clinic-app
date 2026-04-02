@@ -63,11 +63,11 @@ export function useVisitDetailsForm({
       },
 
       medicationInput: {
-        name: "",
-        dosage: "",
-        frequency: "",
-        durationDays: 0,
-        instructions: "",
+        name: undefined,
+        dosage: undefined,
+        frequency: undefined,
+        durationDays: undefined,
+        instructions: undefined,
       },
 
       recordMedications: [],

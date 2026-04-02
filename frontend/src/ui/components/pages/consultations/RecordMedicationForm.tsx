@@ -6,7 +6,10 @@ import { Input } from "../../shadcn/input";
 import { Textarea } from "../../shadcn/textarea";
 import { Button } from "../../shadcn/button";
 import { useState } from "react";
-import { createRecordMedicationSchema } from "@/schemas/recordMedication";
+import {
+  createRecordMedicationSchema,
+  type CreateRecordMedicationInput,
+} from "@/schemas/recordMedication";
 import { Plus, Trash2 } from "lucide-react";
 import {
   Dialog,
@@ -196,7 +199,8 @@ function RecordMedicationForm({
 
                     if (!result.success) {
                       result.error.issues.map((issue) => {
-                        const field = issue.path[0] as keyof typeof values;
+                        const field = issue
+                          .path[0] as keyof CreateRecordMedicationInput;
 
                         setError(`medicationInput.${field}`, {
                           message: issue.message,

@@ -24,7 +24,7 @@ export const createRecordSchema = z.object({
     .max(500, "Diagnosis must not exceed 500 characters.")
     .optional(),
 
-  vitalSigns: createVitalSignsSchema.optional(),
+  vitalSigns: createVitalSignsSchema,
 
   medicationInput: medicationInputSchema,
 

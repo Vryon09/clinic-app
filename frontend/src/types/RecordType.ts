@@ -78,6 +78,12 @@ export interface IRecordMedicationForm extends IRecordForm {
   >[];
   addMedication: UseFieldArrayAppend<
     {
+      vitalSigns: {
+        bloodPressureSystolic?: number | undefined;
+        bloodPressureDiastolic?: number | undefined;
+        temperature?: number | undefined;
+        weightKg?: number | undefined;
+      };
       medicationInput: {
         name?: string | undefined;
         dosage?: string | undefined;
@@ -88,14 +94,6 @@ export interface IRecordMedicationForm extends IRecordForm {
       symptoms?: string | undefined;
       signs?: string | undefined;
       diagnosis?: string | undefined;
-      vitalSigns?:
-        | {
-            bloodPressureSystolic?: number | undefined;
-            bloodPressureDiastolic?: number | undefined;
-            temperature?: number | undefined;
-            weightKg?: number | undefined;
-          }
-        | undefined;
       recordMedications?:
         | {
             name: string;
@@ -110,6 +108,12 @@ export interface IRecordMedicationForm extends IRecordForm {
   >;
   deleteMedication: UseFieldArrayRemove;
   getValues: UseFormGetValues<{
+    vitalSigns: {
+      bloodPressureSystolic?: number | undefined;
+      bloodPressureDiastolic?: number | undefined;
+      temperature?: number | undefined;
+      weightKg?: number | undefined;
+    };
     medicationInput: {
       name?: string | undefined;
       dosage?: string | undefined;
@@ -120,14 +124,6 @@ export interface IRecordMedicationForm extends IRecordForm {
     symptoms?: string | undefined;
     signs?: string | undefined;
     diagnosis?: string | undefined;
-    vitalSigns?:
-      | {
-          bloodPressureSystolic?: number | undefined;
-          bloodPressureDiastolic?: number | undefined;
-          temperature?: number | undefined;
-          weightKg?: number | undefined;
-        }
-      | undefined;
     recordMedications?:
       | {
           name: string;
@@ -139,6 +135,12 @@ export interface IRecordMedicationForm extends IRecordForm {
       | undefined;
   }>;
   setValue: UseFormSetValue<{
+    vitalSigns: {
+      bloodPressureSystolic?: number | undefined;
+      bloodPressureDiastolic?: number | undefined;
+      temperature?: number | undefined;
+      weightKg?: number | undefined;
+    };
     medicationInput: {
       name?: string | undefined;
       dosage?: string | undefined;
@@ -149,14 +151,6 @@ export interface IRecordMedicationForm extends IRecordForm {
     symptoms?: string | undefined;
     signs?: string | undefined;
     diagnosis?: string | undefined;
-    vitalSigns?:
-      | {
-          bloodPressureSystolic?: number | undefined;
-          bloodPressureDiastolic?: number | undefined;
-          temperature?: number | undefined;
-          weightKg?: number | undefined;
-        }
-      | undefined;
     recordMedications?:
       | {
           name: string;
