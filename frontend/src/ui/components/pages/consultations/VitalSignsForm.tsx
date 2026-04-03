@@ -1,4 +1,4 @@
-import type { FieldErrors } from "react-hook-form";
+import type { IVitalSignsForm } from "@/types/RecordType";
 import { Card } from "../../shadcn/card";
 import {
   Field,
@@ -8,39 +8,8 @@ import {
   FieldSet,
 } from "../../shadcn/field";
 import { Input } from "../../shadcn/input";
-import type { IRecordForm } from "@/types/RecordType";
 
-interface VitalSignsFormProps extends IRecordForm {
-  errors: FieldErrors<{
-    vitalSigns: {
-      bloodPressureSystolic?: number | undefined;
-      bloodPressureDiastolic?: number | undefined;
-      temperature?: number | undefined;
-      weightKg?: number | undefined;
-    };
-    medicationInput: {
-      name?: string | undefined;
-      dosage?: string | undefined;
-      frequency?: string | undefined;
-      durationDays?: number | undefined;
-      instructions?: string | undefined;
-    };
-    symptoms?: string | undefined;
-    signs?: string | undefined;
-    diagnosis?: string | undefined;
-    recordMedications?:
-      | {
-          name: string;
-          dosage: string;
-          frequency: string;
-          durationDays?: number | undefined;
-          instructions?: string | undefined;
-        }[]
-      | undefined;
-  }>;
-}
-
-function VitalSignsForm({ register, errors }: VitalSignsFormProps) {
+function VitalSignsForm({ register, errors }: IVitalSignsForm) {
   return (
     <div className="h-full w-full">
       <Card className="h-fit w-full px-4 py-3">
@@ -103,7 +72,6 @@ function VitalSignsForm({ register, errors }: VitalSignsFormProps) {
                 <FieldLabel>Weight (kg)</FieldLabel>
                 <Input
                   className="border border-neutral-300"
-                  // min={0.01}
                   step="any"
                   type="number"
                   {...register("vitalSigns.weightKg", { valueAsNumber: true })}

@@ -5,7 +5,7 @@ import { useParams } from "react-router";
 import { Card } from "../../shadcn/card";
 import type { IVitalSigns } from "@/types/VitalSignsType";
 import { handleGetVitalSigns } from "@/services/apiVitalSigns";
-import type { IRecordMedications } from "@/types/RecordMedications";
+import type { IRecordMedications } from "@/types/RecordMedicationsType";
 import { handleGetRecordMedications } from "@/services/apiRecordMedications";
 
 function ConsultationDetails() {

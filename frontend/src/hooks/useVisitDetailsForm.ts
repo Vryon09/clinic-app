@@ -9,7 +9,7 @@ import {
   type IHandleUpdateRecord,
 } from "@/services/apiRecords";
 import { handleGetVitalSigns } from "@/services/apiVitalSigns";
-import type { IRecordMedications } from "@/types/RecordMedications";
+import type { IRecordMedications } from "@/types/RecordMedicationsType";
 import type { IRecord } from "@/types/RecordType";
 import type { IVitalSigns } from "@/types/VitalSignsType";
 import { zodResolver } from "@hookform/resolvers/zod";

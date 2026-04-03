@@ -6,7 +6,7 @@ import { Button } from "../../shadcn/button";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useAddRecord, useUpdateRecord } from "@/services/apiRecords";
 import { useVisitDetailsForm } from "@/hooks/useVisitDetailsForm";
-import RecordMedicationForm from "./RecordMedicationForm";
+import RecordMedicationForm from "./recordMedication/RecordMedicationForm";
 
 function ConsultationsForm() {
   const { patientId, consultationId } = useParams() as {
