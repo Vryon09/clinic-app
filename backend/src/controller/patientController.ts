@@ -37,6 +37,11 @@ export async function searchPatients(req: Request, res: Response) {
           { phone: { contains: searchInput, mode: "insensitive" } },
         ],
       },
+      orderBy: [
+        { lastName: "asc" },
+        { firstName: "asc" },
+        { middleName: "asc" },
+      ],
     });
 
     res.status(200).json(patients);

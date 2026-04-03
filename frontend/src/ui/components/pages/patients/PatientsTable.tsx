@@ -94,7 +94,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem
-                        className="cursor-pointer"
+                        className="cursor-pointer hover:bg-neutral-200!"
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedPatient(patient);

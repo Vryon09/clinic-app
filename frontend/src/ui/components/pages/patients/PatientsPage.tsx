@@ -3,9 +3,11 @@ import BackButton from "../../BackButton";
 
 function PatientsPage() {
   return (
-    <div>
+    <div className="flex h-full flex-col">
       <BackButton />
-      <Outlet />
+      <div className="flex-1">
+        <Outlet />
+      </div>
     </div>
   );
 }

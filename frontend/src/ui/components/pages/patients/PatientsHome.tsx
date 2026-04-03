@@ -11,7 +11,7 @@ function PatientsHome() {
     <div>
       <div className="flex justify-between">
         <div className="relative h-10 w-80">
-          <span className="absolute top-1/2 left-2 -translate-y-1/2">
+          <span className="absolute top-1/2 left-3 -translate-y-1/2">
             <Search size={20} className="text-neutral-400" />
           </span>
           <Input

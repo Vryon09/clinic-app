@@ -10,12 +10,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./shadcn/sidebar";
-import { ChevronRight, GitGraph, LogOut, User } from "lucide-react";
+import { ChevronRight, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./shadcn/avatar";
 
 const modules = [
-  { url: "", label: "Dashboard", icon: GitGraph },
+  // { url: "", label: "Dashboard", icon: GitGraph },
   { url: "patients", label: "Patients", icon: User },
 ];
 
@@ -51,34 +51,28 @@ function AppSidebar() {
                     asChild
                     className={cn(
                       `flex w-full items-center gap-3 rounded-lg px-3 py-6 text-sm font-medium transition-all`,
-                      (module.label === "Dashboard" &&
-                        location.pathname === "/") ||
-                        (module.url === currTab && module.label !== "Dashboard")
-                        ? "bg-blue-50 text-blue-600"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
+                      module.url === currTab
+                        ? "bg-neutral-50 text-neutral-600 hover:bg-neutral-200"
+                        : "text-neutral-600 hover:bg-slate-50 hover:text-neutral-900",
                     )}
                   >
                     <Link to={`/${module.url}`}>
                       <module.icon
                         size={18}
                         className={
-                          (module.label === "Dashboard" &&
-                            location.pathname === "/") ||
-                          (module.url === currTab &&
-                            module.label !== "Dashboard")
-                            ? "text-blue-600"
-                            : "text-slate-400"
+                          module.url === currTab
+                            ? "text-neutral-600"
+                            : "text-neutral-400"
                         }
                       />
+
                       {module.label}
-                      {(module.label === "Dashboard" &&
-                        location.pathname === "/") ||
-                        (module.url === currTab &&
-                          module.label !== "Dashboard" && (
-                            <div className="ml-auto">
-                              <ChevronRight size={14} />
-                            </div>
-                          ))}
+
+                      {module.url === currTab && (
+                        <div className="ml-auto">
+                          <ChevronRight size={14} />
+                        </div>
+                      )}
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

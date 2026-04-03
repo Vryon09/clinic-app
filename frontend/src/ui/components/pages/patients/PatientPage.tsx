@@ -32,24 +32,22 @@ function PatientPage() {
 
   if (isPatientPending || isRecordsPending) return <p>Loading...</p>;
   return (
-    <div className="flex gap-4">
+    <div className="flex h-full gap-4">
       {/* Patient Card */}
       <PatientCard patient={patient!}>
-        <div className="flex items-center justify-end">
-          <Button
-            className="mt-4 cursor-pointer"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsEditing(true);
-            }}
-          >
-            <PenBox />
-            Edit
-          </Button>
-        </div>
+        <Button
+          size="icon-lg"
+          className="mt-4 cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsEditing(true);
+          }}
+        >
+          <PenBox className="size-5" />
+        </Button>
       </PatientCard>
 
-      <Card className="w-full border-neutral-300 px-2 pt-1 pb-4">
+      <Card className="h-full w-full border-neutral-300 px-2 pt-1 pb-4">
         <Tabs defaultValue="consultations">
           <TabsList variant="line">
             <TabsTrigger value="consultations" className="cursor-pointer">
