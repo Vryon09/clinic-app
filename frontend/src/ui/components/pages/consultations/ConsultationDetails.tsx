@@ -7,9 +7,10 @@ import type { IVitalSigns } from "@/types/VitalSignsType";
 import { handleGetVitalSigns } from "@/services/apiVitalSigns";
 import type { IRecordMedications } from "@/types/RecordMedicationsType";
 import { handleGetRecordMedications } from "@/services/apiRecordMedications";
+import BackButton from "../../BackButton";
 
 function ConsultationDetails() {
-  const { consultationId } = useParams() as {
+  const { patientId, consultationId } = useParams() as {
     patientId: string;
     consultationId: string;
   };
@@ -31,7 +32,7 @@ function ConsultationDetails() {
 
   return (
     <div>
-      {/* <p className="mb-4 text-4xl font-bold">Record</p> */}
+      <BackButton location={`/patients/${patientId}`} />
       <div className="grid w-full grid-cols-2 gap-x-8 gap-y-10">
         <div className="flex flex-col gap-2">
           <p className="mb-2 text-2xl font-semibold">Visit Details</p>

@@ -80,7 +80,14 @@ function ConsultationsForm() {
         </div>
 
         <div className="mt-4 flex justify-end gap-4">
-          <Button variant="outline" className="cursor-pointer">
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(`/patients/${patientId}`);
+            }}
+            variant="outline"
+            className="cursor-pointer"
+          >
             Cancel
           </Button>
           <Button disabled={isRecordLoading} className="cursor-pointer">
