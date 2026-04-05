@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
 
+// await prisma.patient.deleteMany({});
+// await prisma.record.deleteMany({});
+// await prisma.labResult.deleteMany({});
+
 export async function getPatients(req: Request, res: Response) {
   try {
-    // await prisma.patient.deleteMany({});
-    // await prisma.record.deleteMany({});
-    // await prisma.labResult.deleteMany({});
     const patients = await prisma.patient.findMany({
       include: { records: true },
     });
@@ -19,14 +20,7 @@ export async function getPatients(req: Request, res: Response) {
 
 export async function searchPatients(req: Request, res: Response) {
   try {
-    // await prisma.patient.deleteMany({});
-    // await prisma.record.deleteMany({});
-    // await prisma.labResult.deleteMany({});
     const searchInput = (req.query.search as string) || "";
-
-    // if (searchInput === "") {
-    //   return res.status(200).json([]);
-    // }
 
     const patients = await prisma.patient.findMany({
       where: {

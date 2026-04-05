@@ -27,6 +27,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../shadcn/dropdown-menu";
+import PaginationBar from "../../PaginationBar";
 
 function PatientsTable({ searchInput }: { searchInput: string }) {
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>();
@@ -47,15 +48,15 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
 
   return (
     <>
-      <div>
+      <div className="mb-4 flex-1 overflow-y-auto rounded-xl border bg-neutral-50 px-2">
         <Table>
-          <TableCaption>
-            {patients?.length
-              ? "A list of your patients."
-              : searchInput === ""
+          {!patients?.length && (
+            <TableCaption>
+              {searchInput === ""
                 ? "Add your first patient by clicking the Add Patient Button."
                 : "No patients found."}
-          </TableCaption>
+            </TableCaption>
+          )}
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
@@ -123,6 +124,9 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
           </TableBody>
         </Table>
       </div>
+
+      <PaginationBar />
+
       {selectedPatient && (
         <PatientForm
           isOpen={!!selectedPatient}

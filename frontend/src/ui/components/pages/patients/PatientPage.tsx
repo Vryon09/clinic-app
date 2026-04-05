@@ -33,7 +33,7 @@ function PatientPage() {
 
   if (isPatientPending || isRecordsPending) return <p>Loading...</p>;
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col pb-8">
       <BackButton location="/patients" />
       <div className="flex flex-1 gap-4">
         {/* Patient Card */}

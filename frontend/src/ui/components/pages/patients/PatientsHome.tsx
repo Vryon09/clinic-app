@@ -8,7 +8,7 @@ function PatientsHome() {
   const [searchInput, setSearchInput] = useState("");
 
   return (
-    <div>
+    <>
       <div className="flex justify-between">
         <div className="relative h-10 w-80">
           <span className="absolute top-1/2 left-3 -translate-y-1/2">
@@ -24,8 +24,9 @@ function PatientsHome() {
         </div>
         <AddPatient />
       </div>
+
       <PatientsTable searchInput={searchInput} />
-    </div>
+    </>
   );
 }
 

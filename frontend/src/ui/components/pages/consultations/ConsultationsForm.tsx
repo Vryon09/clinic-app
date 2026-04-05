@@ -51,7 +51,7 @@ function ConsultationsForm() {
   if (isPatientLoading) return <p>Loading...</p>;
 
   return (
-    <div>
+    <div className="pb-8">
       <div className="mb-4 space-y-1">
         <p className="text-2xl font-semibold">New Consultation</p>
         <p>

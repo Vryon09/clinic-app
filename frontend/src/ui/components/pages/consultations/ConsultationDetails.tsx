@@ -31,7 +31,7 @@ function ConsultationDetails() {
   });
 
   return (
-    <div>
+    <div className="pb-8">
       <BackButton location={`/patients/${patientId}`} />
       <div className="grid w-full grid-cols-2 gap-x-8 gap-y-10">
         <div className="flex flex-col gap-2">
