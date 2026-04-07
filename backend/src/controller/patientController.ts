@@ -21,24 +21,38 @@ export async function getPatients(req: Request, res: Response) {
 export async function searchPatients(req: Request, res: Response) {
   try {
     const searchInput = (req.query.search as string) || "";
+    const limit = Math.max(1, parseInt(req.query.limit as string)) || 10;
+    const page = Math.max(1, parseInt(req.query.page as string)) || 1;
+    const skip = (page - 1) * limit;
 
-    const patients = await prisma.patient.findMany({
-      where: {
-        OR: [
-          { firstName: { contains: searchInput, mode: "insensitive" } },
-          { middleName: { contains: searchInput, mode: "insensitive" } },
-          { lastName: { contains: searchInput, mode: "insensitive" } },
-          { phone: { contains: searchInput, mode: "insensitive" } },
-        ],
-      },
-      orderBy: [
-        { lastName: "asc" },
-        { firstName: "asc" },
-        { middleName: "asc" },
+    const where = {
+      OR: [
+        { firstName: { contains: searchInput, mode: "insensitive" as const } },
+        { middleName: { contains: searchInput, mode: "insensitive" as const } },
+        { lastName: { contains: searchInput, mode: "insensitive" as const } },
+        { phone: { contains: searchInput, mode: "insensitive" as const } },
       ],
-    });
+    };
 
-    res.status(200).json(patients);
+    const [patients, total] = await prisma.$transaction([
+      prisma.patient.findMany({
+        where,
+        orderBy: [
+          { lastName: "asc" },
+          { firstName: "asc" },
+          { middleName: "asc" },
+        ],
+        skip,
+        take: limit,
+      }),
+      prisma.patient.count({ where }),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: patients,
+      meta: { total, page, limit, pages: Math.ceil(total / limit) },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error!" });

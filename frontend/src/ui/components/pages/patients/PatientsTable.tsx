@@ -28,16 +28,21 @@ import {
   DropdownMenuTrigger,
 } from "../../shadcn/dropdown-menu";
 import PaginationBar from "../../PaginationBar";
+import type { PaginatedResponse } from "@/types/Pagination";
 
 function PatientsTable({ searchInput }: { searchInput: string }) {
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>();
+  const [page, setPage] = useState<number>(1);
 
-  const { data: patients, isPending: isPatientsLoading } = useQuery<IPatient[]>(
-    {
-      queryFn: () => handleSearchPatients({ search: searchInput }),
-      queryKey: ["patients", searchInput],
-    },
-  );
+  const { data: patientsData, isPending: isPatientsLoading } = useQuery<
+    PaginatedResponse<IPatient>
+  >({
+    queryFn: () => handleSearchPatients({ search: searchInput, page }),
+    queryKey: ["patients", searchInput, page],
+  });
+
+  const patients = patientsData?.data ?? [];
+  const paginationData = patientsData?.meta;
 
   const { mutate: handleDeletePatient } = useDeletePatient();
   const { mutate: handleUpdatePatient } = useUpdatePatient();
@@ -125,7 +130,11 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
         </Table>
       </div>
 
-      <PaginationBar />
+      <PaginationBar
+        itemName="Patient"
+        paginationData={paginationData!}
+        setPage={setPage}
+      />
 
       {selectedPatient && (
         <PatientForm
