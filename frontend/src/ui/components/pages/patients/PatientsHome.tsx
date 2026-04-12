@@ -19,7 +19,7 @@ function PatientsHome() {
             onChange={(e) => setSearchInput(e.target.value)}
             type="text"
             placeholder="Enter patient's name or phone number"
-            className="h-full w-full pl-10"
+            className="bg-card h-full w-full pl-10"
           />
         </div>
         <AddPatient />

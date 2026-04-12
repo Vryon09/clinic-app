@@ -10,13 +10,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./shadcn/sidebar";
-import { ChevronRight, LogOut, User } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { CloudBackup, LogOut, Settings, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./shadcn/avatar";
+import { cn } from "@/lib/utils";
 
 const modules = [
   // { url: "", label: "Dashboard", icon: GitGraph },
   { url: "patients", label: "Patients", icon: User },
+  { url: "backup", label: "Backup", icon: CloudBackup },
+  { url: "settings", label: "Settings", icon: Settings },
 ];
 
 function AppSidebar() {
@@ -29,13 +31,11 @@ function AppSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <div className="flex items-center gap-3 p-6">
-                <div>
-                  <h2 className="text-xl leading-tight font-semibold text-slate-900">
-                    ClinicSync
-                  </h2>
-                </div>
+            <SidebarMenuButton asChild className="mt-2 hover:bg-transparent">
+              <div className="flex items-center">
+                <h2 className="text-xl leading-tight font-semibold text-slate-900">
+                  ClinicSync
+                </h2>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -50,29 +50,20 @@ function AppSidebar() {
                   <SidebarMenuButton
                     asChild
                     className={cn(
-                      `flex w-full items-center gap-3 rounded-lg px-3 py-6 text-sm font-medium transition-all`,
-                      module.url === currTab
-                        ? "bg-neutral-50 text-neutral-600 hover:bg-neutral-200"
-                        : "text-neutral-600 hover:bg-slate-50 hover:text-neutral-900",
+                      currTab === module.url ? "bg-background" : "",
                     )}
                   >
                     <Link to={`/${module.url}`}>
-                      <module.icon
-                        size={18}
-                        className={
-                          module.url === currTab
-                            ? "text-neutral-600"
-                            : "text-neutral-400"
-                        }
-                      />
+                      <module.icon />
 
-                      {module.label}
-
-                      {module.url === currTab && (
-                        <div className="ml-auto">
-                          <ChevronRight size={14} />
-                        </div>
-                      )}
+                      <span
+                        className={cn(
+                          "text-sm",
+                          currTab === module.url ? "font-semibold" : "",
+                        )}
+                      >
+                        {module.label}
+                      </span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -85,16 +76,12 @@ function AppSidebar() {
         <SidebarMenuItem>
           <SidebarMenuButton className="cursor-pointer px-3 py-6">
             <div className="flex items-center gap-2">
-              <Avatar>
-                <AvatarImage />
-                <AvatarFallback className="bg-neutral-200">JD</AvatarFallback>
-              </Avatar>
               <span className="font-semibold">John Doe</span>
             </div>
           </SidebarMenuButton>
           <SidebarMenuButton
             className="w-full cursor-pointer justify-start px-3 py-6 text-slate-600 hover:text-red-700"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/login")}
           >
             <div className="flex items-center">
               <LogOut size={16} className="mr-2" />
