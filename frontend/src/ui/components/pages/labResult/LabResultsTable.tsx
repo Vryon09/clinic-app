@@ -24,11 +24,9 @@ function LabResultsTable({ labResults }: { labResults: ILabResult[] }) {
 
   return (
     <Table>
-      <TableCaption>
-        {labResults.length > 0
-          ? `Showing ${labResults.length} lab result${labResults.length === 1 ? "" : "s"} — click a row to open.`
-          : "No lab results found for this patient."}
-      </TableCaption>
+      {!labResults.length && (
+        <TableCaption>No lab results found for this patient.</TableCaption>
+      )}
       <TableHeader>
         <TableRow>
           <TableHead>Date</TableHead>

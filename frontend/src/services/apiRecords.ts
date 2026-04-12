@@ -5,8 +5,14 @@ import type {
 } from "@/schemas/recordSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export async function handleGetRecords(id: string) {
-  const res = await api.get(`/api/records/${id}`);
+export async function handleGetRecords({
+  id,
+  page,
+}: {
+  id: string;
+  page: number;
+}) {
+  const res = await api.get(`/api/records/${id}?page=${page}&limit=10`);
 
   return res.data || [];
 }

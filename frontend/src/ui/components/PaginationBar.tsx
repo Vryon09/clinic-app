@@ -16,13 +16,15 @@ function PaginationBar({
   paginationData: IPagination;
   setPage: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const from = (paginationData.page - 1) * paginationData.limit + 1;
+  const from = !paginationData.pages
+    ? 0
+    : (paginationData.page - 1) * paginationData.limit + 1;
   const to = Math.min(
     paginationData.page * paginationData.limit,
     paginationData.total,
   );
   return (
-    <div className="flex w-full items-center justify-between border-t border-neutral-300 py-2">
+    <div className="mt-4 flex w-full items-center justify-between border-t border-neutral-300 px-2 py-2">
       <p className="text-sm">
         {itemName} {from === to ? from : `${from} - ${to}`} of{" "}
         {paginationData.total}

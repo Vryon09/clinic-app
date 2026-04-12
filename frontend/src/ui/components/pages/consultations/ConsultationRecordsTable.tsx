@@ -28,11 +28,9 @@ function ConsultationRecordsTable({ records }: { records: IRecord[] }) {
 
   return (
     <Table>
-      <TableCaption>
-        {records.length > 0
-          ? `Showing ${records.length} consultation${records.length === 1 ? "" : "s"} — click a row to view details.`
-          : "No consultations found for this patient."}
-      </TableCaption>
+      {!records.length && (
+        <TableCaption>No consultations found for this patient.</TableCaption>
+      )}
       <TableHeader>
         <TableRow>
           <TableHead>Date</TableHead>

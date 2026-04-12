@@ -12,7 +12,12 @@ export const medicationInputSchema = z.object({
   name: z.string().optional(),
   dosage: z.string().optional(),
   frequency: z.string().optional(),
-  durationDays: z.number().int().optional(),
+  durationDays: z
+    .number()
+    .int()
+    .optional()
+    .or(z.nan())
+    .transform((v) => (isNaN(v as number) ? undefined : v)),
   instructions: z.string().optional(),
 });
 

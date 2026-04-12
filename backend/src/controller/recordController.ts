@@ -7,11 +7,26 @@ import { CreateRecordMedicationInput } from "../schemas/recordMedication";
 
 export async function getRecords(req: Request, res: Response) {
   try {
-    const records = await prisma.record.findMany({
-      where: { patientId: req.params.id as string },
-    });
+    const limit = Math.max(1, parseInt(req.query.limit as string)) || 10;
+    const page = Math.max(1, parseInt(req.query.page as string)) || 1;
+    const skip = (page - 1) * limit;
 
-    res.status(200).json(records);
+    const where = { patientId: req.params.id as string };
+
+    const [records, total] = await prisma.$transaction([
+      prisma.record.findMany({
+        where,
+        skip,
+        take: limit,
+      }),
+      prisma.record.count({ where }),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: records,
+      meta: { total, page, limit, pages: Math.ceil(total / limit) },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error!" });

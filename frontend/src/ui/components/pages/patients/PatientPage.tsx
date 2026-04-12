@@ -14,9 +14,11 @@ import { Card } from "../../shadcn/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn/tabs";
 import LabResultSection from "../labResult/LabResultSection";
 import BackButton from "../../BackButton";
+import type { PaginatedResponse } from "@/types/Pagination";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
   const { patientId } = useParams() as { patientId: string };
 
   const { data: patient, isPending: isPatientPending } = useQuery<IPatient>({
@@ -24,10 +26,15 @@ function PatientPage() {
     queryFn: () => handleGetPatient({ id: patientId }),
   });
 
-  const { data: records, isPending: isRecordsPending } = useQuery<IRecord[]>({
-    queryKey: ["records", patientId],
-    queryFn: () => handleGetRecords(patientId),
+  const { data: recordsData, isPending: isRecordsPending } = useQuery<
+    PaginatedResponse<IRecord>
+  >({
+    queryKey: ["records", patientId, page],
+    queryFn: () => handleGetRecords({ id: patientId, page }),
   });
+
+  const records = recordsData?.data || [];
+  const paginationData = recordsData?.meta;
 
   const { mutate: handleUpdatePatient } = useUpdatePatient();
 
@@ -60,8 +67,14 @@ function PatientPage() {
                 Lab Results
               </TabsTrigger>
             </TabsList>
+
             <TabsContent value="consultations">
-              <ConsultationRecords patient={patient!} records={records!} />
+              <ConsultationRecords
+                patient={patient!}
+                records={records!}
+                paginationData={paginationData!}
+                setPage={setPage}
+              />
             </TabsContent>
 
             <TabsContent value="lab-results">

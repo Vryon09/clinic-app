@@ -1,8 +1,16 @@
 import api from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export async function handeGetLabResults({ patientId }: { patientId: string }) {
-  const res = await api.get(`/api/labResults/${patientId}`);
+export async function handeGetLabResults({
+  patientId,
+  page,
+}: {
+  patientId: string;
+  page: number;
+}) {
+  const res = await api.get(
+    `/api/labResults/${patientId}?page=${page}&limit=10`,
+  );
 
   return res.data || [];
 }

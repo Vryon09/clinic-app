@@ -1,15 +1,36 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
 import fs from "node:fs";
+import { success } from "zod";
 
 export async function getLabResults(req: Request, res: Response) {
   try {
     const { patientId } = req.params as { patientId: string };
-    const labResults = await prisma.labResult.findMany({
-      where: { patientId },
-    });
+    const page = Math.max(1, parseInt(req.query.page as string)) || 1;
+    const limit = Math.max(1, parseInt(req.query.limit as string)) || 10;
+    const skip = (page - 1) * limit;
 
-    res.status(200).json(labResults);
+    const where = { patientId };
+
+    const [labResults, total] = await prisma.$transaction([
+      prisma.labResult.findMany({
+        where,
+        skip,
+        take: limit,
+      }),
+      prisma.labResult.count({ where }),
+    ]);
+
+    res.status(200).json({
+      data: labResults,
+      success: true,
+      meta: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit),
+      },
+    });
   } catch (error) {
     res.status(400).json({ error: "Internal Server Error" });
     console.error(error);

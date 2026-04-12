@@ -1,12 +1,18 @@
 import { cn } from "@/lib/utils";
-import { CloudBackup, Settings, User2 } from "lucide-react";
+import { ChevronDown, CloudBackup, Settings, User2 } from "lucide-react";
 import { Button } from "../shadcn/button";
 import { useLocation, useNavigate } from "react-router";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../shadcn/dropdown-menu";
 
 const modules = [
   { url: "patients", label: "Patients", icon: User2 },
   { url: "backup", label: "Backup", icon: CloudBackup },
-  // { url: "settings", label: "Settings", icon: Settings },
+  { url: "settings", label: "Settings", icon: Settings },
 ];
 
 function TopNavBar() {
@@ -31,6 +37,24 @@ function TopNavBar() {
             <module.icon /> {currTab === module.url && module.label}
           </Button>
         ))}
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              className={cn(
+                "cursor-pointer rounded-lg border-neutral-300 px-3 py-1 text-xs",
+              )}
+              size="icon-sm"
+              variant="outline"
+            >
+              <ChevronDown />
+            </Button>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent>
+            <DropdownMenuItem>Sign out</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
