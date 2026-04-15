@@ -1,0 +1,33 @@
+import z from "zod";
+
+export const createRecordMedicationSchema = z.object({
+  name: z.string().min(1, "Name is required."),
+  dosage: z.string().min(1, "Dosage is required."),
+  frequency: z.string().min(1, "Frequency is required."),
+  durationDays: z.number().int().optional(),
+  instructions: z.string().optional(),
+});
+
+export const medicationInputSchema = z.object({
+  name: z.string().optional(),
+  dosage: z.string().optional(),
+  frequency: z.string().optional(),
+  durationDays: z
+    .number()
+    .int()
+    .optional()
+    .or(z.nan())
+    .transform((v) => (isNaN(v as number) ? undefined : v)),
+  instructions: z.string().optional(),
+});
+
+export const updateRecordMedicationSchema =
+  createRecordMedicationSchema.partial();
+
+export type CreateRecordMedicationInput = z.infer<
+  typeof createRecordMedicationSchema
+>;
+
+export type UpdateRecordMedicationInput = z.infer<
+  typeof updateRecordMedicationSchema
+>;

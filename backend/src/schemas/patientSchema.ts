@@ -10,8 +10,8 @@ export const createPatientSchema = z.object({
   middleName: z
     .string()
     .trim()
-    .max(50, "Middle name must not exceed 50 characters.")
-    .optional(),
+    .min(1, "Middle name is required.")
+    .max(50, "Middle name must not exceed 50 characters."),
 
   lastName: z
     .string()

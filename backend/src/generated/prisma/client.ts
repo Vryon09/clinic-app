@@ -49,3 +49,18 @@ export type Patient = Prisma.PatientModel
  * 
  */
 export type Record = Prisma.RecordModel
+/**
+ * Model VitalSigns
+ * 
+ */
+export type VitalSigns = Prisma.VitalSignsModel
+/**
+ * Model RecordMedication
+ * 
+ */
+export type RecordMedication = Prisma.RecordMedicationModel
+/**
+ * Model labResult
+ * 
+ */
+export type labResult = Prisma.labResultModel

@@ -1,15 +1,15 @@
-import AppSidebar from "../AppSidebar";
-import { SidebarProvider } from "../shadcn/sidebar";
 import { Outlet } from "react-router";
-import ContentLayout from "./ContentLayout";
+import TopNavBar from "./TopNavBar";
+import { Separator } from "../shadcn/separator";
 
 export function AppLayout() {
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <ContentLayout>
-        <Outlet />
-      </ContentLayout>
-    </SidebarProvider>
+    <div className="flex h-screen w-full flex-col px-8">
+      <TopNavBar />
+
+      <Separator className="mb-4" />
+
+      <Outlet />
+    </div>
   );
 }

@@ -1,105 +1,108 @@
 import { handleGetPatient, useUpdatePatient } from "@/services/apiPatients";
 import type { IPatient } from "@/types/PatientType";
 import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { Button } from "../../shadcn/button";
-import { Card } from "../../shadcn/card";
 import { handleGetRecords } from "@/services/apiRecords";
 import type { IRecord } from "@/types/RecordType";
-import { Pen } from "lucide-react";
+import { PenBox } from "lucide-react";
 import { useState } from "react";
 import PatientForm from "./PatientForm";
+import PatientCard from "./PatientCard";
+import ConsultationRecords from "../consultations/ConsultationRecords";
+import { Card } from "../../shadcn/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn/tabs";
+import LabResultSection from "../labResult/LabResultSection";
+import BackButton from "../../BackButton";
+import type { PaginatedResponse } from "@/types/Pagination";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const { id } = useParams() as { id: string };
+  const [page, setPage] = useState<number>(1);
+  const { patientId } = useParams() as { patientId: string };
 
   const { data: patient, isPending: isPatientPending } = useQuery<IPatient>({
-    queryKey: ["patient", id],
-    queryFn: () => handleGetPatient({ id }),
+    queryKey: ["patient", patientId],
+    queryFn: () => handleGetPatient({ id: patientId }),
   });
 
-  const { data: records, isPending: isRecordsPending } = useQuery<IRecord[]>({
-    queryKey: ["records", id],
-    queryFn: () => handleGetRecords(id),
+  const { data: recordsData, isPending: isRecordsPending } = useQuery<
+    PaginatedResponse<IRecord>
+  >({
+    queryKey: ["records", patientId, page],
+    queryFn: () => handleGetRecords({ id: patientId, page }),
   });
+
+  const records = recordsData?.data || [];
+  const paginationData = recordsData?.meta;
 
   const { mutate: handleUpdatePatient } = useUpdatePatient();
 
-  const navigate = useNavigate();
-
   if (isPatientPending || isRecordsPending) return <p>Loading...</p>;
   return (
-    <div>
-      {/* Patient Card */}
-      <div>
-        <div>
-          <p>name</p>
-          <p>{`${patient?.lastName}, ${patient?.firstName}${patient?.middleName ? ` ${patient?.middleName.slice(0, 1)}.` : ""}`}</p>
-        </div>
-
-        <div>
-          <p>Patient Info</p>
-          <div>
-            <p>age</p>
-            <p>{dayjs().diff(dayjs(patient?.dateOfBirth), "year")}</p>
-          </div>
-          <div>
-            <p>phone</p>
-            <p>{patient?.phone}</p>
-          </div>
-        </div>
-        <Button
-          size="icon-sm"
-          className="cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsEditing(true);
-          }}
-        >
-          <Pen />
-        </Button>
-      </div>
-
-      <Button
-        className="cursor-pointer"
-        onClick={() => navigate(`/consultations/${patient?.id}`)}
-      >
-        Add Consultation
-      </Button>
-
-      <div className="space-y-1">
-        {records?.map((record) => (
-          <Card
-            key={record.id}
-            className="flex cursor-pointer flex-row justify-between px-4 py-1 hover:bg-neutral-200"
+    <div className="flex h-full flex-col pb-8">
+      <BackButton location="/patients" />
+      <div className="flex flex-1 gap-4">
+        {/* Patient Card */}
+        <PatientCard patient={patient!}>
+          <Button
+            size="icon-lg"
+            className="mt-4 cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsEditing(true);
+            }}
           >
-            <p className="text-xs">{record.chiefComplaint}</p>
-            <p className="text-xs">
-              {dayjs(record.createdAt).format("MMMM DD, YYYY")}
-            </p>
-          </Card>
-        ))}
-      </div>
+            <PenBox className="size-5" />
+          </Button>
+        </PatientCard>
 
-      {isEditing && (
-        <PatientForm
-          action="update"
-          handlePatient={(data) => handleUpdatePatient({ ...data, id })}
-          initialValues={{
-            firstName: patient!.firstName,
-            lastName: patient!.lastName,
-            phone: patient!.phone,
-            address: patient!.address,
-            sex: patient!.sex,
-            dateOfBirth: new Date(patient!.dateOfBirth),
-            middleName: patient?.middleName || "",
-          }}
-          isOpen={isEditing}
-          setIsOpen={() => setIsEditing((prev) => !prev)}
-        />
-      )}
+        <Card className="h-full w-full border-neutral-300 px-2 pt-1 pb-4">
+          <Tabs defaultValue="consultations">
+            <TabsList variant="line">
+              <TabsTrigger value="consultations" className="cursor-pointer">
+                Consultations
+              </TabsTrigger>
+              <TabsTrigger value="lab-results" className="cursor-pointer">
+                Lab Results
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="consultations">
+              <ConsultationRecords
+                patient={patient!}
+                records={records!}
+                paginationData={paginationData!}
+                setPage={setPage}
+              />
+            </TabsContent>
+
+            <TabsContent value="lab-results">
+              <LabResultSection />
+            </TabsContent>
+          </Tabs>
+        </Card>
+
+        {isEditing && (
+          <PatientForm
+            action="update"
+            handlePatient={(data) =>
+              handleUpdatePatient({ ...data, id: patientId })
+            }
+            initialValues={{
+              firstName: patient!.firstName,
+              lastName: patient!.lastName,
+              phone: patient!.phone,
+              address: patient!.address,
+              sex: patient!.sex,
+              dateOfBirth: new Date(patient!.dateOfBirth),
+              middleName: patient?.middleName || "",
+            }}
+            isOpen={isEditing}
+            setIsOpen={() => setIsEditing((prev) => !prev)}
+          />
+        )}
+      </div>
     </div>
   );
 }

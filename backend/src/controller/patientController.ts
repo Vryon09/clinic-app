@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
 
+// await prisma.patient.deleteMany({});
+// await prisma.record.deleteMany({});
+// await prisma.labResult.deleteMany({});
+
 export async function getPatients(req: Request, res: Response) {
   try {
-    // await prisma.patient.deleteMany({});
-    // await prisma.record.deleteMany({});
     const patients = await prisma.patient.findMany({
       include: { records: true },
     });
@@ -19,23 +21,38 @@ export async function getPatients(req: Request, res: Response) {
 export async function searchPatients(req: Request, res: Response) {
   try {
     const searchInput = (req.query.search as string) || "";
+    const limit = Math.max(1, parseInt(req.query.limit as string)) || 10;
+    const page = Math.max(1, parseInt(req.query.page as string)) || 1;
+    const skip = (page - 1) * limit;
 
-    if (searchInput === "") {
-      return res.status(200).json([]);
-    }
+    const where = {
+      OR: [
+        { firstName: { contains: searchInput, mode: "insensitive" as const } },
+        { middleName: { contains: searchInput, mode: "insensitive" as const } },
+        { lastName: { contains: searchInput, mode: "insensitive" as const } },
+        { phone: { contains: searchInput, mode: "insensitive" as const } },
+      ],
+    };
 
-    const patients = await prisma.patient.findMany({
-      where: {
-        OR: [
-          { firstName: { contains: searchInput, mode: "insensitive" } },
-          { middleName: { contains: searchInput, mode: "insensitive" } },
-          { lastName: { contains: searchInput, mode: "insensitive" } },
-          { phone: { contains: searchInput, mode: "insensitive" } },
+    const [patients, total] = await prisma.$transaction([
+      prisma.patient.findMany({
+        where,
+        orderBy: [
+          { lastName: "asc" },
+          { firstName: "asc" },
+          { middleName: "asc" },
         ],
-      },
-    });
+        skip,
+        take: limit,
+      }),
+      prisma.patient.count({ where }),
+    ]);
 
-    res.status(200).json(patients);
+    res.status(200).json({
+      success: true,
+      data: patients,
+      meta: { total, page, limit, pages: Math.ceil(total / limit) },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error!" });

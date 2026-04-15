@@ -9,26 +9,40 @@ import {
   TableRow,
 } from "../../shadcn/table";
 import { useNavigate } from "react-router";
-import { useQuery } from "@tanstack/react-query";
 import {
-  handleGetPatients,
+  handleSearchPatients,
   useDeletePatient,
   useUpdatePatient,
 } from "@/services/apiPatients";
 import dayjs from "dayjs";
 import { Button } from "../../shadcn/button";
-import { Pen, Trash } from "lucide-react";
+import { MoreHorizontalIcon, Pen, Trash } from "lucide-react";
 import { useState } from "react";
 import PatientForm from "./PatientForm";
+import { useQuery } from "@tanstack/react-query";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../../shadcn/dropdown-menu";
+import PaginationBar from "../../PaginationBar";
+import type { PaginatedResponse } from "@/types/Pagination";
 
-function PatientsTable() {
+function PatientsTable({ searchInput }: { searchInput: string }) {
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>();
-  const { data: patients, isPending: isPatientsLoading } = useQuery<IPatient[]>(
-    {
-      queryFn: handleGetPatients,
-      queryKey: ["patients"],
-    },
-  );
+  const [page, setPage] = useState<number>(1);
+
+  const { data: patientsData, isPending: isPatientsLoading } = useQuery<
+    PaginatedResponse<IPatient>
+  >({
+    queryFn: () => handleSearchPatients({ search: searchInput, page }),
+    queryKey: ["patients", searchInput, page],
+  });
+
+  const patients = patientsData?.data ?? [];
+  const paginationData = patientsData?.meta;
 
   const { mutate: handleDeletePatient } = useDeletePatient();
   const { mutate: handleUpdatePatient } = useUpdatePatient();
@@ -39,57 +53,88 @@ function PatientsTable() {
 
   return (
     <>
-      <Table>
-        <TableCaption>
-          {patients?.length
-            ? "A list of your patients."
-            : "Add your first patient by clicking the Add Patient Button."}
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Age</TableHead>
-            <TableHead>Sex</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {patients?.map((patient) => (
-            <TableRow
-              key={patient.id}
-              className="cursor-pointer hover:bg-neutral-200"
-              onClick={() => navigate(`/patients/${patient.id}`)}
-            >
-              <TableCell>{`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>
-              <TableCell>
-                {dayjs().diff(dayjs(patient.dateOfBirth), "year")}
-              </TableCell>
-              <TableCell>{patient.sex.slice(0, 1)}</TableCell>
-
-              <Button
-                size="icon-sm"
-                className="cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeletePatient(patient.id);
-                }}
-              >
-                <Trash />
-              </Button>
-
-              <Button
-                size="icon-sm"
-                className="cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedPatient(patient);
-                }}
-              >
-                <Pen />
-              </Button>
+      <div className="mb-4 flex-1 overflow-y-auto rounded-xl border bg-neutral-50 px-2">
+        <Table>
+          {!patients?.length && (
+            <TableCaption>
+              {searchInput === ""
+                ? "Add your first patient by clicking the Add Patient Button."
+                : "No patients found."}
+            </TableCaption>
+          )}
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Age</TableHead>
+              <TableHead>Phone</TableHead>
+              <TableHead>Sex</TableHead>
+              <TableHead className="text-right"></TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {patients?.map((patient) => (
+              <TableRow
+                key={patient.id}
+                className="cursor-pointer hover:bg-neutral-200"
+                onClick={() => navigate(`/patients/${patient.id}`)}
+              >
+                <TableCell>{`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>
+                <TableCell>
+                  {dayjs().diff(dayjs(patient.dateOfBirth), "year")}
+                </TableCell>
+                <TableCell>{patient.phone}</TableCell>
+                <TableCell>{patient.sex.slice(0, 1)}</TableCell>
+
+                <TableCell className="space-x-4 text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        onClick={(e) => e.stopPropagation()}
+                        variant="ghost"
+                        size="icon"
+                        className="size-8 cursor-pointer"
+                      >
+                        <MoreHorizontalIcon />
+                        <span className="sr-only">Open menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem
+                        className="cursor-pointer hover:bg-neutral-200!"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedPatient(patient);
+                        }}
+                      >
+                        <Pen /> Edit
+                      </DropdownMenuItem>
+
+                      <DropdownMenuSeparator />
+
+                      <DropdownMenuItem
+                        className="cursor-pointer"
+                        variant="destructive"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeletePatient(patient.id);
+                        }}
+                      >
+                        <Trash /> Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      <PaginationBar
+        itemName="Patient"
+        paginationData={paginationData!}
+        setPage={setPage}
+      />
 
       {selectedPatient && (
         <PatientForm

@@ -17,8 +17,16 @@ export async function handleGetPatient({ id }: { id: string }) {
   return res.data ?? {};
 }
 
-export async function handleSearchPatients({ search }: { search: string }) {
-  const res = await api.get(`/api/patients/search?search=${search.trim()}`);
+export async function handleSearchPatients({
+  search,
+  page,
+}: {
+  search: string;
+  page: number;
+}) {
+  const res = await api.get(
+    `/api/patients/search?search=${search.trim()}&page=${page}&limit=10`,
+  );
 
   return res.data ?? [];
 }

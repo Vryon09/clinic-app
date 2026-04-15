@@ -1,14 +1,21 @@
 import { z } from "zod";
+import { createVitalSignsSchema } from "./vitalSignsSchema";
+import {
+  createRecordMedicationSchema,
+  medicationInputSchema,
+} from "./recordMedication";
 
 export const createRecordSchema = z.object({
-  // patientId: z
-  //   .uuid("Invalid patient reference.")
-  //   .min(1, "Patient reference is required."),
-
-  chiefComplaint: z
+  symptoms: z
     .string()
     .trim()
-    .max(500, "Chief complaint must not exceed 500 characters.")
+    .max(500, "Symptoms must not exceed 500 characters.")
+    .optional(),
+
+  signs: z
+    .string()
+    .trim()
+    .max(500, "Symptoms must not exceed 500 characters.")
     .optional(),
 
   diagnosis: z
@@ -17,11 +24,11 @@ export const createRecordSchema = z.object({
     .max(500, "Diagnosis must not exceed 500 characters.")
     .optional(),
 
-  notes: z
-    .string()
-    .trim()
-    .max(2000, "Notes must not exceed 2000 characters.")
-    .optional(),
+  vitalSigns: createVitalSignsSchema,
+
+  medicationInput: medicationInputSchema,
+
+  recordMedications: z.array(createRecordMedicationSchema).default([]),
 });
 
 export const updateRecordSchema = createRecordSchema.partial();
