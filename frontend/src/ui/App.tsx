@@ -7,7 +7,7 @@ import PatientPage from "./components/pages/patients/PatientPage";
 import ConsultationsForm from "./components/pages/consultations/ConsultationsForm";
 import ConsultationDetails from "./components/pages/consultations/ConsultationDetails";
 import LoginPage from "./components/pages/auth/LoginPage";
-import BackupPage from "./components/pages/backup/BackupPage";
+import SettingsPage from "./components/pages/settings/SettingsPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,7 +42,7 @@ function App() {
             />
           </Route>
 
-          <Route path="backup" element={<BackupPage />} />
+          <Route path="settings" element={<SettingsPage />}></Route>
         </Route>
       </Routes>
     </QueryClientProvider>

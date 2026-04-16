@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { ChevronDown, CloudBackup, Settings, User2 } from "lucide-react";
+import { ChevronDown, Settings, User2 } from "lucide-react";
 import { Button } from "../shadcn/button";
 import { useLocation, useNavigate } from "react-router";
 import {
@@ -11,7 +11,7 @@ import {
 
 const modules = [
   { url: "patients", label: "Patients", icon: User2 },
-  { url: "backup", label: "Backup", icon: CloudBackup },
+  // { url: "backup", label: "Backup", icon: CloudBackup },
   { url: "settings", label: "Settings", icon: Settings },
 ];
 

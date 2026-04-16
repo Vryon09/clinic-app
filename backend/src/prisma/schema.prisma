@@ -85,3 +85,10 @@ model labResult {
   filePath   String
   uploadedAt DateTime @default(now())
 }
+
+model GoogleToken {
+  id           Int      @id @default(autoincrement())
+  refreshToken String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

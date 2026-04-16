@@ -64,3 +64,8 @@ export type RecordMedication = Prisma.RecordMedicationModel
  * 
  */
 export type labResult = Prisma.labResultModel
+/**
+ * Model GoogleToken
+ * 
+ */
+export type GoogleToken = Prisma.GoogleTokenModel
