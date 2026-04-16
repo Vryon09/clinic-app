@@ -388,7 +388,8 @@ export const ModelName = {
   Record: 'Record',
   VitalSigns: 'VitalSigns',
   RecordMedication: 'RecordMedication',
-  labResult: 'labResult'
+  labResult: 'labResult',
+  GoogleToken: 'GoogleToken'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "patient" | "record" | "vitalSigns" | "recordMedication" | "labResult"
+    modelProps: "patient" | "record" | "vitalSigns" | "recordMedication" | "labResult" | "googleToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -778,6 +779,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    GoogleToken: {
+      payload: Prisma.$GoogleTokenPayload<ExtArgs>
+      fields: Prisma.GoogleTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GoogleTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GoogleTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.GoogleTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GoogleTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleTokenPayload>
+        }
+        findMany: {
+          args: Prisma.GoogleTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleTokenPayload>[]
+        }
+        create: {
+          args: Prisma.GoogleTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleTokenPayload>
+        }
+        createMany: {
+          args: Prisma.GoogleTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GoogleTokenCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleTokenPayload>[]
+        }
+        delete: {
+          args: Prisma.GoogleTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleTokenPayload>
+        }
+        update: {
+          args: Prisma.GoogleTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.GoogleTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GoogleTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GoogleTokenUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleTokenPayload>[]
+        }
+        upsert: {
+          args: Prisma.GoogleTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GoogleTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.GoogleTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGoogleToken>
+        }
+        groupBy: {
+          args: Prisma.GoogleTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GoogleTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GoogleTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GoogleTokenCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -881,6 +956,16 @@ export const LabResultScalarFieldEnum = {
 } as const
 
 export type LabResultScalarFieldEnum = (typeof LabResultScalarFieldEnum)[keyof typeof LabResultScalarFieldEnum]
+
+
+export const GoogleTokenScalarFieldEnum = {
+  id: 'id',
+  refreshToken: 'refreshToken',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GoogleTokenScalarFieldEnum = (typeof GoogleTokenScalarFieldEnum)[keyof typeof GoogleTokenScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1096,6 +1181,7 @@ export type GlobalOmitConfig = {
   vitalSigns?: Prisma.VitalSignsOmit
   recordMedication?: Prisma.RecordMedicationOmit
   labResult?: Prisma.labResultOmit
+  googleToken?: Prisma.GoogleTokenOmit
 }
 
 /* Types for Logging */
