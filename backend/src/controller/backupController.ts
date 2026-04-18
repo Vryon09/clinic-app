@@ -6,7 +6,6 @@ import { oauth2Client } from "../config/google.config";
 import { prisma } from "../config/prisma";
 
 export const backupToDrive = async (req: Request, res: Response) => {
-  // 1. Get stored refresh token
   const tokenRecord = await prisma.googleToken.findUnique({ where: { id: 1 } });
   if (!tokenRecord) {
     return res.status(400).json({

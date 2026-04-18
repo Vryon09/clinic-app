@@ -1,13 +1,18 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "../../shadcn/button";
 import { Card } from "../../shadcn/card";
-import api from "@/lib/api";
 import { cn } from "@/lib/utils";
+import {
+  handleGetStatus,
+  useBackup,
+  useHandleLogout,
+} from "@/services/apiBackup";
+import { useEffect } from "react";
 
 function Backup() {
   const { data: isConnectedData } = useQuery({
     queryKey: ["google-status"],
-    queryFn: () => api.get("/api/google/status"),
+    queryFn: handleGetStatus,
   });
 
   const isConnected = isConnectedData?.data.connected;
@@ -26,25 +31,23 @@ function Backup() {
     );
   };
 
-  const { mutate: runBackup, isPending } = useMutation({
-    mutationFn: () => api.post("/api/backup/drive"),
-    // onSuccess: (res) => toast.success(`Backed up: ${res.data.fileName}`),
-    // onError: () => toast.error("Backup failed. Try reconnecting Google Drive."),
-  });
+  const queryClient = useQueryClient();
 
-  async function logout() {
-    await api.delete("/api/google");
-  }
+  useEffect(() => {
+    const handler = (event: MessageEvent) => {
+      if (event.origin !== "http://localhost:3000") return;
 
-  function useHandleLogout() {
-    const queryClient = useQueryClient();
-    return useMutation({
-      mutationFn: logout,
-      onSuccess: () =>
-        queryClient.invalidateQueries({ queryKey: ["google-status"] }),
-      // onError: () => toast.error("Backup failed. Try reconnecting Google Drive."),
-    });
-  }
+      if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
+        queryClient.invalidateQueries({ queryKey: ["google-status"] });
+      }
+    };
+
+    window.addEventListener("message", handler);
+
+    return () => window.removeEventListener("message", handler);
+  }, [queryClient]);
+
+  const { mutate: runBackup, isPending: isBackingup } = useBackup();
 
   const { mutate: handleLogout } = useHandleLogout();
 
@@ -84,9 +87,9 @@ function Backup() {
         <Button
           className="cursor-pointer"
           onClick={() => runBackup()}
-          disabled={isPending}
+          disabled={isBackingup}
         >
-          {isPending ? "Backing up..." : "Backup to Google Drive"}
+          {isBackingup ? "Backing up..." : "Backup to Google Drive"}
         </Button>
       )}
 
