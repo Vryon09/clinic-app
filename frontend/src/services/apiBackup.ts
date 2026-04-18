@@ -11,8 +11,8 @@ export function useBackup() {
   });
 }
 
-export async function handleGetStatus() {
-  const res = await api.get("/api/google/status");
+export async function handleGetGoogleAuthData() {
+  const res = await api.get("/api/google/data");
 
   return res || {};
 }

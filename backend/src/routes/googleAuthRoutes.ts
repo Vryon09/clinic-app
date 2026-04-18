@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
   deleteGoogleAuthToken,
-  getGoogleAuthStatus,
+  getGoogleAuthData,
   googleAuthCallback,
   initGoogleDriveAuth,
 } from "../controller/googleAuthController";
@@ -12,7 +12,7 @@ router.get("/", initGoogleDriveAuth);
 
 router.get("/callback", googleAuthCallback);
 
-router.get("/status", getGoogleAuthStatus);
+router.get("/data", getGoogleAuthData);
 
 router.delete("/", deleteGoogleAuthToken);
 

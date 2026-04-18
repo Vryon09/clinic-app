@@ -961,6 +961,8 @@ export type LabResultScalarFieldEnum = (typeof LabResultScalarFieldEnum)[keyof t
 export const GoogleTokenScalarFieldEnum = {
   id: 'id',
   refreshToken: 'refreshToken',
+  email: 'email',
+  name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

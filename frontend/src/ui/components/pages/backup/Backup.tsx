@@ -3,19 +3,24 @@ import { Button } from "../../shadcn/button";
 import { Card } from "../../shadcn/card";
 import { cn } from "@/lib/utils";
 import {
-  handleGetStatus,
+  handleGetGoogleAuthData,
   useBackup,
   useHandleLogout,
 } from "@/services/apiBackup";
 import { useEffect } from "react";
+import { Badge } from "../../shadcn/badge";
+import { Separator } from "../../shadcn/separator";
+import { CloudBackup } from "lucide-react";
 
 function Backup() {
-  const { data: isConnectedData } = useQuery({
+  const { data: googleAuthData } = useQuery({
     queryKey: ["google-status"],
-    queryFn: handleGetStatus,
+    queryFn: handleGetGoogleAuthData,
   });
 
-  const isConnected = isConnectedData?.data.connected;
+  const isConnected = googleAuthData?.data.connected;
+  const email = googleAuthData?.data.email;
+  const name = googleAuthData?.data.name;
 
   const handleConnectDrive = () => {
     const width = 500;
@@ -52,25 +57,27 @@ function Backup() {
   const { mutate: handleLogout } = useHandleLogout();
 
   return (
-    <Card className="px-8 py-4">
+    <Card className="mx-8 px-8 py-4">
       <div
         className={cn(
           "flex items-center justify-between",
           isConnected ? "mb-4" : "",
         )}
       >
-        <p className="text-2xl font-semibold">Backup</p>
-        <p
+        <p className="text-3xl font-semibold">Backup</p>
+        <Badge
           className={cn(
-            "text-sm",
-            isConnected ? "text-green-500" : "text-neutral-500",
+            "text-xs",
+            isConnected
+              ? "bg-green-100 text-green-500"
+              : "bg-red-100 text-red-500",
           )}
         >
-          {isConnected ? "Connected" : "Not Connected"}{" "}
-        </p>
+          {isConnected ? "Connected" : "Not Connected"}
+        </Badge>
       </div>
       {!isConnected && (
-        <p className="mb-4 text-sm text-neutral-500">
+        <p className="mb-4 max-w-125 text-sm text-neutral-500">
           Connect a Google Drive account to back up all patient data,
           consultation records, and lab results. Backups are stored in your own
           Drive — ClinicSync never holds your data.
@@ -84,19 +91,35 @@ function Backup() {
       )}
 
       {isConnected && (
-        <Button
-          className="cursor-pointer"
-          onClick={() => runBackup()}
-          disabled={isBackingup}
-        >
-          {isBackingup ? "Backing up..." : "Backup to Google Drive"}
-        </Button>
-      )}
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-semibold">{name}</p>
+              <p>{email}</p>
+            </div>
 
-      {isConnected && (
-        <Button className="cursor-pointer" onClick={() => handleLogout()}>
-          Logout
-        </Button>
+            <Button
+              className="cursor-pointer"
+              variant="destructive"
+              onClick={() => handleLogout()}
+            >
+              Disconnect
+            </Button>
+          </div>
+
+          <Separator />
+
+          <div className="flex justify-end">
+            <Button
+              className="cursor-pointer"
+              onClick={() => runBackup()}
+              disabled={isBackingup}
+            >
+              <CloudBackup />{" "}
+              {isBackingup ? "Backing up..." : "Backup to Google Drive"}
+            </Button>
+          </div>
+        </div>
       )}
     </Card>
   );
