@@ -51,10 +51,17 @@ function PaginationBar({
             <PaginationItem>
               <Button
                 onClick={() => {
-                  if (paginationData.page === paginationData.pages) return;
+                  if (
+                    paginationData.page === paginationData.pages ||
+                    !paginationData.pages
+                  )
+                    return;
                   setPage((prev) => prev + 1);
                 }}
-                disabled={paginationData.page === paginationData.pages}
+                disabled={
+                  paginationData.page === paginationData.pages ||
+                  !paginationData.pages
+                }
                 className="cursor-pointer"
                 variant="ghost"
                 size="icon-sm"
