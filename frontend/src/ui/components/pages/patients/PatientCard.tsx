@@ -11,7 +11,7 @@ function PatientCard({
   children?: ReactNode;
 }) {
   return (
-    <Card className="flex min-w-86 flex-col gap-2 px-4 py-4">
+    <Card className="flex h-fit min-w-86 flex-col gap-2 px-4 py-4">
       <div>
         <p className="text-lg font-semibold">
           {`${patient?.firstName}${patient?.middleName ? ` ${patient?.middleName.slice(0, 1)}.` : ""} ${patient?.lastName}`}

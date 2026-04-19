@@ -37,6 +37,8 @@ export type GoogleTokenSumAggregateOutputType = {
 export type GoogleTokenMinAggregateOutputType = {
   id: number | null
   refreshToken: string | null
+  email: string | null
+  name: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,6 +46,8 @@ export type GoogleTokenMinAggregateOutputType = {
 export type GoogleTokenMaxAggregateOutputType = {
   id: number | null
   refreshToken: string | null
+  email: string | null
+  name: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -51,6 +55,8 @@ export type GoogleTokenMaxAggregateOutputType = {
 export type GoogleTokenCountAggregateOutputType = {
   id: number
   refreshToken: number
+  email: number
+  name: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -68,6 +74,8 @@ export type GoogleTokenSumAggregateInputType = {
 export type GoogleTokenMinAggregateInputType = {
   id?: true
   refreshToken?: true
+  email?: true
+  name?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -75,6 +83,8 @@ export type GoogleTokenMinAggregateInputType = {
 export type GoogleTokenMaxAggregateInputType = {
   id?: true
   refreshToken?: true
+  email?: true
+  name?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +92,8 @@ export type GoogleTokenMaxAggregateInputType = {
 export type GoogleTokenCountAggregateInputType = {
   id?: true
   refreshToken?: true
+  email?: true
+  name?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -176,6 +188,8 @@ export type GoogleTokenGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type GoogleTokenGroupByOutputType = {
   id: number
   refreshToken: string
+  email: string | null
+  name: string | null
   createdAt: Date
   updatedAt: Date
   _count: GoogleTokenCountAggregateOutputType | null
@@ -206,6 +220,8 @@ export type GoogleTokenWhereInput = {
   NOT?: Prisma.GoogleTokenWhereInput | Prisma.GoogleTokenWhereInput[]
   id?: Prisma.IntFilter<"GoogleToken"> | number
   refreshToken?: Prisma.StringFilter<"GoogleToken"> | string
+  email?: Prisma.StringNullableFilter<"GoogleToken"> | string | null
+  name?: Prisma.StringNullableFilter<"GoogleToken"> | string | null
   createdAt?: Prisma.DateTimeFilter<"GoogleToken"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"GoogleToken"> | Date | string
 }
@@ -213,6 +229,8 @@ export type GoogleTokenWhereInput = {
 export type GoogleTokenOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   refreshToken?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  name?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -223,6 +241,8 @@ export type GoogleTokenWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.GoogleTokenWhereInput[]
   NOT?: Prisma.GoogleTokenWhereInput | Prisma.GoogleTokenWhereInput[]
   refreshToken?: Prisma.StringFilter<"GoogleToken"> | string
+  email?: Prisma.StringNullableFilter<"GoogleToken"> | string | null
+  name?: Prisma.StringNullableFilter<"GoogleToken"> | string | null
   createdAt?: Prisma.DateTimeFilter<"GoogleToken"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"GoogleToken"> | Date | string
 }, "id">
@@ -230,6 +250,8 @@ export type GoogleTokenWhereUniqueInput = Prisma.AtLeast<{
 export type GoogleTokenOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   refreshToken?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  name?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.GoogleTokenCountOrderByAggregateInput
@@ -245,12 +267,16 @@ export type GoogleTokenScalarWhereWithAggregatesInput = {
   NOT?: Prisma.GoogleTokenScalarWhereWithAggregatesInput | Prisma.GoogleTokenScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"GoogleToken"> | number
   refreshToken?: Prisma.StringWithAggregatesFilter<"GoogleToken"> | string
+  email?: Prisma.StringNullableWithAggregatesFilter<"GoogleToken"> | string | null
+  name?: Prisma.StringNullableWithAggregatesFilter<"GoogleToken"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"GoogleToken"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"GoogleToken"> | Date | string
 }
 
 export type GoogleTokenCreateInput = {
   refreshToken: string
+  email?: string | null
+  name?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -258,12 +284,16 @@ export type GoogleTokenCreateInput = {
 export type GoogleTokenUncheckedCreateInput = {
   id?: number
   refreshToken: string
+  email?: string | null
+  name?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type GoogleTokenUpdateInput = {
   refreshToken?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -271,6 +301,8 @@ export type GoogleTokenUpdateInput = {
 export type GoogleTokenUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   refreshToken?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -278,12 +310,16 @@ export type GoogleTokenUncheckedUpdateInput = {
 export type GoogleTokenCreateManyInput = {
   id?: number
   refreshToken: string
+  email?: string | null
+  name?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type GoogleTokenUpdateManyMutationInput = {
   refreshToken?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -291,6 +327,8 @@ export type GoogleTokenUpdateManyMutationInput = {
 export type GoogleTokenUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   refreshToken?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -298,6 +336,8 @@ export type GoogleTokenUncheckedUpdateManyInput = {
 export type GoogleTokenCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   refreshToken?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -309,6 +349,8 @@ export type GoogleTokenAvgOrderByAggregateInput = {
 export type GoogleTokenMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   refreshToken?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -316,6 +358,8 @@ export type GoogleTokenMaxOrderByAggregateInput = {
 export type GoogleTokenMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   refreshToken?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -337,6 +381,8 @@ export type IntFieldUpdateOperationsInput = {
 export type GoogleTokenSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   refreshToken?: boolean
+  email?: boolean
+  name?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["googleToken"]>
@@ -344,6 +390,8 @@ export type GoogleTokenSelect<ExtArgs extends runtime.Types.Extensions.InternalA
 export type GoogleTokenSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   refreshToken?: boolean
+  email?: boolean
+  name?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["googleToken"]>
@@ -351,6 +399,8 @@ export type GoogleTokenSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
 export type GoogleTokenSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   refreshToken?: boolean
+  email?: boolean
+  name?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["googleToken"]>
@@ -358,11 +408,13 @@ export type GoogleTokenSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
 export type GoogleTokenSelectScalar = {
   id?: boolean
   refreshToken?: boolean
+  email?: boolean
+  name?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type GoogleTokenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "refreshToken" | "createdAt" | "updatedAt", ExtArgs["result"]["googleToken"]>
+export type GoogleTokenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "refreshToken" | "email" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["googleToken"]>
 
 export type $GoogleTokenPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "GoogleToken"
@@ -370,6 +422,8 @@ export type $GoogleTokenPayload<ExtArgs extends runtime.Types.Extensions.Interna
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     refreshToken: string
+    email: string | null
+    name: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["googleToken"]>
@@ -797,6 +851,8 @@ export interface Prisma__GoogleTokenClient<T, Null = never, ExtArgs extends runt
 export interface GoogleTokenFieldRefs {
   readonly id: Prisma.FieldRef<"GoogleToken", 'Int'>
   readonly refreshToken: Prisma.FieldRef<"GoogleToken", 'String'>
+  readonly email: Prisma.FieldRef<"GoogleToken", 'String'>
+  readonly name: Prisma.FieldRef<"GoogleToken", 'String'>
   readonly createdAt: Prisma.FieldRef<"GoogleToken", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"GoogleToken", 'DateTime'>
 }
