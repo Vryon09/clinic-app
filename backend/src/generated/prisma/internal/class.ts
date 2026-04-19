@@ -17,8 +17,8 @@ import type * as Prisma from "./prismaNamespace.ts"
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.4.1",
-  "engineVersion": "55ae170b1ced7fc6ed07a15f110549408c501bb3",
+  "clientVersion": "7.7.0",
+  "engineVersion": "75cbdc1eb7150937890ad5465d861175c6624711",
   "activeProvider": "postgresql",
   "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum Sex {\n  MALE\n  FEMALE\n}\n\nmodel Patient {\n  id          String   @id @default(uuid())\n  firstName   String\n  middleName  String\n  lastName    String\n  phone       String\n  address     String\n  sex         Sex\n  dateOfBirth DateTime\n\n  records Record[]\n\n  createdAt  DateTime    @default(now())\n  updatedAt  DateTime    @default(now()) @updatedAt\n  labResults labResult[]\n}\n\nmodel Record {\n  id        String   @id @default(uuid())\n  patientId String\n  visitDate DateTime @default(now())\n\n  symptoms  String?\n  signs     String?\n  diagnosis String?\n\n  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)\n\n  createdAt         DateTime           @default(now())\n  updatedAt         DateTime           @default(now()) @updatedAt\n  vitalSigns        VitalSigns?\n  recordMedications RecordMedication[]\n}\n\nmodel VitalSigns {\n  id       String @id @default(uuid())\n  recordId String @unique\n  record   Record @relation(fields: [recordId], references: [id], onDelete: Cascade)\n\n  bloodPressureSystolic  Int?\n  bloodPressureDiastolic Int?\n\n  temperature Decimal? @db.Decimal(4, 1)\n  weightKg    Decimal? @db.Decimal(5, 2)\n}\n\nmodel RecordMedication {\n  id       String @id @default(uuid())\n  record   Record @relation(fields: [recordId], references: [id], onDelete: Cascade)\n  recordId String\n\n  name         String\n  dosage       String\n  frequency    String\n  durationDays Int?\n  instructions String?\n\n  createdAt DateTime @default(now())\n}\n\nmodel labResult {\n  id         String   @id @default(uuid())\n  patient    Patient  @relation(fields: [patientId], references: [id])\n  patientId  String\n  filePath   String\n  uploadedAt DateTime @default(now())\n}\n\nmodel GoogleToken {\n  id           Int      @id @default(autoincrement())\n  refreshToken String\n  email        String?\n  name         String?\n  createdAt    DateTime @default(now())\n  updatedAt    DateTime @updatedAt\n}\n",
   "runtimeDataModel": {
@@ -67,7 +67,9 @@ export interface PrismaClientConstructor {
    * Type-safe database client for TypeScript
    * @example
    * ```
-   * const prisma = new PrismaClient()
+   * const prisma = new PrismaClient({
+   *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+   * })
    * // Fetch zero or more Patients
    * const patients = await prisma.patient.findMany()
    * ```
@@ -89,7 +91,9 @@ export interface PrismaClientConstructor {
  * Type-safe database client for TypeScript
  * @example
  * ```
- * const prisma = new PrismaClient()
+ * const prisma = new PrismaClient({
+ *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+ * })
  * // Fetch zero or more Patients
  * const patients = await prisma.patient.findMany()
  * ```

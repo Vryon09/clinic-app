@@ -211,7 +211,7 @@ export type VitalSignsGroupByOutputType = {
   _max: VitalSignsMaxAggregateOutputType | null
 }
 
-type GetVitalSignsGroupByPayload<T extends VitalSignsGroupByArgs> = Prisma.PrismaPromise<
+export type GetVitalSignsGroupByPayload<T extends VitalSignsGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<VitalSignsGroupByOutputType, T['by']> &
       {
@@ -1182,6 +1182,11 @@ export type VitalSignsFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Skip the first `n` VitalSigns.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of VitalSigns.
+   */
   distinct?: Prisma.VitalSignsScalarFieldEnum | Prisma.VitalSignsScalarFieldEnum[]
 }
 

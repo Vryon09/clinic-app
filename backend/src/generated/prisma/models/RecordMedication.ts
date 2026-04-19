@@ -213,7 +213,7 @@ export type RecordMedicationGroupByOutputType = {
   _max: RecordMedicationMaxAggregateOutputType | null
 }
 
-type GetRecordMedicationGroupByPayload<T extends RecordMedicationGroupByArgs> = Prisma.PrismaPromise<
+export type GetRecordMedicationGroupByPayload<T extends RecordMedicationGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<RecordMedicationGroupByOutputType, T['by']> &
       {
@@ -1271,6 +1271,11 @@ export type RecordMedicationFindManyArgs<ExtArgs extends runtime.Types.Extension
    * Skip the first `n` RecordMedications.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of RecordMedications.
+   */
   distinct?: Prisma.RecordMedicationScalarFieldEnum | Prisma.RecordMedicationScalarFieldEnum[]
 }
 

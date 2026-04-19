@@ -151,7 +151,7 @@ export type LabResultGroupByOutputType = {
   _max: LabResultMaxAggregateOutputType | null
 }
 
-type GetLabResultGroupByPayload<T extends labResultGroupByArgs> = Prisma.PrismaPromise<
+export type GetLabResultGroupByPayload<T extends labResultGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<LabResultGroupByOutputType, T['by']> &
       {
@@ -1087,6 +1087,11 @@ export type labResultFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Skip the first `n` labResults.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of labResults.
+   */
   distinct?: Prisma.LabResultScalarFieldEnum | Prisma.LabResultScalarFieldEnum[]
 }
 

@@ -199,7 +199,7 @@ export type GoogleTokenGroupByOutputType = {
   _max: GoogleTokenMaxAggregateOutputType | null
 }
 
-type GetGoogleTokenGroupByPayload<T extends GoogleTokenGroupByArgs> = Prisma.PrismaPromise<
+export type GetGoogleTokenGroupByPayload<T extends GoogleTokenGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<GoogleTokenGroupByOutputType, T['by']> &
       {
@@ -1031,6 +1031,11 @@ export type GoogleTokenFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Skip the first `n` GoogleTokens.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of GoogleTokens.
+   */
   distinct?: Prisma.GoogleTokenScalarFieldEnum | Prisma.GoogleTokenScalarFieldEnum[]
 }
 
