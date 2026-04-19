@@ -11,9 +11,11 @@ import { useEffect } from "react";
 import { Badge } from "../../shadcn/badge";
 import { Separator } from "../../shadcn/separator";
 import { CloudBackup } from "lucide-react";
+import { Skeleton } from "../../shadcn/skeleton";
+import { Spinner } from "../../shadcn/spinner";
 
 function Backup() {
-  const { data: googleAuthData } = useQuery({
+  const { data: googleAuthData, isPending: isAuthPending } = useQuery({
     queryKey: ["google-status"],
     queryFn: handleGetGoogleAuthData,
   });
@@ -57,69 +59,90 @@ function Backup() {
   const { mutate: handleLogout } = useHandleLogout();
 
   return (
-    <Card className="mx-8 px-8 py-4">
+    <Card className="px-8 py-4">
       <div
         className={cn(
-          "flex items-center justify-between",
+          "mb-2 flex items-center justify-between",
           isConnected ? "mb-4" : "",
         )}
       >
         <p className="text-3xl font-semibold">Backup</p>
+
         <Badge
           className={cn(
             "text-xs",
-            isConnected
-              ? "bg-green-100 text-green-500"
-              : "bg-red-100 text-red-500",
+            isAuthPending
+              ? "bg-neutral-200 text-neutral-600"
+              : isConnected
+                ? "bg-green-100 text-green-500"
+                : "bg-red-100 text-red-500",
           )}
         >
-          {isConnected ? "Connected" : "Not Connected"}
+          {isAuthPending ? (
+            <>
+              <Spinner /> {"Checking"}
+            </>
+          ) : isConnected ? (
+            "Connected"
+          ) : (
+            "Not Connected"
+          )}
         </Badge>
       </div>
-      {!isConnected && (
-        <p className="mb-4 max-w-125 text-sm text-neutral-500">
-          Connect a Google Drive account to back up all patient data,
-          consultation records, and lab results. Backups are stored in your own
-          Drive — ClinicSync never holds your data.
-        </p>
-      )}
 
-      {!isConnected && (
-        <Button className="cursor-pointer" onClick={handleConnectDrive}>
-          Connect to Google Drive
-        </Button>
-      )}
-
-      {isConnected && (
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-semibold">{name}</p>
-              <p>{email}</p>
-            </div>
-
-            <Button
-              className="cursor-pointer"
-              variant="destructive"
-              onClick={() => handleLogout()}
-            >
-              Disconnect
-            </Button>
-          </div>
-
-          <Separator />
-
-          <div className="flex justify-end">
-            <Button
-              className="cursor-pointer"
-              onClick={() => runBackup()}
-              disabled={isBackingup}
-            >
-              <CloudBackup />{" "}
-              {isBackingup ? "Backing up..." : "Backup to Google Drive"}
-            </Button>
-          </div>
+      {isAuthPending ? (
+        <div className="space-y-4">
+          <Skeleton className="h-14 w-100 bg-neutral-300" />
+          <Skeleton className="h-8 w-40 bg-neutral-300" />
         </div>
+      ) : (
+        <>
+          {!isConnected && (
+            <p className="mb-4 max-w-125 text-sm text-neutral-500">
+              Connect a Google Drive account to back up all patient data,
+              consultation records, and lab results. Backups are stored in your
+              own Drive — ClinicSync never holds your data.
+            </p>
+          )}
+
+          {!isConnected && (
+            <Button className="cursor-pointer" onClick={handleConnectDrive}>
+              Connect to Google Drive
+            </Button>
+          )}
+
+          {isConnected && (
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-semibold">{name}</p>
+                  <p>{email}</p>
+                </div>
+
+                <Button
+                  className="cursor-pointer"
+                  variant="destructive"
+                  onClick={() => handleLogout()}
+                >
+                  Disconnect
+                </Button>
+              </div>
+
+              <Separator />
+
+              <div className="flex justify-end">
+                <Button
+                  className="cursor-pointer"
+                  onClick={() => runBackup()}
+                  disabled={isBackingup}
+                >
+                  <CloudBackup />{" "}
+                  {isBackingup ? "Backing up..." : "Backup to Google Drive"}
+                </Button>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </Card>
   );

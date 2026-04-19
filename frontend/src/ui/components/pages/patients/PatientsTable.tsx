@@ -29,6 +29,7 @@ import {
 } from "../../shadcn/dropdown-menu";
 import PaginationBar from "../../PaginationBar";
 import type { PaginatedResponse } from "@/types/Pagination";
+import { Skeleton } from "../../shadcn/skeleton";
 
 function PatientsTable({ searchInput }: { searchInput: string }) {
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>();
@@ -49,13 +50,11 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
 
   const navigate = useNavigate();
 
-  if (isPatientsLoading) return <p>Loading...</p>;
-
   return (
     <>
       <div className="mb-4 flex-1 overflow-y-auto rounded-xl border bg-neutral-50 px-2">
         <Table>
-          {!patients?.length && (
+          {!patients?.length && !isPatientsLoading && (
             <TableCaption>
               {searchInput === ""
                 ? "Add your first patient by clicking the Add Patient Button."
@@ -63,69 +62,107 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
             </TableCaption>
           )}
           <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Age</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead>Sex</TableHead>
-              <TableHead className="text-right"></TableHead>
-            </TableRow>
+            {isPatientsLoading ? (
+              <TableRow>
+                <TableHead>
+                  <Skeleton className="h-4 w-16 bg-neutral-300" />
+                </TableHead>
+                <TableHead>
+                  <Skeleton className="h-4 w-16 bg-neutral-300" />
+                </TableHead>
+                <TableHead>
+                  <Skeleton className="h-4 w-16 bg-neutral-300" />
+                </TableHead>
+                <TableHead>
+                  <Skeleton className="h-4 w-16 bg-neutral-300" />
+                </TableHead>
+                <TableHead></TableHead>
+              </TableRow>
+            ) : (
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Age</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Sex</TableHead>
+                <TableHead className="text-right"></TableHead>
+              </TableRow>
+            )}
           </TableHeader>
           <TableBody>
-            {patients?.map((patient) => (
-              <TableRow
-                key={patient.id}
-                className="cursor-pointer hover:bg-neutral-200"
-                onClick={() => navigate(`/patients/${patient.id}`)}
-              >
-                <TableCell>{`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>
-                <TableCell>
-                  {dayjs().diff(dayjs(patient.dateOfBirth), "year")}
-                </TableCell>
-                <TableCell>{patient.phone}</TableCell>
-                <TableCell>{patient.sex.slice(0, 1)}</TableCell>
+            {isPatientsLoading
+              ? Array.from({ length: 5 }).map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <Skeleton className="h-4 bg-neutral-300" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 bg-neutral-300" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 bg-neutral-300" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 bg-neutral-300" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 bg-neutral-300" />
+                    </TableCell>
+                  </TableRow>
+                ))
+              : patients?.map((patient) => (
+                  <TableRow
+                    key={patient.id}
+                    className="cursor-pointer hover:bg-neutral-200"
+                    onClick={() => navigate(`/patients/${patient.id}`)}
+                  >
+                    <TableCell>{`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>
+                    <TableCell>
+                      {dayjs().diff(dayjs(patient.dateOfBirth), "year")}
+                    </TableCell>
+                    <TableCell>{patient.phone}</TableCell>
+                    <TableCell>{patient.sex.slice(0, 1)}</TableCell>
 
-                <TableCell className="space-x-4 text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        onClick={(e) => e.stopPropagation()}
-                        variant="ghost"
-                        size="icon"
-                        className="size-8 cursor-pointer"
-                      >
-                        <MoreHorizontalIcon />
-                        <span className="sr-only">Open menu</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem
-                        className="cursor-pointer hover:bg-neutral-200!"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedPatient(patient);
-                        }}
-                      >
-                        <Pen /> Edit
-                      </DropdownMenuItem>
+                    <TableCell className="space-x-4 text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            onClick={(e) => e.stopPropagation()}
+                            variant="ghost"
+                            size="icon"
+                            className="size-8 cursor-pointer"
+                          >
+                            <MoreHorizontalIcon />
+                            <span className="sr-only">Open menu</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem
+                            className="cursor-pointer hover:bg-neutral-200!"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedPatient(patient);
+                            }}
+                          >
+                            <Pen /> Edit
+                          </DropdownMenuItem>
 
-                      <DropdownMenuSeparator />
+                          <DropdownMenuSeparator />
 
-                      <DropdownMenuItem
-                        className="cursor-pointer"
-                        variant="destructive"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeletePatient(patient.id);
-                        }}
-                      >
-                        <Trash /> Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
+                          <DropdownMenuItem
+                            className="cursor-pointer"
+                            variant="destructive"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeletePatient(patient.id);
+                            }}
+                          >
+                            <Trash /> Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
       </div>
@@ -134,6 +171,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
         itemName="Patient"
         paginationData={paginationData!}
         setPage={setPage}
+        isLoading={isPatientsLoading}
       />
 
       {selectedPatient && (

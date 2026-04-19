@@ -7,6 +7,7 @@ import { useLocation, useNavigate, useParams } from "react-router";
 import { useAddRecord, useUpdateRecord } from "@/services/apiRecords";
 import { useVisitDetailsForm } from "@/hooks/useVisitDetailsForm";
 import RecordMedicationForm from "./recordMedication/RecordMedicationForm";
+import { Skeleton } from "../../shadcn/skeleton";
 
 function ConsultationsForm() {
   const { patientId, consultationId } = useParams() as {
@@ -48,18 +49,20 @@ function ConsultationsForm() {
     navigate,
   });
 
-  if (isPatientLoading) return <p>Loading...</p>;
-
   return (
     <div className="pb-8">
       <div className="mb-4 space-y-1">
         <p className="text-2xl font-semibold">New Consultation</p>
         <p>
           Patient:{" "}
-          <span className="font-semibold">
-            {" "}
-            {`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}
-          </span>
+          {isPatientLoading ? (
+            <Skeleton className="h-4 w-24 bg-neutral-300" />
+          ) : (
+            <span className="font-semibold">
+              {" "}
+              {`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}
+            </span>
+          )}
         </p>
       </div>
 

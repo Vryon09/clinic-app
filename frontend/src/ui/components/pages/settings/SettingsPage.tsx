@@ -1,3 +1,4 @@
+import { Card } from "../../shadcn/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn/tabs";
 import Backup from "../backup/Backup";
 
@@ -14,7 +15,9 @@ function SettingsPage() {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="general">General</TabsContent>
+        <TabsContent value="general">
+          <Card>General</Card>
+        </TabsContent>
         <TabsContent value="backup">
           <Backup />
         </TabsContent>

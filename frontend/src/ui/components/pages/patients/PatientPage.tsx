@@ -3,8 +3,6 @@ import type { IPatient } from "@/types/PatientType";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import { Button } from "../../shadcn/button";
-import { handleGetRecords } from "@/services/apiRecords";
-import type { IRecord } from "@/types/RecordType";
 import { PenBox } from "lucide-react";
 import { useState } from "react";
 import PatientForm from "./PatientForm";
@@ -14,11 +12,9 @@ import { Card } from "../../shadcn/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn/tabs";
 import LabResultSection from "../labResult/LabResultSection";
 import BackButton from "../../BackButton";
-import type { PaginatedResponse } from "@/types/Pagination";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(1);
   const { patientId } = useParams() as { patientId: string };
 
   const { data: patient, isPending: isPatientPending } = useQuery<IPatient>({
@@ -26,25 +22,14 @@ function PatientPage() {
     queryFn: () => handleGetPatient({ id: patientId }),
   });
 
-  const { data: recordsData, isPending: isRecordsPending } = useQuery<
-    PaginatedResponse<IRecord>
-  >({
-    queryKey: ["records", patientId, page],
-    queryFn: () => handleGetRecords({ id: patientId, page }),
-  });
-
-  const records = recordsData?.data || [];
-  const paginationData = recordsData?.meta;
-
   const { mutate: handleUpdatePatient } = useUpdatePatient();
 
-  if (isPatientPending || isRecordsPending) return <p>Loading...</p>;
   return (
     <div className="flex h-full flex-col pb-8">
       <BackButton location="/patients" />
       <div className="flex flex-1 gap-4">
         {/* Patient Card */}
-        <PatientCard patient={patient!}>
+        <PatientCard patient={patient!} isPatientPending={isPatientPending}>
           <Button
             size="icon-lg"
             className="mt-4 cursor-pointer"
@@ -69,12 +54,7 @@ function PatientPage() {
             </TabsList>
 
             <TabsContent value="consultations">
-              <ConsultationRecords
-                patient={patient!}
-                records={records!}
-                paginationData={paginationData!}
-                setPage={setPage}
-              />
+              <ConsultationRecords patient={patient!} />
             </TabsContent>
 
             <TabsContent value="lab-results">

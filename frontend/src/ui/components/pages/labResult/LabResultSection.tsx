@@ -25,18 +25,20 @@ function LabResultSection() {
 
   console.log(labResults);
 
-  if (isLabResultsPending) return <p>Loading...</p>;
-
   return (
     <div>
       <UploadLabResultButton />
 
-      {!isLabResultsPending && <LabResultsTable labResults={labResults!} />}
+      <LabResultsTable
+        labResults={labResults!}
+        isLabResultsPending={isLabResultsPending}
+      />
 
       <PaginationBar
         itemName="Lab Results"
         paginationData={paginationData!}
         setPage={setPage}
+        isLoading={isLabResultsPending}
       />
     </div>
   );

@@ -27,6 +27,7 @@ function TopNavBar() {
       <div className="flex gap-1">
         {modules.map((module) => (
           <Button
+            key={module.url}
             className={cn(
               "cursor-pointer rounded-lg border-neutral-300 px-3 py-1 text-xs",
             )}
