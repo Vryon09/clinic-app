@@ -32,7 +32,7 @@ app.use("/api/labResults", labResultsRoutes);
 app.use("/api/labResults", labResultsRoutes);
 app.use("/api/google", googleAuthRoutes);
 app.use("/api/backup", backupRoutes);
-app.use("/api/register", authRoutes);
+app.use("/api/auth", authRoutes);
 
 app.listen(process.env.PORT, () =>
   console.log("Listening to PORT: " + process.env.PORT),
