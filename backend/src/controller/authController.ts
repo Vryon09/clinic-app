@@ -1,19 +1,10 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
-import { registerSchema, loginSchema } from "../schemas/authSchema";
 import bcrypt from "bcrypt";
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
-    const parsed = registerSchema.safeParse(req.body);
-
-    if (!parsed.success) {
-      return res.status(400).json({
-        errors: parsed.error.issues,
-      });
-    }
-
-    const { username, password, role } = parsed.data;
+    const { username, password, role } = req.body;
 
     const existingUser = await prisma.user.findUnique({
       where: { username },
@@ -33,14 +24,7 @@ export const registerUser = async (req: Request, res: Response) => {
       },
     });
 
-    res.status(201).json({
-      message: "User created",
-      user: {
-        id: user.id,
-        username: user.username,
-        role: user.role,
-      },
-    });
+    res.status(201).json({ message: "User created", user });
   } catch (err: any) {
     console.log(err);
     res.status(500).json({ error: err.message });
@@ -48,15 +32,7 @@ export const registerUser = async (req: Request, res: Response) => {
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-  const parsed = loginSchema.safeParse(req.body);
-
-  if (!parsed.success) {
-    return res.status(400).json({
-      errors: parsed.error.issues,
-    });
-  }
-
-  const { username, password } = parsed.data;
+  const { username, password } = req.body;
 
   const user = await prisma.user.findUnique({
     where: { username },
