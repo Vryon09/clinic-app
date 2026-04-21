@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
-
-export const prisma = new PrismaClient();
+import { prisma } from "../config/prisma";
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
@@ -20,6 +18,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: "User created", user });
   } catch (err: any) {
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 };
