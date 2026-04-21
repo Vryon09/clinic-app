@@ -19,20 +19,18 @@ enum UserRole {
   ASSISTANT
 }
 
-
-model User {
-  id        String   @id @default(uuid())
-  username  String   @unique
-  password  String
-  role      UserRole
-
-  createdAt DateTime @default(now())
-}
-
-
 enum Sex {
   MALE
   FEMALE
+}
+
+model User {
+  id       String   @id @default(uuid())
+  username String   @unique
+  password String
+  role     UserRole
+
+  createdAt DateTime @default(now())
 }
 
 model Patient {
@@ -40,7 +38,7 @@ model Patient {
   firstName   String
   middleName  String
   lastName    String
-  phone       String
+  phone       String   @unique
   address     String
   sex         Sex
   dateOfBirth DateTime

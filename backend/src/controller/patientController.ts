@@ -81,6 +81,15 @@ export async function getPatient(req: Request, res: Response) {
 
 export async function addPatient(req: Request, res: Response) {
   try {
+    const { phone } = req.body;
+    const isPatientExisted = await prisma.patient.findUnique({
+      where: { phone },
+    });
+
+    if (isPatientExisted) {
+      return res.status(409).json({ error: "Phone number already existed" });
+    }
+
     const newPatient = await prisma.patient.create({ data: { ...req.body } });
 
     res.status(201).json(newPatient);
