@@ -18,39 +18,38 @@ import { Input } from "@/ui/components/shadcn/input";
 import { Separator } from "../shadcn/separator";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginInput } from "@/schemas/authSchema";
-import { useNavigate } from "react-router";
+import { signupSchema, type SignupInput } from "@/schemas/authSchema";
 import { useRegister } from "@/services/apiAuth";
+import { toast } from "sonner";
 
-interface ILoginForm extends React.ComponentProps<"div"> {
+interface ISignupForm extends React.ComponentProps<"div"> {
   setForm: React.Dispatch<React.SetStateAction<"login" | "signup">>;
 }
 
-export function LoginForm({ className, setForm, ...props }: ILoginForm) {
+export function SignupForm({ className, setForm, ...props }: ISignupForm) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(loginSchema) });
+  } = useForm({ resolver: zodResolver(signupSchema) });
 
-  const { mutate: handleRegister } = useRegister();
+  const { mutate: handleRegister, isPending: isSigningup } = useRegister();
 
-  const navigate = useNavigate();
-
-  function onSubmit(data: LoginInput) {
-    handleRegister(data, {
-      onSuccess: () => {
-        navigate("/patients");
+  function onSubmit(data: SignupInput) {
+    handleRegister(
+      { username: data.username, password: data.password },
+      {
+        onSuccess: () => {
+          toast.success("Sign up successful", { position: "top-center" });
+          setForm("login");
+        },
+        onError: (err) => {
+          toast.error(err.response?.data?.message, { position: "top-center" });
+        },
       },
-      onError: () => {
-        console.log("mali boi");
-      },
-    });
+    );
   }
 
-  if (errors) {
-    console.log(errors);
-  }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="px-3 pt-4 pb-8">
@@ -100,17 +99,47 @@ export function LoginForm({ className, setForm, ...props }: ILoginForm) {
                   <FieldError className="text-xs" errors={[errors.password]} />
                 )}
               </Field>
+
               <Field>
-                <Button type="submit" className="cursor-pointer">
-                  Login
+                <div className="flex items-center">
+                  <FieldLabel htmlFor="password">Confirm Password</FieldLabel>
+                  {/* <a
+                    href="#"
+                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                  >
+                    Forgot your password?
+                  </a> */}
+                </div>
+                <Input
+                  className="border-neutral-300"
+                  id="confirmPassword"
+                  type="password"
+                  {...register("confirmPassword")}
+                  required
+                />
+                {errors.confirmPassword && (
+                  <FieldError
+                    className="text-xs"
+                    errors={[errors.confirmPassword]}
+                  />
+                )}
+              </Field>
+
+              <Field>
+                <Button
+                  type="submit"
+                  disabled={isSigningup}
+                  className="cursor-pointer"
+                >
+                  Sign up
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
                   <a
-                    onClick={() => setForm("signup")}
+                    onClick={() => setForm("login")}
                     className="cursor-pointer"
                   >
-                    Sign up
+                    Log in
                   </a>
                 </FieldDescription>
               </Field>

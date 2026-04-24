@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
 import bcrypt from "bcrypt";
+import { generateToken } from "../utils/generateToken";
 
-export const registerUser = async (req: Request, res: Response) => {
+export async function registerUser(req: Request, res: Response) {
   try {
     const { username, password, role } = req.body;
 
@@ -24,32 +25,74 @@ export const registerUser = async (req: Request, res: Response) => {
       },
     });
 
-    res.status(201).json({ message: "User created", user });
+    const token = generateToken(user.id, res);
+
+    res.status(201).json({
+      success: true,
+      data: {
+        user: {
+          id: user.id,
+          username,
+        },
+        token,
+      },
+    });
+  } catch (err: any) {
+    console.log(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
+export async function loginUser(req: Request, res: Response) {
+  try {
+    const { username, password } = req.body;
+
+    const user = await prisma.user.findUnique({
+      where: { username },
+    });
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = generateToken(user.id, res);
+
+    res.status(201).json({
+      message: "User created",
+      data: {
+        user: {
+          id: user.id,
+          username,
+        },
+        token,
+      },
+    });
   } catch (err: any) {
     console.log(err);
     res.status(500).json({ error: err.message });
   }
-};
+}
 
-export const loginUser = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
+export async function logoutUser(req: Request, res: Response) {
+  try {
+    // res.cookie("", "", { expires: new Date(0), httpOnly: true });
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
 
-  const user = await prisma.user.findUnique({
-    where: { username },
-  });
-
-  if (!user) {
-    return res.status(401).json({ message: "Invalid credentials" });
+    res
+      .status(200)
+      .json({ success: true, message: "User logged out successfully." });
+  } catch (err: any) {
+    console.log(err);
+    res.status(500).json({ error: err.message });
   }
-
-  const isMatch = await bcrypt.compare(password, user.password);
-
-  if (!isMatch) {
-    return res.status(401).json({ message: "Invalid credentials" });
-  }
-
-  res.json({
-    message: "Login successful",
-    role: user.role,
-  });
-};
+}

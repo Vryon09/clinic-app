@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const registerSchema = z.object({
-  username: z.string().email("Invalid email format"),
+  username: z.string().min(1, "Username is required."),
 
   password: z
     .string()
@@ -9,11 +9,11 @@ export const registerSchema = z.object({
     .regex(/[A-Z]/, "Must contain at least one uppercase letter")
     .regex(/[0-9]/, "Must contain at least one number"),
 
-  role: z.enum(["ADMIN", "DOCTOR", "ASSISTANT"]),
+  role: z.enum(["ADMIN", "DOCTOR", "ASSISTANT"]).default("ASSISTANT"),
 });
 
 export const loginSchema = z.object({
-  username: z.string().email("Invalid email format"),
+  username: z.string().min(1, "Username is required."),
 
   password: z.string().min(1, "Password is required"),
 });

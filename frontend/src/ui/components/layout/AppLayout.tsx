@@ -1,13 +1,19 @@
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import TopNavBar from "./TopNavBar";
 import { Separator } from "../shadcn/separator";
 
 export function AppLayout() {
+  const location = useLocation();
+  console.log(location.pathname);
   return (
     <div className="flex h-screen w-full flex-col px-8">
-      <TopNavBar />
+      {!location.pathname.includes("auth") && (
+        <>
+          <TopNavBar />
 
-      <Separator className="mb-4" />
+          <Separator className="mb-4" />
+        </>
+      )}
 
       <Outlet />
     </div>
