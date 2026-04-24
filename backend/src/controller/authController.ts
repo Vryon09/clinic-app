@@ -2,6 +2,27 @@ import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
 import bcrypt from "bcrypt";
 import { generateToken } from "../utils/generateToken";
+import { UserRequest } from "../types/express";
+
+export async function getMe(req: UserRequest, res: Response) {
+  try {
+    const userId = req.userId;
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, username: true, role: true },
+    });
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
 
 export async function registerUser(req: Request, res: Response) {
   try {
@@ -81,7 +102,6 @@ export async function loginUser(req: Request, res: Response) {
 
 export async function logoutUser(req: Request, res: Response) {
   try {
-    // res.cookie("", "", { expires: new Date(0), httpOnly: true });
     res.clearCookie("jwt", {
       httpOnly: true,
       secure: true,

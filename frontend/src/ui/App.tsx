@@ -9,6 +9,8 @@ import ConsultationDetails from "./components/pages/consultations/ConsultationDe
 import SettingsPage from "./components/pages/settings/SettingsPage";
 import AuthPage from "./components/pages/auth/AuthPage";
 import { Toaster } from "./components/shadcn/sonner";
+import ProtectedRoute from "./components/pages/auth/ProtectedRoute";
+import AuthGate from "./components/pages/auth/AuthGate";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,9 +26,23 @@ function App() {
       <Routes>
         <Route element={<AppLayout />}>
           <Route index element={<Navigate to="auth" replace />} />
-          <Route path="auth" element={<AuthPage />} />
+          <Route
+            path="auth"
+            element={
+              <AuthGate>
+                <AuthPage />
+              </AuthGate>
+            }
+          />
 
-          <Route path="patients" element={<PatientsPage />}>
+          <Route
+            path="patients"
+            element={
+              <ProtectedRoute>
+                <PatientsPage />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<PatientsHome />} />
             <Route path=":patientId" element={<PatientPage />} />
             <Route
@@ -43,7 +59,14 @@ function App() {
             />
           </Route>
 
-          <Route path="settings" element={<SettingsPage />}></Route>
+          <Route
+            path="settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          ></Route>
         </Route>
       </Routes>
       <Toaster />

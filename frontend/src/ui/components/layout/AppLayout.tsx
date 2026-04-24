@@ -4,7 +4,7 @@ import { Separator } from "../shadcn/separator";
 
 export function AppLayout() {
   const location = useLocation();
-  console.log(location.pathname);
+
   return (
     <div className="flex h-screen w-full flex-col px-8">
       {!location.pathname.includes("auth") && (

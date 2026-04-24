@@ -19,8 +19,9 @@ import { Separator } from "../shadcn/separator";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginInput } from "@/schemas/authSchema";
+import { useLogin } from "../../../services/apiAuth";
+import { toast } from "sonner";
 import { useNavigate } from "react-router";
-import { useRegister } from "@/services/apiAuth";
 
 interface ILoginForm extends React.ComponentProps<"div"> {
   setForm: React.Dispatch<React.SetStateAction<"login" | "signup">>;
@@ -33,24 +34,22 @@ export function LoginForm({ className, setForm, ...props }: ILoginForm) {
     formState: { errors },
   } = useForm({ resolver: zodResolver(loginSchema) });
 
-  const { mutate: handleRegister } = useRegister();
+  const { mutate: handleLogin, isPending: isLoggingin } = useLogin();
 
   const navigate = useNavigate();
 
   function onSubmit(data: LoginInput) {
-    handleRegister(data, {
+    handleLogin(data, {
       onSuccess: () => {
+        toast.success("Login successful", { position: "top-center" });
         navigate("/patients");
       },
-      onError: () => {
-        console.log("mali boi");
+      onError: (err) => {
+        toast.error(err.response?.data?.message, { position: "top-center" });
       },
     });
   }
 
-  if (errors) {
-    console.log(errors);
-  }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="px-3 pt-4 pb-8">
@@ -101,7 +100,11 @@ export function LoginForm({ className, setForm, ...props }: ILoginForm) {
                 )}
               </Field>
               <Field>
-                <Button type="submit" className="cursor-pointer">
+                <Button
+                  type="submit"
+                  disabled={isLoggingin}
+                  className="cursor-pointer"
+                >
                   Login
                 </Button>
                 <FieldDescription className="text-center">

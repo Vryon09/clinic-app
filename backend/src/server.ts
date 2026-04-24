@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express, { Request, Response } from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { prisma } from "./config/prisma";
 import patientRoutes from "./routes/patientRoutes.ts";
 import recordRoutes from "./routes/recordRoutes.ts";
@@ -13,9 +14,10 @@ import authRoutes from "./routes/authRoutes.ts";
 
 const app = express();
 
-app.use(cors({ origin: ["http://localhost:5123"] }));
+app.use(cors({ origin: ["http://localhost:5123"], credentials: true }));
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/uploads", express.static("uploads"));
 

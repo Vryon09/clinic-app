@@ -8,15 +8,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../shadcn/dropdown-menu";
+import { useLogout } from "@/services/apiAuth";
 
 const modules = [
   { url: "patients", label: "Patients", icon: User2 },
-  // { url: "backup", label: "Backup", icon: CloudBackup },
   { url: "settings", label: "Settings", icon: Settings },
 ];
 
 function TopNavBar() {
   const navigate = useNavigate();
+  const { mutate: handleLogout } = useLogout();
   const location = useLocation();
   const currTab = location.pathname.split("/").slice(1)[0];
 
@@ -53,7 +54,13 @@ function TopNavBar() {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent>
-            <DropdownMenuItem>Sign out</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                handleLogout();
+              }}
+            >
+              Sign out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
