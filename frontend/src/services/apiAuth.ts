@@ -5,10 +5,20 @@ import type { AxiosError } from "axios";
 type RegisterPayload = {
   username: string;
   password: string;
+  role: "ADMIN" | "DOCTOR" | "ASSISTANT";
 };
 
-async function handleRegister({ username, password }: RegisterPayload) {
-  const res = await api.post("/api/auth/register", { username, password });
+type LoginPayload = {
+  username: string;
+  password: string;
+};
+
+async function handleRegister({ username, password, role }: RegisterPayload) {
+  const res = await api.post("/api/auth/register", {
+    username,
+    password,
+    role,
+  });
   return res.data;
 }
 
@@ -18,7 +28,13 @@ export function useRegister() {
   );
 }
 
-async function handleLogin({ username, password }: RegisterPayload) {
+export async function handleGetAuthStatus() {
+  const res = await api.get("/api/auth/status");
+
+  return res.data;
+}
+
+async function handleLogin({ username, password }: LoginPayload) {
   const res = await api.post("/api/auth/login", { username, password });
   return res.data;
 }
@@ -26,14 +42,12 @@ async function handleLogin({ username, password }: RegisterPayload) {
 export function useLogin() {
   const queryClient = useQueryClient();
 
-  return useMutation<unknown, AxiosError<{ message: string }>, RegisterPayload>(
-    {
-      mutationFn: handleLogin,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["me"] });
-      },
+  return useMutation<unknown, AxiosError<{ message: string }>, LoginPayload>({
+    mutationFn: handleLogin,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["me"] });
     },
-  );
+  });
 }
 
 async function handleLogout() {

@@ -1,17 +1,29 @@
-import { useState } from "react";
 import { LoginForm } from "../../forms/LoginForm";
 import { SignupForm } from "../../forms/SignupForm";
+import { useQuery } from "@tanstack/react-query";
+import { handleGetAuthStatus } from "@/services/apiAuth";
+import { Spinner } from "../../shadcn/spinner";
 
 function AuthPage() {
-  const [form, setForm] = useState<"login" | "signup">("login");
+  const { data: authStatusData, isPending: isAuthStatusPending } = useQuery({
+    queryFn: handleGetAuthStatus,
+    queryKey: ["authStatus"],
+    retry: false,
+  });
+
+  const isSetupComplete = authStatusData?.isSetupComplete || false;
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
-        {form === "login" ? (
-          <LoginForm setForm={setForm} />
+        {isAuthStatusPending ? (
+          <div className="flex h-screen w-full items-center justify-center">
+            <Spinner className="size-8" />
+          </div>
+        ) : isSetupComplete ? (
+          <LoginForm />
         ) : (
-          <SignupForm setForm={setForm} />
+          <SignupForm />
         )}
       </div>
     </div>

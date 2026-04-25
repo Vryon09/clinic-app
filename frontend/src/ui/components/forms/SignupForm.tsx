@@ -9,7 +9,6 @@ import {
 } from "@/ui/components/shadcn/card";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -21,12 +20,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema, type SignupInput } from "@/schemas/authSchema";
 import { useRegister } from "@/services/apiAuth";
 import { toast } from "sonner";
+import { useNavigate } from "react-router";
 
-interface ISignupForm extends React.ComponentProps<"div"> {
-  setForm: React.Dispatch<React.SetStateAction<"login" | "signup">>;
-}
-
-export function SignupForm({ className, setForm, ...props }: ISignupForm) {
+export function SignupForm({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   const {
     register,
     handleSubmit,
@@ -34,14 +33,15 @@ export function SignupForm({ className, setForm, ...props }: ISignupForm) {
   } = useForm({ resolver: zodResolver(signupSchema) });
 
   const { mutate: handleRegister, isPending: isSigningup } = useRegister();
+  const navigate = useNavigate();
 
   function onSubmit(data: SignupInput) {
     handleRegister(
-      { username: data.username, password: data.password },
+      { username: data.username, password: data.password, role: "ADMIN" },
       {
         onSuccess: () => {
           toast.success("Sign up successful", { position: "top-center" });
-          setForm("login");
+          navigate("/patients");
         },
         onError: (err) => {
           toast.error(err.response?.data?.message, { position: "top-center" });
@@ -133,7 +133,7 @@ export function SignupForm({ className, setForm, ...props }: ISignupForm) {
                 >
                   Sign up
                 </Button>
-                <FieldDescription className="text-center">
+                {/* <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
                   <a
                     onClick={() => setForm("login")}
@@ -141,7 +141,7 @@ export function SignupForm({ className, setForm, ...props }: ISignupForm) {
                   >
                     Log in
                   </a>
-                </FieldDescription>
+                </FieldDescription> */}
               </Field>
             </FieldGroup>
           </form>

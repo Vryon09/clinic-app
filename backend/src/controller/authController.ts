@@ -4,6 +4,17 @@ import bcrypt from "bcrypt";
 import { generateToken } from "../utils/generateToken";
 import { UserRequest } from "../types/express";
 
+export async function getAuthStatus(req: Request, res: Response) {
+  try {
+    const userCount = await prisma.user.count();
+
+    res.status(200).json({ isSetupComplete: !!userCount });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
+
 export async function getMe(req: UserRequest, res: Response) {
   try {
     const userId = req.userId;

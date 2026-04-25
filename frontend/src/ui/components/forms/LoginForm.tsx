@@ -9,7 +9,6 @@ import {
 } from "@/ui/components/shadcn/card";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -23,11 +22,10 @@ import { useLogin } from "../../../services/apiAuth";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
 
-interface ILoginForm extends React.ComponentProps<"div"> {
-  setForm: React.Dispatch<React.SetStateAction<"login" | "signup">>;
-}
-
-export function LoginForm({ className, setForm, ...props }: ILoginForm) {
+export function LoginForm({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   const {
     register,
     handleSubmit,
@@ -107,7 +105,7 @@ export function LoginForm({ className, setForm, ...props }: ILoginForm) {
                 >
                   Login
                 </Button>
-                <FieldDescription className="text-center">
+                {/* <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
                   <a
                     onClick={() => setForm("signup")}
@@ -115,7 +113,7 @@ export function LoginForm({ className, setForm, ...props }: ILoginForm) {
                   >
                     Sign up
                   </a>
-                </FieldDescription>
+                </FieldDescription> */}
               </Field>
             </FieldGroup>
           </form>
