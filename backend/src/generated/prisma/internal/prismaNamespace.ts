@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.4.1
- * Query Engine version: 55ae170b1ced7fc6ed07a15f110549408c501bb3
+ * Prisma Client JS version: 7.4.2
+ * Query Engine version: 94a226be1cf2967af2541cca5529f0f7ba866919
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.4.1",
-  engine: "55ae170b1ced7fc6ed07a15f110549408c501bb3"
+  client: "7.4.2",
+  engine: "94a226be1cf2967af2541cca5529f0f7ba866919"
 }
 
 /**
@@ -384,6 +384,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  Clinic: 'Clinic',
   User: 'User',
   Patient: 'Patient',
   Record: 'Record',
@@ -406,10 +407,84 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "patient" | "record" | "vitalSigns" | "recordMedication" | "labResult" | "googleToken"
+    modelProps: "clinic" | "user" | "patient" | "record" | "vitalSigns" | "recordMedication" | "labResult" | "googleToken"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    Clinic: {
+      payload: Prisma.$ClinicPayload<ExtArgs>
+      fields: Prisma.ClinicFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ClinicFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ClinicFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicPayload>
+        }
+        findFirst: {
+          args: Prisma.ClinicFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ClinicFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicPayload>
+        }
+        findMany: {
+          args: Prisma.ClinicFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicPayload>[]
+        }
+        create: {
+          args: Prisma.ClinicCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicPayload>
+        }
+        createMany: {
+          args: Prisma.ClinicCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ClinicCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicPayload>[]
+        }
+        delete: {
+          args: Prisma.ClinicDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicPayload>
+        }
+        update: {
+          args: Prisma.ClinicUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicPayload>
+        }
+        deleteMany: {
+          args: Prisma.ClinicDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ClinicUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ClinicUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicPayload>[]
+        }
+        upsert: {
+          args: Prisma.ClinicUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicPayload>
+        }
+        aggregate: {
+          args: Prisma.ClinicAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateClinic>
+        }
+        groupBy: {
+          args: Prisma.ClinicGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClinicGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ClinicCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClinicCountAggregateOutputType> | number
+        }
+      }
+    }
     User: {
       payload: Prisma.$UserPayload<ExtArgs>
       fields: Prisma.UserFieldRefs
@@ -967,6 +1042,19 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const ClinicScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  address: 'address',
+  contactNumber: 'contactNumber',
+  email: 'email',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClinicScalarFieldEnum = (typeof ClinicScalarFieldEnum)[keyof typeof ClinicScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   username: 'username',
@@ -1101,20 +1189,6 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'UserRole'
- */
-export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
-    
-
-
-/**
- * Reference to a field of type 'UserRole[]'
- */
-export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
-    
-
-
-/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -1125,6 +1199,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'UserRole'
+ */
+export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
+    
+
+
+/**
+ * Reference to a field of type 'UserRole[]'
+ */
+export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
     
 
 
@@ -1278,6 +1366,7 @@ export type PrismaClientOptions = ({
   comments?: runtime.SqlCommenterPlugin[]
 }
 export type GlobalOmitConfig = {
+  clinic?: Prisma.ClinicOmit
   user?: Prisma.UserOmit
   patient?: Prisma.PatientOmit
   record?: Prisma.RecordOmit
