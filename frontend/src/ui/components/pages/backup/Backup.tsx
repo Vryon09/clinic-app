@@ -62,11 +62,11 @@ function Backup() {
     <Card className="px-8 py-4">
       <div
         className={cn(
-          "mb-2 flex items-center justify-between",
-          isConnected ? "mb-4" : "",
+          "flex items-center justify-between",
+          isConnected ? "mb-2" : "mb-2",
         )}
       >
-        <p className="text-3xl font-semibold">Backup</p>
+        <p className="text-2xl font-semibold">Backup</p>
 
         <Badge
           className={cn(
@@ -97,13 +97,20 @@ function Backup() {
         </div>
       ) : (
         <>
-          {!isConnected && (
+          {!isConnected ? (
             <p className="mb-4 max-w-125 text-sm text-neutral-500">
               Connect a Google Drive account to back up all patient data,
               consultation records, and lab results. Backups are stored in your
               own Drive — ClinicSync never holds your data.
             </p>
+          ) : (
+            <p className="mb-4 max-w-125 text-sm text-neutral-500">
+              Your Google Drive is connected. All patient data, consultation
+              records, and lab results are securely backed up to your Drive.
+            </p>
           )}
+
+          <Separator className="mb-4" />
 
           {!isConnected && (
             <Button className="cursor-pointer" onClick={handleConnectDrive}>

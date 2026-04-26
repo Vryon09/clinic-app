@@ -34,6 +34,12 @@ export async function handleGetAuthStatus() {
   return res.data;
 }
 
+export async function handleGetUsers() {
+  const res = await api.get("/api/auth/users");
+
+  return res.data || [];
+}
+
 async function handleLogin({ username, password }: LoginPayload) {
   const res = await api.post("/api/auth/login", { username, password });
   return res.data;

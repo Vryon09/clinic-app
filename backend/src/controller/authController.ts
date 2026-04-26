@@ -15,6 +15,23 @@ export async function getAuthStatus(req: Request, res: Response) {
   }
 }
 
+export async function getUsers(req: Request, res: Response) {
+  try {
+    const users = await prisma.user.findMany({
+      select: { id: true, username: true, role: true },
+    });
+
+    if (!users) {
+      return res.status(400).json({ message: "Users not found" });
+    }
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
+
 export async function getMe(req: UserRequest, res: Response) {
   try {
     const userId = req.userId;
