@@ -7,8 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import { handleGetUsers } from "@/services/apiAuth";
 import type { IUser } from "@/types/User";
 import UsersTable from "./UsersTable";
+import AddUser from "./AddUser";
+import { useState } from "react";
 
 function ManageAccounts() {
+  const [isAddingUser, setIsAddingUser] = useState<boolean>(false);
   const { data: users, isPending: isUsersLoading } = useQuery<IUser[]>({
     queryFn: handleGetUsers,
     queryKey: ["users"],
@@ -26,9 +29,17 @@ function ManageAccounts() {
           </p>
         </div>
 
-        <Button className="cursor-pointer">
+        <Button
+          className="cursor-pointer"
+          onClick={() => setIsAddingUser((prev) => !prev)}
+        >
           <Plus /> Add User
         </Button>
+
+        <AddUser
+          isAddingUser={isAddingUser}
+          setIsAddingUser={setIsAddingUser}
+        />
       </div>
 
       <Separator />

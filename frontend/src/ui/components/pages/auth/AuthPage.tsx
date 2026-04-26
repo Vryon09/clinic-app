@@ -5,7 +5,11 @@ import { handleGetAuthStatus } from "@/services/apiAuth";
 import { Spinner } from "../../shadcn/spinner";
 
 function AuthPage() {
-  const { data: authStatusData, isPending: isAuthStatusPending } = useQuery({
+  const {
+    data: authStatusData,
+    isPending: isAuthStatusPending,
+    isError: isAuthError,
+  } = useQuery({
     queryFn: handleGetAuthStatus,
     queryKey: ["authStatus"],
     retry: false,
@@ -19,6 +23,10 @@ function AuthPage() {
         {isAuthStatusPending ? (
           <div className="flex h-screen w-full items-center justify-center">
             <Spinner className="size-8" />
+          </div>
+        ) : isAuthError ? (
+          <div className="flex h-screen w-full items-center justify-center">
+            <p>Backend is not available. Please try again later.</p>
           </div>
         ) : isSetupComplete ? (
           <LoginForm />

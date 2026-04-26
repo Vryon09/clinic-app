@@ -1,6 +1,7 @@
 import api from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
+import { toast } from "sonner";
 
 type RegisterPayload = {
   username: string;
@@ -23,8 +24,16 @@ async function handleRegister({ username, password, role }: RegisterPayload) {
 }
 
 export function useRegister() {
+  const queryClient = useQueryClient();
+
   return useMutation<unknown, AxiosError<{ message: string }>, RegisterPayload>(
-    { mutationFn: handleRegister },
+    {
+      mutationFn: handleRegister,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["users"] });
+        toast.success("User added successfully", { position: "top-center" });
+      },
+    },
   );
 }
 
