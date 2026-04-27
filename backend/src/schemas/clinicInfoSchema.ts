@@ -28,3 +28,8 @@ export const createClinicInfo = z.object({
     .min(1, "Email is required")
     .email("Invalid email format"),
 });
+
+export const updateClinicInfo = createClinicInfo.partial();
+
+export type CreateClinicInfo = z.infer<typeof createClinicInfo>;
+export type UpdateClinicInfoType = z.infer<typeof updateClinicInfo>;
