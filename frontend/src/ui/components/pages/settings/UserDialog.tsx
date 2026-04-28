@@ -18,46 +18,91 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { addUserSchema, type AddUserInput } from "@/schemas/authSchema";
 import { Card } from "../../shadcn/card";
 import { cn } from "@/lib/utils";
-import { useRegister } from "@/services/apiAuth";
+import { useRegister, useUpdateUser } from "@/services/apiAuth";
 import { toast } from "sonner";
+import type { IUser } from "@/types/User";
 
-interface IAddUser {
-  isAddingUser: boolean;
-  setIsAddingUser: React.Dispatch<React.SetStateAction<boolean>>;
+interface IUserDialog {
+  isUserDialogOpen: boolean;
+  setIsUserDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  action: "update" | "create";
+  initialValues: IUser;
 }
 
-function AddUser({ isAddingUser, setIsAddingUser }: IAddUser) {
+function UserDialog({
+  isUserDialogOpen,
+  setIsUserDialogOpen,
+  action,
+  initialValues,
+}: IUserDialog) {
   const {
     register,
     handleSubmit,
     reset,
     control,
     formState: { errors },
-  } = useForm({ resolver: zodResolver(addUserSchema) });
+  } = useForm({
+    resolver: zodResolver(addUserSchema),
+    defaultValues: {
+      username: initialValues.username,
+      role: initialValues.role,
+    },
+  });
 
   const { mutate: handleRegister } = useRegister();
+  const { mutate: handleUpdateUser } = useUpdateUser();
 
   function onSubmit(data: AddUserInput) {
-    handleRegister(
-      {
-        username: data.username,
-        password: data.password,
-        role: data.role,
-      },
-      {
-        onSuccess: () => {
-          reset();
-          setIsAddingUser(false);
+    if (action === "create") {
+      handleRegister(
+        {
+          username: data.username,
+          password: "Password123",
+          role: data.role,
         },
-        onError: (err) => {
-          toast.error(err.response?.data?.message, { position: "top-center" });
+        {
+          onSuccess: () => {
+            reset();
+            setIsUserDialogOpen(false);
+          },
+          onError: (err) => {
+            toast.error(err.response?.data?.message, {
+              position: "top-center",
+            });
+          },
         },
-      },
-    );
+      );
+    }
+
+    if (action === "update") {
+      if (
+        data.username === initialValues.username &&
+        data.role === initialValues.role
+      ) {
+        toast.error("No changes", { position: "top-center" });
+        setIsUserDialogOpen(false);
+        return;
+      }
+
+      handleUpdateUser(
+        { username: data.username, role: data.role, id: initialValues.id },
+        {
+          onSuccess: () => {
+            reset();
+            setIsUserDialogOpen(false);
+          },
+          onError: (err) => {
+            toast.error(err.response?.data?.message, {
+              position: "top-center",
+            });
+          },
+        },
+      );
+    }
   }
 
   return (
-    <Dialog open={isAddingUser} onOpenChange={setIsAddingUser}>
+    <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add User</DialogTitle>
@@ -67,46 +112,17 @@ function AddUser({ isAddingUser, setIsAddingUser }: IAddUser) {
           <FieldSet className="w-full">
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="username">Username</FieldLabel>
-                <Input
-                  className="border border-neutral-400"
-                  id="username"
-                  {...register("username")}
-                  type="text"
-                />
+                <div className="space-y-1">
+                  <FieldLabel htmlFor="username">Username</FieldLabel>
+                  <Input
+                    className="border border-neutral-400"
+                    id="username"
+                    {...register("username")}
+                    type="text"
+                  />
+                </div>
                 {errors.username && (
                   <FieldError className="text-xs" errors={[errors.username]} />
-                )}
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Input
-                  className="border border-neutral-400"
-                  id="password"
-                  {...register("password")}
-                  type="password"
-                />
-                {errors.password && (
-                  <FieldError className="text-xs" errors={[errors.password]} />
-                )}
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="confirmPassword">
-                  Confirm Password
-                </FieldLabel>
-                <Input
-                  className="border border-neutral-400"
-                  id="confirmPassword"
-                  {...register("confirmPassword")}
-                  type="password"
-                />
-                {errors.confirmPassword && (
-                  <FieldError
-                    className="text-xs"
-                    errors={[errors.confirmPassword]}
-                  />
                 )}
               </Field>
 
@@ -115,19 +131,7 @@ function AddUser({ isAddingUser, setIsAddingUser }: IAddUser) {
                   name="role"
                   control={control}
                   render={({ field }) => (
-                    <div className="grid w-full grid-cols-3 gap-2">
-                      <Card
-                        onClick={() => field.onChange("ADMIN")}
-                        className={cn(
-                          "cursor-pointer px-2 py-3 text-center font-semibold",
-                          field.value === "ADMIN"
-                            ? "bg-neutral-950 text-white"
-                            : "",
-                        )}
-                      >
-                        Admin
-                      </Card>
-
+                    <div className="grid w-full grid-cols-2 gap-2">
                       <Card
                         onClick={() => field.onChange("DOCTOR")}
                         className={cn(
@@ -173,4 +177,4 @@ function AddUser({ isAddingUser, setIsAddingUser }: IAddUser) {
   );
 }
 
-export default AddUser;
+export default UserDialog;

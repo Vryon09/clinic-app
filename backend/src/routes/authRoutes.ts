@@ -6,6 +6,7 @@ import {
   getMe,
   getAuthStatus,
   getUsers,
+  updateUser,
 } from "../controller/authController";
 import { validateSchema } from "../middleware/validateSchema";
 import { loginSchema, registerSchema } from "../schemas/authSchema";
@@ -19,5 +20,6 @@ router.post("/logout", logoutUser);
 router.get("/me", verifyToken, getMe);
 router.get("/status", getAuthStatus);
 router.get("/users", getUsers);
+router.patch("/update", updateUser);
 
 export default router;

@@ -42,7 +42,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
     queryKey: ["patients", searchInput, page],
   });
 
-  const patients = patientsData?.data ?? [];
+  const patients: IPatient[] = patientsData?.data ?? [];
   const paginationData = patientsData?.meta;
 
   const { mutate: handleDeletePatient } = useDeletePatient();
@@ -195,7 +195,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
             address: selectedPatient.address,
             sex: selectedPatient.sex,
             dateOfBirth: new Date(selectedPatient.dateOfBirth),
-            middleName: selectedPatient?.middleName || "",
+            middleName: selectedPatient.middleName,
           }}
           key={selectedPatient.id}
         />

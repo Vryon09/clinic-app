@@ -9,16 +9,25 @@ import {
 import { Badge } from "../../shadcn/badge";
 import { Button } from "../../shadcn/button";
 import type { IUser } from "@/types/User";
+import UserDialog from "./UserDialog";
 
-function UsersTable({ users }: { users: IUser[] }) {
+function UsersTable({
+  users,
+  selectedUser,
+  setSelectedUser,
+}: {
+  users: IUser[];
+  selectedUser: IUser | null;
+  setSelectedUser: React.Dispatch<React.SetStateAction<IUser | null>>;
+}) {
   return (
     <div className="rounded-xl border border-neutral-300 px-2">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Username</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead className="font-semibold">Username</TableHead>
+            <TableHead className="font-semibold">Role</TableHead>
+            <TableHead className="text-right"></TableHead>
           </TableRow>
         </TableHeader>
 
@@ -31,14 +40,50 @@ function UsersTable({ users }: { users: IUser[] }) {
                 <Badge>{user.role}</Badge>
               </TableCell>
 
-              <TableCell className="space-x-2">
-                <Button size="xs">Delete</Button>
-                <Button size="xs">Edit</Button>
+              <TableCell className="space-x-2 text-right">
+                <Button
+                  onClick={() =>
+                    setSelectedUser({
+                      username: user.username,
+                      role: user.role,
+                      id: user.id,
+                    })
+                  }
+                  size="xs"
+                  className="cursor-pointer"
+                >
+                  Edit
+                </Button>
+
+                <Button
+                  size="xs"
+                  className="cursor-pointer"
+                  variant="destructive"
+                >
+                  Delete
+                </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
+      {selectedUser && (
+        <UserDialog
+          isUserDialogOpen={!!selectedUser}
+          setIsUserDialogOpen={() => {
+            if (selectedUser) {
+              setSelectedUser(null);
+            }
+          }}
+          action="update"
+          initialValues={{
+            username: selectedUser!.username,
+            role: selectedUser!.role,
+            id: selectedUser!.id,
+          }}
+        />
+      )}
     </div>
   );
 }

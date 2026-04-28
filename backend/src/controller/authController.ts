@@ -124,7 +124,7 @@ export async function loginUser(req: Request, res: Response) {
     });
   } catch (err: any) {
     console.log(err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 }
 
@@ -141,6 +141,38 @@ export async function logoutUser(req: Request, res: Response) {
       .json({ success: true, message: "User logged out successfully." });
   } catch (err: any) {
     console.log(err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: err.message });
+  }
+}
+
+export async function updateUser(req: Request, res: Response) {
+  try {
+    const { id, username, role } = req.body;
+
+    const isUsernameUsed = await prisma.user.findUnique({
+      where: { username },
+    });
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (isUsernameUsed && isUsernameUsed.id !== id) {
+      return res.status(400).json({ message: "Username already used" });
+    }
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: { username, role },
+    });
+
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
   }
 }

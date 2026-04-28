@@ -1,14 +1,10 @@
 import { cn } from "@/lib/utils";
-import { ChevronDown, Settings, User2 } from "lucide-react";
+import { LogOut, Settings, User2 } from "lucide-react";
 import { Button } from "../shadcn/button";
 import { useLocation, useNavigate } from "react-router";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../shadcn/dropdown-menu";
+
 import { useLogout } from "@/services/apiAuth";
+import { Separator } from "../shadcn/separator";
 
 const modules = [
   { url: "patients", label: "Patients", icon: User2 },
@@ -25,7 +21,7 @@ function TopNavBar() {
     <div className="flex items-center justify-between px-4 py-3">
       <p className="text-sm font-semibold">ClinicSync</p>
 
-      <div className="flex gap-1">
+      <div className="flex h-8 items-center gap-1">
         {modules.map((module) => (
           <Button
             key={module.url}
@@ -40,29 +36,20 @@ function TopNavBar() {
           </Button>
         ))}
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              className={cn(
-                "cursor-pointer rounded-lg border-neutral-300 px-3 py-1 text-xs",
-              )}
-              size="icon-sm"
-              variant="outline"
-            >
-              <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
+        <Separator orientation="vertical" className="mx-2" />
 
-          <DropdownMenuContent>
-            <DropdownMenuItem
-              onClick={() => {
-                handleLogout();
-              }}
-            >
-              Sign out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button
+          className={cn(
+            "cursor-pointer rounded-lg border-neutral-300 px-3 py-1 text-xs hover:bg-red-400 hover:text-white",
+          )}
+          size={"icon-sm"}
+          variant={"outline"}
+          onClick={() => {
+            handleLogout();
+          }}
+        >
+          <LogOut />
+        </Button>
       </div>
     </div>
   );

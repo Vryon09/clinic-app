@@ -49,6 +49,40 @@ export async function handleGetUsers() {
   return res.data || [];
 }
 
+async function handleUpdateUser({
+  id,
+  username,
+  role,
+}: {
+  username: string;
+  role: "ADMIN" | "DOCTOR" | "ASSISTANT";
+  id: string;
+}) {
+  const res = await api.patch("/api/auth/update", { id, username, role });
+
+  return res.data || {};
+}
+
+export function useUpdateUser() {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    unknown,
+    AxiosError<{ message: string }>,
+    {
+      username: string;
+      role: "ADMIN" | "DOCTOR" | "ASSISTANT";
+      id: string;
+    }
+  >({
+    mutationFn: handleUpdateUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("User updated successfully", { position: "top-center" });
+    },
+  });
+}
+
 async function handleLogin({ username, password }: LoginPayload) {
   const res = await api.post("/api/auth/login", { username, password });
   return res.data;

@@ -7,10 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import { handleGetUsers } from "@/services/apiAuth";
 import type { IUser } from "@/types/User";
 import UsersTable from "./UsersTable";
-import AddUser from "./AddUser";
 import { useState } from "react";
+import UserDialog from "./UserDialog";
 
 function ManageAccounts() {
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
   const [isAddingUser, setIsAddingUser] = useState<boolean>(false);
   const { data: users, isPending: isUsersLoading } = useQuery<IUser[]>({
     queryFn: handleGetUsers,
@@ -36,15 +37,21 @@ function ManageAccounts() {
           <Plus /> Add User
         </Button>
 
-        <AddUser
-          isAddingUser={isAddingUser}
-          setIsAddingUser={setIsAddingUser}
+        <UserDialog
+          isUserDialogOpen={isAddingUser}
+          setIsUserDialogOpen={setIsAddingUser}
+          action="create"
+          initialValues={{ username: "", role: "DOCTOR", id: "" }}
         />
       </div>
 
       <Separator />
 
-      <UsersTable users={users!} />
+      <UsersTable
+        users={users!}
+        selectedUser={selectedUser}
+        setSelectedUser={setSelectedUser}
+      />
     </Card>
   );
 }
