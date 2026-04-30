@@ -40,7 +40,7 @@ function TopNavBar() {
 
         <Button
           className={cn(
-            "cursor-pointer rounded-lg border-neutral-300 px-3 py-1 text-xs hover:bg-red-400 hover:text-white",
+            "cursor-pointer rounded-lg border-neutral-300 px-3 py-1 text-xs hover:border-0 hover:bg-red-600 hover:text-white",
           )}
           size={"icon-sm"}
           variant={"outline"}

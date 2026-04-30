@@ -60,7 +60,7 @@ function UsersTable({
                   className="cursor-pointer"
                   variant="destructive"
                 >
-                  Delete
+                  Disable
                 </Button>
               </TableCell>
             </TableRow>

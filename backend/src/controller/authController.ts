@@ -18,6 +18,7 @@ export async function getAuthStatus(req: Request, res: Response) {
 export async function getUsers(req: Request, res: Response) {
   try {
     const users = await prisma.user.findMany({
+      where: { NOT: { role: "ADMIN" } },
       select: { id: true, username: true, role: true },
     });
 
