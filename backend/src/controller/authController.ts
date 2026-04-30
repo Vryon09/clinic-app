@@ -15,10 +15,12 @@ export async function getAuthStatus(req: Request, res: Response) {
   }
 }
 
-export async function getUsers(req: Request, res: Response) {
+export async function getUsers(req: UserRequest, res: Response) {
   try {
+    const userId = req.userId;
+
     const users = await prisma.user.findMany({
-      where: { NOT: { role: "ADMIN" } },
+      where: { AND: [{ role: { not: "ADMIN" } }, { id: { not: userId } }] },
       select: { id: true, username: true, role: true, isActive: true },
     });
 
@@ -39,7 +41,7 @@ export async function getMe(req: UserRequest, res: Response) {
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, username: true, role: true },
+      select: { id: true, username: true, role: true, isActive: true },
     });
 
     if (!user) {

@@ -20,7 +20,7 @@ router.post("/login", validateSchema(loginSchema), loginUser);
 router.post("/logout", logoutUser);
 router.get("/me", verifyToken, getMe);
 router.get("/status", getAuthStatus);
-router.get("/users", getUsers);
+router.get("/users", verifyToken, getUsers);
 router.patch("/update", updateUser);
 router.patch("/toggleStatus", toggleUserStatus);
 
