@@ -119,3 +119,20 @@ export async function handleGetMe() {
 
   return res.data;
 }
+
+async function handleToggleUserStatus({ id }: { id: string }) {
+  const res = await api.patch("/api/auth/toggleStatus", { id });
+
+  return res.data || {};
+}
+
+export function useToggleUserStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleToggleUserStatus,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+}

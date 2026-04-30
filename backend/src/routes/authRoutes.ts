@@ -7,6 +7,7 @@ import {
   getAuthStatus,
   getUsers,
   updateUser,
+  toggleUserStatus,
 } from "../controller/authController";
 import { validateSchema } from "../middleware/validateSchema";
 import { loginSchema, registerSchema } from "../schemas/authSchema";
@@ -21,5 +22,6 @@ router.get("/me", verifyToken, getMe);
 router.get("/status", getAuthStatus);
 router.get("/users", getUsers);
 router.patch("/update", updateUser);
+router.patch("/toggleStatus", toggleUserStatus);
 
 export default router;

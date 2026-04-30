@@ -10,6 +10,8 @@ import { Badge } from "../../shadcn/badge";
 import { Button } from "../../shadcn/button";
 import type { IUser } from "@/types/User";
 import UserDialog from "./UserDialog";
+import { useToggleUserStatus } from "@/services/apiAuth";
+import { cn } from "@/lib/utils";
 
 function UsersTable({
   users,
@@ -20,6 +22,8 @@ function UsersTable({
   selectedUser: IUser | null;
   setSelectedUser: React.Dispatch<React.SetStateAction<IUser | null>>;
 }) {
+  const { mutate: handleToggleUserStatus } = useToggleUserStatus();
+
   return (
     <div className="rounded-xl border border-neutral-300 px-2">
       <Table>
@@ -27,6 +31,7 @@ function UsersTable({
           <TableRow>
             <TableHead className="font-semibold">Username</TableHead>
             <TableHead className="font-semibold">Role</TableHead>
+            <TableHead className="font-semibold">Status</TableHead>
             <TableHead className="text-right"></TableHead>
           </TableRow>
         </TableHeader>
@@ -40,6 +45,10 @@ function UsersTable({
                 <Badge>{user.role}</Badge>
               </TableCell>
 
+              <TableCell>
+                <Badge>{user.isActive ? "Active" : "Disabled"}</Badge>
+              </TableCell>
+
               <TableCell className="space-x-2 text-right">
                 <Button
                   onClick={() =>
@@ -47,6 +56,7 @@ function UsersTable({
                       username: user.username,
                       role: user.role,
                       id: user.id,
+                      isActive: user.isActive,
                     })
                   }
                   size="xs"
@@ -57,10 +67,14 @@ function UsersTable({
 
                 <Button
                   size="xs"
-                  className="cursor-pointer"
-                  variant="destructive"
+                  className={cn(
+                    !user.isActive && "bg-green-500 hover:bg-green-500/80",
+                    "cursor-pointer",
+                  )}
+                  variant={user.isActive ? "destructive" : "default"}
+                  onClick={() => handleToggleUserStatus({ id: user.id })}
                 >
-                  Disable
+                  {user.isActive ? "Disable" : "Enable"}
                 </Button>
               </TableCell>
             </TableRow>
@@ -81,6 +95,7 @@ function UsersTable({
             username: selectedUser!.username,
             role: selectedUser!.role,
             id: selectedUser!.id,
+            isActive: selectedUser!.isActive,
           }}
         />
       )}

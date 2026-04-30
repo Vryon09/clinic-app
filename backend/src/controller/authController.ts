@@ -19,7 +19,7 @@ export async function getUsers(req: Request, res: Response) {
   try {
     const users = await prisma.user.findMany({
       where: { NOT: { role: "ADMIN" } },
-      select: { id: true, username: true, role: true },
+      select: { id: true, username: true, role: true, isActive: true },
     });
 
     if (!users) {
@@ -105,6 +105,10 @@ export async function loginUser(req: Request, res: Response) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
+    if (!user.isActive) {
+      return res.status(401).json({ message: "User is disabled" });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
@@ -172,6 +176,34 @@ export async function updateUser(req: Request, res: Response) {
     });
 
     res.status(200).json(updatedUser);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
+export async function toggleUserStatus(req: Request, res: Response) {
+  try {
+    const { id } = req.body;
+
+    const user = await prisma.user.findUnique({ where: { id } });
+
+    if (!user) {
+      res.status(400).json({ message: "User not found." });
+      return;
+    }
+
+    const toggledUser = await prisma.user.update({
+      where: { id },
+      data: { isActive: !user.isActive },
+    });
+
+    if (!toggledUser) {
+      res.status(400).json({ message: "Toggling user status failed." });
+      return;
+    }
+
+    res.status(200).json({ message: "User toggled the status successfully." });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server error" });

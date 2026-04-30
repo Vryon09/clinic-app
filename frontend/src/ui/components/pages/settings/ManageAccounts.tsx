@@ -41,7 +41,12 @@ function ManageAccounts() {
           isUserDialogOpen={isAddingUser}
           setIsUserDialogOpen={setIsAddingUser}
           action="create"
-          initialValues={{ username: "", role: "DOCTOR", id: "" }}
+          initialValues={{
+            username: "",
+            role: "DOCTOR",
+            id: "",
+            isActive: true,
+          }}
         />
       </div>
 
