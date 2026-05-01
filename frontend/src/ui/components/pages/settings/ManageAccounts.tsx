@@ -9,16 +9,23 @@ import type { IUser } from "@/types/User";
 import UsersTable from "./UsersTable";
 import { useState } from "react";
 import UserDialog from "./UserDialog";
+import { useAuth } from "@/hooks/useAuth";
+import PasswordDialog from "./PasswordDialog";
 
 function ManageAccounts() {
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  const [isChangingPassword, setIsChangingPassword] = useState<boolean>(false);
   const [isAddingUser, setIsAddingUser] = useState<boolean>(false);
   const { data: users, isPending: isUsersLoading } = useQuery<IUser[]>({
     queryFn: handleGetUsers,
     queryKey: ["users"],
   });
 
-  if (isUsersLoading) return <p>Loading...</p>;
+  const { user, isUserLoading } = useAuth();
+
+  if (isUsersLoading || isUserLoading) return <p>Loading...</p>;
+
+  console.log(user);
 
   return (
     <Card className="space-y-4 px-8 py-4">
@@ -57,6 +64,31 @@ function ManageAccounts() {
         selectedUser={selectedUser}
         setSelectedUser={setSelectedUser}
       />
+
+      <Separator />
+
+      <div>
+        <p className="text-2xl font-semibold">Manage Profile</p>
+        <p className="text-sm text-neutral-500">
+          Update your account information
+        </p>
+      </div>
+
+      <div className="flex items-center justify-end">
+        <Button
+          className="cursor-pointer"
+          onClick={() => {
+            setIsChangingPassword(true);
+          }}
+        >
+          Change Password
+        </Button>
+
+        <PasswordDialog
+          open={isChangingPassword}
+          onOpenChange={setIsChangingPassword}
+        />
+      </div>
     </Card>
   );
 }

@@ -49,6 +49,26 @@ export const addUserSchema = z.object({
   role: z.enum(["ADMIN", "ASSISTANT", "DOCTOR"], "Choose a role"),
 });
 
+export const changePasswordSchema = z
+  .object({
+    oldPassword: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Must contain at least one uppercase letter")
+      .regex(/[0-9]/, "Must contain at least one number"),
+
+    newPassword: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Must contain at least one uppercase letter")
+      .regex(/[0-9]/, "Must contain at least one number"),
+  })
+  .refine((data) => data.oldPassword !== data.newPassword, {
+    message: "New password should not be the same as the old password",
+    path: ["newPassword"], // attach error to this field
+  });
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type SignupInput = z.infer<typeof signupSchema>;
 export type AddUserInput = z.infer<typeof addUserSchema>;
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;

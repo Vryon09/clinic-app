@@ -83,6 +83,42 @@ export function useUpdateUser() {
   });
 }
 
+async function handleChangePassword({
+  oldPassword,
+  newPassword,
+}: {
+  oldPassword: string;
+  newPassword: string;
+}) {
+  const res = await api.patch("/api/auth/changePassword", {
+    oldPassword,
+    newPassword,
+  });
+
+  return res.data || {};
+}
+
+export function useChangePassword() {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    unknown,
+    AxiosError<{ message: string }>,
+    {
+      oldPassword: string;
+      newPassword: string;
+    }
+  >({
+    mutationFn: handleChangePassword,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("User updated password successfully", {
+        position: "top-center",
+      });
+    },
+  });
+}
+
 async function handleLogin({ username, password }: LoginPayload) {
   const res = await api.post("/api/auth/login", { username, password });
   return res.data;

@@ -1,6 +1,7 @@
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -27,6 +28,9 @@ function UsersTable({
   return (
     <div className="rounded-xl border border-neutral-300 px-2">
       <Table>
+        {users.length === 0 && (
+          <TableCaption className="mb-4">No users found.</TableCaption>
+        )}
         <TableHeader>
           <TableRow>
             <TableHead className="font-semibold">Username</TableHead>
