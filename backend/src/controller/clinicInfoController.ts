@@ -2,7 +2,32 @@ import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
 import { UpdateClinicInfoType } from "../schemas/clinicInfoSchema";
 
-export const getClinicInfo = async (req: Request, res: Response) => {
+export async function initClinicInfo(req: Request, res: Response) {
+  try {
+    const initialClinicInfo = await prisma.clinic.upsert({
+      where: { id: "default-clinic-id" },
+      update: {},
+      create: {
+        id: "default-clinic-id",
+        name: "Clinic",
+        address: "Your Address Here",
+        phone: "09XX-XXX-XXXX",
+      },
+    });
+
+    if (!initialClinicInfo) {
+      res.status(400).json({ message: "Cannot initialize clinic info" });
+      return;
+    }
+
+    res.status(201).json({ initialClinicInfo });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
+
+export async function getClinicInfo(req: Request, res: Response) {
   try {
     const clinic = await prisma.clinic.findFirst();
 
@@ -14,9 +39,9 @@ export const getClinicInfo = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-export const updateClinicInfo = async (req: Request, res: Response) => {
+export async function updateClinicInfo(req: Request, res: Response) {
   try {
     const data: UpdateClinicInfoType = req.body;
 
@@ -35,4 +60,4 @@ export const updateClinicInfo = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(400).json({ message: "Invalid input", error });
   }
-};
+}

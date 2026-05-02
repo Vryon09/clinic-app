@@ -444,10 +444,6 @@ export type RecordUncheckedUpdateManyWithoutPatientNestedInput = {
   deleteMany?: Prisma.RecordScalarWhereInput | Prisma.RecordScalarWhereInput[]
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type RecordCreateNestedOneWithoutVitalSignsInput = {
   create?: Prisma.XOR<Prisma.RecordCreateWithoutVitalSignsInput, Prisma.RecordUncheckedCreateWithoutVitalSignsInput>
   connectOrCreate?: Prisma.RecordCreateOrConnectWithoutVitalSignsInput

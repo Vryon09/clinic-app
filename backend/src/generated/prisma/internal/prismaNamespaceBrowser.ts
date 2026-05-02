@@ -81,8 +81,7 @@ export const ClinicScalarFieldEnum = {
   id: 'id',
   name: 'name',
   address: 'address',
-  contactNumber: 'contactNumber',
-  email: 'email',
+  phone: 'phone',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

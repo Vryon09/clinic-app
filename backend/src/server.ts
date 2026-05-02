@@ -11,6 +11,7 @@ import labResultsRoutes from "./routes/labResultsRoutes.ts";
 import googleAuthRoutes from "./routes/googleAuthRoutes.ts";
 import backupRoutes from "./routes/backupRoutes.ts";
 import authRoutes from "./routes/authRoutes.ts";
+import clinicInfoRoutes from "./routes/clinicInfoRoutes.ts";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/api/labResults", labResultsRoutes);
 app.use("/api/google", googleAuthRoutes);
 app.use("/api/backup", backupRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/clinicInfo", clinicInfoRoutes);
 
 app.listen(process.env.PORT, () =>
   console.log("Listening to PORT: " + process.env.PORT),

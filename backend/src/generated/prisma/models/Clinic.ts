@@ -28,8 +28,7 @@ export type ClinicMinAggregateOutputType = {
   id: string | null
   name: string | null
   address: string | null
-  contactNumber: string | null
-  email: string | null
+  phone: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -38,8 +37,7 @@ export type ClinicMaxAggregateOutputType = {
   id: string | null
   name: string | null
   address: string | null
-  contactNumber: string | null
-  email: string | null
+  phone: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,8 +46,7 @@ export type ClinicCountAggregateOutputType = {
   id: number
   name: number
   address: number
-  contactNumber: number
-  email: number
+  phone: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -60,8 +57,7 @@ export type ClinicMinAggregateInputType = {
   id?: true
   name?: true
   address?: true
-  contactNumber?: true
-  email?: true
+  phone?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -70,8 +66,7 @@ export type ClinicMaxAggregateInputType = {
   id?: true
   name?: true
   address?: true
-  contactNumber?: true
-  email?: true
+  phone?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -80,8 +75,7 @@ export type ClinicCountAggregateInputType = {
   id?: true
   name?: true
   address?: true
-  contactNumber?: true
-  email?: true
+  phone?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -162,9 +156,8 @@ export type ClinicGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type ClinicGroupByOutputType = {
   id: string
   name: string
-  address: string
-  contactNumber: string
-  email: string
+  address: string | null
+  phone: string | null
   createdAt: Date
   updatedAt: Date
   _count: ClinicCountAggregateOutputType | null
@@ -193,9 +186,8 @@ export type ClinicWhereInput = {
   NOT?: Prisma.ClinicWhereInput | Prisma.ClinicWhereInput[]
   id?: Prisma.StringFilter<"Clinic"> | string
   name?: Prisma.StringFilter<"Clinic"> | string
-  address?: Prisma.StringFilter<"Clinic"> | string
-  contactNumber?: Prisma.StringFilter<"Clinic"> | string
-  email?: Prisma.StringFilter<"Clinic"> | string
+  address?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  phone?: Prisma.StringNullableFilter<"Clinic"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
 }
@@ -203,32 +195,29 @@ export type ClinicWhereInput = {
 export type ClinicOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-  contactNumber?: Prisma.SortOrder
-  email?: Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type ClinicWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  email?: string
   AND?: Prisma.ClinicWhereInput | Prisma.ClinicWhereInput[]
   OR?: Prisma.ClinicWhereInput[]
   NOT?: Prisma.ClinicWhereInput | Prisma.ClinicWhereInput[]
   name?: Prisma.StringFilter<"Clinic"> | string
-  address?: Prisma.StringFilter<"Clinic"> | string
-  contactNumber?: Prisma.StringFilter<"Clinic"> | string
+  address?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  phone?: Prisma.StringNullableFilter<"Clinic"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
-}, "id" | "email">
+}, "id">
 
 export type ClinicOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-  contactNumber?: Prisma.SortOrder
-  email?: Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ClinicCountOrderByAggregateInput
@@ -242,9 +231,8 @@ export type ClinicScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ClinicScalarWhereWithAggregatesInput | Prisma.ClinicScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Clinic"> | string
   name?: Prisma.StringWithAggregatesFilter<"Clinic"> | string
-  address?: Prisma.StringWithAggregatesFilter<"Clinic"> | string
-  contactNumber?: Prisma.StringWithAggregatesFilter<"Clinic"> | string
-  email?: Prisma.StringWithAggregatesFilter<"Clinic"> | string
+  address?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  phone?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Clinic"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Clinic"> | Date | string
 }
@@ -252,9 +240,8 @@ export type ClinicScalarWhereWithAggregatesInput = {
 export type ClinicCreateInput = {
   id?: string
   name: string
-  address: string
-  contactNumber: string
-  email: string
+  address?: string | null
+  phone?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -262,9 +249,8 @@ export type ClinicCreateInput = {
 export type ClinicUncheckedCreateInput = {
   id?: string
   name: string
-  address: string
-  contactNumber: string
-  email: string
+  address?: string | null
+  phone?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -272,9 +258,8 @@ export type ClinicUncheckedCreateInput = {
 export type ClinicUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  contactNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -282,9 +267,8 @@ export type ClinicUpdateInput = {
 export type ClinicUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  contactNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -292,9 +276,8 @@ export type ClinicUncheckedUpdateInput = {
 export type ClinicCreateManyInput = {
   id?: string
   name: string
-  address: string
-  contactNumber: string
-  email: string
+  address?: string | null
+  phone?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -302,9 +285,8 @@ export type ClinicCreateManyInput = {
 export type ClinicUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  contactNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -312,9 +294,8 @@ export type ClinicUpdateManyMutationInput = {
 export type ClinicUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  contactNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -323,8 +304,7 @@ export type ClinicCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
-  contactNumber?: Prisma.SortOrder
-  email?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -333,8 +313,7 @@ export type ClinicMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
-  contactNumber?: Prisma.SortOrder
-  email?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -343,14 +322,17 @@ export type ClinicMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
-  contactNumber?: Prisma.SortOrder
-  email?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
   set?: string
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -363,8 +345,7 @@ export type ClinicSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   id?: boolean
   name?: boolean
   address?: boolean
-  contactNumber?: boolean
-  email?: boolean
+  phone?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["clinic"]>
@@ -373,8 +354,7 @@ export type ClinicSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   name?: boolean
   address?: boolean
-  contactNumber?: boolean
-  email?: boolean
+  phone?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["clinic"]>
@@ -383,8 +363,7 @@ export type ClinicSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   name?: boolean
   address?: boolean
-  contactNumber?: boolean
-  email?: boolean
+  phone?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["clinic"]>
@@ -393,13 +372,12 @@ export type ClinicSelectScalar = {
   id?: boolean
   name?: boolean
   address?: boolean
-  contactNumber?: boolean
-  email?: boolean
+  phone?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ClinicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "address" | "contactNumber" | "email" | "createdAt" | "updatedAt", ExtArgs["result"]["clinic"]>
+export type ClinicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "address" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["clinic"]>
 
 export type $ClinicPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Clinic"
@@ -407,9 +385,8 @@ export type $ClinicPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
-    address: string
-    contactNumber: string
-    email: string
+    address: string | null
+    phone: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["clinic"]>
@@ -838,8 +815,7 @@ export interface ClinicFieldRefs {
   readonly id: Prisma.FieldRef<"Clinic", 'String'>
   readonly name: Prisma.FieldRef<"Clinic", 'String'>
   readonly address: Prisma.FieldRef<"Clinic", 'String'>
-  readonly contactNumber: Prisma.FieldRef<"Clinic", 'String'>
-  readonly email: Prisma.FieldRef<"Clinic", 'String'>
+  readonly phone: Prisma.FieldRef<"Clinic", 'String'>
   readonly createdAt: Prisma.FieldRef<"Clinic", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Clinic", 'DateTime'>
 }

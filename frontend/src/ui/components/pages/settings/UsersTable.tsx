@@ -50,7 +50,13 @@ function UsersTable({
               </TableCell>
 
               <TableCell>
-                <Badge>{user.isActive ? "Active" : "Disabled"}</Badge>
+                <Badge
+                  className={cn(
+                    user.isActive ? "bg-green-500" : "bg-neutral-500",
+                  )}
+                >
+                  {user.isActive ? "Active" : "Inactive"}
+                </Badge>
               </TableCell>
 
               <TableCell className="space-x-2 text-right">
