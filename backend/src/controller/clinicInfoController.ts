@@ -20,7 +20,7 @@ export async function initClinicInfo(req: Request, res: Response) {
       return;
     }
 
-    res.status(201).json({ initialClinicInfo });
+    res.status(201).json(initialClinicInfo);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });

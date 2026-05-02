@@ -13,7 +13,7 @@ export const createClinicInfo = z.object({
     .min(1, "Address is required.")
     .max(150, "Address must not exceed 150 characters."),
 
-  contactNumber: z
+  phone: z
     .string()
     .trim()
     .min(1, "Phone number is required.")
@@ -22,11 +22,6 @@ export const createClinicInfo = z.object({
       "Phone number must be exactly 11 digits and start with 09.",
     ),
 
-  email: z
-    .string()
-    .trim()
-    .min(1, "Email is required")
-    .email("Invalid email format"),
 });
 
 export const updateClinicInfo = createClinicInfo.partial();
