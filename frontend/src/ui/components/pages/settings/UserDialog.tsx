@@ -18,7 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { addUserSchema, type AddUserInput } from "@/schemas/authSchema";
 import { Card } from "../../shadcn/card";
 import { cn } from "@/lib/utils";
-import { useRegister, useUpdateUser } from "@/services/apiAuth";
+import { useAddUser, useUpdateUser } from "@/services/apiAuth";
 import { toast } from "sonner";
 import type { IUser } from "@/types/User";
 
@@ -49,12 +49,12 @@ function UserDialog({
     },
   });
 
-  const { mutate: handleRegister } = useRegister();
+  const { mutate: handleAddUser } = useAddUser();
   const { mutate: handleUpdateUser } = useUpdateUser();
 
   function onSubmit(data: AddUserInput) {
     if (action === "create") {
-      handleRegister(
+      handleAddUser(
         {
           username: data.username,
           password: "Password123",
@@ -108,7 +108,7 @@ function UserDialog({
           <DialogTitle>Add User</DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
           <FieldSet className="w-full">
             <FieldGroup>
               <Field>

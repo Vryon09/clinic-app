@@ -19,6 +19,8 @@ export async function getUsers(req: UserRequest, res: Response) {
   try {
     const userId = req.userId;
 
+    console.log(req.role);
+
     const users = await prisma.user.findMany({
       where: { AND: [{ role: { not: "ADMIN" } }, { id: { not: userId } }] },
       select: { id: true, username: true, role: true, isActive: true },
@@ -77,7 +79,7 @@ export async function registerUser(req: Request, res: Response) {
       },
     });
 
-    const token = generateToken(user.id, res);
+    const token = generateToken(user.id, user.role, res);
 
     res.status(201).json({
       success: true,
@@ -117,7 +119,7 @@ export async function loginUser(req: Request, res: Response) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const token = generateToken(user.id, res);
+    const token = generateToken(user.id, user.role, res);
 
     res.status(201).json({
       message: "User created",

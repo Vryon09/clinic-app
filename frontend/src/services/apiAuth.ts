@@ -31,6 +31,29 @@ export function useRegister() {
       mutationFn: handleRegister,
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["users"] });
+        toast.success("Registered successfully", { position: "top-center" });
+      },
+    },
+  );
+}
+
+async function handleAddUser({ username, password, role }: RegisterPayload) {
+  const res = await api.post("/api/auth/addUser", {
+    username,
+    password,
+    role,
+  });
+  return res.data;
+}
+
+export function useAddUser() {
+  const queryClient = useQueryClient();
+
+  return useMutation<unknown, AxiosError<{ message: string }>, RegisterPayload>(
+    {
+      mutationFn: handleAddUser,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["users"] });
         toast.success("User added successfully", { position: "top-center" });
       },
     },

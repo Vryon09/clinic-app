@@ -5,8 +5,11 @@ import {
   addVitalSigns,
   getVitalSigns,
 } from "../controller/vitalSignsController";
+import { verifyToken } from "../middleware/verifyToken";
 
 const router = Router();
+
+router.use(verifyToken);
 
 router.post("/", validateSchema(createVitalSignsSchema), addVitalSigns);
 router.get("/:recordId", getVitalSigns);

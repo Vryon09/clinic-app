@@ -4,6 +4,7 @@ import { UserRequest } from "../types/express";
 
 interface IVerifyToken extends JwtPayload {
   id: string;
+  role: "ADMIN" | "DOCTOR" | "ASSISTANT";
 }
 
 export function verifyToken(
@@ -27,6 +28,7 @@ export function verifyToken(
     const decoded = jwt.verify(token, secret) as IVerifyToken;
 
     req.userId = decoded.id;
+    req.role = decoded.role;
 
     next();
   } catch (error) {

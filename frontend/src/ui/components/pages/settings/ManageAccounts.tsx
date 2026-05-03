@@ -74,7 +74,11 @@ function ManageAccounts() {
         </p>
       </div>
 
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col">
+          <p className="text-2xl font-semibold">{user?.username}</p>
+          <p className="text-xs text-neutral-500">{user?.role}</p>
+        </div>
         <Button
           className="cursor-pointer"
           onClick={() => {

@@ -12,8 +12,11 @@ import {
   createPatientSchema,
   updatePatientSchema,
 } from "../schemas/patientSchema";
+import { verifyToken } from "../middleware/verifyToken";
 
 const router = Router();
+
+router.use(verifyToken);
 
 router.get("/", getPatients);
 router.get("/search", searchPatients);

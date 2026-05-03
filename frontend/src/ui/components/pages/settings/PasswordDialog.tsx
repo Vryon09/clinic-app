@@ -63,7 +63,7 @@ function PasswordDialog({ open, onOpenChange }: IPasswordDialog) {
           <DialogTitle>Update your account</DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
           <FieldSet className="w-full">
             <FieldGroup>
               <Field>

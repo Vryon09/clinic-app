@@ -11,8 +11,11 @@ import {
   createRecordSchema,
   updateRecordSchema,
 } from "../schemas/recordSchema";
+import { verifyToken } from "../middleware/verifyToken";
 
 const router = Router();
+
+router.use(verifyToken);
 
 router.get("/:id", getRecords);
 router.get("/:id/record", getRecord);

@@ -1,8 +1,12 @@
 import { Response } from "express";
 import jwt from "jsonwebtoken";
 
-export function generateToken(userId: string, res: Response) {
-  const payload = { id: userId };
+export function generateToken(
+  userId: string,
+  role: "ADMIN" | "DOCTOR" | "ASSISTANT",
+  res: Response,
+) {
+  const payload = { id: userId, role };
 
   const secret = process.env.JWT_SECRET;
 
