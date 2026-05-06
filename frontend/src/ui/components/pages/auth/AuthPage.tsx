@@ -3,6 +3,7 @@ import { SignupForm } from "../../forms/SignupForm";
 import { useQuery } from "@tanstack/react-query";
 import { handleGetAuthStatus } from "@/services/apiAuth";
 import { Spinner } from "../../shadcn/spinner";
+import { Button } from "../../shadcn/button";
 
 function AuthPage() {
   const {
@@ -25,8 +26,16 @@ function AuthPage() {
             <Spinner className="size-8" />
           </div>
         ) : isAuthError ? (
-          <div className="flex h-screen w-full items-center justify-center">
+          <div className="flex h-screen w-full flex-col items-center justify-center gap-4">
             <p>Backend is not available. Please try again later.</p>
+            <Button
+              className="cursor-pointer"
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              Reload
+            </Button>
           </div>
         ) : isSetupComplete ? (
           <LoginForm />

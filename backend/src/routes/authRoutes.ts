@@ -21,7 +21,6 @@ router.post("/register", validateSchema(registerSchema), registerUser);
 router.post(
   "/addUser",
   verifyToken,
-  authorize("user:create"),
   validateSchema(registerSchema),
   registerUser,
 );
