@@ -18,7 +18,7 @@ function TopNavBar() {
   const currTab = location.pathname.split("/").slice(1)[0];
 
   return (
-    <div className="flex items-center justify-between px-4 py-3">
+    <div className="flex items-center justify-between px-4 py-3 print:hidden">
       <p className="text-sm font-semibold">ClinicSync</p>
 
       <div className="flex h-8 items-center gap-1">

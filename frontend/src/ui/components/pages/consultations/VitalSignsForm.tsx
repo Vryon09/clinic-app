@@ -56,6 +56,7 @@ function VitalSignsForm({ register, errors }: IVitalSignsForm) {
                 <Input
                   className="border border-neutral-300"
                   type="number"
+                  step="any"
                   {...register("vitalSigns.temperature", {
                     valueAsNumber: true,
                   })}
