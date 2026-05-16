@@ -21,6 +21,8 @@ import { Input } from "../../shadcn/input";
 import { Button } from "../../shadcn/button";
 import { useChangePassword } from "@/services/apiAuth";
 import { toast } from "sonner";
+import { useState } from "react";
+import { Eye, EyeClosed } from "lucide-react";
 
 interface IPasswordDialog {
   open: boolean;
@@ -28,6 +30,8 @@ interface IPasswordDialog {
 }
 
 function PasswordDialog({ open, onOpenChange }: IPasswordDialog) {
+  const [isPasswordShowing, setIsPasswordShowing] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -69,12 +73,26 @@ function PasswordDialog({ open, onOpenChange }: IPasswordDialog) {
               <Field>
                 <div className="space-y-1">
                   <FieldLabel htmlFor="oldPassword">Old Password</FieldLabel>
-                  <Input
-                    className="border border-neutral-400"
-                    id="oldPassword"
-                    {...register("oldPassword")}
-                    type="text"
-                  />
+                  <div className="relative">
+                    <Input
+                      className="border border-neutral-400"
+                      id="oldPassword"
+                      {...register("oldPassword")}
+                      type={isPasswordShowing ? "text" : "password"}
+                    />
+
+                    <Button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsPasswordShowing((prev) => !prev);
+                      }}
+                      variant="ghost"
+                      size="icon-lg"
+                      className="absolute top-1/2 right-0 h-full -translate-y-1/2 cursor-pointer rounded-r-md px-2 hover:bg-transparent"
+                    >
+                      {!isPasswordShowing ? <EyeClosed /> : <Eye />}
+                    </Button>
+                  </div>
                 </div>
                 {errors.oldPassword && (
                   <FieldError
@@ -89,12 +107,27 @@ function PasswordDialog({ open, onOpenChange }: IPasswordDialog) {
               <Field>
                 <div className="space-y-1">
                   <FieldLabel htmlFor="newPassword">New Password</FieldLabel>
-                  <Input
-                    className="border border-neutral-400"
-                    id="newPassword"
-                    {...register("newPassword")}
-                    type="text"
-                  />
+
+                  <div className="relative">
+                    <Input
+                      className="border border-neutral-400"
+                      id="newPassword"
+                      {...register("newPassword")}
+                      type={isPasswordShowing ? "text" : "password"}
+                    />
+
+                    <Button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setIsPasswordShowing((prev) => !prev);
+                      }}
+                      variant="ghost"
+                      size="icon-lg"
+                      className="absolute top-1/2 right-0 h-full -translate-y-1/2 cursor-pointer rounded-r-md px-2 hover:bg-transparent"
+                    >
+                      {!isPasswordShowing ? <EyeClosed /> : <Eye />}
+                    </Button>
+                  </div>
                 </div>
                 {errors.newPassword && (
                   <FieldError

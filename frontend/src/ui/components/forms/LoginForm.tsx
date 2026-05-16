@@ -21,11 +21,15 @@ import { loginSchema, type LoginInput } from "@/schemas/authSchema";
 import { useLogin } from "../../../services/apiAuth";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
+import { Eye, EyeClosed } from "lucide-react";
+import { useState } from "react";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [isPasswordShowing, setIsPasswordShowing] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -77,25 +81,40 @@ export function LoginForm({
                 )}
               </Field>
               <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  {/* <a
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                {/* <a
                     href="#"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                   >
                     Forgot your password?
                   </a> */}
+                <div className="relative">
+                  <Input
+                    className="border-neutral-300"
+                    id="password"
+                    type={isPasswordShowing ? "text" : "password"}
+                    {...register("password")}
+                    required
+                  />
+                  {errors.password && (
+                    <FieldError
+                      className="text-xs"
+                      errors={[errors.password]}
+                    />
+                  )}
+
+                  <Button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsPasswordShowing((prev) => !prev);
+                    }}
+                    variant="ghost"
+                    size="icon-lg"
+                    className="absolute top-1/2 right-0 h-full -translate-y-1/2 cursor-pointer rounded-r-md px-2 hover:bg-transparent"
+                  >
+                    {!isPasswordShowing ? <EyeClosed /> : <Eye />}
+                  </Button>
                 </div>
-                <Input
-                  className="border-neutral-300"
-                  id="password"
-                  type="password"
-                  {...register("password")}
-                  required
-                />
-                {errors.password && (
-                  <FieldError className="text-xs" errors={[errors.password]} />
-                )}
               </Field>
               <Field>
                 <Button
