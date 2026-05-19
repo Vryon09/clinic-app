@@ -9,11 +9,11 @@ import { verifyToken } from "../middleware/verifyToken";
 
 const router = Router();
 
+router.get("/callback", googleAuthCallback);
+
 router.use(verifyToken);
 
 router.get("/", initGoogleDriveAuth);
-
-router.get("/callback", googleAuthCallback);
 
 router.get("/data", getGoogleAuthData);
 

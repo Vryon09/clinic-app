@@ -19,7 +19,7 @@ export const backupToDrive = async (req: Request, res: Response) => {
   // 3. Query all patient data with nested records
   const patients = await prisma.patient.findMany({
     include: {
-      labResults: true,
+      labResults: false,
 
       records: {
         include: {
