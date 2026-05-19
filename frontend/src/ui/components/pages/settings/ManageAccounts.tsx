@@ -11,6 +11,7 @@ import { useState } from "react";
 import UserDialog from "./UserDialog";
 import { useAuth } from "@/hooks/useAuth";
 import PasswordDialog from "./PasswordDialog";
+import { Spinner } from "../../shadcn/spinner";
 
 function ManageAccounts() {
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
@@ -22,10 +23,6 @@ function ManageAccounts() {
   });
 
   const { user, isUserLoading } = useAuth();
-
-  if (isUsersLoading || isUserLoading) return <p>Loading...</p>;
-
-  console.log(user);
 
   return (
     <Card className="space-y-4 px-8 py-4">
@@ -40,6 +37,7 @@ function ManageAccounts() {
         <Button
           className="cursor-pointer"
           onClick={() => setIsAddingUser((prev) => !prev)}
+          disabled={isUsersLoading || isUserLoading}
         >
           <Plus /> Add User
         </Button>
@@ -59,40 +57,48 @@ function ManageAccounts() {
 
       <Separator />
 
-      <UsersTable
-        users={users!}
-        selectedUser={selectedUser}
-        setSelectedUser={setSelectedUser}
-      />
-
-      <Separator />
-
-      <div>
-        <p className="text-2xl font-semibold">Manage Profile</p>
-        <p className="text-sm text-neutral-500">
-          Update your account information
-        </p>
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col">
-          <p className="text-2xl font-semibold">{user?.username}</p>
-          <p className="text-xs text-neutral-500">{user?.role}</p>
+      {isUsersLoading || isUserLoading ? (
+        <div className="flex h-40 items-center justify-center">
+          <Spinner className="size-8" />
         </div>
-        <Button
-          className="cursor-pointer"
-          onClick={() => {
-            setIsChangingPassword(true);
-          }}
-        >
-          Change Password
-        </Button>
+      ) : (
+        <>
+          <UsersTable
+            users={users!}
+            selectedUser={selectedUser}
+            setSelectedUser={setSelectedUser}
+          />
 
-        <PasswordDialog
-          open={isChangingPassword}
-          onOpenChange={setIsChangingPassword}
-        />
-      </div>
+          <Separator />
+
+          <div>
+            <p className="text-2xl font-semibold">Manage Profile</p>
+            <p className="text-sm text-neutral-500">
+              Update your account information
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col">
+              <p className="text-2xl font-semibold">{user?.username}</p>
+              <p className="text-xs text-neutral-500">{user?.role}</p>
+            </div>
+            <Button
+              className="cursor-pointer"
+              onClick={() => {
+                setIsChangingPassword(true);
+              }}
+            >
+              Change Password
+            </Button>
+
+            <PasswordDialog
+              open={isChangingPassword}
+              onOpenChange={setIsChangingPassword}
+            />
+          </div>
+        </>
+      )}
     </Card>
   );
 }
