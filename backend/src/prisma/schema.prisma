@@ -54,6 +54,8 @@ model Patient {
   sex         Sex
   dateOfBirth DateTime
 
+  isArchive Boolean @default(false)
+
   records Record[]
 
   createdAt  DateTime    @default(now())

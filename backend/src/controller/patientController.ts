@@ -32,6 +32,7 @@ export async function searchPatients(req: Request, res: Response) {
         { lastName: { contains: searchInput, mode: "insensitive" as const } },
         { phone: { contains: searchInput, mode: "insensitive" as const } },
       ],
+      isArchive: false,
     };
 
     const [patients, total] = await prisma.$transaction([
@@ -107,6 +108,22 @@ export async function deletePatient(req: Request, res: Response) {
       prisma.record.deleteMany({ where: { patientId } }),
       prisma.patient.delete({ where: { id: patientId } }),
     ]);
+
+    res.status(200).json({ message: "Deleted Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}
+
+export async function archivePatient(req: Request, res: Response) {
+  try {
+    const patientId = req.params.id as string;
+
+    await prisma.patient.update({
+      where: { id: patientId },
+      data: { isArchive: true },
+    });
 
     res.status(200).json({ message: "Deleted Successfully" });
   } catch (error) {

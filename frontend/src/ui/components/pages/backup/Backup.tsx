@@ -105,8 +105,8 @@ function Backup() {
             </p>
           ) : (
             <p className="mb-4 max-w-125 text-sm text-neutral-500">
-              Your Google Drive is connected. All patient data, consultation
-              records, and lab results are securely backed up to your Drive.
+              Your Google Drive is connected. Back up your all patient data,
+              consultation records, and lab results to your Drive.
             </p>
           )}
 

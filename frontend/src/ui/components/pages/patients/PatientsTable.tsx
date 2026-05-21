@@ -11,7 +11,7 @@ import {
 import { useNavigate } from "react-router";
 import {
   handleSearchPatients,
-  useDeletePatient,
+  useArchivePatient,
   useUpdatePatient,
 } from "@/services/apiPatients";
 import dayjs from "dayjs";
@@ -45,7 +45,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
   const patients: IPatient[] = patientsData?.data ?? [];
   const paginationData = patientsData?.meta;
 
-  const { mutate: handleDeletePatient } = useDeletePatient();
+  const { mutate: handleArchivePatient } = useArchivePatient();
   const { mutate: handleUpdatePatient } = useUpdatePatient();
 
   const navigate = useNavigate();
@@ -153,7 +153,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                             variant="destructive"
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleDeletePatient(patient.id);
+                              handleArchivePatient(patient.id);
                             }}
                           >
                             <Trash /> Delete

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   addPatient,
+  archivePatient,
   deletePatient,
   getPatient,
   getPatients,
@@ -24,7 +25,8 @@ router.get("/:id", getPatient);
 
 router.post("/", validateSchema(createPatientSchema), addPatient);
 
-router.patch("/:id", validateSchema(updatePatientSchema), updatePatient);
+router.patch("/:id/archive", archivePatient);
+router.patch("/:id/update", validateSchema(updatePatientSchema), updatePatient);
 
 router.delete("/:id", deletePatient);
 

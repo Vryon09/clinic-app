@@ -80,6 +80,24 @@ export function useDeletePatient() {
   });
 }
 
+async function handleArchivePatient(id: string) {
+  const res = await api.patch(`/api/patients/${id}/archive`);
+
+  console.log(res.data.message);
+}
+
+export function useArchivePatient() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleArchivePatient,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["patients"] });
+      queryClient.invalidateQueries({ queryKey: ["records"] });
+    },
+  });
+}
+
 interface IHandleUpdatePatient extends UpdatePatientInput {
   id: string;
 }
@@ -104,7 +122,7 @@ async function handleUpdatePatient({
     sex,
   };
 
-  const res = await api.patch(`/api/patients/${id}`, updatedPatientData);
+  const res = await api.patch(`/api/patients/${id}/update`, updatedPatientData);
 
   console.log(res.data);
 }
