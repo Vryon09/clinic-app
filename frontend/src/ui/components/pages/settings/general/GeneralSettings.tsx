@@ -4,23 +4,23 @@ import {
 } from "@/services/apiClinicInfo";
 import type { IClinicInfo } from "@/types/ClinicInfo";
 import { useQuery } from "@tanstack/react-query";
-import { Card } from "../../shadcn/card";
-import { Separator } from "../../shadcn/separator";
-import { Input } from "../../shadcn/input";
+import { Card } from "../../../shadcn/card";
+import { Separator } from "../../../shadcn/separator";
+import { Input } from "../../../shadcn/input";
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
   FieldSet,
-} from "../../shadcn/field";
-import { Button } from "../../shadcn/button";
+} from "../../../shadcn/field";
+import { Button } from "../../../shadcn/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { clinicInfoSchema } from "@/schemas/clinicInfoSchema";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { Spinner } from "../../shadcn/spinner";
+import { Spinner } from "../../../shadcn/spinner";
 
 function GeneralSettings() {
   const { data: clinicInfo, isPending: isClinicInfoPending } =

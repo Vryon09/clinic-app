@@ -92,7 +92,6 @@ function RecordMedicationDialog({
 
           <div className="flex justify-end">
             <Button
-              className="cursor-pointer"
               onClick={(e) => {
                 e.preventDefault();
                 const values = getValues("medicationInput");

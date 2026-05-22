@@ -1,13 +1,13 @@
 import type { IVitalSignsForm } from "@/types/RecordType";
-import { Card } from "../../shadcn/card";
+import { Card } from "../../../shadcn/card";
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
   FieldSet,
-} from "../../shadcn/field";
-import { Input } from "../../shadcn/input";
+} from "../../../shadcn/field";
+import { Input } from "../../../shadcn/input";
 
 function VitalSignsForm({ register, errors }: IVitalSignsForm) {
   return (

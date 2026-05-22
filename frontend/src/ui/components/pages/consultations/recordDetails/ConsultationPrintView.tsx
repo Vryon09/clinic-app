@@ -1,7 +1,7 @@
 import type { IRecordMedications } from "@/types/RecordMedicationsType";
 import type { IRecord } from "@/types/RecordType";
 import type { IVitalSigns } from "@/types/VitalSignsType";
-import { Button } from "../../shadcn/button";
+import { Button } from "../../../shadcn/button";
 
 function ConsultationPrintView({
   record,

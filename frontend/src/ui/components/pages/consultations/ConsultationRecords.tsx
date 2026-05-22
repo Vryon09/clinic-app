@@ -3,7 +3,7 @@ import { Button } from "../../shadcn/button";
 import { Plus } from "lucide-react";
 import type { IRecord } from "@/types/RecordType";
 import type { IPatient } from "@/types/PatientType";
-import ConsultationRecordsTable from "./ConsultationRecordsTable";
+import ConsultationRecordsTable from "./recordsTable/ConsultationRecordsTable";
 import PaginationBar from "../../PaginationBar";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -30,7 +30,6 @@ function ConsultationRecords({ patient }: { patient: IPatient }) {
     <div>
       <div className="mb-4 flex items-center justify-end">
         <Button
-          className="cursor-pointer"
           onClick={() => navigate(`/patients/${patient?.id}/consultations/new`)}
         >
           <Plus /> Add Consultation

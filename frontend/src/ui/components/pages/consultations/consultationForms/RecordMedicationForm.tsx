@@ -3,9 +3,9 @@ import { Card } from "../../../shadcn/card";
 import { Button } from "../../../shadcn/button";
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import AddedRecordMedicationList from "./AddedRecordMedicationList";
+import AddedRecordMedicationList from "../recordMedication/AddedRecordMedicationList";
 import type { IRecordMedicationForm } from "@/types/RecordMedicationsType";
-import RecordMedicationDialog from "./RecordMedicationDialog";
+import RecordMedicationDialog from "../recordMedication/RecordMedicationDialog";
 
 function RecordMedicationForm({
   recordMedicationField,
@@ -30,7 +30,6 @@ function RecordMedicationForm({
               e.preventDefault();
               setIsAdding((prev) => !prev);
             }}
-            className="cursor-pointer"
           >
             {isAdding ? (
               "Adding..."

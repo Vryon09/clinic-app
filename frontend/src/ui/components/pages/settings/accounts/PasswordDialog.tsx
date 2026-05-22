@@ -9,16 +9,16 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "../../shadcn/dialog";
+} from "../../../shadcn/dialog";
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
   FieldSet,
-} from "../../shadcn/field";
-import { Input } from "../../shadcn/input";
-import { Button } from "../../shadcn/button";
+} from "../../../shadcn/field";
+import { Input } from "../../../shadcn/input";
+import { Button } from "../../../shadcn/button";
 import { useChangePassword } from "@/services/apiAuth";
 import { toast } from "sonner";
 import { useState } from "react";

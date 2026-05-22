@@ -126,22 +126,9 @@ export function SignupForm({
               </Field>
 
               <Field>
-                <Button
-                  type="submit"
-                  disabled={isSigningup}
-                  className="cursor-pointer"
-                >
+                <Button type="submit" disabled={isSigningup}>
                   Sign up
                 </Button>
-                {/* <FieldDescription className="text-center">
-                  Don&apos;t have an account?{" "}
-                  <a
-                    onClick={() => setForm("login")}
-                    className="cursor-pointer"
-                  >
-                    Log in
-                  </a>
-                </FieldDescription> */}
               </Field>
             </FieldGroup>
           </form>

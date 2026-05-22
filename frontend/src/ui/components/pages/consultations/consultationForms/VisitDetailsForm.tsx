@@ -1,6 +1,6 @@
-import { Card } from "../../shadcn/card";
-import { Field, FieldGroup, FieldLabel, FieldSet } from "../../shadcn/field";
-import { Textarea } from "../../shadcn/textarea";
+import { Card } from "@/ui/components/shadcn/card";
+import { Field, FieldGroup, FieldLabel, FieldSet } from "../../../shadcn/field";
+import { Textarea } from "../../../shadcn/textarea";
 import type { IRecordForm } from "@/types/RecordType";
 
 function VisitDetailsForm({ register }: IRecordForm) {

@@ -54,7 +54,6 @@ function PaginationBar({
                       setPage((prev) => prev - 1);
                     }}
                     disabled={paginationData.page === 1}
-                    className="cursor-pointer"
                     variant="ghost"
                     size="icon-sm"
                   >
@@ -76,7 +75,6 @@ function PaginationBar({
                       paginationData.page === paginationData.pages ||
                       !paginationData.pages
                     }
-                    className="cursor-pointer"
                     variant="ghost"
                     size="icon-sm"
                   >

@@ -18,6 +18,19 @@ export async function getPatients(req: Request, res: Response) {
   }
 }
 
+export async function getArchivedPatients(req: Request, res: Response) {
+  try {
+    const patients = await prisma.patient.findMany({
+      where: { isArchived: true },
+    });
+
+    res.status(200).json(patients);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}
+
 export async function searchPatients(req: Request, res: Response) {
   try {
     const searchInput = (req.query.search as string) || "";

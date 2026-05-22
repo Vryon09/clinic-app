@@ -6,9 +6,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../shadcn/table";
-import { Badge } from "../../shadcn/badge";
-import { Button } from "../../shadcn/button";
+} from "../../../shadcn/table";
+import { Badge } from "../../../shadcn/badge";
+import { Button } from "../../../shadcn/button";
 import type { IUser } from "@/types/User";
 import UserDialog from "./UserDialog";
 import { useToggleUserStatus } from "@/services/apiAuth";
@@ -70,7 +70,6 @@ function UsersTable({
                     })
                   }
                   size="xs"
-                  className="cursor-pointer"
                 >
                   Edit
                 </Button>

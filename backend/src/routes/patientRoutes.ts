@@ -3,6 +3,7 @@ import {
   addPatient,
   archivePatient,
   deletePatient,
+  getArchivedPatients,
   getPatient,
   getPatients,
   searchPatients,
@@ -21,6 +22,7 @@ router.use(verifyToken);
 
 router.get("/", getPatients);
 router.get("/search", searchPatients);
+router.get("/archived", getArchivedPatients);
 router.get("/:id", getPatient);
 
 router.post("/", validateSchema(createPatientSchema), addPatient);

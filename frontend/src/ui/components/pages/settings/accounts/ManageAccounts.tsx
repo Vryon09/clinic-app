@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
-import { Button } from "../../shadcn/button";
-import { Card } from "../../shadcn/card";
-import { Separator } from "../../shadcn/separator";
+import { Button } from "../../../shadcn/button";
+import { Card } from "../../../shadcn/card";
+import { Separator } from "../../../shadcn/separator";
 
 import { useQuery } from "@tanstack/react-query";
 import { handleGetUsers } from "@/services/apiAuth";
@@ -11,7 +11,7 @@ import { useState } from "react";
 import UserDialog from "./UserDialog";
 import { useAuth } from "@/hooks/useAuth";
 import PasswordDialog from "./PasswordDialog";
-import { Spinner } from "../../shadcn/spinner";
+import { Spinner } from "../../../shadcn/spinner";
 
 function ManageAccounts() {
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
@@ -35,7 +35,6 @@ function ManageAccounts() {
         </div>
 
         <Button
-          className="cursor-pointer"
           onClick={() => setIsAddingUser((prev) => !prev)}
           disabled={isUsersLoading || isUserLoading}
         >
@@ -84,7 +83,6 @@ function ManageAccounts() {
               <p className="text-xs text-neutral-500">{user?.role}</p>
             </div>
             <Button
-              className="cursor-pointer"
               onClick={() => {
                 setIsChangingPassword(true);
               }}

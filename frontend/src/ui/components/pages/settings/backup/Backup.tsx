@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Button } from "../../shadcn/button";
-import { Card } from "../../shadcn/card";
+import { Button } from "../../../shadcn/button";
+import { Card } from "../../../shadcn/card";
 import { cn } from "@/lib/utils";
 import {
   handleGetGoogleAuthData,
@@ -8,11 +8,11 @@ import {
   useHandleLogout,
 } from "@/services/apiBackup";
 import { useEffect } from "react";
-import { Badge } from "../../shadcn/badge";
-import { Separator } from "../../shadcn/separator";
+import { Badge } from "../../../shadcn/badge";
+import { Separator } from "../../../shadcn/separator";
 import { CloudBackup } from "lucide-react";
-import { Skeleton } from "../../shadcn/skeleton";
-import { Spinner } from "../../shadcn/spinner";
+import { Skeleton } from "../../../shadcn/skeleton";
+import { Spinner } from "../../../shadcn/spinner";
 
 function Backup() {
   const { data: googleAuthData, isPending: isAuthPending } = useQuery({
@@ -113,7 +113,7 @@ function Backup() {
           <Separator className="mb-4" />
 
           {!isConnected && (
-            <Button className="cursor-pointer" onClick={handleConnectDrive}>
+            <Button onClick={handleConnectDrive}>
               Connect to Google Drive
             </Button>
           )}
@@ -126,11 +126,7 @@ function Backup() {
                   <p>{email}</p>
                 </div>
 
-                <Button
-                  className="cursor-pointer"
-                  variant="destructive"
-                  onClick={() => handleLogout()}
-                >
+                <Button variant="destructive" onClick={() => handleLogout()}>
                   Disconnect
                 </Button>
               </div>
@@ -138,11 +134,7 @@ function Backup() {
               <Separator />
 
               <div className="flex justify-end">
-                <Button
-                  className="cursor-pointer"
-                  onClick={() => runBackup()}
-                  disabled={isBackingup}
-                >
+                <Button onClick={() => runBackup()} disabled={isBackingup}>
                   <CloudBackup />{" "}
                   {isBackingup ? "Backing up..." : "Backup to Google Drive"}
                 </Button>

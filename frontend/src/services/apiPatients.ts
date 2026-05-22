@@ -11,6 +11,12 @@ export async function handleGetPatients() {
   return res.data ?? [];
 }
 
+export async function handleGetArchivedPatients() {
+  const res = await api.get("/api/patients/archived");
+
+  return res.data ?? [];
+}
+
 export async function handleGetPatient({ id }: { id: string }) {
   const res = await api.get(`/api/patients/${id}`);
 

@@ -117,18 +117,13 @@ export function LoginForm({
                 </div>
               </Field>
               <Field>
-                <Button
-                  type="submit"
-                  disabled={isLoggingin}
-                  className="cursor-pointer"
-                >
+                <Button type="submit" disabled={isLoggingin}>
                   Login
                 </Button>
                 {/* <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
                   <a
                     onClick={() => setForm("signup")}
-                    className="cursor-pointer"
                   >
                     Sign up
                   </a>

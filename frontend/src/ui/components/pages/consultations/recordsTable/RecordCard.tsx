@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
-import { Card } from "../../shadcn/card";
-import { Button } from "../../shadcn/button";
+import { Card } from "../../../shadcn/card";
+import { Button } from "../../../shadcn/button";
 import { Pen, Trash } from "lucide-react";
 import type { IRecord } from "@/types/RecordType";
 import dayjs from "dayjs";

@@ -27,7 +27,6 @@ function AddedRecordMedicationList({
                   size="icon-sm"
                   variant="destructive"
                   onClick={() => deleteMedication(i)}
-                  className="cursor-pointer"
                 >
                   <Trash2 />
                 </Button>

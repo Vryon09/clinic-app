@@ -9,8 +9,8 @@ import { handleGetRecordMedications } from "@/services/apiRecordMedications";
 import { useState } from "react";
 import ConsultationUserView from "./ConsultationUserView";
 import ConsultationPrintView from "./ConsultationPrintView";
-import { Button } from "../../shadcn/button";
-import BackButton from "../../BackButton";
+import { Button } from "../../../shadcn/button";
+import BackButton from "../../../BackButton";
 
 function ConsultationDetails() {
   const [isPrintMode, setIsPrintMode] = useState<boolean>(false);
@@ -42,7 +42,6 @@ function ConsultationDetails() {
 
         <div className="space-x-2">
           <Button
-            className="cursor-pointer"
             size="xs"
             variant={isPrintMode ? "outline" : "default"}
             onClick={() => setIsPrintMode(false)}
@@ -51,7 +50,6 @@ function ConsultationDetails() {
           </Button>
 
           <Button
-            className="cursor-pointer"
             size="xs"
             variant={!isPrintMode ? "outline" : "default"}
             onClick={() => setIsPrintMode(true)}

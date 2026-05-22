@@ -1,7 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn/tabs";
-import Backup from "../backup/Backup";
-import GeneralSettings from "./GeneralSettings";
-import ManageAccounts from "./ManageAccounts";
+import Backup from "./backup/Backup";
+import GeneralSettings from "./general/GeneralSettings";
+import ManageAccounts from "./accounts/ManageAccounts";
+import Archive from "./archive/Archive";
 
 function SettingsPage() {
   return (
@@ -28,9 +29,15 @@ function SettingsPage() {
         <TabsContent value="general">
           <GeneralSettings />
         </TabsContent>
+
         <TabsContent value="manageAccounts">
           <ManageAccounts />
         </TabsContent>
+
+        <TabsContent value="archive">
+          <Archive />
+        </TabsContent>
+
         <TabsContent value="backup">
           <Backup />
         </TabsContent>

@@ -32,7 +32,7 @@ function UploadLabResultButton() {
         className="hidden"
         onChange={handleChange}
       />
-      <Button onClick={handleClick} className="cursor-pointer">
+      <Button onClick={handleClick}>
         <Upload /> Upload File
       </Button>
     </div>

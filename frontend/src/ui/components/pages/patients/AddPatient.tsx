@@ -12,7 +12,7 @@ function AddPatient() {
   return (
     <>
       <div className="mb-4 flex justify-end">
-        <Button onClick={() => setIsAdding(true)} className="cursor-pointer">
+        <Button onClick={() => setIsAdding(true)}>
           <Plus /> <span>Add Patient</span>
         </Button>
       </div>

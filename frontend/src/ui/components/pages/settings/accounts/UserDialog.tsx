@@ -1,22 +1,22 @@
 import { useForm, Controller } from "react-hook-form";
-import { Button } from "../../shadcn/button";
+import { Button } from "../../../shadcn/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "../../shadcn/dialog";
+} from "../../../shadcn/dialog";
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
   FieldSet,
-} from "../../shadcn/field";
-import { Input } from "../../shadcn/input";
+} from "../../../shadcn/field";
+import { Input } from "../../../shadcn/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addUserSchema, type AddUserInput } from "@/schemas/authSchema";
-import { Card } from "../../shadcn/card";
+import { Card } from "../../../shadcn/card";
 import { cn } from "@/lib/utils";
 import { useAddUser, useUpdateUser } from "@/services/apiAuth";
 import { toast } from "sonner";

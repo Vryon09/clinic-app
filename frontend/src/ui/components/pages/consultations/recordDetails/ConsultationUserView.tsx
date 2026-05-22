@@ -1,4 +1,4 @@
-import { Card } from "../../shadcn/card";
+import { Card } from "../../../shadcn/card";
 import type { IRecord } from "@/types/RecordType";
 import type { IVitalSigns } from "@/types/VitalSignsType";
 import type { IRecordMedications } from "@/types/RecordMedicationsType";

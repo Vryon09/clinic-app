@@ -93,7 +93,7 @@ function LabResultsTable({
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button size="icon-xs" className="cursor-pointer">
+                        <Button size="icon-xs">
                           <MoreHorizontal />
                         </Button>
                       </DropdownMenuTrigger>

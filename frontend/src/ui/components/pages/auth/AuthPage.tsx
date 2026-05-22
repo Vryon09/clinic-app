@@ -29,7 +29,6 @@ function AuthPage() {
           <div className="flex h-screen w-full flex-col items-center justify-center gap-4">
             <p>Backend is not available. Please try again later.</p>
             <Button
-              className="cursor-pointer"
               onClick={() => {
                 window.location.reload();
               }}

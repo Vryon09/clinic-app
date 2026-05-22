@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../shadcn/table";
+} from "../../../shadcn/table";
 import { MoreHorizontal, Pen, Trash } from "lucide-react";
 import dayjs from "dayjs";
 import {
@@ -16,10 +16,10 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../shadcn/dropdown-menu";
-import { Button } from "../../shadcn/button";
+} from "../../../shadcn/dropdown-menu";
+import { Button } from "../../../shadcn/button";
 import { useNavigate } from "react-router";
-import { Skeleton } from "../../shadcn/skeleton";
+import { Skeleton } from "../../../shadcn/skeleton";
 import { useArchiveRecord } from "@/services/apiRecords";
 
 function ConsultationRecordsTable({
@@ -81,7 +81,7 @@ function ConsultationRecordsTable({
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button size="icon-xs" className="cursor-pointer">
+                      <Button size="icon-xs">
                         <MoreHorizontal />
                       </Button>
                     </DropdownMenuTrigger>
@@ -99,7 +99,6 @@ function ConsultationRecordsTable({
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
-                        className="cursor-pointer"
                         variant="destructive"
                         onClick={(e) => {
                           e.stopPropagation();

@@ -1,13 +1,13 @@
 import { handleGetPatient } from "@/services/apiPatients";
 import { useQuery } from "@tanstack/react-query";
-import VisitDetailsForm from "./VisitDetailsForm";
 import VitalSignsForm from "./VitalSignsForm";
-import { Button } from "../../shadcn/button";
+import { Button } from "../../../shadcn/button";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useAddRecord, useUpdateRecord } from "@/services/apiRecords";
 import { useVisitDetailsForm } from "@/hooks/useVisitDetailsForm";
-import RecordMedicationForm from "./recordMedication/RecordMedicationForm";
-import { Skeleton } from "../../shadcn/skeleton";
+import { Skeleton } from "../../../shadcn/skeleton";
+import RecordMedicationForm from "./RecordMedicationForm";
+import VisitDetailsForm from "./VisitDetailsForm";
 
 function ConsultationsForm() {
   const { patientId, consultationId } = useParams() as {
@@ -89,13 +89,10 @@ function ConsultationsForm() {
               navigate(`/patients/${patientId}`);
             }}
             variant="outline"
-            className="cursor-pointer"
           >
             Cancel
           </Button>
-          <Button disabled={isRecordLoading} className="cursor-pointer">
-            Complete Consultation
-          </Button>
+          <Button disabled={isRecordLoading}>Complete Consultation</Button>
         </div>
       </form>
     </div>
