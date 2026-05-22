@@ -11,7 +11,7 @@ export async function getRecords(req: Request, res: Response) {
     const page = Math.max(1, parseInt(req.query.page as string)) || 1;
     const skip = (page - 1) * limit;
 
-    const where = { patientId: req.params.id as string };
+    const where = { patientId: req.params.id as string, isArchived: false };
 
     const [records, total] = await prisma.$transaction([
       prisma.record.findMany({
@@ -100,6 +100,22 @@ export async function deleteRecord(req: Request, res: Response) {
     ]);
 
     res.status(200).json({ message: "Record deleted successfully!" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}
+
+export async function archiveRecord(req: Request, res: Response) {
+  try {
+    const recordId = req.params.id as string;
+
+    await prisma.record.update({
+      where: { id: recordId },
+      data: { isArchived: true },
+    });
+
+    res.status(200).json({ message: "Record archived successfully!" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error!" });

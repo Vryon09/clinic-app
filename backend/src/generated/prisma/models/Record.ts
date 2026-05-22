@@ -28,6 +28,7 @@ export type RecordMinAggregateOutputType = {
   id: string | null
   patientId: string | null
   visitDate: Date | null
+  isArchived: boolean | null
   symptoms: string | null
   signs: string | null
   diagnosis: string | null
@@ -39,6 +40,7 @@ export type RecordMaxAggregateOutputType = {
   id: string | null
   patientId: string | null
   visitDate: Date | null
+  isArchived: boolean | null
   symptoms: string | null
   signs: string | null
   diagnosis: string | null
@@ -50,6 +52,7 @@ export type RecordCountAggregateOutputType = {
   id: number
   patientId: number
   visitDate: number
+  isArchived: number
   symptoms: number
   signs: number
   diagnosis: number
@@ -63,6 +66,7 @@ export type RecordMinAggregateInputType = {
   id?: true
   patientId?: true
   visitDate?: true
+  isArchived?: true
   symptoms?: true
   signs?: true
   diagnosis?: true
@@ -74,6 +78,7 @@ export type RecordMaxAggregateInputType = {
   id?: true
   patientId?: true
   visitDate?: true
+  isArchived?: true
   symptoms?: true
   signs?: true
   diagnosis?: true
@@ -85,6 +90,7 @@ export type RecordCountAggregateInputType = {
   id?: true
   patientId?: true
   visitDate?: true
+  isArchived?: true
   symptoms?: true
   signs?: true
   diagnosis?: true
@@ -169,6 +175,7 @@ export type RecordGroupByOutputType = {
   id: string
   patientId: string
   visitDate: Date
+  isArchived: boolean
   symptoms: string | null
   signs: string | null
   diagnosis: string | null
@@ -201,6 +208,7 @@ export type RecordWhereInput = {
   id?: Prisma.StringFilter<"Record"> | string
   patientId?: Prisma.StringFilter<"Record"> | string
   visitDate?: Prisma.DateTimeFilter<"Record"> | Date | string
+  isArchived?: Prisma.BoolFilter<"Record"> | boolean
   symptoms?: Prisma.StringNullableFilter<"Record"> | string | null
   signs?: Prisma.StringNullableFilter<"Record"> | string | null
   diagnosis?: Prisma.StringNullableFilter<"Record"> | string | null
@@ -215,6 +223,7 @@ export type RecordOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
   visitDate?: Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
   symptoms?: Prisma.SortOrderInput | Prisma.SortOrder
   signs?: Prisma.SortOrderInput | Prisma.SortOrder
   diagnosis?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -232,6 +241,7 @@ export type RecordWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.RecordWhereInput | Prisma.RecordWhereInput[]
   patientId?: Prisma.StringFilter<"Record"> | string
   visitDate?: Prisma.DateTimeFilter<"Record"> | Date | string
+  isArchived?: Prisma.BoolFilter<"Record"> | boolean
   symptoms?: Prisma.StringNullableFilter<"Record"> | string | null
   signs?: Prisma.StringNullableFilter<"Record"> | string | null
   diagnosis?: Prisma.StringNullableFilter<"Record"> | string | null
@@ -246,6 +256,7 @@ export type RecordOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
   visitDate?: Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
   symptoms?: Prisma.SortOrderInput | Prisma.SortOrder
   signs?: Prisma.SortOrderInput | Prisma.SortOrder
   diagnosis?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -263,6 +274,7 @@ export type RecordScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Record"> | string
   patientId?: Prisma.StringWithAggregatesFilter<"Record"> | string
   visitDate?: Prisma.DateTimeWithAggregatesFilter<"Record"> | Date | string
+  isArchived?: Prisma.BoolWithAggregatesFilter<"Record"> | boolean
   symptoms?: Prisma.StringNullableWithAggregatesFilter<"Record"> | string | null
   signs?: Prisma.StringNullableWithAggregatesFilter<"Record"> | string | null
   diagnosis?: Prisma.StringNullableWithAggregatesFilter<"Record"> | string | null
@@ -273,6 +285,7 @@ export type RecordScalarWhereWithAggregatesInput = {
 export type RecordCreateInput = {
   id?: string
   visitDate?: Date | string
+  isArchived?: boolean
   symptoms?: string | null
   signs?: string | null
   diagnosis?: string | null
@@ -287,6 +300,7 @@ export type RecordUncheckedCreateInput = {
   id?: string
   patientId: string
   visitDate?: Date | string
+  isArchived?: boolean
   symptoms?: string | null
   signs?: string | null
   diagnosis?: string | null
@@ -299,6 +313,7 @@ export type RecordUncheckedCreateInput = {
 export type RecordUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -313,6 +328,7 @@ export type RecordUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -326,6 +342,7 @@ export type RecordCreateManyInput = {
   id?: string
   patientId: string
   visitDate?: Date | string
+  isArchived?: boolean
   symptoms?: string | null
   signs?: string | null
   diagnosis?: string | null
@@ -336,6 +353,7 @@ export type RecordCreateManyInput = {
 export type RecordUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -347,6 +365,7 @@ export type RecordUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -368,6 +387,7 @@ export type RecordCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
   visitDate?: Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
   symptoms?: Prisma.SortOrder
   signs?: Prisma.SortOrder
   diagnosis?: Prisma.SortOrder
@@ -379,6 +399,7 @@ export type RecordMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
   visitDate?: Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
   symptoms?: Prisma.SortOrder
   signs?: Prisma.SortOrder
   diagnosis?: Prisma.SortOrder
@@ -390,6 +411,7 @@ export type RecordMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
   visitDate?: Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
   symptoms?: Prisma.SortOrder
   signs?: Prisma.SortOrder
   diagnosis?: Prisma.SortOrder
@@ -475,6 +497,7 @@ export type RecordUpdateOneRequiredWithoutRecordMedicationsNestedInput = {
 export type RecordCreateWithoutPatientInput = {
   id?: string
   visitDate?: Date | string
+  isArchived?: boolean
   symptoms?: string | null
   signs?: string | null
   diagnosis?: string | null
@@ -487,6 +510,7 @@ export type RecordCreateWithoutPatientInput = {
 export type RecordUncheckedCreateWithoutPatientInput = {
   id?: string
   visitDate?: Date | string
+  isArchived?: boolean
   symptoms?: string | null
   signs?: string | null
   diagnosis?: string | null
@@ -529,6 +553,7 @@ export type RecordScalarWhereInput = {
   id?: Prisma.StringFilter<"Record"> | string
   patientId?: Prisma.StringFilter<"Record"> | string
   visitDate?: Prisma.DateTimeFilter<"Record"> | Date | string
+  isArchived?: Prisma.BoolFilter<"Record"> | boolean
   symptoms?: Prisma.StringNullableFilter<"Record"> | string | null
   signs?: Prisma.StringNullableFilter<"Record"> | string | null
   diagnosis?: Prisma.StringNullableFilter<"Record"> | string | null
@@ -539,6 +564,7 @@ export type RecordScalarWhereInput = {
 export type RecordCreateWithoutVitalSignsInput = {
   id?: string
   visitDate?: Date | string
+  isArchived?: boolean
   symptoms?: string | null
   signs?: string | null
   diagnosis?: string | null
@@ -552,6 +578,7 @@ export type RecordUncheckedCreateWithoutVitalSignsInput = {
   id?: string
   patientId: string
   visitDate?: Date | string
+  isArchived?: boolean
   symptoms?: string | null
   signs?: string | null
   diagnosis?: string | null
@@ -579,6 +606,7 @@ export type RecordUpdateToOneWithWhereWithoutVitalSignsInput = {
 export type RecordUpdateWithoutVitalSignsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -592,6 +620,7 @@ export type RecordUncheckedUpdateWithoutVitalSignsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -603,6 +632,7 @@ export type RecordUncheckedUpdateWithoutVitalSignsInput = {
 export type RecordCreateWithoutRecordMedicationsInput = {
   id?: string
   visitDate?: Date | string
+  isArchived?: boolean
   symptoms?: string | null
   signs?: string | null
   diagnosis?: string | null
@@ -616,6 +646,7 @@ export type RecordUncheckedCreateWithoutRecordMedicationsInput = {
   id?: string
   patientId: string
   visitDate?: Date | string
+  isArchived?: boolean
   symptoms?: string | null
   signs?: string | null
   diagnosis?: string | null
@@ -643,6 +674,7 @@ export type RecordUpdateToOneWithWhereWithoutRecordMedicationsInput = {
 export type RecordUpdateWithoutRecordMedicationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -656,6 +688,7 @@ export type RecordUncheckedUpdateWithoutRecordMedicationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -667,6 +700,7 @@ export type RecordUncheckedUpdateWithoutRecordMedicationsInput = {
 export type RecordCreateManyPatientInput = {
   id?: string
   visitDate?: Date | string
+  isArchived?: boolean
   symptoms?: string | null
   signs?: string | null
   diagnosis?: string | null
@@ -677,6 +711,7 @@ export type RecordCreateManyPatientInput = {
 export type RecordUpdateWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -689,6 +724,7 @@ export type RecordUpdateWithoutPatientInput = {
 export type RecordUncheckedUpdateWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -701,6 +737,7 @@ export type RecordUncheckedUpdateWithoutPatientInput = {
 export type RecordUncheckedUpdateManyWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -743,6 +780,7 @@ export type RecordSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   id?: boolean
   patientId?: boolean
   visitDate?: boolean
+  isArchived?: boolean
   symptoms?: boolean
   signs?: boolean
   diagnosis?: boolean
@@ -758,6 +796,7 @@ export type RecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   patientId?: boolean
   visitDate?: boolean
+  isArchived?: boolean
   symptoms?: boolean
   signs?: boolean
   diagnosis?: boolean
@@ -770,6 +809,7 @@ export type RecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   patientId?: boolean
   visitDate?: boolean
+  isArchived?: boolean
   symptoms?: boolean
   signs?: boolean
   diagnosis?: boolean
@@ -782,6 +822,7 @@ export type RecordSelectScalar = {
   id?: boolean
   patientId?: boolean
   visitDate?: boolean
+  isArchived?: boolean
   symptoms?: boolean
   signs?: boolean
   diagnosis?: boolean
@@ -789,7 +830,7 @@ export type RecordSelectScalar = {
   updatedAt?: boolean
 }
 
-export type RecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "visitDate" | "symptoms" | "signs" | "diagnosis" | "createdAt" | "updatedAt", ExtArgs["result"]["record"]>
+export type RecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "visitDate" | "isArchived" | "symptoms" | "signs" | "diagnosis" | "createdAt" | "updatedAt", ExtArgs["result"]["record"]>
 export type RecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
   vitalSigns?: boolean | Prisma.Record$vitalSignsArgs<ExtArgs>
@@ -814,6 +855,7 @@ export type $RecordPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     id: string
     patientId: string
     visitDate: Date
+    isArchived: boolean
     symptoms: string | null
     signs: string | null
     diagnosis: string | null
@@ -1248,6 +1290,7 @@ export interface RecordFieldRefs {
   readonly id: Prisma.FieldRef<"Record", 'String'>
   readonly patientId: Prisma.FieldRef<"Record", 'String'>
   readonly visitDate: Prisma.FieldRef<"Record", 'DateTime'>
+  readonly isArchived: Prisma.FieldRef<"Record", 'Boolean'>
   readonly symptoms: Prisma.FieldRef<"Record", 'String'>
   readonly signs: Prisma.FieldRef<"Record", 'String'>
   readonly diagnosis: Prisma.FieldRef<"Record", 'String'>

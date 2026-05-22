@@ -19,8 +19,8 @@ import {
 } from "../../shadcn/dropdown-menu";
 import { Button } from "../../shadcn/button";
 import { useNavigate } from "react-router";
-import { useDeleteRecord } from "@/services/apiRecords";
 import { Skeleton } from "../../shadcn/skeleton";
+import { useArchiveRecord } from "@/services/apiRecords";
 
 function ConsultationRecordsTable({
   records,
@@ -31,7 +31,7 @@ function ConsultationRecordsTable({
 }) {
   const navigate = useNavigate();
 
-  const { mutate: handleDeleteRecord } = useDeleteRecord();
+  const { mutate: handleArchiveRecord } = useArchiveRecord();
 
   return (
     <Table>
@@ -103,7 +103,7 @@ function ConsultationRecordsTable({
                         variant="destructive"
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleDeleteRecord(record.id);
+                          handleArchiveRecord(record.id);
                         }}
                       >
                         <Trash /> Delete

@@ -32,7 +32,7 @@ export async function searchPatients(req: Request, res: Response) {
         { lastName: { contains: searchInput, mode: "insensitive" as const } },
         { phone: { contains: searchInput, mode: "insensitive" as const } },
       ],
-      isArchive: false,
+      isArchived: false,
     };
 
     const [patients, total] = await prisma.$transaction([
@@ -122,7 +122,7 @@ export async function archivePatient(req: Request, res: Response) {
 
     await prisma.patient.update({
       where: { id: patientId },
-      data: { isArchive: true },
+      data: { isArchived: true },
     });
 
     res.status(200).json({ message: "Deleted Successfully" });

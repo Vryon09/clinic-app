@@ -75,6 +75,21 @@ export function useDeleteRecord() {
   });
 }
 
+async function handleArchiveRecord(recordId: string) {
+  await api.patch(`/api/records/${recordId}/archive`);
+}
+
+export function useArchiveRecord() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleArchiveRecord,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["records"] });
+    },
+  });
+}
+
 export interface IHandleUpdateRecord extends UpdateRecordInput {
   consultationId: string;
 }
@@ -89,7 +104,7 @@ async function handleUpdateRecord({
 }: IHandleUpdateRecord) {
   const visitDetails = { symptoms, signs, diagnosis };
 
-  const res = await api.patch(`/api/records/${consultationId}`, {
+  const res = await api.patch(`/api/records/${consultationId}/update`, {
     ...visitDetails,
     vitalSigns,
     recordMedications,

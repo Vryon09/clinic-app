@@ -54,7 +54,7 @@ model Patient {
   sex         Sex
   dateOfBirth DateTime
 
-  isArchive Boolean @default(false)
+  isArchived Boolean @default(false)
 
   records Record[]
 
@@ -67,6 +67,8 @@ model Record {
   id        String   @id @default(uuid())
   patientId String
   visitDate DateTime @default(now())
+
+  isArchived Boolean @default(false)
 
   symptoms  String?
   signs     String?

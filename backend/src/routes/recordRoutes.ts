@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   addRecord,
+  archiveRecord,
   deleteRecord,
   getRecord,
   getRecords,
@@ -21,6 +22,7 @@ router.get("/:id", getRecords);
 router.get("/:id/record", getRecord);
 router.post("/", validateSchema(createRecordSchema), addRecord);
 router.delete("/:id", deleteRecord);
-router.patch("/:id", validateSchema(updateRecordSchema), updateRecord);
+router.patch("/:id/update", validateSchema(updateRecordSchema), updateRecord);
+router.patch("/:id/archive", archiveRecord);
 
 export default router;

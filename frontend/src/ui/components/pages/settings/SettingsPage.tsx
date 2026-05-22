@@ -16,6 +16,10 @@ function SettingsPage() {
             Accounts
           </TabsTrigger>
 
+          <TabsTrigger value="archive" className="cursor-pointer">
+            Archive
+          </TabsTrigger>
+
           <TabsTrigger value="backup" className="cursor-pointer">
             Backup
           </TabsTrigger>
