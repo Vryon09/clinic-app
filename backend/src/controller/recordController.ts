@@ -46,6 +46,19 @@ export async function getRecord(req: Request, res: Response) {
   }
 }
 
+export async function getArchivedRecords(req: Request, res: Response) {
+  try {
+    const records = await prisma.record.findMany({
+      where: { isArchived: true },
+    });
+
+    res.status(200).json(records);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}
+
 export async function addRecord(req: Request, res: Response) {
   try {
     const {
@@ -116,6 +129,22 @@ export async function archiveRecord(req: Request, res: Response) {
     });
 
     res.status(200).json({ message: "Record archived successfully!" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}
+
+export async function restoreRecord(req: Request, res: Response) {
+  try {
+    const recordId = req.params.id as string;
+
+    await prisma.record.update({
+      where: { id: recordId },
+      data: { isArchived: false },
+    });
+
+    res.status(200).json({ message: "Record Restored Successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error!" });

@@ -1,4 +1,7 @@
-import { handleGetArchivedPatients } from "@/services/apiPatients";
+import {
+  handleGetArchivedPatients,
+  useRestorePatient,
+} from "@/services/apiPatients";
 import type { IPatient } from "@/types/PatientType";
 import { Button } from "@/ui/components/shadcn/button";
 import { useQuery } from "@tanstack/react-query";
@@ -11,6 +14,8 @@ function ArchivedPatients() {
       queryKey: ["archivedPatients"],
     });
 
+  const { mutate: handleRestorePatient } = useRestorePatient();
+
   if (isArchivedPatientsPending) return <p>loading...</p>;
 
   return (
@@ -22,7 +27,12 @@ function ArchivedPatients() {
           <div key={i} className="flex justify-between">
             <p>{patient.firstName}</p>
 
-            <Button size="icon">
+            <Button
+              onClick={() => {
+                handleRestorePatient(patient.id);
+              }}
+              size="icon"
+            >
               <ArchiveRestore />
             </Button>
           </div>

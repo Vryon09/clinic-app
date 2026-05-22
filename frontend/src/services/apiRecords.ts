@@ -23,6 +23,12 @@ export async function handleGetRecord(id: string) {
   return res.data || {};
 }
 
+export async function handleGetArchivedRecords() {
+  const res = await api.get("/api/records/archived");
+
+  return res.data ?? [];
+}
+
 export interface IHandleAddRecord extends CreateRecordInput {
   patientId: string;
 }
@@ -86,6 +92,24 @@ export function useArchiveRecord() {
     mutationFn: handleArchiveRecord,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["records"] });
+    },
+  });
+}
+
+async function handleRestoreRecord(id: string) {
+  const res = await api.patch(`/api/records/${id}/restore`);
+
+  console.log(res.data.message);
+}
+
+export function useRestoreRecord() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleRestoreRecord,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["records"] });
+      queryClient.invalidateQueries({ queryKey: ["archivedRecords"] });
     },
   });
 }

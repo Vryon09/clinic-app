@@ -6,6 +6,7 @@ import {
   getArchivedPatients,
   getPatient,
   getPatients,
+  restorePatient,
   searchPatients,
   updatePatient,
 } from "../controller/patientController";
@@ -28,6 +29,7 @@ router.get("/:id", getPatient);
 router.post("/", validateSchema(createPatientSchema), addPatient);
 
 router.patch("/:id/archive", archivePatient);
+router.patch("/:id/restore", restorePatient);
 router.patch("/:id/update", validateSchema(updatePatientSchema), updatePatient);
 
 router.delete("/:id", deletePatient);

@@ -145,6 +145,22 @@ export async function archivePatient(req: Request, res: Response) {
   }
 }
 
+export async function restorePatient(req: Request, res: Response) {
+  try {
+    const patientId = req.params.id as string;
+
+    await prisma.patient.update({
+      where: { id: patientId },
+      data: { isArchived: false },
+    });
+
+    res.status(200).json({ message: "Patient Restored Successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}
+
 export async function updatePatient(req: Request, res: Response) {
   try {
     const patientId = req.params.id as string;

@@ -104,6 +104,24 @@ export function useArchivePatient() {
   });
 }
 
+async function handleRestorePatient(id: string) {
+  const res = await api.patch(`/api/patients/${id}/restore`);
+
+  console.log(res.data.message);
+}
+
+export function useRestorePatient() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleRestorePatient,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["patients"] });
+      queryClient.invalidateQueries({ queryKey: ["archivedPatients"] });
+    },
+  });
+}
+
 interface IHandleUpdatePatient extends UpdatePatientInput {
   id: string;
 }
