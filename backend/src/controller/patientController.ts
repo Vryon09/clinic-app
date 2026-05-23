@@ -20,11 +20,26 @@ export async function getPatients(req: Request, res: Response) {
 
 export async function getArchivedPatients(req: Request, res: Response) {
   try {
-    const patients = await prisma.patient.findMany({
-      where: { isArchived: true },
-    });
+    const limit = Math.max(1, parseInt(req.query.limit as string)) || 10;
+    const page = Math.max(1, parseInt(req.query.page as string)) || 1;
+    const skip = (page - 1) * limit;
 
-    res.status(200).json(patients);
+    const where = { isArchived: true };
+
+    const [patients, total] = await prisma.$transaction([
+      prisma.patient.findMany({
+        where,
+        skip,
+        take: limit,
+      }),
+      prisma.patient.count({ where }),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: patients,
+      meta: { total, page, limit, pages: Math.ceil(total / limit) },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error!" });

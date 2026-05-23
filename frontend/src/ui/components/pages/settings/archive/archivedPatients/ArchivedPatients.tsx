@@ -1,79 +1,40 @@
-import {
-  handleGetArchivedPatients,
-  useRestorePatient,
-} from "@/services/apiPatients";
+import { handleGetArchivedPatients } from "@/services/apiPatients";
 import type { IPatient } from "@/types/PatientType";
-import { Button } from "@/ui/components/shadcn/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/ui/components/shadcn/table";
-import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { ArchiveRestore } from "lucide-react";
 
-interface IArchivedPatient extends IPatient {
+import { useQuery } from "@tanstack/react-query";
+import ArchivedPatientsTable from "./ArchivedPatientsTable";
+import { useState } from "react";
+import PaginationBar from "@/ui/components/PaginationBar";
+import type { PaginatedResponse } from "@/types/Pagination";
+
+export interface IArchivedPatient extends IPatient {
   archivedOn: Date;
 }
 
 function ArchivedPatients() {
-  const { data: archivedPatients, isPending: isArchivedPatientsPending } =
-    useQuery<IArchivedPatient[]>({
-      queryFn: handleGetArchivedPatients,
-      queryKey: ["archivedPatients"],
+  const [page, setPage] = useState<number>(1);
+
+  const { data: archivedPatientsData, isPending: isArchivedPatientsPending } =
+    useQuery<PaginatedResponse<IArchivedPatient>>({
+      queryFn: () => handleGetArchivedPatients({ page }),
+      queryKey: ["archivedPatients", page],
     });
 
-  const { mutate: handleRestorePatient } = useRestorePatient();
+  const archivedPatients = archivedPatientsData?.data;
+  const archivedPatientsPagination = archivedPatientsData?.meta;
 
   if (isArchivedPatientsPending) return <p>loading...</p>;
 
   return (
     <div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Patient Name</TableHead>
-            <TableHead>Age</TableHead>
-            <TableHead>Phone</TableHead>
-            <TableHead>Sex</TableHead>
-            <TableHead>Archived On</TableHead>
-            <TableHead></TableHead>
-          </TableRow>
-        </TableHeader>
+      <ArchivedPatientsTable archivedPatients={archivedPatients!} />
 
-        <TableBody>
-          {archivedPatients?.map((patient, i) => (
-            <TableRow key={i}>
-              <TableCell>{`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>
-
-              <TableCell>
-                {dayjs().diff(dayjs(patient.dateOfBirth), "year")}
-              </TableCell>
-              <TableCell>{patient.phone}</TableCell>
-              <TableCell>{patient.sex.slice(0, 1)}</TableCell>
-
-              <TableCell>
-                {dayjs(patient.archivedOn).format("MMMM DD, YYYY")}
-              </TableCell>
-
-              <TableCell className="text-right">
-                <Button
-                  onClick={() => {
-                    handleRestorePatient(patient.id);
-                  }}
-                  size="icon-sm"
-                >
-                  <ArchiveRestore />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <PaginationBar
+        itemName="Archived Patients"
+        isLoading={isArchivedPatientsPending}
+        paginationData={archivedPatientsPagination!}
+        setPage={setPage}
+      />
     </div>
   );
 }
