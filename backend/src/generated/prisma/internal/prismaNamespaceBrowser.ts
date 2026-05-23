@@ -111,6 +111,7 @@ export const PatientScalarFieldEnum = {
   sex: 'sex',
   dateOfBirth: 'dateOfBirth',
   isArchived: 'isArchived',
+  archivedOn: 'archivedOn',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -123,6 +124,7 @@ export const RecordScalarFieldEnum = {
   patientId: 'patientId',
   visitDate: 'visitDate',
   isArchived: 'isArchived',
+  archivedOn: 'archivedOn',
   symptoms: 'symptoms',
   signs: 'signs',
   diagnosis: 'diagnosis',

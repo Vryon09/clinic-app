@@ -1,5 +1,6 @@
 import {
   handleGetClinicInfo,
+  useInitClinicInfo,
   useUpdateClinicInfo,
 } from "@/services/apiClinicInfo";
 import type { IClinicInfo } from "@/types/ClinicInfo";
@@ -23,11 +24,24 @@ import { toast } from "sonner";
 import { Spinner } from "../../../shadcn/spinner";
 
 function GeneralSettings() {
-  const { data: clinicInfo, isPending: isClinicInfoPending } =
-    useQuery<IClinicInfo>({
-      queryFn: handleGetClinicInfo,
-      queryKey: ["clinicInfo"],
-    });
+  const {
+    data: clinicInfo,
+    isPending: isClinicInfoPending,
+    isError: isClinicInfoError,
+  } = useQuery<IClinicInfo>({
+    queryFn: handleGetClinicInfo,
+    queryKey: ["clinicInfo"],
+    retry: false,
+  });
+
+  const { mutate: handleInitClinicInfo, isPending: isInitClinicInfoLoading } =
+    useInitClinicInfo();
+
+  useEffect(() => {
+    if (isClinicInfoError || !clinicInfo) {
+      handleInitClinicInfo();
+    }
+  }, [isClinicInfoError, clinicInfo, handleInitClinicInfo]);
 
   const {
     register,
@@ -81,7 +95,7 @@ function GeneralSettings() {
 
       <Separator />
 
-      {isClinicInfoPending ? (
+      {isClinicInfoPending || isInitClinicInfoLoading ? (
         <div className="flex h-40 items-center justify-center">
           <Spinner className="size-8" />
         </div>

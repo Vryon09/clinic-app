@@ -135,7 +135,7 @@ export async function archivePatient(req: Request, res: Response) {
 
     await prisma.patient.update({
       where: { id: patientId },
-      data: { isArchived: true },
+      data: { isArchived: true, archivedOn: new Date().toISOString() },
     });
 
     res.status(200).json({ message: "Deleted Successfully" });
@@ -151,7 +151,7 @@ export async function restorePatient(req: Request, res: Response) {
 
     await prisma.patient.update({
       where: { id: patientId },
-      data: { isArchived: false },
+      data: { isArchived: false, archivedOn: null },
     });
 
     res.status(200).json({ message: "Patient Restored Successfully" });

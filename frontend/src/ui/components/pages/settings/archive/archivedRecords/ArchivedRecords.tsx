@@ -4,13 +4,26 @@ import {
 } from "@/services/apiRecords";
 import type { IRecord } from "@/types/RecordType";
 import { Button } from "@/ui/components/shadcn/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/ui/components/shadcn/table";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { ArchiveRestore } from "lucide-react";
 
+interface IArchivedRecord extends IRecord {
+  patient: { firstName: string; middleName: string; lastName: string };
+  archivedOn: Date;
+}
+
 function ArchivedRecords() {
   const { data: archivedRecords, isPending: isArchivedRecordsPending } =
-    useQuery<IRecord[]>({
+    useQuery<IArchivedRecord[]>({
       queryFn: handleGetArchivedRecords,
       queryKey: ["archivedRecords"],
     });
@@ -21,24 +34,43 @@ function ArchivedRecords() {
 
   return (
     <div>
-      {archivedRecords?.length === 0 ? (
-        <p>no archived Records</p>
-      ) : (
-        archivedRecords?.map((record, i) => (
-          <div key={i} className="flex justify-between">
-            <p>{dayjs(record.createdAt).format("MMMM DD, YYYY")}</p>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Patient Name</TableHead>
+            <TableHead>Record Date</TableHead>
+            <TableHead>Archived On</TableHead>
+            <TableHead></TableHead>
+          </TableRow>
+        </TableHeader>
 
-            <Button
-              onClick={() => {
-                handleRestoreRecord(record.id);
-              }}
-              size="icon"
-            >
-              <ArchiveRestore />
-            </Button>
-          </div>
-        ))
-      )}
+        <TableBody>
+          {archivedRecords?.map((record, i) => (
+            <TableRow key={i}>
+              <TableCell>{`${record.patient.lastName}, ${record.patient.firstName}${record.patient.middleName ? ` ${record.patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>
+
+              <TableCell>
+                {dayjs(record.createdAt).format("MMMM DD, YYYY")}
+              </TableCell>
+
+              <TableCell>
+                {dayjs(record.archivedOn).format("MMMM DD, YYYY")}
+              </TableCell>
+
+              <TableCell className="text-right">
+                <Button
+                  onClick={() => {
+                    handleRestoreRecord(record.id);
+                  }}
+                  size="icon-sm"
+                >
+                  <ArchiveRestore />
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 }

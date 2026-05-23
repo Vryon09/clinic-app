@@ -9,9 +9,14 @@ import {
 } from "@/services/apiClinicInfo";
 
 function AuthGate({ children }: { children: ReactNode }) {
-  const { data: clinicInfo, isPending: isClinicInfoPending } = useQuery({
+  const {
+    data: clinicInfo,
+    isPending: isClinicInfoPending,
+    isError: isClinicInfoError,
+  } = useQuery({
     queryFn: handleGetClinicInfo,
     queryKey: ["clinicInfo"],
+    retry: false,
   });
 
   const { user, isUserLoading } = useAuth();
@@ -24,7 +29,7 @@ function AuthGate({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (isUserLoading || isClinicInfoPending) return;
 
-    if (!clinicInfo) {
+    if (isClinicInfoError || !clinicInfo) {
       handleInitClinicInfo();
     }
 
@@ -38,6 +43,7 @@ function AuthGate({ children }: { children: ReactNode }) {
     clinicInfo,
     isClinicInfoPending,
     handleInitClinicInfo,
+    isClinicInfoError,
   ]);
 
   if (isUserLoading || isClinicInfoPending || isInitClinicInfoLoading)

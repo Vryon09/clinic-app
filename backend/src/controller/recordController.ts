@@ -50,6 +50,15 @@ export async function getArchivedRecords(req: Request, res: Response) {
   try {
     const records = await prisma.record.findMany({
       where: { isArchived: true },
+      include: {
+        patient: {
+          select: {
+            firstName: true,
+            middleName: true,
+            lastName: true,
+          },
+        },
+      },
     });
 
     res.status(200).json(records);
@@ -125,7 +134,7 @@ export async function archiveRecord(req: Request, res: Response) {
 
     await prisma.record.update({
       where: { id: recordId },
-      data: { isArchived: true },
+      data: { isArchived: true, archivedOn: new Date().toISOString() },
     });
 
     res.status(200).json({ message: "Record archived successfully!" });
@@ -141,7 +150,7 @@ export async function restoreRecord(req: Request, res: Response) {
 
     await prisma.record.update({
       where: { id: recordId },
-      data: { isArchived: false },
+      data: { isArchived: false, archivedOn: null },
     });
 
     res.status(200).json({ message: "Record Restored Successfully" });
