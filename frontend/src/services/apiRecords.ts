@@ -23,8 +23,8 @@ export async function handleGetRecord(id: string) {
   return res.data || {};
 }
 
-export async function handleGetArchivedRecords() {
-  const res = await api.get("/api/records/archived");
+export async function handleGetArchivedRecords({ page }: { page: number }) {
+  const res = await api.get(`/api/records/archived?page=${page}&limit=10`);
 
   return res.data ?? [];
 }

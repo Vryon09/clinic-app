@@ -12,7 +12,7 @@ export async function handleGetPatients() {
 }
 
 export async function handleGetArchivedPatients({ page }: { page: number }) {
-  const res = await api.get(`/api/patients/archived?page=${page}&limit=2`);
+  const res = await api.get(`/api/patients/archived?page=${page}&limit=10`);
 
   return res.data ?? [];
 }

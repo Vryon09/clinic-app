@@ -1,76 +1,39 @@
-import {
-  handleGetArchivedRecords,
-  useRestoreRecord,
-} from "@/services/apiRecords";
+import { handleGetArchivedRecords } from "@/services/apiRecords";
 import type { IRecord } from "@/types/RecordType";
-import { Button } from "@/ui/components/shadcn/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/ui/components/shadcn/table";
 import { useQuery } from "@tanstack/react-query";
-import dayjs from "dayjs";
-import { ArchiveRestore } from "lucide-react";
+import ArchivedRecordsTable from "./ArchivedRecordsTable";
+import { useState } from "react";
+import PaginationBar from "@/ui/components/PaginationBar";
+import type { PaginatedResponse } from "@/types/Pagination";
 
-interface IArchivedRecord extends IRecord {
+export interface IArchivedRecord extends IRecord {
   patient: { firstName: string; middleName: string; lastName: string };
   archivedOn: Date;
 }
 
 function ArchivedRecords() {
-  const { data: archivedRecords, isPending: isArchivedRecordsPending } =
-    useQuery<IArchivedRecord[]>({
-      queryFn: handleGetArchivedRecords,
-      queryKey: ["archivedRecords"],
+  const [page, setPage] = useState<number>(1);
+  const { data: archivedRecordsData, isPending: isArchivedRecordsPending } =
+    useQuery<PaginatedResponse<IArchivedRecord>>({
+      queryFn: () => handleGetArchivedRecords({ page }),
+      queryKey: ["archivedRecords", page],
     });
 
-  const { mutate: handleRestoreRecord } = useRestoreRecord();
+  const archivedRecords = archivedRecordsData?.data;
+  const archivedRecordsPagination = archivedRecordsData?.meta;
 
   if (isArchivedRecordsPending) return <p>loading...</p>;
 
   return (
     <div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Patient Name</TableHead>
-            <TableHead>Record Date</TableHead>
-            <TableHead>Archived On</TableHead>
-            <TableHead></TableHead>
-          </TableRow>
-        </TableHeader>
+      <ArchivedRecordsTable archivedRecords={archivedRecords!} />
 
-        <TableBody>
-          {archivedRecords?.map((record, i) => (
-            <TableRow key={i}>
-              <TableCell>{`${record.patient.lastName}, ${record.patient.firstName}${record.patient.middleName ? ` ${record.patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>
-
-              <TableCell>
-                {dayjs(record.createdAt).format("MMMM DD, YYYY")}
-              </TableCell>
-
-              <TableCell>
-                {dayjs(record.archivedOn).format("MMMM DD, YYYY")}
-              </TableCell>
-
-              <TableCell className="text-right">
-                <Button
-                  onClick={() => {
-                    handleRestoreRecord(record.id);
-                  }}
-                  size="icon-sm"
-                >
-                  <ArchiveRestore />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <PaginationBar
+        itemName="Archived Records"
+        isLoading={isArchivedRecordsPending}
+        paginationData={archivedRecordsPagination!}
+        setPage={setPage}
+      />
     </div>
   );
 }

@@ -33,6 +33,43 @@ export async function getRecords(req: Request, res: Response) {
   }
 }
 
+export async function getArchivedRecords(req: Request, res: Response) {
+  try {
+    const limit = Math.max(1, parseInt(req.query.limit as string)) || 10;
+    const page = Math.max(1, parseInt(req.query.page as string)) || 1;
+    const skip = (page - 1) * limit;
+
+    const where = { isArchived: true };
+
+    const [records, total] = await prisma.$transaction([
+      prisma.record.findMany({
+        where,
+        include: {
+          patient: {
+            select: {
+              firstName: true,
+              middleName: true,
+              lastName: true,
+            },
+          },
+        },
+        skip,
+        take: limit,
+      }),
+      prisma.record.count({ where }),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: records,
+      meta: { total, page, limit, pages: Math.ceil(total / limit) },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+}
+
 export async function getRecord(req: Request, res: Response) {
   try {
     const record = await prisma.record.findUnique({
@@ -40,28 +77,6 @@ export async function getRecord(req: Request, res: Response) {
     });
 
     res.status(200).json(record);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Internal Server Error!" });
-  }
-}
-
-export async function getArchivedRecords(req: Request, res: Response) {
-  try {
-    const records = await prisma.record.findMany({
-      where: { isArchived: true },
-      include: {
-        patient: {
-          select: {
-            firstName: true,
-            middleName: true,
-            lastName: true,
-          },
-        },
-      },
-    });
-
-    res.status(200).json(records);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error!" });
