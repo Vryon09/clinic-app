@@ -20,6 +20,9 @@ import {
   type CreatePatientInput,
 } from "@/schemas/patientSchema";
 import { RadioGroup, RadioGroupItem } from "../../shadcn/radio-group";
+import { Popover, PopoverContent, PopoverTrigger } from "../../shadcn/popover";
+import { Calendar } from "../../shadcn/calendar";
+import dayjs from "dayjs";
 
 interface PatientFormProps {
   isOpen: boolean;
@@ -42,13 +45,10 @@ function PatientForm({
     reset,
     control,
     formState: { errors },
-  } = useForm({
+  } = useForm<CreatePatientInput>({
     resolver: zodResolver(createPatientSchema),
     defaultValues: {
       ...initialValues,
-      dateOfBirth: initialValues.dateOfBirth
-        ? initialValues.dateOfBirth.toISOString().split("T")[0]
-        : "",
     },
   });
 
@@ -121,11 +121,41 @@ function PatientForm({
               <div className="grid grid-cols-2 gap-2">
                 <Field>
                   <FieldLabel htmlFor="dateOfBirth">Date Of Birth</FieldLabel>
-                  <Input
+                  {/* <Input
                     className="border border-neutral-400"
                     id="dateOfBirth"
                     {...register("dateOfBirth")}
                     type="date"
+                  /> */}
+
+                  <Controller
+                    name="dateOfBirth"
+                    control={control}
+                    render={({ field }) => (
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className="flex justify-baseline rounded-md border-neutral-400"
+                          >
+                            <span>
+                              {field.value
+                                ? dayjs(field.value).format("MMMM DD, YYYY")
+                                : "Pick a Date"}
+                            </span>
+                          </Button>
+                        </PopoverTrigger>
+
+                        <PopoverContent side="left" className="w-fit p-0">
+                          <Calendar
+                            mode="single"
+                            captionLayout="dropdown"
+                            onSelect={field.onChange}
+                            selected={field.value}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    )}
                   />
                   {errors.dateOfBirth && (
                     <FieldError

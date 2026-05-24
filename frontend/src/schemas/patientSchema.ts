@@ -36,15 +36,9 @@ export const createPatientSchema = z.object({
 
   sex: z.enum(["MALE", "FEMALE"]),
 
-  dateOfBirth: z.preprocess(
-    (val) => {
-      if (typeof val === "string" && val.trim() !== "") {
-        return new Date(val);
-      }
-      return undefined;
-    },
-    z.date().max(new Date(), "Date of birth cannot be in the future."),
-  ),
+  dateOfBirth: z
+    .date()
+    .max(new Date(), "Date of birth cannot be in the future."),
 });
 
 export const updatePatientSchema = createPatientSchema.partial();
