@@ -96,12 +96,6 @@ export function LoginForm({
                     {...register("password")}
                     required
                   />
-                  {errors.password && (
-                    <FieldError
-                      className="text-xs"
-                      errors={[errors.password]}
-                    />
-                  )}
 
                   <Button
                     onClick={(e) => {
@@ -115,6 +109,10 @@ export function LoginForm({
                     {!isPasswordShowing ? <EyeClosed /> : <Eye />}
                   </Button>
                 </div>
+
+                {errors.password && (
+                  <FieldError className="text-xs" errors={[errors.password]} />
+                )}
               </Field>
               <Field>
                 <Button type="submit" disabled={isLoggingin}>

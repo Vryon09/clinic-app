@@ -21,11 +21,15 @@ import { signupSchema, type SignupInput } from "@/schemas/authSchema";
 import { useRegister } from "@/services/apiAuth";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
+import { useState } from "react";
+import { Eye, EyeClosed } from "lucide-react";
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [isPasswordShowing, setIsPasswordShowing] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -81,20 +85,30 @@ export function SignupForm({
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  {/* <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a> */}
                 </div>
-                <Input
-                  className="border-neutral-300"
-                  id="password"
-                  type="password"
-                  {...register("password")}
-                  required
-                />
+
+                <div className="relative">
+                  <Input
+                    className="border-neutral-300"
+                    id="password"
+                    type={isPasswordShowing ? "text" : "password"}
+                    {...register("password")}
+                    required
+                  />
+
+                  <Button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsPasswordShowing((prev) => !prev);
+                    }}
+                    variant="ghost"
+                    size="icon-lg"
+                    className="absolute top-1/2 right-0 h-full -translate-y-1/2 cursor-pointer rounded-r-md px-2 hover:bg-transparent"
+                  >
+                    {!isPasswordShowing ? <EyeClosed /> : <Eye />}
+                  </Button>
+                </div>
+
                 {errors.password && (
                   <FieldError className="text-xs" errors={[errors.password]} />
                 )}
@@ -103,20 +117,30 @@ export function SignupForm({
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Confirm Password</FieldLabel>
-                  {/* <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a> */}
                 </div>
-                <Input
-                  className="border-neutral-300"
-                  id="confirmPassword"
-                  type="password"
-                  {...register("confirmPassword")}
-                  required
-                />
+
+                <div className="relative">
+                  <Input
+                    className="border-neutral-300"
+                    id="confirmPassword"
+                    type={isPasswordShowing ? "text" : "password"}
+                    {...register("confirmPassword")}
+                    required
+                  />
+
+                  <Button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsPasswordShowing((prev) => !prev);
+                    }}
+                    variant="ghost"
+                    size="icon-lg"
+                    className="absolute top-1/2 right-0 h-full -translate-y-1/2 cursor-pointer rounded-r-md px-2 hover:bg-transparent"
+                  >
+                    {!isPasswordShowing ? <EyeClosed /> : <Eye />}
+                  </Button>
+                </div>
+
                 {errors.confirmPassword && (
                   <FieldError
                     className="text-xs"
