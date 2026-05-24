@@ -97,6 +97,43 @@ export async function registerUser(req: Request, res: Response) {
   }
 }
 
+export async function addUser(req: Request, res: Response) {
+  try {
+    const { username, password, role } = req.body;
+
+    const existingUser = await prisma.user.findUnique({
+      where: { username },
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await prisma.user.create({
+      data: {
+        username,
+        password: hashedPassword,
+        role,
+      },
+    });
+
+    res.status(201).json({
+      success: true,
+      data: {
+        user: {
+          id: user.id,
+          username,
+        },
+      },
+    });
+  } catch (err: any) {
+    console.log(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+}
+
 export async function loginUser(req: Request, res: Response) {
   try {
     const { username, password } = req.body;

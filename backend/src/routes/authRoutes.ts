@@ -9,21 +9,16 @@ import {
   updateUser,
   toggleUserStatus,
   changePassword,
+  addUser,
 } from "../controller/authController";
 import { validateSchema } from "../middleware/validateSchema";
 import { loginSchema, registerSchema } from "../schemas/authSchema";
 import { verifyToken } from "../middleware/verifyToken";
-import { authorize } from "../middleware/authorize";
 
 const router = Router();
 
 router.post("/register", validateSchema(registerSchema), registerUser);
-router.post(
-  "/addUser",
-  verifyToken,
-  validateSchema(registerSchema),
-  registerUser,
-);
+router.post("/addUser", verifyToken, validateSchema(registerSchema), addUser);
 router.post("/login", validateSchema(loginSchema), loginUser);
 router.post("/logout", logoutUser);
 router.get("/me", verifyToken, getMe);
