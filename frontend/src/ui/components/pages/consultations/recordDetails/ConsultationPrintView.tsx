@@ -36,13 +36,18 @@ function ConsultationPrintView({
         </h2>
 
         <p className="text-sm">
-          <span className="font-semibold">Symptoms:</span> {record?.symptoms}
+          <span className="font-semibold">Symptoms:</span>{" "}
+          {record?.symptoms ? record.symptoms : "N/A"}
         </p>
+
         <p className="text-sm">
-          <span className="font-semibold">Signs:</span> {record?.signs}
+          <span className="font-semibold">Signs:</span>{" "}
+          {record?.signs ? record.signs : "N/A"}
         </p>
+
         <p className="text-sm">
-          <span className="font-semibold">Diagnosis:</span> {record?.diagnosis}
+          <span className="font-semibold">Diagnosis:</span>{" "}
+          {record?.diagnosis ? record.diagnosis : "N/A"}
         </p>
       </section>
 
@@ -53,16 +58,20 @@ function ConsultationPrintView({
         <div className="grid grid-cols-3 gap-4 text-sm">
           <p>
             <span className="font-semibold">BP:</span>{" "}
-            {vitalSigns?.bloodPressureSystolic}/
-            {vitalSigns?.bloodPressureDiastolic}
+            {vitalSigns?.bloodPressureSystolic &&
+            vitalSigns?.bloodPressureDiastolic
+              ? `${vitalSigns.bloodPressureSystolic}/${vitalSigns.bloodPressureDiastolic}`
+              : "N/A"}
           </p>
+
           <p>
             <span className="font-semibold">Temp:</span>{" "}
-            {vitalSigns?.temperature}°C
+            {vitalSigns?.temperature ? `${vitalSigns.temperature}°C` : "N/A"}
           </p>
+
           <p>
             <span className="font-semibold">Weight:</span>{" "}
-            {vitalSigns?.weightKg} kg
+            {vitalSigns?.weightKg ? `${vitalSigns.weightKg} kg` : "N/A"}
           </p>
         </div>
       </section>
@@ -71,15 +80,26 @@ function ConsultationPrintView({
       <section className="mb-6">
         <h2 className="mb-2 border-b text-sm font-bold">Medications</h2>
 
+        {recordMedications.length === 0 && <p className="text-sm">N/A</p>}
+
         {recordMedications?.map((med, i) => (
           <div key={med.id} className="mb-3 text-sm">
             <p className="font-semibold">
-              {i + 1}. {med.name}
+              {i + 1}. {med.name ? med.name : "N/A"}
             </p>
-            <p>Dosage: {med.dosage}</p>
-            <p>Frequency: {med.frequency}</p>
-            <p>Duration: {med.durationDays} days</p>
-            <p>Instructions: {med.instructions}</p>
+
+            <p>Dosage: {med.dosage ? med.dosage : "N/A"}</p>
+
+            <p>Frequency: {med.frequency ? med.frequency : "N/A"}</p>
+
+            <p>
+              Duration:{" "}
+              {med.durationDays
+                ? `${med.durationDays} ${med.durationDays > 1 ? "days" : "day"}`
+                : "N/A"}
+            </p>
+
+            <p>Instructions: {med.instructions ? med.instructions : "N/A"}</p>
           </div>
         ))}
       </section>

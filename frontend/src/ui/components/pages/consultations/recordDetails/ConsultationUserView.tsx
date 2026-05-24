@@ -19,15 +19,21 @@ function ConsultationUserView({
           <p className="mb-2 text-2xl font-semibold">Visit Details</p>
           <Card className="flex flex-col gap-4 px-4 py-2">
             <p className="text-lg font-semibold">Symptoms</p>
-            <p className="text-neutral-600">{record?.symptoms}</p>
+            <p className="text-neutral-600">
+              {record?.symptoms ? record?.symptoms : "N/A"}
+            </p>
           </Card>
           <Card className="flex flex-col gap-4 px-4 py-2">
             <p className="text-lg font-semibold">Signs</p>
-            <p className="text-neutral-600">{record?.signs}</p>
+            <p className="text-neutral-600">
+              {record?.signs ? record?.signs : "N/A"}
+            </p>
           </Card>
           <Card className="flex flex-col gap-4 px-4 py-2">
             <p className="text-lg font-semibold">Diagnosis</p>
-            <p className="text-neutral-600">{record?.diagnosis}</p>
+            <p className="text-neutral-600">
+              {record?.diagnosis ? record?.diagnosis : "N/A"}
+            </p>
           </Card>
         </div>
 
@@ -38,20 +44,24 @@ function ConsultationUserView({
             <Card className="flex flex-col gap-4 px-4 py-2">
               <p className="text-lg font-semibold">Blood Pressure</p>
               <p className="text-right text-2xl text-neutral-600">
-                {vitalSigns?.bloodPressureSystolic}/
-                {vitalSigns?.bloodPressureDiastolic}
+                {vitalSigns?.bloodPressureSystolic &&
+                vitalSigns?.bloodPressureDiastolic
+                  ? `${vitalSigns?.bloodPressureSystolic}/${vitalSigns?.bloodPressureDiastolic}`
+                  : "N/A"}
               </p>
             </Card>
             <Card className="flex flex-col gap-4 px-4 py-2">
               <p className="text-lg font-semibold">Temperature</p>
               <p className="text-right text-2xl text-neutral-600">
-                {vitalSigns?.temperature}°C
+                {vitalSigns?.temperature
+                  ? `${vitalSigns?.temperature}°C`
+                  : "N/A"}
               </p>
             </Card>
             <Card className="flex flex-col gap-4 px-4 py-2">
               <p className="text-lg font-semibold">Weight</p>
               <p className="text-right text-2xl text-neutral-600">
-                {vitalSigns?.weightKg}kg
+                {vitalSigns?.weightKg ? `${vitalSigns?.weightKg}kg` : "N/A"}
               </p>
             </Card>
           </div>
@@ -59,6 +69,9 @@ function ConsultationUserView({
 
         <div className="col-span-2 flex flex-col gap-2">
           <p className="mb-2 text-2xl font-semibold">Medications</p>
+          {recordMedications.length === 0 && (
+            <p className="text-center">No Medications Added</p>
+          )}
           {recordMedications?.map((medication) => (
             <Card key={medication.id} className="flex flex-col gap-4 px-4 py-2">
               <p className="text-lg font-semibold">{medication.name}</p>
