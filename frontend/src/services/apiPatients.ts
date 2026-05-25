@@ -4,6 +4,7 @@ import type {
   UpdatePatientInput,
 } from "@/schemas/patientSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export async function handleGetPatients() {
   const res = await api.get("/api/patients");
@@ -64,7 +65,10 @@ export function useAddPatient() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: handleAddPatient,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["patients"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["patients"] });
+      toast.success("Added patient successfully", { position: "top-center" });
+    },
   });
 }
 
@@ -159,6 +163,7 @@ export function useUpdatePatient() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["patients"] });
       queryClient.invalidateQueries({ queryKey: ["patient"] });
+      toast.success("Updated patient successfully", { position: "top-center" });
     },
   });
 }

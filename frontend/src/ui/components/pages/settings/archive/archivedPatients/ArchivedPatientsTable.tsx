@@ -1,6 +1,7 @@
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -21,6 +22,9 @@ function ArchivedPatientsTable({
 
   return (
     <Table>
+      {archivedPatients?.length === 0 && (
+        <TableCaption>No archived patients found.</TableCaption>
+      )}
       <TableHeader>
         <TableRow>
           <TableHead>Patient Name</TableHead>

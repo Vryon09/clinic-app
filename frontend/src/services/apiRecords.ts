@@ -4,6 +4,7 @@ import type {
   UpdateRecordInput,
 } from "@/schemas/recordSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export async function handleGetRecords({
   id,
@@ -61,6 +62,9 @@ export function useAddRecord() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["patient"] });
       queryClient.invalidateQueries({ queryKey: ["records"] });
+      toast.success("Created new record successfully", {
+        position: "top-center",
+      });
     },
   });
 }
@@ -145,6 +149,7 @@ export function useUpdateRecord() {
     onSuccess: () => {
       // queryClient.invalidateQueries({ queryKey: ["patient"] });
       queryClient.invalidateQueries({ queryKey: ["records"] });
+      toast.success("Updated record successfully", { position: "top-center" });
     },
   });
 }

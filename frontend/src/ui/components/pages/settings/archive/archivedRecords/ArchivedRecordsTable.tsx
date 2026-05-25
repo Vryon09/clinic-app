@@ -3,6 +3,7 @@ import { Button } from "@/ui/components/shadcn/button";
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -21,6 +22,9 @@ function ArchivedRecordsTable({
 
   return (
     <Table>
+      {archivedRecords?.length === 0 && (
+        <TableCaption>No archived records found.</TableCaption>
+      )}
       <TableHeader>
         <TableRow>
           <TableHead>Patient Name</TableHead>

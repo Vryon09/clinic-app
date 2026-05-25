@@ -1,5 +1,6 @@
 import api from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export async function handeGetLabResults({
   patientId,
@@ -39,8 +40,12 @@ export function useUploadLabResult() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: handleUploadLabResult,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["labResults"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["labResults"] });
+      toast.success("Uploaded lab result successfully", {
+        position: "top-center",
+      });
+    },
   });
 }
 
