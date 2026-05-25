@@ -69,7 +69,7 @@ function ConsultationUserView({
 
         <div className="col-span-2 flex flex-col gap-2">
           <p className="mb-2 text-2xl font-semibold">Medications</p>
-          {recordMedications.length === 0 && (
+          {recordMedications?.length === 0 && (
             <p className="text-center">No Medications Added</p>
           )}
           {recordMedications?.map((medication) => (
