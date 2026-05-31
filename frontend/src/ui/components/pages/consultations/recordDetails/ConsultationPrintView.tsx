@@ -5,6 +5,10 @@ import { Button } from "../../../shadcn/button";
 import { useQuery } from "@tanstack/react-query";
 import { handleGetClinicInfo } from "@/services/apiClinicInfo";
 import type { ClinicInfoForm } from "@/schemas/clinicInfoSchema";
+import { handleGetPatient } from "@/services/apiPatients";
+import { useParams } from "react-router";
+import type { IPatient } from "@/types/PatientType";
+import dayjs from "dayjs";
 
 function ConsultationPrintView({
   record,
@@ -21,13 +25,60 @@ function ConsultationPrintView({
       queryKey: ["clinicInfo"],
     });
 
+  const { patientId } = useParams() as { patientId: string };
+
+  const { data: patient, isPending: isPatientPending } = useQuery<IPatient>({
+    queryFn: () => handleGetPatient({ id: patientId }),
+    queryKey: ["patient"],
+  });
+
   return (
     <div className="mx-auto w-[210mm] bg-white p-10 text-black print:w-full print:p-6">
       {/* HEADER */}
       <div className="mb-6 border-b pb-3 text-center">
-        <h1 className="text-xl font-bold">CLINIC NAME</h1>
+        <h1 className="text-xl font-bold">
+          {clinicInfo?.name ? clinicInfo.name : "ClinicSync"}
+        </h1>
         <p className="text-sm">Medical Consultation Report</p>
       </div>
+
+      {/* CONSULTATION DETAILS */}
+      <section className="mb-6">
+        <h2 className="mb-2 border-b text-sm font-bold">Patient's Details</h2>
+
+        <p className="text-sm">
+          <span className="font-semibold">Name:</span>{" "}
+          {patient?.firstName || patient?.middleName || patient?.lastName
+            ? `${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""} ${patient.lastName}`
+            : "N/A"}
+        </p>
+
+        <p className="text-sm">
+          <span className="font-semibold">Age:</span>{" "}
+          {patient?.dateOfBirth
+            ? dayjs().diff(dayjs(patient.dateOfBirth), "year")
+            : "N/A"}
+        </p>
+
+        <p className="text-sm">
+          <span className="font-semibold">Date of Birth:</span>{" "}
+          {patient?.dateOfBirth
+            ? dayjs(patient.dateOfBirth).format("MMMM DD, YYYY")
+            : "N/A"}
+        </p>
+
+        <p className="text-sm">
+          <span className="font-semibold">Sex:</span>{" "}
+          <span className="capitalize">
+            {patient?.sex ? patient.sex.toLowerCase() : "N/A"}
+          </span>
+        </p>
+
+        <p className="text-sm">
+          <span className="font-semibold">Address:</span>{" "}
+          {patient?.address ? patient.address : "N/A"}
+        </p>
+      </section>
 
       {/* CONSULTATION DETAILS */}
       <section className="mb-6">
@@ -107,6 +158,7 @@ function ConsultationPrintView({
       {/* SIGNATURE */}
       <div className="mt-10 text-sm">
         <p>Doctor’s Signature: __________________________</p>
+        <p>License No.: 1234567 </p>
       </div>
 
       {/* FOOTER */}
@@ -118,7 +170,7 @@ function ConsultationPrintView({
         <Button
           onClick={() => window.print()}
           className="mt-4 cursor-pointer text-center print:hidden"
-          disabled={isClinicInfoPending}
+          disabled={isClinicInfoPending || isPatientPending}
         >
           Print Report
         </Button>
