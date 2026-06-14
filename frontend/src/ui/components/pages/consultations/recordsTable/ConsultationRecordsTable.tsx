@@ -73,7 +73,7 @@ function ConsultationRecordsTable({
                     `/patients/${record.patientId}/consultations/${record.id}/details`,
                   );
                 }}
-                className="cursor-pointer hover:bg-neutral-200"
+                className="cursor-pointer"
               >
                 <TableCell>
                   {dayjs(record.createdAt).format("MMMM DD, YYYY")}

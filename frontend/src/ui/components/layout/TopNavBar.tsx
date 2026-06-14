@@ -1,10 +1,12 @@
 import { cn } from "@/lib/utils";
-import { LogOut, Settings, User2 } from "lucide-react";
+import { LogOut, Moon, Settings, Sun, User2 } from "lucide-react";
 import { Button } from "../shadcn/button";
 import { useLocation, useNavigate } from "react-router";
 
 import { useLogout } from "@/services/apiAuth";
 import { Separator } from "../shadcn/separator";
+import { Toggle } from "../shadcn/toggle";
+import { useTheme } from "next-themes";
 
 const modules = [
   { url: "patients", label: "Patients", icon: User2 },
@@ -16,6 +18,8 @@ function TopNavBar() {
   const { mutate: handleLogout } = useLogout();
   const location = useLocation();
   const currTab = location.pathname.split("/").slice(1)[0];
+
+  const { theme, setTheme } = useTheme();
 
   return (
     <div className="flex items-center justify-between px-4 py-3 print:hidden">
@@ -35,6 +39,21 @@ function TopNavBar() {
             <module.icon /> {currTab === module.url && module.label}
           </Button>
         ))}
+
+        <Separator orientation="vertical" className="mx-2" />
+
+        <Toggle
+          variant="outline"
+          size="sm"
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          className="h-full w-8 cursor-pointer rounded-full p-0"
+        >
+          {theme === "light" ? (
+            <Sun className="size-4" />
+          ) : (
+            <Moon className="size-4" />
+          )}
+        </Toggle>
 
         <Separator orientation="vertical" className="mx-2" />
 

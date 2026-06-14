@@ -52,7 +52,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
 
   return (
     <>
-      <div className="mb-4 flex-1 overflow-y-auto rounded-xl border bg-neutral-50 px-2">
+      <div className="mb-4 flex-1 overflow-y-auto rounded-xl border px-2">
         <Table>
           {!patients?.length && !isPatientsLoading && (
             <TableCaption>
@@ -112,7 +112,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
               : patients?.map((patient) => (
                   <TableRow
                     key={patient.id}
-                    className="cursor-pointer hover:bg-neutral-200"
+                    className="cursor-pointer"
                     onClick={() => navigate(`/patients/${patient.id}`)}
                   >
                     <TableCell>{`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>

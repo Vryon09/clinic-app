@@ -84,7 +84,7 @@ function LabResultsTable({
                     e.stopPropagation();
                     window.open(`http://localhost:3000/${result.filePath}`);
                   }}
-                  className="cursor-pointer hover:bg-neutral-200"
+                  className="cursor-pointer"
                 >
                   <TableCell>
                     {dayjs(result.uploadedAt).format("MMMM DD, YYYY")}
