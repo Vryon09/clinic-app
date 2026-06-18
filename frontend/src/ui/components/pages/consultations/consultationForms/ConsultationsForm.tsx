@@ -18,14 +18,20 @@ import {
   SelectValue,
 } from "@/ui/components/shadcn/select";
 import { Input } from "@/ui/components/shadcn/input";
-import { handleGetCases } from "@/services/apiCase";
+import { handleGetCases, useAddCase } from "@/services/apiCase";
 import type { ICase } from "@/types/CaseType";
+import { useState } from "react";
 
 function ConsultationsForm() {
+  const [caseName, setCaseName] = useState<string>("");
+  const [selectedCaseId, setSelectedCaseId] = useState<string>("");
+
   const { patientId, consultationId } = useParams() as {
     patientId: string;
     consultationId: string;
   };
+
+  console.log(selectedCaseId);
 
   const { data: patient, isPending: isPatientLoading } = useQuery({
     queryFn: () => handleGetPatient({ id: patientId }),
@@ -42,6 +48,7 @@ function ConsultationsForm() {
 
   const { mutate: handleAddRecord } = useAddRecord();
   const { mutate: handleUpdateRecord } = useUpdateRecord();
+  const { mutate: handleAddCase } = useAddCase(patientId);
 
   const navigate = useNavigate();
 
@@ -64,6 +71,7 @@ function ConsultationsForm() {
     handleAddRecord,
     handleUpdateRecord,
     navigate,
+    caseId: selectedCaseId,
   });
 
   return (
@@ -85,8 +93,12 @@ function ConsultationsForm() {
         </div>
 
         <div>
-          <Select disabled={isCasesLoading}>
-            <SelectTrigger className="w-full max-w-48 cursor-pointer capitalize">
+          <Select
+            disabled={isCasesLoading}
+            value={selectedCaseId}
+            onValueChange={(value) => setSelectedCaseId(value)}
+          >
+            <SelectTrigger className="w-full max-w-48 cursor-pointer">
               <SelectValue placeholder="Select a case" />
             </SelectTrigger>
 
@@ -94,8 +106,16 @@ function ConsultationsForm() {
               <SelectGroup>
                 <SelectLabel>Cases</SelectLabel>
                 <div className="my-1 flex gap-2 px-1">
-                  <Input type="text" />
-                  <Button>Add</Button>
+                  <Input
+                    type="text"
+                    value={caseName}
+                    onChange={(e) => setCaseName(e.target.value)}
+                  />
+                  <Button
+                    onClick={() => handleAddCase({ patientId, caseName })}
+                  >
+                    Add
+                  </Button>
                 </div>
                 {cases?.map((caseItem) => (
                   <SelectItem

@@ -17,10 +17,12 @@ import { useQuery, type UseMutateFunction } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import type { NavigateFunction } from "react-router";
+import { toast } from "sonner";
 
 interface IUseVisitDetailsForm {
   consultationId: string;
   patientId: string;
+  caseId: string | undefined;
   formType: "edit" | "new";
   navigate: NavigateFunction;
   handleAddRecord: UseMutateFunction<void, Error, IHandleAddRecord, unknown>;
@@ -34,6 +36,7 @@ interface IUseVisitDetailsForm {
 
 export function useVisitDetailsForm({
   consultationId,
+  caseId,
   patientId,
   formType,
   navigate,
@@ -126,8 +129,13 @@ export function useVisitDetailsForm({
   }, [record, reset, formType, vitalSigns, recordMedications]);
 
   function onSubmit(recordData: CreateRecordInput) {
+    if (!caseId) {
+      toast.error("Select a case", { position: "top-center" });
+      return;
+    }
+
     if (formType === "new") {
-      handleAddRecord({ ...recordData, patientId });
+      handleAddRecord({ ...recordData, patientId, caseId });
     } else {
       handleUpdateRecord({ ...recordData, consultationId });
     }

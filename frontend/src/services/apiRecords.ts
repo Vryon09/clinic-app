@@ -32,10 +32,12 @@ export async function handleGetArchivedRecords({ page }: { page: number }) {
 
 export interface IHandleAddRecord extends CreateRecordInput {
   patientId: string;
+  caseId: string;
 }
 
 async function handleAddRecord({
   patientId,
+  caseId,
   symptoms,
   diagnosis,
   signs,
@@ -44,6 +46,7 @@ async function handleAddRecord({
 }: IHandleAddRecord) {
   const newRecord = {
     patientId,
+    caseId,
     symptoms,
     diagnosis,
     signs,
