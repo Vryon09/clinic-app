@@ -55,6 +55,11 @@ export type User = Prisma.UserModel
  */
 export type Patient = Prisma.PatientModel
 /**
+ * Model Case
+ * 
+ */
+export type Case = Prisma.CaseModel
+/**
  * Model Record
  * 
  */

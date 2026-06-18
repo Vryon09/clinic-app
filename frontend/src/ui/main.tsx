@@ -9,7 +9,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider
       attribute="class"
-      defaultTheme="light"
+      defaultTheme="system"
       storageKey="vite-ui-theme"
     >
       <BrowserRouter>

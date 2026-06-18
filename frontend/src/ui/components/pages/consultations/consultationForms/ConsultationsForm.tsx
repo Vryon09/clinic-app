@@ -8,6 +8,18 @@ import { useVisitDetailsForm } from "@/hooks/useVisitDetailsForm";
 import { Skeleton } from "../../../shadcn/skeleton";
 import RecordMedicationForm from "./RecordMedicationForm";
 import VisitDetailsForm from "./VisitDetailsForm";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/ui/components/shadcn/select";
+import { Input } from "@/ui/components/shadcn/input";
+import { handleGetCases } from "@/services/apiCase";
+import type { ICase } from "@/types/CaseType";
 
 function ConsultationsForm() {
   const { patientId, consultationId } = useParams() as {
@@ -18,6 +30,11 @@ function ConsultationsForm() {
   const { data: patient, isPending: isPatientLoading } = useQuery({
     queryFn: () => handleGetPatient({ id: patientId }),
     queryKey: ["patient", patientId],
+  });
+
+  const { data: cases, isPending: isCasesLoading } = useQuery<ICase[]>({
+    queryFn: () => handleGetCases({ patientId }),
+    queryKey: ["cases", patientId],
   });
 
   const location = useLocation();
@@ -51,19 +68,48 @@ function ConsultationsForm() {
 
   return (
     <div className="pb-8">
-      <div className="mb-4 space-y-1">
-        <p className="text-2xl font-semibold">New Consultation</p>
-        <p>
-          Patient:{" "}
-          {isPatientLoading ? (
-            <Skeleton className="h-4 w-24 bg-neutral-300" />
-          ) : (
-            <span className="font-semibold">
-              {" "}
-              {`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}
-            </span>
-          )}
-        </p>
+      <div className="flex justify-between">
+        <div className="mb-4 space-y-1">
+          <p className="text-2xl font-semibold">New Consultation</p>
+          <p>
+            Patient:{" "}
+            {isPatientLoading ? (
+              <Skeleton className="h-4 w-24 bg-neutral-300" />
+            ) : (
+              <span className="font-semibold">
+                {" "}
+                {`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}
+              </span>
+            )}
+          </p>
+        </div>
+
+        <div>
+          <Select disabled={isCasesLoading}>
+            <SelectTrigger className="w-full max-w-48 cursor-pointer capitalize">
+              <SelectValue placeholder="Select a case" />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Cases</SelectLabel>
+                <div className="my-1 flex gap-2 px-1">
+                  <Input type="text" />
+                  <Button>Add</Button>
+                </div>
+                {cases?.map((caseItem) => (
+                  <SelectItem
+                    key={caseItem.id}
+                    value={caseItem.id}
+                    className="cursor-pointer capitalize"
+                  >
+                    {caseItem.caseName}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <form onSubmit={visitDetailsHandleSubmit(visitDetailsOnSubmit)}>

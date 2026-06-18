@@ -121,6 +121,12 @@ export async function addPatient(req: Request, res: Response) {
 
     const newPatient = await prisma.patient.create({ data: { ...req.body } });
 
+    if (newPatient) {
+      await prisma.case.create({
+        data: { caseName: "default", patientId: newPatient.id },
+      });
+    }
+
     res.status(201).json(newPatient);
   } catch (error) {
     console.log(error);

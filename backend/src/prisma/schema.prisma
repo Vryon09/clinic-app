@@ -57,11 +57,22 @@ model Patient {
   isArchived Boolean   @default(false)
   archivedOn DateTime?
 
+  cases   Case[]
   records Record[]
 
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @default(now()) @updatedAt
   labResults labResult[]
+}
+
+model Case {
+  id        String @id @default(uuid())
+  caseName  String
+  patientId String
+
+  records Record[]
+
+  patient Patient @relation(fields: [patientId], references: [id])
 }
 
 model Record {
@@ -82,6 +93,9 @@ model Record {
   updatedAt         DateTime           @default(now()) @updatedAt
   vitalSigns        VitalSigns?
   recordMedications RecordMedication[]
+
+  caseId String
+  case   Case   @relation(fields: [caseId], references: [id])
 }
 
 model VitalSigns {

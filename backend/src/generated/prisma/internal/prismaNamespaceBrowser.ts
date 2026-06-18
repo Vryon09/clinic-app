@@ -54,6 +54,7 @@ export const ModelName = {
   Clinic: 'Clinic',
   User: 'User',
   Patient: 'Patient',
+  Case: 'Case',
   Record: 'Record',
   VitalSigns: 'VitalSigns',
   RecordMedication: 'RecordMedication',
@@ -119,6 +120,15 @@ export const PatientScalarFieldEnum = {
 export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeof PatientScalarFieldEnum]
 
 
+export const CaseScalarFieldEnum = {
+  id: 'id',
+  caseName: 'caseName',
+  patientId: 'patientId'
+} as const
+
+export type CaseScalarFieldEnum = (typeof CaseScalarFieldEnum)[keyof typeof CaseScalarFieldEnum]
+
+
 export const RecordScalarFieldEnum = {
   id: 'id',
   patientId: 'patientId',
@@ -129,7 +139,8 @@ export const RecordScalarFieldEnum = {
   signs: 'signs',
   diagnosis: 'diagnosis',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  caseId: 'caseId'
 } as const
 
 export type RecordScalarFieldEnum = (typeof RecordScalarFieldEnum)[keyof typeof RecordScalarFieldEnum]
