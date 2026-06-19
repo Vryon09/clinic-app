@@ -63,6 +63,7 @@ function ConsultationsForm() {
     errors,
     setError,
     control,
+    onInvalidSubmit,
   } = useVisitDetailsForm({
     consultationId,
     patientId,
@@ -134,7 +135,12 @@ function ConsultationsForm() {
         />
       </div>
 
-      <form onSubmit={visitDetailsHandleSubmit(visitDetailsOnSubmit)}>
+      <form
+        onSubmit={visitDetailsHandleSubmit(
+          visitDetailsOnSubmit,
+          onInvalidSubmit,
+        )}
+      >
         <div className="grid w-full grid-cols-2 gap-4">
           <VisitDetailsForm register={register} />
           <VitalSignsForm register={register} errors={errors} />

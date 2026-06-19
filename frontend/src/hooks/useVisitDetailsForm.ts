@@ -15,8 +15,9 @@ import type { IVitalSigns } from "@/types/VitalSignsType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, type UseMutateFunction } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, type FieldErrors } from "react-hook-form";
 import type { NavigateFunction } from "react-router";
+import { toast } from "sonner";
 
 interface IUseVisitDetailsForm {
   consultationId: string;
@@ -128,6 +129,12 @@ export function useVisitDetailsForm({
     }
   }, [record, reset, formType, vitalSigns, recordMedications]);
 
+  function onInvalidSubmit(errors: FieldErrors<CreateRecordInput>) {
+    if (errors.caseId) {
+      toast.error("Select a case", { position: "top-center" });
+    }
+  }
+
   function onSubmit(recordData: CreateRecordInput) {
     if (formType === "new") {
       handleAddRecord({ ...recordData, patientId });
@@ -141,6 +148,7 @@ export function useVisitDetailsForm({
 
   return {
     handleSubmit,
+    onInvalidSubmit,
     register,
     isRecordLoading,
     onSubmit,

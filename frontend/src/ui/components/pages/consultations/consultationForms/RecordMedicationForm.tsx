@@ -19,7 +19,6 @@ function RecordMedicationForm({
 }: IRecordMedicationForm) {
   const [isAdding, setIsAdding] = useState<boolean>(false);
 
-  console.log(errors);
   return (
     <Card className="col-span-2 px-4 py-3">
       <div className="flex flex-col">

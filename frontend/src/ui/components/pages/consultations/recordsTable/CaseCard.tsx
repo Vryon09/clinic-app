@@ -42,8 +42,6 @@ function CaseCard({ caseItem }: { caseItem: ICase }) {
 
   const navigate = useNavigate();
 
-  console.log(caseItem.records);
-
   return (
     <Collapsible
       className="flex flex-col rounded-lg border"
