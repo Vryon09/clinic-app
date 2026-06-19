@@ -5,10 +5,12 @@ import ArchivedRecordsTable from "./ArchivedRecordsTable";
 import { useState } from "react";
 import PaginationBar from "@/ui/components/PaginationBar";
 import type { PaginatedResponse } from "@/types/Pagination";
+import type { ICase } from "@/types/CaseType";
 
 export interface IArchivedRecord extends IRecord {
   patient: { firstName: string; middleName: string; lastName: string };
   archivedOn: Date;
+  case: ICase;
 }
 
 function ArchivedRecords() {

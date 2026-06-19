@@ -21,17 +21,15 @@ import { Input } from "@/ui/components/shadcn/input";
 import { handleGetCases, useAddCase } from "@/services/apiCase";
 import type { ICase } from "@/types/CaseType";
 import { useState } from "react";
+import { Controller } from "react-hook-form";
 
 function ConsultationsForm() {
   const [caseName, setCaseName] = useState<string>("");
-  const [selectedCaseId, setSelectedCaseId] = useState<string>("");
 
   const { patientId, consultationId } = useParams() as {
     patientId: string;
     consultationId: string;
   };
-
-  console.log(selectedCaseId);
 
   const { data: patient, isPending: isPatientLoading } = useQuery({
     queryFn: () => handleGetPatient({ id: patientId }),
@@ -64,6 +62,7 @@ function ConsultationsForm() {
     setValue,
     errors,
     setError,
+    control,
   } = useVisitDetailsForm({
     consultationId,
     patientId,
@@ -71,7 +70,6 @@ function ConsultationsForm() {
     handleAddRecord,
     handleUpdateRecord,
     navigate,
-    caseId: selectedCaseId,
   });
 
   return (
@@ -92,44 +90,48 @@ function ConsultationsForm() {
           </p>
         </div>
 
-        <div>
-          <Select
-            disabled={isCasesLoading}
-            value={selectedCaseId}
-            onValueChange={(value) => setSelectedCaseId(value)}
-          >
-            <SelectTrigger className="w-full max-w-48 cursor-pointer">
-              <SelectValue placeholder="Select a case" />
-            </SelectTrigger>
+        <Controller
+          name="caseId"
+          control={control}
+          render={({ field }) => (
+            <Select
+              disabled={isCasesLoading}
+              value={field.value}
+              onValueChange={field.onChange}
+            >
+              <SelectTrigger className="w-full max-w-48 cursor-pointer">
+                <SelectValue placeholder="Select a case" />
+              </SelectTrigger>
 
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Cases</SelectLabel>
-                <div className="my-1 flex gap-2 px-1">
-                  <Input
-                    type="text"
-                    value={caseName}
-                    onChange={(e) => setCaseName(e.target.value)}
-                  />
-                  <Button
-                    onClick={() => handleAddCase({ patientId, caseName })}
-                  >
-                    Add
-                  </Button>
-                </div>
-                {cases?.map((caseItem) => (
-                  <SelectItem
-                    key={caseItem.id}
-                    value={caseItem.id}
-                    className="cursor-pointer capitalize"
-                  >
-                    {caseItem.caseName}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Cases</SelectLabel>
+                  <div className="my-1 flex gap-2 px-1">
+                    <Input
+                      type="text"
+                      value={caseName}
+                      onChange={(e) => setCaseName(e.target.value)}
+                    />
+                    <Button
+                      onClick={() => handleAddCase({ patientId, caseName })}
+                    >
+                      Add
+                    </Button>
+                  </div>
+                  {cases?.map((caseItem) => (
+                    <SelectItem
+                      key={caseItem.id}
+                      value={caseItem.id}
+                      className="cursor-pointer capitalize"
+                    >
+                      {caseItem.caseName}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
+        />
       </div>
 
       <form onSubmit={visitDetailsHandleSubmit(visitDetailsOnSubmit)}>

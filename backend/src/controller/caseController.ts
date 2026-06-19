@@ -5,7 +5,15 @@ export async function getCases(req: Request, res: Response) {
   try {
     const patientId = req.params.patientId as string;
 
-    const cases = await prisma.case.findMany({ where: { patientId } });
+    const cases = await prisma.case.findMany({
+      where: { patientId },
+      include: {
+        records: {
+          where: { isArchived: false },
+          orderBy: { visitDate: "desc" },
+        },
+      },
+    });
 
     res.status(200).json(cases);
   } catch (error) {

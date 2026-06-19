@@ -99,6 +99,7 @@ export function useArchiveRecord() {
     mutationFn: handleArchiveRecord,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["records"] });
+      queryClient.invalidateQueries({ queryKey: ["cases"] });
     },
   });
 }
@@ -117,6 +118,7 @@ export function useRestoreRecord() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["records"] });
       queryClient.invalidateQueries({ queryKey: ["archivedRecords"] });
+      queryClient.invalidateQueries({ queryKey: ["cases"] });
     },
   });
 }
@@ -132,8 +134,9 @@ async function handleUpdateRecord({
   diagnosis,
   vitalSigns,
   recordMedications,
+  caseId,
 }: IHandleUpdateRecord) {
-  const visitDetails = { symptoms, signs, diagnosis };
+  const visitDetails = { symptoms, signs, diagnosis, caseId };
 
   const res = await api.patch(`/api/records/${consultationId}/update`, {
     ...visitDetails,
@@ -152,6 +155,7 @@ export function useUpdateRecord() {
     onSuccess: () => {
       // queryClient.invalidateQueries({ queryKey: ["patient"] });
       queryClient.invalidateQueries({ queryKey: ["records"] });
+      queryClient.invalidateQueries({ queryKey: ["cases"] });
       toast.success("Updated record successfully", { position: "top-center" });
     },
   });

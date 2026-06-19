@@ -29,6 +29,8 @@ export const createRecordSchema = z.object({
   medicationInput: medicationInputSchema,
 
   recordMedications: z.array(createRecordMedicationSchema).default([]),
+
+  caseId: z.uuid(),
 });
 
 export const updateRecordSchema = createRecordSchema.partial();

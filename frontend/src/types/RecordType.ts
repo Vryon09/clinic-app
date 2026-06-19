@@ -5,6 +5,7 @@ import type { FieldErrors, UseFormRegister } from "react-hook-form";
 export interface IRecord extends CreateRecordInput, IDate {
   id: string;
   patientId: string;
+  caseId: string;
   visitDate: Date;
 }
 
@@ -34,6 +35,7 @@ export interface RecordFormValues {
         instructions?: string | undefined;
       }[]
     | undefined;
+  caseId: string;
 }
 
 export interface IRecordForm {

@@ -52,6 +52,7 @@ export async function getArchivedRecords(req: Request, res: Response) {
               lastName: true,
             },
           },
+          case: true,
         },
         skip,
         take: limit,
@@ -182,8 +183,14 @@ export async function restoreRecord(req: Request, res: Response) {
 
 export async function updateRecord(req: Request, res: Response) {
   try {
-    const { symptoms, signs, diagnosis, vitalSigns, recordMedications } =
-      req.body;
+    const {
+      symptoms,
+      signs,
+      diagnosis,
+      caseId,
+      vitalSigns,
+      recordMedications,
+    } = req.body;
 
     console.log("Record Medications:");
     console.log(recordMedications);
@@ -191,7 +198,7 @@ export async function updateRecord(req: Request, res: Response) {
     const updatedRecord = await prisma.$transaction(async (tx) => {
       await tx.record.update({
         where: { id: req.params.id as string },
-        data: { symptoms, signs, diagnosis },
+        data: { symptoms, signs, diagnosis, caseId },
       });
 
       if (recordMedications) {

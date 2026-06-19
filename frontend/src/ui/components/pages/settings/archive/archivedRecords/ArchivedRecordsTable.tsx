@@ -29,6 +29,7 @@ function ArchivedRecordsTable({
         <TableRow>
           <TableHead>Patient Name</TableHead>
           <TableHead>Record Date</TableHead>
+          <TableHead>Case</TableHead>
           <TableHead>Archived On</TableHead>
           <TableHead></TableHead>
         </TableRow>
@@ -42,6 +43,8 @@ function ArchivedRecordsTable({
             <TableCell>
               {dayjs(record.createdAt).format("MMMM DD, YYYY")}
             </TableCell>
+
+            <TableCell>{record.case.caseName}</TableCell>
 
             <TableCell>
               {dayjs(record.archivedOn).format("MMMM DD, YYYY")}

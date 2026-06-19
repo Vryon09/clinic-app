@@ -157,6 +157,7 @@ function PatientForm({
                       </Popover>
                     )}
                   />
+
                   {errors.dateOfBirth && (
                     <FieldError
                       className="text-xs"
