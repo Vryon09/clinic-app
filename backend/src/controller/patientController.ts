@@ -123,7 +123,7 @@ export async function addPatient(req: Request, res: Response) {
 
     if (newPatient) {
       await prisma.case.create({
-        data: { caseName: "default", patientId: newPatient.id },
+        data: { caseName: "Default", patientId: newPatient.id },
       });
     }
 

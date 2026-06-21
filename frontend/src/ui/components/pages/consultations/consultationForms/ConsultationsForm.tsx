@@ -123,7 +123,7 @@ function ConsultationsForm() {
                     <SelectItem
                       key={caseItem.id}
                       value={caseItem.id}
-                      className="cursor-pointer capitalize"
+                      className="cursor-pointer"
                     >
                       {caseItem.caseName}
                     </SelectItem>

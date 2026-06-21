@@ -30,6 +30,7 @@ import {
 import PaginationBar from "../../PaginationBar";
 import type { PaginatedResponse } from "@/types/Pagination";
 import { Skeleton } from "../../shadcn/skeleton";
+import { Card } from "../../shadcn/card";
 
 function PatientsTable({ searchInput }: { searchInput: string }) {
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>();
@@ -52,7 +53,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
 
   return (
     <>
-      <div className="mb-4 flex-1 overflow-y-auto rounded-xl border px-2">
+      <Card className="mb-4 flex-1 overflow-y-auto rounded-xl px-2">
         <Table>
           {!patients?.length && !isPatientsLoading && (
             <TableCaption>
@@ -65,16 +66,16 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
             {isPatientsLoading ? (
               <TableRow>
                 <TableHead>
-                  <Skeleton className="h-4 w-16 bg-neutral-300" />
+                  <Skeleton className="bg-muted-foreground h-4 w-16" />
                 </TableHead>
                 <TableHead>
-                  <Skeleton className="h-4 w-16 bg-neutral-300" />
+                  <Skeleton className="bg-muted-foreground h-4 w-16" />
                 </TableHead>
                 <TableHead>
-                  <Skeleton className="h-4 w-16 bg-neutral-300" />
+                  <Skeleton className="bg-muted-foreground h-4 w-16" />
                 </TableHead>
                 <TableHead>
-                  <Skeleton className="h-4 w-16 bg-neutral-300" />
+                  <Skeleton className="bg-muted-foreground h-4 w-16" />
                 </TableHead>
                 <TableHead></TableHead>
               </TableRow>
@@ -112,7 +113,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
               : patients?.map((patient) => (
                   <TableRow
                     key={patient.id}
-                    className="cursor-pointer"
+                    className="hover:bg-muted cursor-pointer"
                     onClick={() => navigate(`/patients/${patient.id}`)}
                   >
                     <TableCell>{`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>
@@ -165,7 +166,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                 ))}
           </TableBody>
         </Table>
-      </div>
+      </Card>
 
       <PaginationBar
         itemName="Patient"

@@ -13,6 +13,7 @@ import type { IUser } from "@/types/User";
 import UserDialog from "./UserDialog";
 import { useToggleUserStatus } from "@/services/apiAuth";
 import { cn } from "@/lib/utils";
+import { Card } from "@/ui/components/shadcn/card";
 
 function UsersTable({
   users,
@@ -26,7 +27,7 @@ function UsersTable({
   const { mutate: handleToggleUserStatus } = useToggleUserStatus();
 
   return (
-    <div className="rounded-xl border border-neutral-300 px-2">
+    <Card className="rounded-xl px-2">
       <Table>
         {users.length === 0 && (
           <TableCaption className="mb-4">No users found.</TableCaption>
@@ -108,7 +109,7 @@ function UsersTable({
           }}
         />
       )}
-    </div>
+    </Card>
   );
 }
 

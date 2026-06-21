@@ -109,7 +109,7 @@ function GeneralSettings() {
                     name
                   </FieldLabel>
                   <Input
-                    className="border border-neutral-400"
+                    className="border"
                     id="name"
                     {...register("name")}
                     type="text"
@@ -128,7 +128,7 @@ function GeneralSettings() {
                     address
                   </FieldLabel>
                   <Input
-                    className="border border-neutral-400"
+                    className="border"
                     id="address"
                     {...register("address")}
                     type="text"
@@ -147,7 +147,7 @@ function GeneralSettings() {
                     phone
                   </FieldLabel>
                   <Input
-                    className="border border-neutral-400"
+                    className="border"
                     id="phone"
                     {...register("phone")}
                     type="text"

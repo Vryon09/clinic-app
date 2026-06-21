@@ -121,7 +121,7 @@ function CaseCard({ caseItem }: { caseItem: ICase }) {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
                         <DropdownMenuItem
-                          className="cursor-pointer hover:bg-neutral-200!"
+                          className="cursor-pointer"
                           onClick={(e) => {
                             e.stopPropagation();
                             navigate(
@@ -133,6 +133,7 @@ function CaseCard({ caseItem }: { caseItem: ICase }) {
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
+                          className="cursor-pointer"
                           variant="destructive"
                           onClick={(e) => {
                             e.stopPropagation();
