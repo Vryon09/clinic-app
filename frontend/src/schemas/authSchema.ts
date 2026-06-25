@@ -46,6 +46,13 @@ export const addUserSchema = z.object({
       "Username can only contain letters, numbers, and underscores",
     ),
 
+  licenseNum: z
+    .string()
+    .regex(/^\d{7}$/, {
+      message: "Must be exactly 7 digits",
+    })
+    .or(z.literal("")),
+
   role: z.enum(["ADMIN", "ASSISTANT", "DOCTOR"], "Choose a role"),
 });
 

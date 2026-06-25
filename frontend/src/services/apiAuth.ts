@@ -6,6 +6,7 @@ import { toast } from "sonner";
 type RegisterPayload = {
   username: string;
   password: string;
+  licenseNum: string;
   role: "ADMIN" | "DOCTOR" | "ASSISTANT";
 };
 
@@ -37,11 +38,17 @@ export function useRegister() {
   );
 }
 
-async function handleAddUser({ username, password, role }: RegisterPayload) {
+async function handleAddUser({
+  username,
+  password,
+  role,
+  licenseNum,
+}: RegisterPayload) {
   const res = await api.post("/api/auth/addUser", {
     username,
     password,
     role,
+    licenseNum,
   });
   return res.data;
 }

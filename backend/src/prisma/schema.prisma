@@ -35,11 +35,13 @@ enum Sex {
 }
 
 model User {
-  id       String   @id @default(uuid())
-  username String   @unique
-  password String
-  role     UserRole
-  isActive Boolean  @default(true)
+  id         String   @id @default(uuid())
+  username   String   @unique
+  password   String
+  role       UserRole
+  licenseNum String?  @unique
+
+  isActive Boolean @default(true)
 
   createdAt DateTime @default(now())
 }
@@ -140,3 +142,14 @@ model GoogleToken {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+// model SystemLogs {
+//   id String @id @default(uuid())
+
+//   message String
+
+//   userId String
+//   user   User   @relation(fields: [userId], references: [id])
+
+//   createdAt DateTime @default(now())
+// } 

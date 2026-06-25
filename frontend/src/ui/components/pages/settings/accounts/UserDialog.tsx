@@ -1,4 +1,4 @@
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import { Button } from "../../../shadcn/button";
 import {
   Dialog,
@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { useAddUser, useUpdateUser } from "@/services/apiAuth";
 import { toast } from "sonner";
 import type { IUser } from "@/types/User";
+import z from "zod";
 
 interface IUserDialog {
   isUserDialogOpen: boolean;
@@ -40,25 +41,44 @@ function UserDialog({
     handleSubmit,
     reset,
     control,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(addUserSchema),
     defaultValues: {
       username: initialValues.username,
       role: initialValues.role,
+      licenseNum: initialValues.licenseNum,
     },
   });
 
   const { mutate: handleAddUser } = useAddUser();
   const { mutate: handleUpdateUser } = useUpdateUser();
 
+  const role = useWatch({ control, name: "role" });
+  const licenseNum = useWatch({ control, name: "licenseNum" });
+
   function onSubmit(data: AddUserInput) {
+    const licenseNumSchema = z.string().regex(/^\d{7}$/, {
+      message: "Must be exactly 7 digits",
+    });
+
+    const parsedLicenseNum = licenseNumSchema.safeParse(licenseNum);
+
+    if (role === "DOCTOR" && !parsedLicenseNum.success) {
+      toast.error("License Number is required.", {
+        position: "top-center",
+      });
+      return;
+    }
+
     if (action === "create") {
       handleAddUser(
         {
           username: data.username,
           password: "Password123",
           role: data.role,
+          licenseNum: role === "ASSISTANT" ? "" : data.licenseNum,
         },
         {
           onSuccess: () => {
@@ -126,6 +146,26 @@ function UserDialog({
                 )}
               </Field>
 
+              {role === "DOCTOR" && (
+                <Field>
+                  <div className="space-y-1">
+                    <FieldLabel htmlFor="licenseNum">Licence Number</FieldLabel>
+                    <Input
+                      className="border border-neutral-400"
+                      id="licenseNum"
+                      {...register("licenseNum")}
+                      type="text"
+                    />
+                  </div>
+                  {errors.licenseNum && (
+                    <FieldError
+                      className="text-xs"
+                      errors={[errors.licenseNum]}
+                    />
+                  )}
+                </Field>
+              )}
+
               <Field>
                 <Controller
                   name="role"
@@ -133,11 +173,14 @@ function UserDialog({
                   render={({ field }) => (
                     <div className="grid w-full grid-cols-2 gap-2">
                       <Card
-                        onClick={() => field.onChange("DOCTOR")}
+                        onClick={() => {
+                          field.onChange("DOCTOR");
+                          setValue("licenseNum", "");
+                        }}
                         className={cn(
                           "cursor-pointer px-2 py-3 text-center font-semibold",
                           field.value === "DOCTOR"
-                            ? "bg-neutral-950 text-white"
+                            ? "bg-neutral-950 text-white ring"
                             : "",
                         )}
                       >
@@ -145,11 +188,14 @@ function UserDialog({
                       </Card>
 
                       <Card
-                        onClick={() => field.onChange("ASSISTANT")}
+                        onClick={() => {
+                          field.onChange("ASSISTANT");
+                          setValue("licenseNum", "");
+                        }}
                         className={cn(
                           "cursor-pointer px-2 py-3 text-center font-semibold",
                           field.value === "ASSISTANT"
-                            ? "bg-neutral-950 text-white"
+                            ? "bg-neutral-950 text-white ring"
                             : "",
                         )}
                       >

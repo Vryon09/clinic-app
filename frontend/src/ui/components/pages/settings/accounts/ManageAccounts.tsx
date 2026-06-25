@@ -49,6 +49,7 @@ function ManageAccounts() {
             username: "",
             role: "DOCTOR",
             id: "",
+            licenseNum: "",
             isActive: true,
           }}
         />

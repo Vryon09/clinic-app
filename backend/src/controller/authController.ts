@@ -76,6 +76,7 @@ export async function registerUser(req: Request, res: Response) {
         username,
         password: hashedPassword,
         role,
+        licenseNum: "",
       },
     });
 
@@ -99,14 +100,22 @@ export async function registerUser(req: Request, res: Response) {
 
 export async function addUser(req: Request, res: Response) {
   try {
-    const { username, password, role } = req.body;
+    const { username, password, role, licenseNum } = req.body;
 
     const existingUser = await prisma.user.findUnique({
       where: { username },
     });
 
+    const existingLicenseNum = await prisma.user.findUnique({
+      where: { licenseNum },
+    });
+
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
+    }
+
+    if (existingLicenseNum) {
+      return res.status(400).json({ message: "License Number already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -116,6 +125,7 @@ export async function addUser(req: Request, res: Response) {
         username,
         password: hashedPassword,
         role,
+        licenseNum,
       },
     });
 
