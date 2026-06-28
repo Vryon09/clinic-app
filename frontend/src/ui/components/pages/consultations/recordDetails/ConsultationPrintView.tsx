@@ -158,6 +158,9 @@ function ConsultationPrintView({
 
       {/* SIGNATURE */}
       <div className="mt-10 text-sm">
+        {record.case.doctor?.username && (
+          <p>Dr. {record.case.doctor.username} </p>
+        )}
         <p>Doctor’s Signature: __________________________</p>
         {record.case.doctor?.licenseNum && (
           <p>License No.: {record.case.doctor.licenseNum} </p>
