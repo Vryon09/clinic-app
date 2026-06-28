@@ -9,6 +9,7 @@ import { handleGetPatient } from "@/services/apiPatients";
 import { useParams } from "react-router";
 import type { IPatient } from "@/types/PatientType";
 import dayjs from "dayjs";
+import { toast } from "sonner";
 
 function ConsultationPrintView({
   record,
@@ -158,7 +159,9 @@ function ConsultationPrintView({
       {/* SIGNATURE */}
       <div className="mt-10 text-sm">
         <p>Doctor’s Signature: __________________________</p>
-        <p>License No.: 1234567 </p>
+        {record.case.doctor?.licenseNum && (
+          <p>License No.: {record.case.doctor.licenseNum} </p>
+        )}
       </div>
 
       {/* FOOTER */}
@@ -168,7 +171,17 @@ function ConsultationPrintView({
 
       <div className="flex justify-end print:hidden">
         <Button
-          onClick={() => window.print()}
+          onClick={() => {
+            if (!record.case.doctor) {
+              toast.error(
+                `Record is under "Default" case. Update this record to a case under a doctor.`,
+                { position: "top-center" },
+              );
+
+              return;
+            }
+            window.print();
+          }}
           className="mt-4 cursor-pointer text-center print:hidden"
           disabled={isClinicInfoPending || isPatientPending}
         >

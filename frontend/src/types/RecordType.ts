@@ -1,12 +1,14 @@
 import type { CreateRecordInput } from "@/schemas/recordSchema";
 import type { IDate } from "./DateType";
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
+import type { ICase } from "./CaseType";
 
 export interface IRecord extends CreateRecordInput, IDate {
   id: string;
   patientId: string;
   caseId: string;
   visitDate: Date;
+  case: ICase;
 }
 
 export interface RecordFormValues {

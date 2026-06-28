@@ -75,6 +75,7 @@ export async function getRecord(req: Request, res: Response) {
   try {
     const record = await prisma.record.findUnique({
       where: { id: req.params.id as string },
+      include: { case: { include: { doctor: true } } },
     });
 
     res.status(200).json(record);
