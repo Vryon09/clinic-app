@@ -36,6 +36,8 @@ export type RecordMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   caseId: string | null
+  userId: string | null
+  createdById: string | null
 }
 
 export type RecordMaxAggregateOutputType = {
@@ -50,6 +52,8 @@ export type RecordMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   caseId: string | null
+  userId: string | null
+  createdById: string | null
 }
 
 export type RecordCountAggregateOutputType = {
@@ -64,6 +68,8 @@ export type RecordCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   caseId: number
+  userId: number
+  createdById: number
   _all: number
 }
 
@@ -80,6 +86,8 @@ export type RecordMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   caseId?: true
+  userId?: true
+  createdById?: true
 }
 
 export type RecordMaxAggregateInputType = {
@@ -94,6 +102,8 @@ export type RecordMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   caseId?: true
+  userId?: true
+  createdById?: true
 }
 
 export type RecordCountAggregateInputType = {
@@ -108,6 +118,8 @@ export type RecordCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   caseId?: true
+  userId?: true
+  createdById?: true
   _all?: true
 }
 
@@ -195,6 +207,8 @@ export type RecordGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   caseId: string
+  userId: string | null
+  createdById: string
   _count: RecordCountAggregateOutputType | null
   _min: RecordMinAggregateOutputType | null
   _max: RecordMaxAggregateOutputType | null
@@ -230,10 +244,14 @@ export type RecordWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Record"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Record"> | Date | string
   caseId?: Prisma.StringFilter<"Record"> | string
+  userId?: Prisma.StringNullableFilter<"Record"> | string | null
+  createdById?: Prisma.StringFilter<"Record"> | string
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
   vitalSigns?: Prisma.XOR<Prisma.VitalSignsNullableScalarRelationFilter, Prisma.VitalSignsWhereInput> | null
   recordMedications?: Prisma.RecordMedicationListRelationFilter
   case?: Prisma.XOR<Prisma.CaseScalarRelationFilter, Prisma.CaseWhereInput>
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type RecordOrderByWithRelationInput = {
@@ -248,10 +266,14 @@ export type RecordOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   caseId?: Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   patient?: Prisma.PatientOrderByWithRelationInput
   vitalSigns?: Prisma.VitalSignsOrderByWithRelationInput
   recordMedications?: Prisma.RecordMedicationOrderByRelationAggregateInput
   case?: Prisma.CaseOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
+  createdBy?: Prisma.UserOrderByWithRelationInput
 }
 
 export type RecordWhereUniqueInput = Prisma.AtLeast<{
@@ -269,10 +291,14 @@ export type RecordWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Record"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Record"> | Date | string
   caseId?: Prisma.StringFilter<"Record"> | string
+  userId?: Prisma.StringNullableFilter<"Record"> | string | null
+  createdById?: Prisma.StringFilter<"Record"> | string
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
   vitalSigns?: Prisma.XOR<Prisma.VitalSignsNullableScalarRelationFilter, Prisma.VitalSignsWhereInput> | null
   recordMedications?: Prisma.RecordMedicationListRelationFilter
   case?: Prisma.XOR<Prisma.CaseScalarRelationFilter, Prisma.CaseWhereInput>
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type RecordOrderByWithAggregationInput = {
@@ -287,6 +313,8 @@ export type RecordOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   caseId?: Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   _count?: Prisma.RecordCountOrderByAggregateInput
   _max?: Prisma.RecordMaxOrderByAggregateInput
   _min?: Prisma.RecordMinOrderByAggregateInput
@@ -307,6 +335,8 @@ export type RecordScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Record"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Record"> | Date | string
   caseId?: Prisma.StringWithAggregatesFilter<"Record"> | string
+  userId?: Prisma.StringNullableWithAggregatesFilter<"Record"> | string | null
+  createdById?: Prisma.StringWithAggregatesFilter<"Record"> | string
 }
 
 export type RecordCreateInput = {
@@ -323,6 +353,8 @@ export type RecordCreateInput = {
   vitalSigns?: Prisma.VitalSignsCreateNestedOneWithoutRecordInput
   recordMedications?: Prisma.RecordMedicationCreateNestedManyWithoutRecordInput
   case: Prisma.CaseCreateNestedOneWithoutRecordsInput
+  user?: Prisma.UserCreateNestedOneWithoutRecordsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
 }
 
 export type RecordUncheckedCreateInput = {
@@ -337,6 +369,8 @@ export type RecordUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   caseId: string
+  userId?: string | null
+  createdById: string
   vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
   recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
 }
@@ -355,6 +389,8 @@ export type RecordUpdateInput = {
   vitalSigns?: Prisma.VitalSignsUpdateOneWithoutRecordNestedInput
   recordMedications?: Prisma.RecordMedicationUpdateManyWithoutRecordNestedInput
   case?: Prisma.CaseUpdateOneRequiredWithoutRecordsNestedInput
+  user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
 }
 
 export type RecordUncheckedUpdateInput = {
@@ -369,6 +405,8 @@ export type RecordUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   caseId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
   recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
 }
@@ -385,6 +423,8 @@ export type RecordCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   caseId: string
+  userId?: string | null
+  createdById: string
 }
 
 export type RecordUpdateManyMutationInput = {
@@ -411,6 +451,8 @@ export type RecordUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   caseId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type RecordListRelationFilter = {
@@ -435,6 +477,8 @@ export type RecordCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   caseId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
 }
 
 export type RecordMaxOrderByAggregateInput = {
@@ -449,6 +493,8 @@ export type RecordMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   caseId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
 }
 
 export type RecordMinOrderByAggregateInput = {
@@ -463,11 +509,97 @@ export type RecordMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   caseId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
 }
 
 export type RecordScalarRelationFilter = {
   is?: Prisma.RecordWhereInput
   isNot?: Prisma.RecordWhereInput
+}
+
+export type RecordCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.RecordCreateWithoutCreatedByInput, Prisma.RecordUncheckedCreateWithoutCreatedByInput> | Prisma.RecordCreateWithoutCreatedByInput[] | Prisma.RecordUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.RecordCreateOrConnectWithoutCreatedByInput | Prisma.RecordCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.RecordCreateManyCreatedByInputEnvelope
+  connect?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+}
+
+export type RecordCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.RecordCreateWithoutUserInput, Prisma.RecordUncheckedCreateWithoutUserInput> | Prisma.RecordCreateWithoutUserInput[] | Prisma.RecordUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.RecordCreateOrConnectWithoutUserInput | Prisma.RecordCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.RecordCreateManyUserInputEnvelope
+  connect?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+}
+
+export type RecordUncheckedCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.RecordCreateWithoutCreatedByInput, Prisma.RecordUncheckedCreateWithoutCreatedByInput> | Prisma.RecordCreateWithoutCreatedByInput[] | Prisma.RecordUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.RecordCreateOrConnectWithoutCreatedByInput | Prisma.RecordCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.RecordCreateManyCreatedByInputEnvelope
+  connect?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+}
+
+export type RecordUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.RecordCreateWithoutUserInput, Prisma.RecordUncheckedCreateWithoutUserInput> | Prisma.RecordCreateWithoutUserInput[] | Prisma.RecordUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.RecordCreateOrConnectWithoutUserInput | Prisma.RecordCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.RecordCreateManyUserInputEnvelope
+  connect?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+}
+
+export type RecordUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.RecordCreateWithoutCreatedByInput, Prisma.RecordUncheckedCreateWithoutCreatedByInput> | Prisma.RecordCreateWithoutCreatedByInput[] | Prisma.RecordUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.RecordCreateOrConnectWithoutCreatedByInput | Prisma.RecordCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.RecordUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.RecordUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.RecordCreateManyCreatedByInputEnvelope
+  set?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  disconnect?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  delete?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  connect?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  update?: Prisma.RecordUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.RecordUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.RecordUpdateManyWithWhereWithoutCreatedByInput | Prisma.RecordUpdateManyWithWhereWithoutCreatedByInput[]
+  deleteMany?: Prisma.RecordScalarWhereInput | Prisma.RecordScalarWhereInput[]
+}
+
+export type RecordUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.RecordCreateWithoutUserInput, Prisma.RecordUncheckedCreateWithoutUserInput> | Prisma.RecordCreateWithoutUserInput[] | Prisma.RecordUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.RecordCreateOrConnectWithoutUserInput | Prisma.RecordCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.RecordUpsertWithWhereUniqueWithoutUserInput | Prisma.RecordUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.RecordCreateManyUserInputEnvelope
+  set?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  disconnect?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  delete?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  connect?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  update?: Prisma.RecordUpdateWithWhereUniqueWithoutUserInput | Prisma.RecordUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.RecordUpdateManyWithWhereWithoutUserInput | Prisma.RecordUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.RecordScalarWhereInput | Prisma.RecordScalarWhereInput[]
+}
+
+export type RecordUncheckedUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.RecordCreateWithoutCreatedByInput, Prisma.RecordUncheckedCreateWithoutCreatedByInput> | Prisma.RecordCreateWithoutCreatedByInput[] | Prisma.RecordUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.RecordCreateOrConnectWithoutCreatedByInput | Prisma.RecordCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.RecordUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.RecordUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.RecordCreateManyCreatedByInputEnvelope
+  set?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  disconnect?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  delete?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  connect?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  update?: Prisma.RecordUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.RecordUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.RecordUpdateManyWithWhereWithoutCreatedByInput | Prisma.RecordUpdateManyWithWhereWithoutCreatedByInput[]
+  deleteMany?: Prisma.RecordScalarWhereInput | Prisma.RecordScalarWhereInput[]
+}
+
+export type RecordUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.RecordCreateWithoutUserInput, Prisma.RecordUncheckedCreateWithoutUserInput> | Prisma.RecordCreateWithoutUserInput[] | Prisma.RecordUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.RecordCreateOrConnectWithoutUserInput | Prisma.RecordCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.RecordUpsertWithWhereUniqueWithoutUserInput | Prisma.RecordUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.RecordCreateManyUserInputEnvelope
+  set?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  disconnect?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  delete?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  connect?: Prisma.RecordWhereUniqueInput | Prisma.RecordWhereUniqueInput[]
+  update?: Prisma.RecordUpdateWithWhereUniqueWithoutUserInput | Prisma.RecordUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.RecordUpdateManyWithWhereWithoutUserInput | Prisma.RecordUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.RecordScalarWhereInput | Prisma.RecordScalarWhereInput[]
 }
 
 export type RecordCreateNestedManyWithoutPatientInput = {
@@ -582,6 +714,145 @@ export type RecordUpdateOneRequiredWithoutRecordMedicationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.RecordUpdateToOneWithWhereWithoutRecordMedicationsInput, Prisma.RecordUpdateWithoutRecordMedicationsInput>, Prisma.RecordUncheckedUpdateWithoutRecordMedicationsInput>
 }
 
+export type RecordCreateWithoutCreatedByInput = {
+  id?: string
+  visitDate?: Date | string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
+  symptoms?: string | null
+  signs?: string | null
+  diagnosis?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patient: Prisma.PatientCreateNestedOneWithoutRecordsInput
+  vitalSigns?: Prisma.VitalSignsCreateNestedOneWithoutRecordInput
+  recordMedications?: Prisma.RecordMedicationCreateNestedManyWithoutRecordInput
+  case: Prisma.CaseCreateNestedOneWithoutRecordsInput
+  user?: Prisma.UserCreateNestedOneWithoutRecordsInput
+}
+
+export type RecordUncheckedCreateWithoutCreatedByInput = {
+  id?: string
+  patientId: string
+  visitDate?: Date | string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
+  symptoms?: string | null
+  signs?: string | null
+  diagnosis?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  caseId: string
+  userId?: string | null
+  vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
+  recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
+}
+
+export type RecordCreateOrConnectWithoutCreatedByInput = {
+  where: Prisma.RecordWhereUniqueInput
+  create: Prisma.XOR<Prisma.RecordCreateWithoutCreatedByInput, Prisma.RecordUncheckedCreateWithoutCreatedByInput>
+}
+
+export type RecordCreateManyCreatedByInputEnvelope = {
+  data: Prisma.RecordCreateManyCreatedByInput | Prisma.RecordCreateManyCreatedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type RecordCreateWithoutUserInput = {
+  id?: string
+  visitDate?: Date | string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
+  symptoms?: string | null
+  signs?: string | null
+  diagnosis?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patient: Prisma.PatientCreateNestedOneWithoutRecordsInput
+  vitalSigns?: Prisma.VitalSignsCreateNestedOneWithoutRecordInput
+  recordMedications?: Prisma.RecordMedicationCreateNestedManyWithoutRecordInput
+  case: Prisma.CaseCreateNestedOneWithoutRecordsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
+}
+
+export type RecordUncheckedCreateWithoutUserInput = {
+  id?: string
+  patientId: string
+  visitDate?: Date | string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
+  symptoms?: string | null
+  signs?: string | null
+  diagnosis?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  caseId: string
+  createdById: string
+  vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
+  recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
+}
+
+export type RecordCreateOrConnectWithoutUserInput = {
+  where: Prisma.RecordWhereUniqueInput
+  create: Prisma.XOR<Prisma.RecordCreateWithoutUserInput, Prisma.RecordUncheckedCreateWithoutUserInput>
+}
+
+export type RecordCreateManyUserInputEnvelope = {
+  data: Prisma.RecordCreateManyUserInput | Prisma.RecordCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type RecordUpsertWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.RecordWhereUniqueInput
+  update: Prisma.XOR<Prisma.RecordUpdateWithoutCreatedByInput, Prisma.RecordUncheckedUpdateWithoutCreatedByInput>
+  create: Prisma.XOR<Prisma.RecordCreateWithoutCreatedByInput, Prisma.RecordUncheckedCreateWithoutCreatedByInput>
+}
+
+export type RecordUpdateWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.RecordWhereUniqueInput
+  data: Prisma.XOR<Prisma.RecordUpdateWithoutCreatedByInput, Prisma.RecordUncheckedUpdateWithoutCreatedByInput>
+}
+
+export type RecordUpdateManyWithWhereWithoutCreatedByInput = {
+  where: Prisma.RecordScalarWhereInput
+  data: Prisma.XOR<Prisma.RecordUpdateManyMutationInput, Prisma.RecordUncheckedUpdateManyWithoutCreatedByInput>
+}
+
+export type RecordScalarWhereInput = {
+  AND?: Prisma.RecordScalarWhereInput | Prisma.RecordScalarWhereInput[]
+  OR?: Prisma.RecordScalarWhereInput[]
+  NOT?: Prisma.RecordScalarWhereInput | Prisma.RecordScalarWhereInput[]
+  id?: Prisma.StringFilter<"Record"> | string
+  patientId?: Prisma.StringFilter<"Record"> | string
+  visitDate?: Prisma.DateTimeFilter<"Record"> | Date | string
+  isArchived?: Prisma.BoolFilter<"Record"> | boolean
+  archivedOn?: Prisma.DateTimeNullableFilter<"Record"> | Date | string | null
+  symptoms?: Prisma.StringNullableFilter<"Record"> | string | null
+  signs?: Prisma.StringNullableFilter<"Record"> | string | null
+  diagnosis?: Prisma.StringNullableFilter<"Record"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Record"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Record"> | Date | string
+  caseId?: Prisma.StringFilter<"Record"> | string
+  userId?: Prisma.StringNullableFilter<"Record"> | string | null
+  createdById?: Prisma.StringFilter<"Record"> | string
+}
+
+export type RecordUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.RecordWhereUniqueInput
+  update: Prisma.XOR<Prisma.RecordUpdateWithoutUserInput, Prisma.RecordUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.RecordCreateWithoutUserInput, Prisma.RecordUncheckedCreateWithoutUserInput>
+}
+
+export type RecordUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.RecordWhereUniqueInput
+  data: Prisma.XOR<Prisma.RecordUpdateWithoutUserInput, Prisma.RecordUncheckedUpdateWithoutUserInput>
+}
+
+export type RecordUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.RecordScalarWhereInput
+  data: Prisma.XOR<Prisma.RecordUpdateManyMutationInput, Prisma.RecordUncheckedUpdateManyWithoutUserInput>
+}
+
 export type RecordCreateWithoutPatientInput = {
   id?: string
   visitDate?: Date | string
@@ -595,6 +866,8 @@ export type RecordCreateWithoutPatientInput = {
   vitalSigns?: Prisma.VitalSignsCreateNestedOneWithoutRecordInput
   recordMedications?: Prisma.RecordMedicationCreateNestedManyWithoutRecordInput
   case: Prisma.CaseCreateNestedOneWithoutRecordsInput
+  user?: Prisma.UserCreateNestedOneWithoutRecordsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
 }
 
 export type RecordUncheckedCreateWithoutPatientInput = {
@@ -608,6 +881,8 @@ export type RecordUncheckedCreateWithoutPatientInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   caseId: string
+  userId?: string | null
+  createdById: string
   vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
   recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
 }
@@ -638,23 +913,6 @@ export type RecordUpdateManyWithWhereWithoutPatientInput = {
   data: Prisma.XOR<Prisma.RecordUpdateManyMutationInput, Prisma.RecordUncheckedUpdateManyWithoutPatientInput>
 }
 
-export type RecordScalarWhereInput = {
-  AND?: Prisma.RecordScalarWhereInput | Prisma.RecordScalarWhereInput[]
-  OR?: Prisma.RecordScalarWhereInput[]
-  NOT?: Prisma.RecordScalarWhereInput | Prisma.RecordScalarWhereInput[]
-  id?: Prisma.StringFilter<"Record"> | string
-  patientId?: Prisma.StringFilter<"Record"> | string
-  visitDate?: Prisma.DateTimeFilter<"Record"> | Date | string
-  isArchived?: Prisma.BoolFilter<"Record"> | boolean
-  archivedOn?: Prisma.DateTimeNullableFilter<"Record"> | Date | string | null
-  symptoms?: Prisma.StringNullableFilter<"Record"> | string | null
-  signs?: Prisma.StringNullableFilter<"Record"> | string | null
-  diagnosis?: Prisma.StringNullableFilter<"Record"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Record"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Record"> | Date | string
-  caseId?: Prisma.StringFilter<"Record"> | string
-}
-
 export type RecordCreateWithoutCaseInput = {
   id?: string
   visitDate?: Date | string
@@ -668,6 +926,8 @@ export type RecordCreateWithoutCaseInput = {
   patient: Prisma.PatientCreateNestedOneWithoutRecordsInput
   vitalSigns?: Prisma.VitalSignsCreateNestedOneWithoutRecordInput
   recordMedications?: Prisma.RecordMedicationCreateNestedManyWithoutRecordInput
+  user?: Prisma.UserCreateNestedOneWithoutRecordsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
 }
 
 export type RecordUncheckedCreateWithoutCaseInput = {
@@ -681,6 +941,8 @@ export type RecordUncheckedCreateWithoutCaseInput = {
   diagnosis?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  userId?: string | null
+  createdById: string
   vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
   recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
 }
@@ -724,6 +986,8 @@ export type RecordCreateWithoutVitalSignsInput = {
   patient: Prisma.PatientCreateNestedOneWithoutRecordsInput
   recordMedications?: Prisma.RecordMedicationCreateNestedManyWithoutRecordInput
   case: Prisma.CaseCreateNestedOneWithoutRecordsInput
+  user?: Prisma.UserCreateNestedOneWithoutRecordsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
 }
 
 export type RecordUncheckedCreateWithoutVitalSignsInput = {
@@ -738,6 +1002,8 @@ export type RecordUncheckedCreateWithoutVitalSignsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   caseId: string
+  userId?: string | null
+  createdById: string
   recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
 }
 
@@ -770,6 +1036,8 @@ export type RecordUpdateWithoutVitalSignsInput = {
   patient?: Prisma.PatientUpdateOneRequiredWithoutRecordsNestedInput
   recordMedications?: Prisma.RecordMedicationUpdateManyWithoutRecordNestedInput
   case?: Prisma.CaseUpdateOneRequiredWithoutRecordsNestedInput
+  user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
 }
 
 export type RecordUncheckedUpdateWithoutVitalSignsInput = {
@@ -784,6 +1052,8 @@ export type RecordUncheckedUpdateWithoutVitalSignsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   caseId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
 }
 
@@ -800,6 +1070,8 @@ export type RecordCreateWithoutRecordMedicationsInput = {
   patient: Prisma.PatientCreateNestedOneWithoutRecordsInput
   vitalSigns?: Prisma.VitalSignsCreateNestedOneWithoutRecordInput
   case: Prisma.CaseCreateNestedOneWithoutRecordsInput
+  user?: Prisma.UserCreateNestedOneWithoutRecordsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
 }
 
 export type RecordUncheckedCreateWithoutRecordMedicationsInput = {
@@ -814,6 +1086,8 @@ export type RecordUncheckedCreateWithoutRecordMedicationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   caseId: string
+  userId?: string | null
+  createdById: string
   vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
 }
 
@@ -846,6 +1120,8 @@ export type RecordUpdateWithoutRecordMedicationsInput = {
   patient?: Prisma.PatientUpdateOneRequiredWithoutRecordsNestedInput
   vitalSigns?: Prisma.VitalSignsUpdateOneWithoutRecordNestedInput
   case?: Prisma.CaseUpdateOneRequiredWithoutRecordsNestedInput
+  user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
 }
 
 export type RecordUncheckedUpdateWithoutRecordMedicationsInput = {
@@ -860,7 +1136,137 @@ export type RecordUncheckedUpdateWithoutRecordMedicationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   caseId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
+}
+
+export type RecordCreateManyCreatedByInput = {
+  id?: string
+  patientId: string
+  visitDate?: Date | string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
+  symptoms?: string | null
+  signs?: string | null
+  diagnosis?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  caseId: string
+  userId?: string | null
+}
+
+export type RecordCreateManyUserInput = {
+  id?: string
+  patientId: string
+  visitDate?: Date | string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
+  symptoms?: string | null
+  signs?: string | null
+  diagnosis?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  caseId: string
+  createdById: string
+}
+
+export type RecordUpdateWithoutCreatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patient?: Prisma.PatientUpdateOneRequiredWithoutRecordsNestedInput
+  vitalSigns?: Prisma.VitalSignsUpdateOneWithoutRecordNestedInput
+  recordMedications?: Prisma.RecordMedicationUpdateManyWithoutRecordNestedInput
+  case?: Prisma.CaseUpdateOneRequiredWithoutRecordsNestedInput
+  user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
+}
+
+export type RecordUncheckedUpdateWithoutCreatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  caseId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
+  recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
+}
+
+export type RecordUncheckedUpdateManyWithoutCreatedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  caseId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type RecordUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patient?: Prisma.PatientUpdateOneRequiredWithoutRecordsNestedInput
+  vitalSigns?: Prisma.VitalSignsUpdateOneWithoutRecordNestedInput
+  recordMedications?: Prisma.RecordMedicationUpdateManyWithoutRecordNestedInput
+  case?: Prisma.CaseUpdateOneRequiredWithoutRecordsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
+}
+
+export type RecordUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  caseId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
+  recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
+}
+
+export type RecordUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  caseId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type RecordCreateManyPatientInput = {
@@ -874,6 +1280,8 @@ export type RecordCreateManyPatientInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   caseId: string
+  userId?: string | null
+  createdById: string
 }
 
 export type RecordUpdateWithoutPatientInput = {
@@ -889,6 +1297,8 @@ export type RecordUpdateWithoutPatientInput = {
   vitalSigns?: Prisma.VitalSignsUpdateOneWithoutRecordNestedInput
   recordMedications?: Prisma.RecordMedicationUpdateManyWithoutRecordNestedInput
   case?: Prisma.CaseUpdateOneRequiredWithoutRecordsNestedInput
+  user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
 }
 
 export type RecordUncheckedUpdateWithoutPatientInput = {
@@ -902,6 +1312,8 @@ export type RecordUncheckedUpdateWithoutPatientInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   caseId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
   recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
 }
@@ -917,6 +1329,8 @@ export type RecordUncheckedUpdateManyWithoutPatientInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   caseId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type RecordCreateManyCaseInput = {
@@ -930,6 +1344,8 @@ export type RecordCreateManyCaseInput = {
   diagnosis?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  userId?: string | null
+  createdById: string
 }
 
 export type RecordUpdateWithoutCaseInput = {
@@ -945,6 +1361,8 @@ export type RecordUpdateWithoutCaseInput = {
   patient?: Prisma.PatientUpdateOneRequiredWithoutRecordsNestedInput
   vitalSigns?: Prisma.VitalSignsUpdateOneWithoutRecordNestedInput
   recordMedications?: Prisma.RecordMedicationUpdateManyWithoutRecordNestedInput
+  user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
 }
 
 export type RecordUncheckedUpdateWithoutCaseInput = {
@@ -958,6 +1376,8 @@ export type RecordUncheckedUpdateWithoutCaseInput = {
   diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
   vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
   recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
 }
@@ -973,6 +1393,8 @@ export type RecordUncheckedUpdateManyWithoutCaseInput = {
   diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -1018,10 +1440,14 @@ export type RecordSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   caseId?: boolean
+  userId?: boolean
+  createdById?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
   vitalSigns?: boolean | Prisma.Record$vitalSignsArgs<ExtArgs>
   recordMedications?: boolean | Prisma.Record$recordMedicationsArgs<ExtArgs>
   case?: boolean | Prisma.CaseDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Record$userArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.RecordCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["record"]>
 
@@ -1037,8 +1463,12 @@ export type RecordSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   caseId?: boolean
+  userId?: boolean
+  createdById?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
   case?: boolean | Prisma.CaseDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Record$userArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["record"]>
 
 export type RecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1053,8 +1483,12 @@ export type RecordSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   caseId?: boolean
+  userId?: boolean
+  createdById?: boolean
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
   case?: boolean | Prisma.CaseDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Record$userArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["record"]>
 
 export type RecordSelectScalar = {
@@ -1069,23 +1503,31 @@ export type RecordSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   caseId?: boolean
+  userId?: boolean
+  createdById?: boolean
 }
 
-export type RecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "visitDate" | "isArchived" | "archivedOn" | "symptoms" | "signs" | "diagnosis" | "createdAt" | "updatedAt" | "caseId", ExtArgs["result"]["record"]>
+export type RecordOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "patientId" | "visitDate" | "isArchived" | "archivedOn" | "symptoms" | "signs" | "diagnosis" | "createdAt" | "updatedAt" | "caseId" | "userId" | "createdById", ExtArgs["result"]["record"]>
 export type RecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
   vitalSigns?: boolean | Prisma.Record$vitalSignsArgs<ExtArgs>
   recordMedications?: boolean | Prisma.Record$recordMedicationsArgs<ExtArgs>
   case?: boolean | Prisma.CaseDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Record$userArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.RecordCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type RecordIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
   case?: boolean | Prisma.CaseDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Record$userArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type RecordIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
   case?: boolean | Prisma.CaseDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Record$userArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $RecordPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1095,6 +1537,8 @@ export type $RecordPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     vitalSigns: Prisma.$VitalSignsPayload<ExtArgs> | null
     recordMedications: Prisma.$RecordMedicationPayload<ExtArgs>[]
     case: Prisma.$CasePayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs> | null
+    createdBy: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1108,6 +1552,8 @@ export type $RecordPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     createdAt: Date
     updatedAt: Date
     caseId: string
+    userId: string | null
+    createdById: string
   }, ExtArgs["result"]["record"]>
   composites: {}
 }
@@ -1506,6 +1952,8 @@ export interface Prisma__RecordClient<T, Null = never, ExtArgs extends runtime.T
   vitalSigns<T extends Prisma.Record$vitalSignsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Record$vitalSignsArgs<ExtArgs>>): Prisma.Prisma__VitalSignsClient<runtime.Types.Result.GetResult<Prisma.$VitalSignsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   recordMedications<T extends Prisma.Record$recordMedicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Record$recordMedicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordMedicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   case<T extends Prisma.CaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CaseDefaultArgs<ExtArgs>>): Prisma.Prisma__CaseClient<runtime.Types.Result.GetResult<Prisma.$CasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.Record$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Record$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1546,6 +1994,8 @@ export interface RecordFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Record", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Record", 'DateTime'>
   readonly caseId: Prisma.FieldRef<"Record", 'String'>
+  readonly userId: Prisma.FieldRef<"Record", 'String'>
+  readonly createdById: Prisma.FieldRef<"Record", 'String'>
 }
     
 
@@ -1982,6 +2432,25 @@ export type Record$recordMedicationsArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.RecordMedicationScalarFieldEnum | Prisma.RecordMedicationScalarFieldEnum[]
+}
+
+/**
+ * Record.user
+ */
+export type Record$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

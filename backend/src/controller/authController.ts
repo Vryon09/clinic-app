@@ -37,6 +37,33 @@ export async function getUsers(req: UserRequest, res: Response) {
   }
 }
 
+export async function getDoctors(req: UserRequest, res: Response) {
+  try {
+    const doctors = await prisma.user.findMany({
+      where: { role: "DOCTOR", isActive: true },
+      select: {
+        id: true,
+        username: true,
+        role: true,
+        isActive: true,
+        cases: { include: { records: true } },
+        licenseNum: true,
+        createdRecords: true,
+        createdAt: true,
+      },
+    });
+
+    if (!doctors) {
+      return res.status(400).json({ message: "Doctors not found" });
+    }
+
+    res.status(200).json(doctors);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
+
 export async function getMe(req: UserRequest, res: Response) {
   try {
     const userId = req.userId;

@@ -79,6 +79,12 @@ export async function handleGetUsers() {
   return res.data || [];
 }
 
+export async function handleGetDoctors() {
+  const res = await api.get("/api/auth/doctors");
+
+  return res.data || [];
+}
+
 async function handleUpdateUser({
   id,
   username,

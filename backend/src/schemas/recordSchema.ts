@@ -5,6 +5,7 @@ import { createRecordMedicationSchema } from "./recordMedication";
 export const createRecordSchema = z.object({
   patientId: z.uuid(),
   caseId: z.uuid(),
+  createdById: z.uuid(),
 
   symptoms: z
     .string()

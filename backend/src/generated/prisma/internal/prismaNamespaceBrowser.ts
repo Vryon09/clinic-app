@@ -124,7 +124,8 @@ export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeo
 export const CaseScalarFieldEnum = {
   id: 'id',
   caseName: 'caseName',
-  patientId: 'patientId'
+  patientId: 'patientId',
+  doctorId: 'doctorId'
 } as const
 
 export type CaseScalarFieldEnum = (typeof CaseScalarFieldEnum)[keyof typeof CaseScalarFieldEnum]
@@ -141,7 +142,9 @@ export const RecordScalarFieldEnum = {
   diagnosis: 'diagnosis',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  caseId: 'caseId'
+  caseId: 'caseId',
+  userId: 'userId',
+  createdById: 'createdById'
 } as const
 
 export type RecordScalarFieldEnum = (typeof RecordScalarFieldEnum)[keyof typeof RecordScalarFieldEnum]

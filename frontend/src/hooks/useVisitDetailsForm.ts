@@ -20,6 +20,7 @@ import type { NavigateFunction } from "react-router";
 import { toast } from "sonner";
 
 interface IUseVisitDetailsForm {
+  createdById: string;
   consultationId: string;
   patientId: string;
   formType: "edit" | "new";
@@ -40,6 +41,7 @@ export function useVisitDetailsForm({
   navigate,
   handleAddRecord,
   handleUpdateRecord,
+  createdById,
 }: IUseVisitDetailsForm) {
   const {
     register,
@@ -137,7 +139,7 @@ export function useVisitDetailsForm({
 
   function onSubmit(recordData: CreateRecordInput) {
     if (formType === "new") {
-      handleAddRecord({ ...recordData, patientId });
+      handleAddRecord({ ...recordData, patientId, createdById });
     } else {
       handleUpdateRecord({ ...recordData, consultationId });
     }

@@ -94,18 +94,22 @@ export async function addRecord(req: Request, res: Response) {
       vitalSigns,
       recordMedications,
       caseId,
+      createdById,
     } = req.body;
 
-    console.log(caseId);
+    console.log(createdById);
 
     if (!patientId)
       return res.status(400).json({ error: "patientId not found." });
 
     if (!caseId) return res.status(400).json({ error: "caseId not found." });
 
+    if (!createdById)
+      return res.status(400).json({ error: "createdById not found." });
+
     const record = await prisma.$transaction(async (tx) => {
       const newRecord = await tx.record.create({
-        data: { patientId, symptoms, signs, diagnosis, caseId },
+        data: { patientId, symptoms, signs, diagnosis, caseId, createdById },
       });
 
       if (vitalSigns) {

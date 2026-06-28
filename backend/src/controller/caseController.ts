@@ -25,9 +25,12 @@ export async function getCases(req: Request, res: Response) {
 export async function addCase(req: Request, res: Response) {
   try {
     const patientId = req.params.patientId as string;
-    const { caseName } = req.body as { caseName: string };
+    const { caseName, doctorId } = req.body as {
+      caseName: string;
+      doctorId: string;
+    };
 
-    await prisma.case.create({ data: { caseName, patientId } });
+    await prisma.case.create({ data: { caseName, patientId, doctorId } });
 
     res.status(201).json({ message: "New case successfully created." });
   } catch (error) {

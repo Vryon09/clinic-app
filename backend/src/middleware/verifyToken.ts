@@ -14,7 +14,7 @@ export function verifyToken(
 ) {
   const token = req.cookies.jwt;
 
-  console.log("Token: " + token);
+  // console.log("Token: " + token);/
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized" });

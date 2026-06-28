@@ -33,6 +33,7 @@ export async function handleGetArchivedRecords({ page }: { page: number }) {
 export interface IHandleAddRecord extends CreateRecordInput {
   patientId: string;
   caseId: string;
+  createdById: string;
 }
 
 async function handleAddRecord({
@@ -43,6 +44,7 @@ async function handleAddRecord({
   signs,
   vitalSigns,
   recordMedications,
+  createdById,
 }: IHandleAddRecord) {
   const newRecord = {
     patientId,
@@ -52,6 +54,7 @@ async function handleAddRecord({
     signs,
     vitalSigns,
     recordMedications,
+    createdById,
   };
   const res = await api.post(`/api/records`, newRecord);
 

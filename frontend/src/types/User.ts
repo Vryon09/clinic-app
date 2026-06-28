@@ -1,3 +1,6 @@
+import type { ICase } from "./CaseType";
+import type { IRecord } from "./RecordType";
+
 export interface IUser {
   id: string;
   username: string;
@@ -7,4 +10,10 @@ export interface IUser {
 }
 export interface IMe extends IUser {
   password: string;
+}
+
+export interface IDoctor extends IUser {
+  cases: ICase[];
+  createdRecords: IRecord[];
+  createdAt: Date;
 }
