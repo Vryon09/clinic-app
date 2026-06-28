@@ -19,11 +19,15 @@ export async function getUsers(req: UserRequest, res: Response) {
   try {
     const userId = req.userId;
 
-    console.log(req.role);
-
     const users = await prisma.user.findMany({
       where: { AND: [{ role: { not: "ADMIN" } }, { id: { not: userId } }] },
-      select: { id: true, username: true, role: true, isActive: true },
+      select: {
+        id: true,
+        username: true,
+        role: true,
+        isActive: true,
+        licenseNum: true,
+      },
     });
 
     if (!users) {
@@ -230,10 +234,14 @@ export async function logoutUser(req: Request, res: Response) {
 
 export async function updateUser(req: Request, res: Response) {
   try {
-    const { id, username, role } = req.body;
+    const { id, username, role, licenseNum } = req.body;
 
     const isUsernameUsed = await prisma.user.findUnique({
       where: { username },
+    });
+
+    const isLicenseNumUsed = await prisma.user.findUnique({
+      where: { licenseNum },
     });
 
     const user = await prisma.user.findUnique({
@@ -244,13 +252,17 @@ export async function updateUser(req: Request, res: Response) {
       return res.status(400).json({ message: "Username already used" });
     }
 
+    if (isLicenseNumUsed) {
+      return res.status(400).json({ message: "License Number already used" });
+    }
+
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
 
     const updatedUser = await prisma.user.update({
       where: { id },
-      data: { username, role },
+      data: { username, role, licenseNum },
     });
 
     res.status(200).json(updatedUser);

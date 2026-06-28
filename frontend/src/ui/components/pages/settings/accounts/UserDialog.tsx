@@ -97,7 +97,8 @@ function UserDialog({
     if (action === "update") {
       if (
         data.username === initialValues.username &&
-        data.role === initialValues.role
+        data.role === initialValues.role &&
+        data.licenseNum === initialValues.licenseNum
       ) {
         toast.error("No changes", { position: "top-center" });
         setIsUserDialogOpen(false);
@@ -105,7 +106,12 @@ function UserDialog({
       }
 
       handleUpdateUser(
-        { username: data.username, role: data.role, id: initialValues.id },
+        {
+          username: data.username,
+          role: data.role,
+          id: initialValues.id,
+          licenseNum: data.licenseNum,
+        },
         {
           onSuccess: () => {
             reset();
@@ -149,7 +155,7 @@ function UserDialog({
               {role === "DOCTOR" && (
                 <Field>
                   <div className="space-y-1">
-                    <FieldLabel htmlFor="licenseNum">Licence Number</FieldLabel>
+                    <FieldLabel htmlFor="licenseNum">License Number</FieldLabel>
                     <Input
                       className="border border-neutral-400"
                       id="licenseNum"

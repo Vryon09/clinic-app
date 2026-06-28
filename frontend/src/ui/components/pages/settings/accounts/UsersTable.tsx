@@ -68,6 +68,7 @@ function UsersTable({
                       role: user.role,
                       id: user.id,
                       isActive: user.isActive,
+                      licenseNum: user.licenseNum,
                     })
                   }
                   size="xs"
@@ -106,6 +107,7 @@ function UsersTable({
             role: selectedUser!.role,
             id: selectedUser!.id,
             isActive: selectedUser!.isActive,
+            licenseNum: selectedUser!.licenseNum,
           }}
         />
       )}

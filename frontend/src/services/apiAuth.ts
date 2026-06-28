@@ -89,12 +89,19 @@ async function handleUpdateUser({
   id,
   username,
   role,
+  licenseNum,
 }: {
   username: string;
   role: "ADMIN" | "DOCTOR" | "ASSISTANT";
   id: string;
+  licenseNum: string;
 }) {
-  const res = await api.patch("/api/auth/update", { id, username, role });
+  const res = await api.patch("/api/auth/update", {
+    id,
+    username,
+    role,
+    licenseNum,
+  });
 
   return res.data || {};
 }
@@ -109,6 +116,7 @@ export function useUpdateUser() {
       username: string;
       role: "ADMIN" | "DOCTOR" | "ASSISTANT";
       id: string;
+      licenseNum: string;
     }
   >({
     mutationFn: handleUpdateUser,
