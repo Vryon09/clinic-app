@@ -15,6 +15,7 @@ import {
   updateRecordSchema,
 } from "../schemas/recordSchema";
 import { verifyToken } from "../middleware/verifyToken";
+import { authorize } from "../middleware/authorize";
 
 const router = Router();
 
@@ -23,7 +24,12 @@ router.use(verifyToken);
 router.get("/archived", getArchivedRecords);
 router.get("/:id", getRecords);
 router.get("/:id/record", getRecord);
-router.post("/", validateSchema(createRecordSchema), addRecord);
+router.post(
+  "/",
+  authorize("record:create"),
+  validateSchema(createRecordSchema),
+  addRecord,
+);
 router.delete("/:id", deleteRecord);
 router.patch("/:id/restore", restoreRecord);
 router.patch("/:id/update", validateSchema(updateRecordSchema), updateRecord);

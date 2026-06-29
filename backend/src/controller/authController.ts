@@ -137,7 +137,7 @@ export async function addUser(req: Request, res: Response) {
       where: { username },
     });
 
-    const existingLicenseNum = await prisma.user.findUnique({
+    const existingLicenseNum = await prisma.user.findFirst({
       where: { licenseNum },
     });
 
@@ -145,7 +145,7 @@ export async function addUser(req: Request, res: Response) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    if (existingLicenseNum) {
+    if (existingLicenseNum && licenseNum !== "" && role === "DOCTOR") {
       return res.status(400).json({ message: "License Number already exists" });
     }
 
@@ -240,7 +240,7 @@ export async function updateUser(req: Request, res: Response) {
       where: { username },
     });
 
-    const isLicenseNumUsed = await prisma.user.findUnique({
+    const isLicenseNumUsed = await prisma.user.findFirst({
       where: { licenseNum },
     });
 

@@ -2,6 +2,6 @@ import { PERMISSIONS } from "./permissions";
 
 export const rolePermissions = {
   ADMIN: ["*"],
-  DOCTOR: [PERMISSIONS.USER_CREATE],
+  DOCTOR: [PERMISSIONS.RECORD_CREATE],
   ASSISTANT: [""],
 };

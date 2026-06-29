@@ -39,7 +39,7 @@ model User {
   username   String   @unique
   password   String
   role       UserRole
-  licenseNum String?  @unique
+  licenseNum String?
 
   isActive Boolean @default(true)
 

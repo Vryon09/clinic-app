@@ -19,18 +19,29 @@ import {
   registerSchema,
 } from "../schemas/authSchema";
 import { verifyToken } from "../middleware/verifyToken";
+import { authorize } from "../middleware/authorize";
 
 const router = Router();
 
 router.post("/register", validateSchema(registerSchema), registerUser);
-router.post("/addUser", verifyToken, validateSchema(addUserSchema), addUser);
+
+router.post(
+  "/addUser",
+  verifyToken,
+  authorize("user:create"),
+  validateSchema(addUserSchema),
+  addUser,
+);
+
 router.post("/login", validateSchema(loginSchema), loginUser);
 router.post("/logout", logoutUser);
 router.get("/me", verifyToken, getMe);
 router.get("/status", getAuthStatus);
 router.get("/users", verifyToken, getUsers);
 router.get("/doctors", verifyToken, getDoctors);
+
 router.patch("/update", verifyToken, updateUser);
+
 router.patch("/changePassword", verifyToken, changePassword);
 router.patch("/toggleStatus", verifyToken, toggleUserStatus);
 
