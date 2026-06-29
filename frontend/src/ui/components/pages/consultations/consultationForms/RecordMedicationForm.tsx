@@ -16,6 +16,7 @@ function RecordMedicationForm({
   setValue,
   errors,
   setError,
+  clearErrors,
 }: IRecordMedicationForm) {
   const [isAdding, setIsAdding] = useState<boolean>(false);
 
@@ -57,6 +58,7 @@ function RecordMedicationForm({
           setValue={setValue}
           errors={errors}
           setError={setError}
+          clearErrors={clearErrors}
         />
       </div>
     </Card>

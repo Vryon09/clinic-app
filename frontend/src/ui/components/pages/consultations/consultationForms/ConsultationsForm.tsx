@@ -114,6 +114,7 @@ function ConsultationsForm() {
     setError,
     control,
     onInvalidSubmit,
+    clearErrors,
   } = useVisitDetailsForm({
     consultationId,
     patientId,
@@ -281,6 +282,7 @@ function ConsultationsForm() {
             setValue={setValue}
             errors={errors}
             setError={setError}
+            clearErrors={clearErrors}
           />
         </div>
 

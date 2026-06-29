@@ -23,9 +23,21 @@ function RecordMedicationDialog({
   getValues,
   setError,
   setValue,
+  clearErrors,
 }: IRecordMedicationDialog) {
   return (
-    <Dialog open={isAdding} onOpenChange={setIsAdding}>
+    <Dialog
+      open={isAdding}
+      onOpenChange={() => {
+        if (isAdding) {
+          setIsAdding(false);
+
+          setValue("medicationInput.durationDays", undefined);
+          return;
+        }
+        setIsAdding(true);
+      }}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Medication</DialogTitle>
@@ -116,11 +128,13 @@ function RecordMedicationDialog({
                   name: "",
                   dosage: "",
                   frequency: "",
-                  durationDays: 0,
+                  durationDays: undefined,
                   instructions: "",
                 });
 
                 setIsAdding(false);
+
+                clearErrors("medicationInput");
               }}
             >
               Add Medication
