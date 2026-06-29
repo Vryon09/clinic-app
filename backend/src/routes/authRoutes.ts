@@ -11,6 +11,7 @@ import {
   changePassword,
   addUser,
   getDoctors,
+  changeLicenseNum,
 } from "../controller/authController";
 import { validateSchema } from "../middleware/validateSchema";
 import {
@@ -43,6 +44,7 @@ router.get("/doctors", verifyToken, getDoctors);
 router.patch("/update", verifyToken, updateUser);
 
 router.patch("/changePassword", verifyToken, changePassword);
+router.patch("/changeLicenseNum", verifyToken, changeLicenseNum);
 router.patch("/toggleStatus", verifyToken, toggleUserStatus);
 
 export default router;

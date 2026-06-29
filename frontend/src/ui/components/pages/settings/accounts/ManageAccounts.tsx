@@ -12,10 +12,13 @@ import UserDialog from "./UserDialog";
 import { useAuth } from "@/hooks/useAuth";
 import PasswordDialog from "./PasswordDialog";
 import { Spinner } from "../../../shadcn/spinner";
+import LicenseNumDialog from "./LicenseNumDialog";
 
 function ManageAccounts() {
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
   const [isChangingPassword, setIsChangingPassword] = useState<boolean>(false);
+  const [isChangingLicenseNum, setIsChangingLicenseNum] =
+    useState<boolean>(false);
   const [isAddingUser, setIsAddingUser] = useState<boolean>(false);
   const { data: users, isPending: isUsersLoading } = useQuery<IUser[]>({
     queryFn: handleGetUsers,
@@ -78,22 +81,40 @@ function ManageAccounts() {
             </p>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex justify-between">
             <div className="flex flex-col">
               <p className="text-2xl font-semibold">{user?.username}</p>
               <p className="text-xs text-neutral-500">{user?.role}</p>
             </div>
-            <Button
-              onClick={() => {
-                setIsChangingPassword(true);
-              }}
-            >
-              Change Password
-            </Button>
+
+            <div className="flex flex-col gap-4">
+              <Button
+                onClick={() => {
+                  setIsChangingPassword(true);
+                }}
+              >
+                Change Password
+              </Button>
+
+              {user?.role === "DOCTOR" && (
+                <Button
+                  onClick={() => {
+                    setIsChangingLicenseNum(true);
+                  }}
+                >
+                  Change License Number
+                </Button>
+              )}
+            </div>
 
             <PasswordDialog
               open={isChangingPassword}
               onOpenChange={setIsChangingPassword}
+            />
+
+            <LicenseNumDialog
+              open={isChangingLicenseNum}
+              onOpenChange={setIsChangingLicenseNum}
             />
           </div>
         </>

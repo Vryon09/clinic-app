@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils";
 import { useAddUser, useUpdateUser } from "@/services/apiAuth";
 import { toast } from "sonner";
 import type { IUser } from "@/types/User";
-import z from "zod";
+// import z from "zod";
 
 interface IUserDialog {
   isUserDialogOpen: boolean;
@@ -56,21 +56,21 @@ function UserDialog({
   const { mutate: handleUpdateUser } = useUpdateUser();
 
   const role = useWatch({ control, name: "role" });
-  const licenseNum = useWatch({ control, name: "licenseNum" });
+  // const licenseNum = useWatch({ control, name: "licenseNum" });
 
   function onSubmit(data: AddUserInput) {
-    const licenseNumSchema = z.string().regex(/^\d{7}$/, {
-      message: "Must be exactly 7 digits",
-    });
+    // const licenseNumSchema = z.string().regex(/^\d{7}$/, {
+    //   message: "Must be exactly 7 digits",
+    // });
 
-    const parsedLicenseNum = licenseNumSchema.safeParse(licenseNum);
+    // const parsedLicenseNum = licenseNumSchema.safeParse(licenseNum);
 
-    if (role === "DOCTOR" && !parsedLicenseNum.success) {
-      toast.error("License Number is required.", {
-        position: "top-center",
-      });
-      return;
-    }
+    // if (role === "DOCTOR" && !parsedLicenseNum.success) {
+    //   toast.error("License Number is required.", {
+    //     position: "top-center",
+    //   });
+    //   return;
+    // }
 
     if (action === "create") {
       handleAddUser(
@@ -152,7 +152,7 @@ function UserDialog({
                 )}
               </Field>
 
-              {role === "DOCTOR" && (
+              {action === "create" && (
                 <Field>
                   <div className="space-y-1">
                     <FieldLabel htmlFor="licenseNum">License Number</FieldLabel>

@@ -75,7 +75,17 @@ export const changePasswordSchema = z
     path: ["newPassword"], // attach error to this field
   });
 
+export const changeLicenseNumSchema = z.object({
+  licenseNum: z
+    .string()
+    .regex(/^\d{7}$/, {
+      message: "Must be exactly 7 digits",
+    })
+    .or(z.literal("")),
+});
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type SignupInput = z.infer<typeof signupSchema>;
 export type AddUserInput = z.infer<typeof addUserSchema>;
 export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
+export type ChangeLicenseNumInput = z.infer<typeof changeLicenseNumSchema>;

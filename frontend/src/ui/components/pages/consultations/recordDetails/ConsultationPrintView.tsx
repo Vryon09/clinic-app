@@ -183,6 +183,16 @@ function ConsultationPrintView({
 
               return;
             }
+
+            if (record.case.doctor.licenseNum === "") {
+              toast.error(
+                `Doctor should have a license number. Update the "License Number" in settings -> Accounts -> Change License Number.`,
+                { position: "top-center", duration: 5000 },
+              );
+
+              return;
+            }
+
             window.print();
           }}
           className="mt-4 cursor-pointer text-center print:hidden"

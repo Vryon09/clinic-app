@@ -145,7 +145,7 @@ export async function addUser(req: Request, res: Response) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    if (existingLicenseNum && licenseNum !== "" && role === "DOCTOR") {
+    if (existingLicenseNum && licenseNum !== "") {
       return res.status(400).json({ message: "License Number already exists" });
     }
 
@@ -236,6 +236,8 @@ export async function updateUser(req: Request, res: Response) {
   try {
     const { id, username, role, licenseNum } = req.body;
 
+    console.log(req.body);
+
     const isUsernameUsed = await prisma.user.findUnique({
       where: { username },
     });
@@ -252,7 +254,7 @@ export async function updateUser(req: Request, res: Response) {
       return res.status(400).json({ message: "Username already used" });
     }
 
-    if (isLicenseNumUsed) {
+    if (isLicenseNumUsed && licenseNum !== "") {
       return res.status(400).json({ message: "License Number already used" });
     }
 
@@ -315,6 +317,49 @@ export async function changePassword(req: UserRequest, res: Response) {
     }
 
     res.status(200).json({ message: "Update Password successfully" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
+export async function changeLicenseNum(req: UserRequest, res: Response) {
+  try {
+    const { licenseNum } = req.body;
+
+    console.log(licenseNum);
+
+    const userId = req.userId;
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      res.status(400).json({ message: "User not found" });
+      return;
+    }
+
+    if (user.licenseNum === licenseNum) {
+      res
+        .status(400)
+        .json({
+          message: "New license number is the same as the old license number.",
+        });
+      return;
+    }
+
+    const updatedLicenseNumUser = await prisma.user.update({
+      where: { id: userId },
+      data: { licenseNum },
+    });
+
+    if (!updatedLicenseNumUser) {
+      res.status(400).json({ message: "Update License Number failed" });
+      return;
+    }
+
+    res.status(200).json({ message: "Update License Number successfully" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server error" });

@@ -163,6 +163,34 @@ export function useChangePassword() {
   });
 }
 
+async function handleChangeLicenseNum({ licenseNum }: { licenseNum: string }) {
+  const res = await api.patch("/api/auth/changeLicenseNum", {
+    licenseNum,
+  });
+
+  return res.data || {};
+}
+
+export function useChangeLicenseNum() {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    unknown,
+    AxiosError<{ message: string }>,
+    {
+      licenseNum: string;
+    }
+  >({
+    mutationFn: handleChangeLicenseNum,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("User updated License Number successfully", {
+        position: "top-center",
+      });
+    },
+  });
+}
+
 async function handleLogin({ username, password }: LoginPayload) {
   const res = await api.post("/api/auth/login", { username, password });
   return res.data;
