@@ -152,7 +152,7 @@ function UserDialog({
                 )}
               </Field>
 
-              {action === "create" && (
+              {action === "create" && role === "DOCTOR" && (
                 <Field>
                   <div className="space-y-1">
                     <FieldLabel htmlFor="licenseNum">License Number</FieldLabel>

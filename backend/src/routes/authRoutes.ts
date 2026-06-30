@@ -41,10 +41,15 @@ router.get("/status", getAuthStatus);
 router.get("/users", verifyToken, getUsers);
 router.get("/doctors", verifyToken, getDoctors);
 
-router.patch("/update", verifyToken, updateUser);
+router.patch("/update", verifyToken, authorize("user:update"), updateUser);
 
 router.patch("/changePassword", verifyToken, changePassword);
 router.patch("/changeLicenseNum", verifyToken, changeLicenseNum);
-router.patch("/toggleStatus", verifyToken, toggleUserStatus);
+router.patch(
+  "/toggleStatus",
+  verifyToken,
+  authorize("user:toggleStatus"),
+  toggleUserStatus,
+);
 
 export default router;

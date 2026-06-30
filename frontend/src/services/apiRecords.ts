@@ -4,6 +4,7 @@ import type {
   UpdateRecordInput,
 } from "@/schemas/recordSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 import { toast } from "sonner";
 
 export async function handleGetRecords({
@@ -63,7 +64,11 @@ async function handleAddRecord({
 
 export function useAddRecord() {
   const queryClient = useQueryClient();
-  return useMutation({
+  return useMutation<
+    unknown,
+    AxiosError<{ message: string }>,
+    IHandleAddRecord
+  >({
     mutationFn: handleAddRecord,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["patient"] });
@@ -147,13 +152,17 @@ async function handleUpdateRecord({
     recordMedications,
   });
 
-  console.log(res.data);
+  return res.data || {};
 }
 
 export function useUpdateRecord() {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<
+    unknown,
+    AxiosError<{ message: string }>,
+    IHandleUpdateRecord
+  >({
     mutationFn: handleUpdateRecord,
     onSuccess: () => {
       // queryClient.invalidateQueries({ queryKey: ["patient"] });

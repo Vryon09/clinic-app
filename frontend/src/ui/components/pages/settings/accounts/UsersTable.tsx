@@ -14,6 +14,7 @@ import UserDialog from "./UserDialog";
 import { useToggleUserStatus } from "@/services/apiAuth";
 import { cn } from "@/lib/utils";
 import { Card } from "@/ui/components/shadcn/card";
+import { toast } from "sonner";
 
 function UsersTable({
   users,
@@ -83,7 +84,18 @@ function UsersTable({
                     "cursor-pointer",
                   )}
                   variant={user.isActive ? "destructive" : "default"}
-                  onClick={() => handleToggleUserStatus({ id: user.id })}
+                  onClick={() =>
+                    handleToggleUserStatus(
+                      { id: user.id },
+                      {
+                        onError: (err) => {
+                          toast.error(err.response?.data?.message, {
+                            position: "top-center",
+                          });
+                        },
+                      },
+                    )
+                  }
                 >
                   {user.isActive ? "Disable" : "Enable"}
                 </Button>

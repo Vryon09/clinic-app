@@ -14,6 +14,7 @@ import type { IRecord } from "@/types/RecordType";
 import type { IVitalSigns } from "@/types/VitalSignsType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, type UseMutateFunction } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 import { useEffect } from "react";
 import { useFieldArray, useForm, type FieldErrors } from "react-hook-form";
 import type { NavigateFunction } from "react-router";
@@ -25,10 +26,15 @@ interface IUseVisitDetailsForm {
   patientId: string;
   formType: "edit" | "new";
   navigate: NavigateFunction;
-  handleAddRecord: UseMutateFunction<void, Error, IHandleAddRecord, unknown>;
+  handleAddRecord: UseMutateFunction<
+    unknown,
+    AxiosError<{ message: string }>,
+    IHandleAddRecord,
+    unknown
+  >;
   handleUpdateRecord: UseMutateFunction<
-    void,
-    Error,
+    unknown,
+    AxiosError<{ message: string }>,
     IHandleUpdateRecord,
     unknown
   >;
@@ -140,9 +146,27 @@ export function useVisitDetailsForm({
 
   function onSubmit(recordData: CreateRecordInput) {
     if (formType === "new") {
-      handleAddRecord({ ...recordData, patientId, createdById });
+      handleAddRecord(
+        { ...recordData, patientId, createdById },
+        {
+          onError: (err) => {
+            toast.error(err.response?.data?.message, {
+              position: "top-center",
+            });
+          },
+        },
+      );
     } else {
-      handleUpdateRecord({ ...recordData, consultationId });
+      handleUpdateRecord(
+        { ...recordData, consultationId },
+        {
+          onError: (err) => {
+            toast.error(err.response?.data?.message, {
+              position: "top-center",
+            });
+          },
+        },
+      );
     }
 
     navigate(`/patients/${patientId}`);

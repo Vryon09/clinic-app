@@ -242,8 +242,6 @@ export async function updateUser(req: Request, res: Response) {
   try {
     const { id, username, role, licenseNum } = req.body;
 
-    console.log(req.body);
-
     const isUsernameUsed = await prisma.user.findUnique({
       where: { username },
     });

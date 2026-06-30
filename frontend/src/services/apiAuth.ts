@@ -238,7 +238,7 @@ async function handleToggleUserStatus({ id }: { id: string }) {
 export function useToggleUserStatus() {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<unknown, AxiosError<{ message: string }>, { id: string }>({
     mutationFn: handleToggleUserStatus,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });

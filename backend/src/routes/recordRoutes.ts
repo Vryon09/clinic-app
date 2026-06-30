@@ -30,9 +30,14 @@ router.post(
   validateSchema(createRecordSchema),
   addRecord,
 );
-router.delete("/:id", deleteRecord);
+router.delete("/:id", authorize("record:delete"), deleteRecord);
 router.patch("/:id/restore", restoreRecord);
-router.patch("/:id/update", validateSchema(updateRecordSchema), updateRecord);
+router.patch(
+  "/:id/update",
+  authorize("record:update"),
+  validateSchema(updateRecordSchema),
+  updateRecord,
+);
 router.patch("/:id/archive", archiveRecord);
 
 export default router;
