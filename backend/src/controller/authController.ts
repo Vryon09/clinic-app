@@ -74,7 +74,13 @@ export async function getMe(req: UserRequest, res: Response) {
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, username: true, role: true, isActive: true },
+      select: {
+        id: true,
+        username: true,
+        role: true,
+        isActive: true,
+        licenseNum: true,
+      },
     });
 
     if (!user) {
@@ -335,17 +341,23 @@ export async function changeLicenseNum(req: UserRequest, res: Response) {
       where: { id: userId },
     });
 
+    const isLicenseNumUsed = await prisma.user.findFirst({
+      where: { licenseNum },
+    });
+
+    if (isLicenseNumUsed && licenseNum !== "") {
+      return res.status(400).json({ message: "License Number already used" });
+    }
+
     if (!user) {
       res.status(400).json({ message: "User not found" });
       return;
     }
 
     if (user.licenseNum === licenseNum) {
-      res
-        .status(400)
-        .json({
-          message: "New license number is the same as the old license number.",
-        });
+      res.status(400).json({
+        message: "New license number is the same as the old license number.",
+      });
       return;
     }
 

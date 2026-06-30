@@ -21,13 +21,21 @@ import { Input } from "../../../shadcn/input";
 import { Button } from "../../../shadcn/button";
 import { toast } from "sonner";
 import { useChangeLicenseNum } from "@/services/apiAuth";
+import type { IUser } from "@/types/User";
 
 interface ILicenseNumDialog {
   open: boolean;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
+  user: IUser;
+  isUserLoading: boolean;
 }
 
-function LicenseNumDialog({ open, onOpenChange }: ILicenseNumDialog) {
+function LicenseNumDialog({
+  open,
+  onOpenChange,
+  user,
+  isUserLoading,
+}: ILicenseNumDialog) {
   const {
     register,
     handleSubmit,
@@ -35,6 +43,7 @@ function LicenseNumDialog({ open, onOpenChange }: ILicenseNumDialog) {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(changeLicenseNumSchema),
+    defaultValues: { licenseNum: user.licenseNum },
   });
 
   const { mutate: handleChangeLicenseNum } = useChangeLicenseNum();
@@ -70,6 +79,7 @@ function LicenseNumDialog({ open, onOpenChange }: ILicenseNumDialog) {
                 <div className="space-y-1">
                   <FieldLabel htmlFor="licenseNum">License Number</FieldLabel>
                   <Input
+                    disabled={isUserLoading}
                     className="border border-neutral-400"
                     id="licenseNum"
                     {...register("licenseNum")}
@@ -86,7 +96,11 @@ function LicenseNumDialog({ open, onOpenChange }: ILicenseNumDialog) {
           </FieldSet>
 
           <div className="flex justify-end">
-            <Button type="submit" className="mt-4 cursor-pointer">
+            <Button
+              disabled={isUserLoading}
+              type="submit"
+              className="mt-4 cursor-pointer"
+            >
               Submit
             </Button>
           </div>

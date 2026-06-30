@@ -184,6 +184,7 @@ export function useChangeLicenseNum() {
     mutationFn: handleChangeLicenseNum,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["me"] });
       toast.success("User updated License Number successfully", {
         position: "top-center",
       });

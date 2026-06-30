@@ -115,6 +115,8 @@ function ManageAccounts() {
             <LicenseNumDialog
               open={isChangingLicenseNum}
               onOpenChange={setIsChangingLicenseNum}
+              user={user!}
+              isUserLoading={isUserLoading}
             />
           </div>
         </>
