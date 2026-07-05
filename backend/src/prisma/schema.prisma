@@ -46,8 +46,9 @@ model User {
   createdRecords Record[] @relation("RecordCreator")
   cases          Case[]
 
-  createdAt DateTime @default(now())
-  records   Record[]
+  createdAt  DateTime     @default(now())
+  records    Record[]
+  systemLogs SystemLogs[]
 }
 
 model Patient {
@@ -155,13 +156,16 @@ model GoogleToken {
   updatedAt    DateTime @updatedAt
 }
 
-// model SystemLogs {
-//   id String @id @default(uuid())
+model SystemLogs {
+  id String @id @default(uuid())
 
-//   message String
+  action  String
+  module  String
+  target  String
+  details String
 
-//   userId String
-//   user   User   @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
-//   createdAt DateTime @default(now())
-// } 
+  createdAt DateTime @default(now())
+}

@@ -84,3 +84,8 @@ export type labResult = Prisma.labResultModel
  * 
  */
 export type GoogleToken = Prisma.GoogleTokenModel
+/**
+ * Model SystemLogs
+ * 
+ */
+export type SystemLogs = Prisma.SystemLogsModel

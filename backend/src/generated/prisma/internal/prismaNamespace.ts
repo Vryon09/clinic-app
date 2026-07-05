@@ -392,7 +392,8 @@ export const ModelName = {
   VitalSigns: 'VitalSigns',
   RecordMedication: 'RecordMedication',
   labResult: 'labResult',
-  GoogleToken: 'GoogleToken'
+  GoogleToken: 'GoogleToken',
+  SystemLogs: 'SystemLogs'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "clinic" | "user" | "patient" | "case" | "record" | "vitalSigns" | "recordMedication" | "labResult" | "googleToken"
+    modelProps: "clinic" | "user" | "patient" | "case" | "record" | "vitalSigns" | "recordMedication" | "labResult" | "googleToken" | "systemLogs"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1078,6 +1079,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SystemLogs: {
+      payload: Prisma.$SystemLogsPayload<ExtArgs>
+      fields: Prisma.SystemLogsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SystemLogsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemLogsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SystemLogsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemLogsPayload>
+        }
+        findFirst: {
+          args: Prisma.SystemLogsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemLogsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SystemLogsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemLogsPayload>
+        }
+        findMany: {
+          args: Prisma.SystemLogsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemLogsPayload>[]
+        }
+        create: {
+          args: Prisma.SystemLogsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemLogsPayload>
+        }
+        createMany: {
+          args: Prisma.SystemLogsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SystemLogsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemLogsPayload>[]
+        }
+        delete: {
+          args: Prisma.SystemLogsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemLogsPayload>
+        }
+        update: {
+          args: Prisma.SystemLogsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemLogsPayload>
+        }
+        deleteMany: {
+          args: Prisma.SystemLogsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SystemLogsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SystemLogsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemLogsPayload>[]
+        }
+        upsert: {
+          args: Prisma.SystemLogsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SystemLogsPayload>
+        }
+        aggregate: {
+          args: Prisma.SystemLogsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSystemLogs>
+        }
+        groupBy: {
+          args: Prisma.SystemLogsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SystemLogsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SystemLogsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SystemLogsCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1235,6 +1310,19 @@ export const GoogleTokenScalarFieldEnum = {
 } as const
 
 export type GoogleTokenScalarFieldEnum = (typeof GoogleTokenScalarFieldEnum)[keyof typeof GoogleTokenScalarFieldEnum]
+
+
+export const SystemLogsScalarFieldEnum = {
+  id: 'id',
+  action: 'action',
+  module: 'module',
+  target: 'target',
+  details: 'details',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type SystemLogsScalarFieldEnum = (typeof SystemLogsScalarFieldEnum)[keyof typeof SystemLogsScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1475,6 +1563,7 @@ export type GlobalOmitConfig = {
   recordMedication?: Prisma.RecordMedicationOmit
   labResult?: Prisma.labResultOmit
   googleToken?: Prisma.GoogleTokenOmit
+  systemLogs?: Prisma.SystemLogsOmit
 }
 
 /* Types for Logging */

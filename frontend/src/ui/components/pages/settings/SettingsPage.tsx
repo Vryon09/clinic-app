@@ -3,6 +3,7 @@ import Backup from "./backup/Backup";
 import GeneralSettings from "./general/GeneralSettings";
 import ManageAccounts from "./accounts/ManageAccounts";
 import Archive from "./archive/Archive";
+import ActivityLog from "./activityLog/ActivityLog";
 
 function SettingsPage() {
   return (
@@ -15,6 +16,10 @@ function SettingsPage() {
 
           <TabsTrigger value="manageAccounts" className="cursor-pointer">
             Accounts
+          </TabsTrigger>
+
+          <TabsTrigger value="activityLog" className="cursor-pointer">
+            Activity Log
           </TabsTrigger>
 
           <TabsTrigger value="archive" className="cursor-pointer">
@@ -32,6 +37,10 @@ function SettingsPage() {
 
         <TabsContent value="manageAccounts">
           <ManageAccounts />
+        </TabsContent>
+
+        <TabsContent value="activityLog">
+          <ActivityLog />
         </TabsContent>
 
         <TabsContent value="archive">

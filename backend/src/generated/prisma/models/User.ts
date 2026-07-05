@@ -201,6 +201,7 @@ export type UserWhereInput = {
   createdRecords?: Prisma.RecordListRelationFilter
   cases?: Prisma.CaseListRelationFilter
   records?: Prisma.RecordListRelationFilter
+  systemLogs?: Prisma.SystemLogsListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -214,6 +215,7 @@ export type UserOrderByWithRelationInput = {
   createdRecords?: Prisma.RecordOrderByRelationAggregateInput
   cases?: Prisma.CaseOrderByRelationAggregateInput
   records?: Prisma.RecordOrderByRelationAggregateInput
+  systemLogs?: Prisma.SystemLogsOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -230,6 +232,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdRecords?: Prisma.RecordListRelationFilter
   cases?: Prisma.CaseListRelationFilter
   records?: Prisma.RecordListRelationFilter
+  systemLogs?: Prisma.SystemLogsListRelationFilter
 }, "id" | "username">
 
 export type UserOrderByWithAggregationInput = {
@@ -269,6 +272,7 @@ export type UserCreateInput = {
   createdRecords?: Prisma.RecordCreateNestedManyWithoutCreatedByInput
   cases?: Prisma.CaseCreateNestedManyWithoutDoctorInput
   records?: Prisma.RecordCreateNestedManyWithoutUserInput
+  systemLogs?: Prisma.SystemLogsCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -282,6 +286,7 @@ export type UserUncheckedCreateInput = {
   createdRecords?: Prisma.RecordUncheckedCreateNestedManyWithoutCreatedByInput
   cases?: Prisma.CaseUncheckedCreateNestedManyWithoutDoctorInput
   records?: Prisma.RecordUncheckedCreateNestedManyWithoutUserInput
+  systemLogs?: Prisma.SystemLogsUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -295,6 +300,7 @@ export type UserUpdateInput = {
   createdRecords?: Prisma.RecordUpdateManyWithoutCreatedByNestedInput
   cases?: Prisma.CaseUpdateManyWithoutDoctorNestedInput
   records?: Prisma.RecordUpdateManyWithoutUserNestedInput
+  systemLogs?: Prisma.SystemLogsUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -308,6 +314,7 @@ export type UserUncheckedUpdateInput = {
   createdRecords?: Prisma.RecordUncheckedUpdateManyWithoutCreatedByNestedInput
   cases?: Prisma.CaseUncheckedUpdateManyWithoutDoctorNestedInput
   records?: Prisma.RecordUncheckedUpdateManyWithoutUserNestedInput
+  systemLogs?: Prisma.SystemLogsUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -434,6 +441,20 @@ export type UserUpdateOneRequiredWithoutCreatedRecordsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedRecordsInput, Prisma.UserUpdateWithoutCreatedRecordsInput>, Prisma.UserUncheckedUpdateWithoutCreatedRecordsInput>
 }
 
+export type UserCreateNestedOneWithoutSystemLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSystemLogsInput, Prisma.UserUncheckedCreateWithoutSystemLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSystemLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSystemLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSystemLogsInput, Prisma.UserUncheckedCreateWithoutSystemLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSystemLogsInput
+  upsert?: Prisma.UserUpsertWithoutSystemLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSystemLogsInput, Prisma.UserUpdateWithoutSystemLogsInput>, Prisma.UserUncheckedUpdateWithoutSystemLogsInput>
+}
+
 export type UserCreateWithoutCasesInput = {
   id?: string
   username: string
@@ -444,6 +465,7 @@ export type UserCreateWithoutCasesInput = {
   createdAt?: Date | string
   createdRecords?: Prisma.RecordCreateNestedManyWithoutCreatedByInput
   records?: Prisma.RecordCreateNestedManyWithoutUserInput
+  systemLogs?: Prisma.SystemLogsCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCasesInput = {
@@ -456,6 +478,7 @@ export type UserUncheckedCreateWithoutCasesInput = {
   createdAt?: Date | string
   createdRecords?: Prisma.RecordUncheckedCreateNestedManyWithoutCreatedByInput
   records?: Prisma.RecordUncheckedCreateNestedManyWithoutUserInput
+  systemLogs?: Prisma.SystemLogsUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCasesInput = {
@@ -484,6 +507,7 @@ export type UserUpdateWithoutCasesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdRecords?: Prisma.RecordUpdateManyWithoutCreatedByNestedInput
   records?: Prisma.RecordUpdateManyWithoutUserNestedInput
+  systemLogs?: Prisma.SystemLogsUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCasesInput = {
@@ -496,6 +520,7 @@ export type UserUncheckedUpdateWithoutCasesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdRecords?: Prisma.RecordUncheckedUpdateManyWithoutCreatedByNestedInput
   records?: Prisma.RecordUncheckedUpdateManyWithoutUserNestedInput
+  systemLogs?: Prisma.SystemLogsUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRecordsInput = {
@@ -508,6 +533,7 @@ export type UserCreateWithoutRecordsInput = {
   createdAt?: Date | string
   createdRecords?: Prisma.RecordCreateNestedManyWithoutCreatedByInput
   cases?: Prisma.CaseCreateNestedManyWithoutDoctorInput
+  systemLogs?: Prisma.SystemLogsCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRecordsInput = {
@@ -520,6 +546,7 @@ export type UserUncheckedCreateWithoutRecordsInput = {
   createdAt?: Date | string
   createdRecords?: Prisma.RecordUncheckedCreateNestedManyWithoutCreatedByInput
   cases?: Prisma.CaseUncheckedCreateNestedManyWithoutDoctorInput
+  systemLogs?: Prisma.SystemLogsUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRecordsInput = {
@@ -537,6 +564,7 @@ export type UserCreateWithoutCreatedRecordsInput = {
   createdAt?: Date | string
   cases?: Prisma.CaseCreateNestedManyWithoutDoctorInput
   records?: Prisma.RecordCreateNestedManyWithoutUserInput
+  systemLogs?: Prisma.SystemLogsCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedRecordsInput = {
@@ -549,6 +577,7 @@ export type UserUncheckedCreateWithoutCreatedRecordsInput = {
   createdAt?: Date | string
   cases?: Prisma.CaseUncheckedCreateNestedManyWithoutDoctorInput
   records?: Prisma.RecordUncheckedCreateNestedManyWithoutUserInput
+  systemLogs?: Prisma.SystemLogsUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedRecordsInput = {
@@ -577,6 +606,7 @@ export type UserUpdateWithoutRecordsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdRecords?: Prisma.RecordUpdateManyWithoutCreatedByNestedInput
   cases?: Prisma.CaseUpdateManyWithoutDoctorNestedInput
+  systemLogs?: Prisma.SystemLogsUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRecordsInput = {
@@ -589,6 +619,7 @@ export type UserUncheckedUpdateWithoutRecordsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdRecords?: Prisma.RecordUncheckedUpdateManyWithoutCreatedByNestedInput
   cases?: Prisma.CaseUncheckedUpdateManyWithoutDoctorNestedInput
+  systemLogs?: Prisma.SystemLogsUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutCreatedRecordsInput = {
@@ -612,6 +643,7 @@ export type UserUpdateWithoutCreatedRecordsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cases?: Prisma.CaseUpdateManyWithoutDoctorNestedInput
   records?: Prisma.RecordUpdateManyWithoutUserNestedInput
+  systemLogs?: Prisma.SystemLogsUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedRecordsInput = {
@@ -622,6 +654,75 @@ export type UserUncheckedUpdateWithoutCreatedRecordsInput = {
   licenseNum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cases?: Prisma.CaseUncheckedUpdateManyWithoutDoctorNestedInput
+  records?: Prisma.RecordUncheckedUpdateManyWithoutUserNestedInput
+  systemLogs?: Prisma.SystemLogsUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSystemLogsInput = {
+  id?: string
+  username: string
+  password: string
+  role: $Enums.UserRole
+  licenseNum?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  createdRecords?: Prisma.RecordCreateNestedManyWithoutCreatedByInput
+  cases?: Prisma.CaseCreateNestedManyWithoutDoctorInput
+  records?: Prisma.RecordCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSystemLogsInput = {
+  id?: string
+  username: string
+  password: string
+  role: $Enums.UserRole
+  licenseNum?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  createdRecords?: Prisma.RecordUncheckedCreateNestedManyWithoutCreatedByInput
+  cases?: Prisma.CaseUncheckedCreateNestedManyWithoutDoctorInput
+  records?: Prisma.RecordUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSystemLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSystemLogsInput, Prisma.UserUncheckedCreateWithoutSystemLogsInput>
+}
+
+export type UserUpsertWithoutSystemLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSystemLogsInput, Prisma.UserUncheckedUpdateWithoutSystemLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSystemLogsInput, Prisma.UserUncheckedCreateWithoutSystemLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSystemLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSystemLogsInput, Prisma.UserUncheckedUpdateWithoutSystemLogsInput>
+}
+
+export type UserUpdateWithoutSystemLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  licenseNum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdRecords?: Prisma.RecordUpdateManyWithoutCreatedByNestedInput
+  cases?: Prisma.CaseUpdateManyWithoutDoctorNestedInput
+  records?: Prisma.RecordUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSystemLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  licenseNum?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdRecords?: Prisma.RecordUncheckedUpdateManyWithoutCreatedByNestedInput
   cases?: Prisma.CaseUncheckedUpdateManyWithoutDoctorNestedInput
   records?: Prisma.RecordUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -635,12 +736,14 @@ export type UserCountOutputType = {
   createdRecords: number
   cases: number
   records: number
+  systemLogs: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdRecords?: boolean | UserCountOutputTypeCountCreatedRecordsArgs
   cases?: boolean | UserCountOutputTypeCountCasesArgs
   records?: boolean | UserCountOutputTypeCountRecordsArgs
+  systemLogs?: boolean | UserCountOutputTypeCountSystemLogsArgs
 }
 
 /**
@@ -674,6 +777,13 @@ export type UserCountOutputTypeCountRecordsArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.RecordWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSystemLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SystemLogsWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -686,6 +796,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdRecords?: boolean | Prisma.User$createdRecordsArgs<ExtArgs>
   cases?: boolean | Prisma.User$casesArgs<ExtArgs>
   records?: boolean | Prisma.User$recordsArgs<ExtArgs>
+  systemLogs?: boolean | Prisma.User$systemLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -724,6 +835,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdRecords?: boolean | Prisma.User$createdRecordsArgs<ExtArgs>
   cases?: boolean | Prisma.User$casesArgs<ExtArgs>
   records?: boolean | Prisma.User$recordsArgs<ExtArgs>
+  systemLogs?: boolean | Prisma.User$systemLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -735,6 +847,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdRecords: Prisma.$RecordPayload<ExtArgs>[]
     cases: Prisma.$CasePayload<ExtArgs>[]
     records: Prisma.$RecordPayload<ExtArgs>[]
+    systemLogs: Prisma.$SystemLogsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1141,6 +1254,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   createdRecords<T extends Prisma.User$createdRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   cases<T extends Prisma.User$casesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$casesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   records<T extends Prisma.User$recordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  systemLogs<T extends Prisma.User$systemLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$systemLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SystemLogsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1634,6 +1748,30 @@ export type User$recordsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.RecordScalarFieldEnum | Prisma.RecordScalarFieldEnum[]
+}
+
+/**
+ * User.systemLogs
+ */
+export type User$systemLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SystemLogs
+   */
+  select?: Prisma.SystemLogsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SystemLogs
+   */
+  omit?: Prisma.SystemLogsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SystemLogsInclude<ExtArgs> | null
+  where?: Prisma.SystemLogsWhereInput
+  orderBy?: Prisma.SystemLogsOrderByWithRelationInput | Prisma.SystemLogsOrderByWithRelationInput[]
+  cursor?: Prisma.SystemLogsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SystemLogsScalarFieldEnum | Prisma.SystemLogsScalarFieldEnum[]
 }
 
 /**

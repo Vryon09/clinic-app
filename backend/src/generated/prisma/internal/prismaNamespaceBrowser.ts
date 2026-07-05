@@ -59,7 +59,8 @@ export const ModelName = {
   VitalSigns: 'VitalSigns',
   RecordMedication: 'RecordMedication',
   labResult: 'labResult',
-  GoogleToken: 'GoogleToken'
+  GoogleToken: 'GoogleToken',
+  SystemLogs: 'SystemLogs'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -196,6 +197,19 @@ export const GoogleTokenScalarFieldEnum = {
 } as const
 
 export type GoogleTokenScalarFieldEnum = (typeof GoogleTokenScalarFieldEnum)[keyof typeof GoogleTokenScalarFieldEnum]
+
+
+export const SystemLogsScalarFieldEnum = {
+  id: 'id',
+  action: 'action',
+  module: 'module',
+  target: 'target',
+  details: 'details',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type SystemLogsScalarFieldEnum = (typeof SystemLogsScalarFieldEnum)[keyof typeof SystemLogsScalarFieldEnum]
 
 
 export const SortOrder = {
