@@ -159,7 +159,10 @@ function ConsultationPrintView({
       {/* SIGNATURE */}
       <div className="mt-10 text-sm">
         {record.case.doctor?.username && (
-          <p>Dr. {record.case.doctor.username} </p>
+          <p>
+            Dr.{" "}
+            {`${record.case.doctor.firstName}${record.case.doctor.middleName ? ` ${record.case.doctor.middleName.slice(0, 1)}.` : ""} ${record.case.doctor.lastName}`}{" "}
+          </p>
         )}
         <p>Doctor’s Signature: __________________________</p>
         {record.case.doctor?.licenseNum && (

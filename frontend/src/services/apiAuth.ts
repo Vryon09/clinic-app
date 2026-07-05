@@ -4,6 +4,9 @@ import type { AxiosError } from "axios";
 import { toast } from "sonner";
 
 type RegisterPayload = {
+  firstName: string;
+  middleName: string;
+  lastName: string;
   username: string;
   password: string;
   licenseNum: string;
@@ -15,11 +18,21 @@ type LoginPayload = {
   password: string;
 };
 
-async function handleRegister({ username, password, role }: RegisterPayload) {
+async function handleRegister({
+  username,
+  password,
+  role,
+  firstName,
+  middleName,
+  lastName,
+}: RegisterPayload) {
   const res = await api.post("/api/auth/register", {
     username,
     password,
     role,
+    firstName,
+    middleName,
+    lastName,
   });
   return res.data;
 }
@@ -43,12 +56,18 @@ async function handleAddUser({
   password,
   role,
   licenseNum,
+  firstName,
+  middleName,
+  lastName,
 }: RegisterPayload) {
   const res = await api.post("/api/auth/addUser", {
     username,
     password,
     role,
     licenseNum,
+    firstName,
+    middleName,
+    lastName,
   });
   return res.data;
 }

@@ -41,7 +41,15 @@ export function SignupForm({
 
   function onSubmit(data: SignupInput) {
     handleRegister(
-      { username: data.username, password: data.password, role: "ADMIN" },
+      {
+        firstName: data.firstName,
+        middleName: data.middleName,
+        lastName: data.lastName,
+        username: data.username,
+        password: data.password,
+        role: "ADMIN",
+        licenseNum: "",
+      },
       {
         onSuccess: () => {
           toast.success("Sign up successful", { position: "top-center" });
@@ -65,10 +73,60 @@ export function SignupForm({
             Staff Portal
           </CardDescription>
         </CardHeader>
+
         <Separator />
+
         <CardContent className="mt-4">
           <form onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
+              <div className="grid grid-cols-3 gap-2">
+                <Field>
+                  <FieldLabel htmlFor="firstName">First Name</FieldLabel>
+                  <Input
+                    className="border border-neutral-400"
+                    id="firstName"
+                    {...register("firstName")}
+                    type="text"
+                  />
+                  {errors.firstName && (
+                    <FieldError
+                      className="text-xs"
+                      errors={[errors.firstName]}
+                    />
+                  )}
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="middleName">Middle Name</FieldLabel>
+                  <Input
+                    className="border border-neutral-400"
+                    id="middleName"
+                    {...register("middleName")}
+                    type="text"
+                  />
+                  {errors.middleName && (
+                    <FieldError
+                      className="text-xs"
+                      errors={[errors.middleName]}
+                    />
+                  )}
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
+                  <Input
+                    className="border border-neutral-400"
+                    id="lastName"
+                    {...register("lastName")}
+                    type="text"
+                  />
+                  {errors.lastName && (
+                    <FieldError
+                      className="text-xs"
+                      errors={[errors.lastName]}
+                    />
+                  )}
+                </Field>
+              </div>
+
               <Field>
                 <FieldLabel htmlFor="username">Username</FieldLabel>
                 <Input
@@ -82,6 +140,7 @@ export function SignupForm({
                   <FieldError className="text-xs" errors={[errors.username]} />
                 )}
               </Field>
+
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>

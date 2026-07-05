@@ -23,6 +23,9 @@ export async function getUsers(req: UserRequest, res: Response) {
       where: { AND: [{ role: { not: "ADMIN" } }, { id: { not: userId } }] },
       select: {
         id: true,
+        firstName: true,
+        middleName: true,
+        lastName: true,
         username: true,
         role: true,
         isActive: true,
@@ -47,6 +50,9 @@ export async function getDoctors(req: UserRequest, res: Response) {
       where: { role: "DOCTOR", isActive: true },
       select: {
         id: true,
+        firstName: true,
+        middleName: true,
+        lastName: true,
         username: true,
         role: true,
         isActive: true,
@@ -80,6 +86,9 @@ export async function getMe(req: UserRequest, res: Response) {
         role: true,
         isActive: true,
         licenseNum: true,
+        firstName: true,
+        middleName: true,
+        lastName: true,
       },
     });
 
@@ -96,7 +105,8 @@ export async function getMe(req: UserRequest, res: Response) {
 
 export async function registerUser(req: Request, res: Response) {
   try {
-    const { username, password, role } = req.body;
+    const { username, password, role, firstName, middleName, lastName } =
+      req.body;
 
     const existingUser = await prisma.user.findUnique({
       where: { username },
@@ -114,6 +124,9 @@ export async function registerUser(req: Request, res: Response) {
         password: hashedPassword,
         role,
         licenseNum: "",
+        firstName,
+        middleName,
+        lastName,
       },
     });
 
@@ -125,6 +138,9 @@ export async function registerUser(req: Request, res: Response) {
         user: {
           id: user.id,
           username,
+          firstName,
+          middleName,
+          lastName,
         },
         token,
       },
@@ -137,7 +153,15 @@ export async function registerUser(req: Request, res: Response) {
 
 export async function addUser(req: Request, res: Response) {
   try {
-    const { username, password, role, licenseNum } = req.body;
+    const {
+      username,
+      password,
+      role,
+      licenseNum,
+      firstName,
+      middleName,
+      lastName,
+    } = req.body;
 
     const existingUser = await prisma.user.findUnique({
       where: { username },
@@ -163,6 +187,9 @@ export async function addUser(req: Request, res: Response) {
         password: hashedPassword,
         role,
         licenseNum,
+        firstName,
+        middleName,
+        lastName,
       },
     });
 
@@ -172,6 +199,9 @@ export async function addUser(req: Request, res: Response) {
         user: {
           id: user.id,
           username,
+          firstName,
+          middleName,
+          lastName,
         },
       },
     });
@@ -211,6 +241,9 @@ export async function loginUser(req: Request, res: Response) {
         user: {
           id: user.id,
           username,
+          firstName: user.firstName,
+          middleName: user.middleName,
+          lastName: user.lastName,
         },
         token,
       },

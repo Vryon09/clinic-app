@@ -93,6 +93,9 @@ export type ClinicScalarFieldEnum = (typeof ClinicScalarFieldEnum)[keyof typeof 
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  firstName: 'firstName',
+  middleName: 'middleName',
+  lastName: 'lastName',
   username: 'username',
   password: 'password',
   role: 'role',

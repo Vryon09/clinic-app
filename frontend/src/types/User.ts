@@ -7,6 +7,9 @@ export interface IUser {
   role: "ADMIN" | "DOCTOR" | "ASSISTANT";
   licenseNum: string;
   isActive: boolean;
+  firstName: string;
+  middleName: string;
+  lastName: string;
 }
 export interface IMe extends IUser {
   password: string;
