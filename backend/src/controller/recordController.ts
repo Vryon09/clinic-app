@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { UserRequest } from "../types/express";
 import { prisma } from "../config/prisma";
 import { regex } from "zod";
 import { text } from "node:stream/consumers";
@@ -85,7 +86,7 @@ export async function getRecord(req: Request, res: Response) {
   }
 }
 
-export async function addRecord(req: Request, res: Response) {
+export async function addRecord(req: UserRequest, res: Response) {
   try {
     const {
       patientId,
@@ -97,6 +98,20 @@ export async function addRecord(req: Request, res: Response) {
       caseId,
       createdById,
     } = req.body;
+
+    const patient = await prisma.patient.findUnique({
+      where: { id: patientId },
+      select: {
+        firstName: true,
+        lastName: true,
+      },
+    });
+
+    if (!patient) {
+      return res.status(404).json({
+        message: "Patient not found.",
+      });
+    }
 
     console.log(createdById);
 
@@ -126,6 +141,19 @@ export async function addRecord(req: Request, res: Response) {
           }),
         });
       }
+      return newRecord;
+    });
+
+    const target = `Consultation Record (${record.id})`;
+
+    await prisma.systemLogs.create({
+      data: {
+        action: "CREATE",
+        module: "Consultation",
+        target,
+        details: `Created consultation record for ${patient.firstName} ${patient.lastName} (${patientId})`,
+        userId: req.userId!,
+      },
     });
 
     res.status(201).json(record);
@@ -135,9 +163,29 @@ export async function addRecord(req: Request, res: Response) {
   }
 }
 
-export async function deleteRecord(req: Request, res: Response) {
+export async function deleteRecord(req: UserRequest, res: Response) {
   try {
     const recordId = req.params.id as string;
+
+    const record = await prisma.record.findUnique({
+      where: { id: recordId },
+      include: {
+        patient: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+
+    if (!record) {
+      return res.status(404).json({
+        message: "Record not found.",
+      });
+    }
+
+    const target = `Consultation Record (${record.id})`;
 
     await prisma.$transaction([
       prisma.vitalSigns.delete({ where: { recordId } }),
@@ -147,6 +195,16 @@ export async function deleteRecord(req: Request, res: Response) {
       }),
     ]);
 
+    await prisma.systemLogs.create({
+      data: {
+        action: "DELETE",
+        module: "Consultation",
+        target,
+        details: `Deleted consultation record for ${record.patient.firstName} ${record.patient.lastName} (${record.patientId})`,
+        userId: req.userId!,
+      },
+    });
+
     res.status(200).json({ message: "Record deleted successfully!" });
   } catch (error) {
     console.log(error);
@@ -154,13 +212,43 @@ export async function deleteRecord(req: Request, res: Response) {
   }
 }
 
-export async function archiveRecord(req: Request, res: Response) {
+export async function archiveRecord(req: UserRequest, res: Response) {
   try {
     const recordId = req.params.id as string;
+
+    const record = await prisma.record.findUnique({
+      where: { id: recordId },
+      include: {
+        patient: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+
+    if (!record) {
+      return res.status(404).json({
+        message: "Record not found.",
+      });
+    }
+
+    const target = `Consultation Record (${record.id})`;
 
     await prisma.record.update({
       where: { id: recordId },
       data: { isArchived: true, archivedOn: new Date().toISOString() },
+    });
+
+    await prisma.systemLogs.create({
+      data: {
+        action: "ARCHIVE",
+        module: "Consultation",
+        target,
+        details: `Archived consultation record for ${record.patient.firstName} ${record.patient.lastName} (${record.patientId})`,
+        userId: req.userId!,
+      },
     });
 
     res.status(200).json({ message: "Record archived successfully!" });
@@ -170,13 +258,43 @@ export async function archiveRecord(req: Request, res: Response) {
   }
 }
 
-export async function restoreRecord(req: Request, res: Response) {
+export async function restoreRecord(req: UserRequest, res: Response) {
   try {
     const recordId = req.params.id as string;
+
+    const record = await prisma.record.findUnique({
+      where: { id: recordId },
+      include: {
+        patient: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+
+    if (!record) {
+      return res.status(404).json({
+        message: "Record not found.",
+      });
+    }
+
+    const target = `Consultation Record (${record.id})`;
 
     await prisma.record.update({
       where: { id: recordId },
       data: { isArchived: false, archivedOn: null },
+    });
+
+    await prisma.systemLogs.create({
+      data: {
+        action: "RESTORE",
+        module: "Consultation",
+        target,
+        details: `Restored consultation record for ${record.patient.firstName} ${record.patient.lastName} (${record.patientId})`,
+        userId: req.userId!,
+      },
     });
 
     res.status(200).json({ message: "Record Restored Successfully" });

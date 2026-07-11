@@ -151,7 +151,7 @@ export async function registerUser(req: Request, res: Response) {
   }
 }
 
-export async function addUser(req: Request, res: Response) {
+export async function addUser(req: UserRequest, res: Response) {
   try {
     const {
       username,
@@ -190,6 +190,18 @@ export async function addUser(req: Request, res: Response) {
         firstName,
         middleName,
         lastName,
+      },
+    });
+
+    const target = `${user.firstName} ${user.lastName} (${user.id})`;
+
+    await prisma.systemLogs.create({
+      data: {
+        action: "CREATE",
+        module: "User",
+        target,
+        details: `Created ${user.role} account (${user.username})`,
+        userId: req.userId!,
       },
     });
 
@@ -271,7 +283,7 @@ export async function logoutUser(req: Request, res: Response) {
   }
 }
 
-export async function updateUser(req: Request, res: Response) {
+export async function updateUser(req: UserRequest, res: Response) {
   try {
     const { id, username, role, licenseNum } = req.body;
 
@@ -285,6 +297,11 @@ export async function updateUser(req: Request, res: Response) {
 
     const user = await prisma.user.findUnique({
       where: { id },
+      select: {
+        firstName: true,
+        lastName: true,
+        username: true,
+      },
     });
 
     if (isUsernameUsed && isUsernameUsed.id !== id) {
@@ -299,9 +316,21 @@ export async function updateUser(req: Request, res: Response) {
       return res.status(400).json({ message: "User not found" });
     }
 
+    const target = `${user.firstName} ${user.lastName} (${id})`;
+
     const updatedUser = await prisma.user.update({
       where: { id },
       data: { username, role, licenseNum },
+    });
+
+    await prisma.systemLogs.create({
+      data: {
+        action: "UPDATE",
+        module: "User",
+        target,
+        details: `Updated ${updatedUser.role} account (${user.username})`,
+        userId: req.userId!,
+      },
     });
 
     res.status(200).json(updatedUser);
@@ -409,7 +438,7 @@ export async function changeLicenseNum(req: UserRequest, res: Response) {
   }
 }
 
-export async function toggleUserStatus(req: Request, res: Response) {
+export async function toggleUserStatus(req: UserRequest, res: Response) {
   try {
     const { id } = req.body;
 
@@ -425,10 +454,24 @@ export async function toggleUserStatus(req: Request, res: Response) {
       data: { isActive: !user.isActive },
     });
 
+    const target = `${toggledUser.firstName} ${toggledUser.lastName} (${toggledUser.id})`;
+
     if (!toggledUser) {
       res.status(400).json({ message: "Toggling user status failed." });
       return;
     }
+
+    await prisma.systemLogs.create({
+      data: {
+        action: "UPDATE",
+        module: "User",
+        target,
+        details: toggledUser.isActive
+          ? "Enabled user account"
+          : "Disabled user account",
+        userId: req.userId!,
+      },
+    });
 
     res.status(200).json({ message: "User toggled the status successfully." });
   } catch (err) {
