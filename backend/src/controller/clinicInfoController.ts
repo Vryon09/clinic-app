@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { UserRequest } from "../types/express";
 import { prisma } from "../config/prisma";
 import { UpdateClinicInfoType } from "../schemas/clinicInfoSchema";
 
@@ -41,7 +42,7 @@ export async function getClinicInfo(req: Request, res: Response) {
   }
 }
 
-export async function updateClinicInfo(req: Request, res: Response) {
+export async function updateClinicInfo(req: UserRequest, res: Response) {
   try {
     const data: UpdateClinicInfoType = req.body;
 
@@ -54,6 +55,16 @@ export async function updateClinicInfo(req: Request, res: Response) {
     const updated = await prisma.clinic.update({
       where: { id: clinic.id },
       data,
+    });
+
+    await prisma.systemLogs.create({
+      data: {
+        action: "UPDATE",
+        module: "General Settings",
+        target: `${updated.name} (${updated.id})`,
+        details: "Updated clinic information",
+        userId: req.userId!,
+      },
     });
 
     return res.json(updated);

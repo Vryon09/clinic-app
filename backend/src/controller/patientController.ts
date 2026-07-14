@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { UserRequest } from "../types/express";
 import { prisma } from "../config/prisma";
 
 // await prisma.patient.deleteMany({});
@@ -108,7 +109,7 @@ export async function getPatient(req: Request, res: Response) {
   }
 }
 
-export async function addPatient(req: Request, res: Response) {
+export async function addPatient(req: UserRequest, res: Response) {
   try {
     const { phone } = req.body;
     const isPatientExisted = await prisma.patient.findUnique({
@@ -125,6 +126,16 @@ export async function addPatient(req: Request, res: Response) {
       await prisma.case.create({
         data: { caseName: "Default", patientId: newPatient.id },
       });
+
+      await prisma.systemLogs.create({
+        data: {
+          action: "CREATE",
+          module: "Patient",
+          target: `${newPatient.firstName} ${newPatient.lastName} (${newPatient.id})`,
+          details: `Created patient record for ${newPatient.firstName} ${newPatient.lastName} (${newPatient.id})`,
+          userId: req.userId!,
+        },
+      });
     }
 
     res.status(201).json(newPatient);
@@ -134,9 +145,33 @@ export async function addPatient(req: Request, res: Response) {
   }
 }
 
-export async function deletePatient(req: Request, res: Response) {
+export async function deletePatient(req: UserRequest, res: Response) {
   try {
     const patientId = req.params.id as string;
+
+    const patient = await prisma.patient.findUnique({
+      where: { id: patientId },
+      select: {
+        firstName: true,
+        lastName: true,
+      },
+    });
+
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+
+    const target = `${patient.firstName} ${patient.lastName} (${patientId})`;
+
+    await prisma.systemLogs.create({
+      data: {
+        action: "DELETE",
+        module: "Patient",
+        target,
+        details: `Deleted all medical records for ${patient.firstName} ${patient.lastName} (${patientId})`,
+        userId: req.userId!,
+      },
+    });
 
     await prisma.$transaction([
       prisma.record.deleteMany({ where: { patientId } }),
@@ -150,13 +185,37 @@ export async function deletePatient(req: Request, res: Response) {
   }
 }
 
-export async function archivePatient(req: Request, res: Response) {
+export async function archivePatient(req: UserRequest, res: Response) {
   try {
     const patientId = req.params.id as string;
+
+    const patient = await prisma.patient.findUnique({
+      where: { id: patientId },
+      select: {
+        firstName: true,
+        lastName: true,
+      },
+    });
+
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+
+    const target = `${patient.firstName} ${patient.lastName} (${patientId})`;
 
     await prisma.patient.update({
       where: { id: patientId },
       data: { isArchived: true, archivedOn: new Date().toISOString() },
+    });
+
+    await prisma.systemLogs.create({
+      data: {
+        action: "ARCHIVE",
+        module: "Patient",
+        target,
+        details: `Archived patient record for ${patient.firstName} ${patient.lastName} (${patientId})`,
+        userId: req.userId!,
+      },
     });
 
     res.status(200).json({ message: "Deleted Successfully" });
@@ -166,13 +225,37 @@ export async function archivePatient(req: Request, res: Response) {
   }
 }
 
-export async function restorePatient(req: Request, res: Response) {
+export async function restorePatient(req: UserRequest, res: Response) {
   try {
     const patientId = req.params.id as string;
+
+    const patient = await prisma.patient.findUnique({
+      where: { id: patientId },
+      select: {
+        firstName: true,
+        lastName: true,
+      },
+    });
+
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+
+    const target = `${patient.firstName} ${patient.lastName} (${patientId})`;
 
     await prisma.patient.update({
       where: { id: patientId },
       data: { isArchived: false, archivedOn: null },
+    });
+
+    await prisma.systemLogs.create({
+      data: {
+        action: "RESTORE",
+        module: "Patient",
+        target,
+        details: `Restored patient profile for ${patient.firstName} ${patient.lastName} (${patientId})`,
+        userId: req.userId!,
+      },
     });
 
     res.status(200).json({ message: "Patient Restored Successfully" });
@@ -182,12 +265,37 @@ export async function restorePatient(req: Request, res: Response) {
   }
 }
 
-export async function updatePatient(req: Request, res: Response) {
+export async function updatePatient(req: UserRequest, res: Response) {
   try {
     const patientId = req.params.id as string;
+
+    const patient = await prisma.patient.findUnique({
+      where: { id: patientId },
+      select: {
+        firstName: true,
+        lastName: true,
+      },
+    });
+
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+
+    const target = `${patient.firstName} ${patient.lastName} (${patientId})`;
+
     const updatedPatient = await prisma.patient.update({
       where: { id: patientId },
       data: req.body,
+    });
+
+    await prisma.systemLogs.create({
+      data: {
+        action: "UPDATE",
+        module: "Patient",
+        target,
+        details: `Updated patient profile for ${patient.firstName} ${patient.lastName} (${patientId})`,
+        userId: req.userId!,
+      },
     });
 
     res.status(200).json(updatedPatient);
