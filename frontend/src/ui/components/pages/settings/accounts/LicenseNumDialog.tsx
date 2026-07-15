@@ -39,7 +39,6 @@ function LicenseNumDialog({
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(changeLicenseNumSchema),
@@ -53,7 +52,6 @@ function LicenseNumDialog({
       { licenseNum: data.licenseNum },
       {
         onSuccess: () => {
-          reset();
           onOpenChange(false);
         },
         onError: (err) => {

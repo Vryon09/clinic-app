@@ -49,6 +49,9 @@ function UserDialog({
       username: initialValues.username,
       role: initialValues.role,
       licenseNum: initialValues.licenseNum,
+      firstName: initialValues.firstName,
+      middleName: initialValues.middleName,
+      lastName: initialValues.lastName,
     },
   });
 
@@ -140,53 +143,55 @@ function UserDialog({
         <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
           <FieldSet className="w-full">
             <FieldGroup>
-              <div className="grid grid-cols-3 gap-2">
-                <Field>
-                  <FieldLabel htmlFor="firstName">First Name</FieldLabel>
-                  <Input
-                    className="border border-neutral-400"
-                    id="firstName"
-                    {...register("firstName")}
-                    type="text"
-                  />
-                  {errors.firstName && (
-                    <FieldError
-                      className="text-xs"
-                      errors={[errors.firstName]}
+              {action === "create" && (
+                <div className="grid grid-cols-3 gap-2">
+                  <Field>
+                    <FieldLabel htmlFor="firstName">First Name</FieldLabel>
+                    <Input
+                      className="border border-neutral-400"
+                      id="firstName"
+                      {...register("firstName")}
+                      type="text"
                     />
-                  )}
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor="middleName">Middle Name</FieldLabel>
-                  <Input
-                    className="border border-neutral-400"
-                    id="middleName"
-                    {...register("middleName")}
-                    type="text"
-                  />
-                  {errors.middleName && (
-                    <FieldError
-                      className="text-xs"
-                      errors={[errors.middleName]}
+                    {errors.firstName && (
+                      <FieldError
+                        className="text-xs"
+                        errors={[errors.firstName]}
+                      />
+                    )}
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="middleName">Middle Name</FieldLabel>
+                    <Input
+                      className="border border-neutral-400"
+                      id="middleName"
+                      {...register("middleName")}
+                      type="text"
                     />
-                  )}
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
-                  <Input
-                    className="border border-neutral-400"
-                    id="lastName"
-                    {...register("lastName")}
-                    type="text"
-                  />
-                  {errors.lastName && (
-                    <FieldError
-                      className="text-xs"
-                      errors={[errors.lastName]}
+                    {errors.middleName && (
+                      <FieldError
+                        className="text-xs"
+                        errors={[errors.middleName]}
+                      />
+                    )}
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
+                    <Input
+                      className="border border-neutral-400"
+                      id="lastName"
+                      {...register("lastName")}
+                      type="text"
                     />
-                  )}
-                </Field>
-              </div>
+                    {errors.lastName && (
+                      <FieldError
+                        className="text-xs"
+                        errors={[errors.lastName]}
+                      />
+                    )}
+                  </Field>
+                </div>
+              )}
 
               <Field>
                 <div className="space-y-1">

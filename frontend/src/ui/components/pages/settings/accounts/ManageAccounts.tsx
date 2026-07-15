@@ -13,9 +13,11 @@ import { useAuth } from "@/hooks/useAuth";
 import PasswordDialog from "./PasswordDialog";
 import { Spinner } from "../../../shadcn/spinner";
 import LicenseNumDialog from "./LicenseNumDialog";
+import FullNameDialog from "./FullNameDialog";
 
 function ManageAccounts() {
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  const [isChangingFullName, setIsChangingFullName] = useState<boolean>(false);
   const [isChangingPassword, setIsChangingPassword] = useState<boolean>(false);
   const [isChangingLicenseNum, setIsChangingLicenseNum] =
     useState<boolean>(false);
@@ -54,6 +56,9 @@ function ManageAccounts() {
             id: "",
             licenseNum: "",
             isActive: true,
+            firstName: "",
+            middleName: "",
+            lastName: "",
           }}
         />
       </div>
@@ -90,6 +95,14 @@ function ManageAccounts() {
             <div className="flex flex-col gap-4">
               <Button
                 onClick={() => {
+                  setIsChangingFullName(true);
+                }}
+              >
+                Change Full Name
+              </Button>
+
+              <Button
+                onClick={() => {
                   setIsChangingPassword(true);
                 }}
               >
@@ -106,6 +119,13 @@ function ManageAccounts() {
                 </Button>
               )}
             </div>
+
+            <FullNameDialog
+              open={isChangingFullName}
+              onOpenChange={setIsChangingFullName}
+              user={user!}
+              isUserLoading={isUserLoading}
+            />
 
             <PasswordDialog
               open={isChangingPassword}

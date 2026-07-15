@@ -70,6 +70,9 @@ function UsersTable({
                       id: user.id,
                       isActive: user.isActive,
                       licenseNum: user.licenseNum,
+                      firstName: user.firstName,
+                      middleName: user.middleName,
+                      lastName: user.lastName,
                     })
                   }
                   size="xs"
@@ -120,6 +123,9 @@ function UsersTable({
             id: selectedUser!.id,
             isActive: selectedUser!.isActive,
             licenseNum: selectedUser!.licenseNum,
+            firstName: selectedUser!.firstName,
+            middleName: selectedUser!.middleName,
+            lastName: selectedUser!.lastName,
           }}
         />
       )}

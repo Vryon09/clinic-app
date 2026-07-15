@@ -92,6 +92,26 @@ export const addUserSchema = z.object({
   role: z.enum(["ADMIN", "ASSISTANT", "DOCTOR"], "Choose a role"),
 });
 
+export const updateFullNameSchema = z.object({
+  firstName: z
+    .string()
+    .trim()
+    .min(1, "First name is required.")
+    .max(50, "First name must not exceed 50 characters."),
+
+  middleName: z
+    .string()
+    .trim()
+    .min(1, "Middle name is required.")
+    .max(50, "Middle name must not exceed 50 characters."),
+
+  lastName: z
+    .string()
+    .trim()
+    .min(1, "Last name is required.")
+    .max(50, "Last name must not exceed 50 characters."),
+});
+
 export const changePasswordSchema = z
   .object({
     oldPassword: z
@@ -123,5 +143,6 @@ export const changeLicenseNumSchema = z.object({
 export type LoginInput = z.infer<typeof loginSchema>;
 export type SignupInput = z.infer<typeof signupSchema>;
 export type AddUserInput = z.infer<typeof addUserSchema>;
+export type UpdateFullNameInput = z.infer<typeof updateFullNameSchema>;
 export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
 export type ChangeLicenseNumInput = z.infer<typeof changeLicenseNumSchema>;

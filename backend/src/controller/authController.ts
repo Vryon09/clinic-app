@@ -389,11 +389,41 @@ export async function changePassword(req: UserRequest, res: Response) {
   }
 }
 
+export async function updateFullName(req: UserRequest, res: Response) {
+  try {
+    const { firstName, middleName, lastName } = req.body;
+
+    const userId = req.userId;
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      res.status(400).json({ message: "User not found" });
+      return;
+    }
+
+    const updatedFullNameUser = await prisma.user.update({
+      where: { id: userId },
+      data: { firstName, middleName, lastName },
+    });
+
+    if (!updatedFullNameUser) {
+      res.status(400).json({ message: "Update Full Name failed" });
+      return;
+    }
+
+    res.status(200).json({ message: "Update Full Name successfully" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
 export async function changeLicenseNum(req: UserRequest, res: Response) {
   try {
     const { licenseNum } = req.body;
-
-    console.log(licenseNum);
 
     const userId = req.userId;
 
