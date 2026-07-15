@@ -61,7 +61,7 @@ export async function updateClinicInfo(req: UserRequest, res: Response) {
       data: {
         action: "UPDATE",
         module: "General Settings",
-        target: `${updated.name} (${updated.id})`,
+        target: `${updated.name}`,
         details: "Updated clinic information",
         userId: req.userId!,
       },

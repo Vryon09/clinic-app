@@ -131,8 +131,8 @@ export async function addPatient(req: UserRequest, res: Response) {
         data: {
           action: "CREATE",
           module: "Patient",
-          target: `${newPatient.firstName} ${newPatient.lastName} (${newPatient.id})`,
-          details: `Created patient record for ${newPatient.firstName} ${newPatient.lastName} (${newPatient.id})`,
+          target: `${newPatient.firstName} ${newPatient.lastName}`,
+          details: `Created patient record for ${newPatient.firstName} ${newPatient.lastName}`,
           userId: req.userId!,
         },
       });
@@ -161,14 +161,14 @@ export async function deletePatient(req: UserRequest, res: Response) {
       return res.status(404).json({ message: "Patient not found" });
     }
 
-    const target = `${patient.firstName} ${patient.lastName} (${patientId})`;
+    const target = `${patient.firstName} ${patient.lastName}`;
 
     await prisma.systemLogs.create({
       data: {
         action: "DELETE",
         module: "Patient",
         target,
-        details: `Deleted all medical records for ${patient.firstName} ${patient.lastName} (${patientId})`,
+        details: `Deleted all medical records for ${patient.firstName} ${patient.lastName}`,
         userId: req.userId!,
       },
     });
@@ -201,7 +201,7 @@ export async function archivePatient(req: UserRequest, res: Response) {
       return res.status(404).json({ message: "Patient not found" });
     }
 
-    const target = `${patient.firstName} ${patient.lastName} (${patientId})`;
+    const target = `${patient.firstName} ${patient.lastName}`;
 
     await prisma.patient.update({
       where: { id: patientId },
@@ -213,7 +213,7 @@ export async function archivePatient(req: UserRequest, res: Response) {
         action: "ARCHIVE",
         module: "Patient",
         target,
-        details: `Archived patient record for ${patient.firstName} ${patient.lastName} (${patientId})`,
+        details: `Archived patient record for ${patient.firstName} ${patient.lastName} `,
         userId: req.userId!,
       },
     });
@@ -241,7 +241,7 @@ export async function restorePatient(req: UserRequest, res: Response) {
       return res.status(404).json({ message: "Patient not found" });
     }
 
-    const target = `${patient.firstName} ${patient.lastName} (${patientId})`;
+    const target = `${patient.firstName} ${patient.lastName}`;
 
     await prisma.patient.update({
       where: { id: patientId },
@@ -253,7 +253,7 @@ export async function restorePatient(req: UserRequest, res: Response) {
         action: "RESTORE",
         module: "Patient",
         target,
-        details: `Restored patient profile for ${patient.firstName} ${patient.lastName} (${patientId})`,
+        details: `Restored patient profile for ${patient.firstName} ${patient.lastName} `,
         userId: req.userId!,
       },
     });
@@ -281,7 +281,7 @@ export async function updatePatient(req: UserRequest, res: Response) {
       return res.status(404).json({ message: "Patient not found" });
     }
 
-    const target = `${patient.firstName} ${patient.lastName} (${patientId})`;
+    const target = `${patient.firstName} ${patient.lastName}`;
 
     const updatedPatient = await prisma.patient.update({
       where: { id: patientId },
@@ -293,7 +293,7 @@ export async function updatePatient(req: UserRequest, res: Response) {
         action: "UPDATE",
         module: "Patient",
         target,
-        details: `Updated patient profile for ${patient.firstName} ${patient.lastName} (${patientId})`,
+        details: `Updated patient profile for ${patient.firstName} ${patient.lastName}`,
         userId: req.userId!,
       },
     });

@@ -64,14 +64,14 @@ export async function uploadLabResult(req: UserRequest, res: Response) {
       data: { patientId, filePath },
     });
 
-    const target = `Laboratory Result (${newLabResult.id})`;
+    const target = `${patient.firstName} ${patient.lastName}`;
 
     await prisma.systemLogs.create({
       data: {
         action: "CREATE",
         module: "Laboratory",
         target,
-        details: `Uploaded laboratory result for ${patient.firstName} ${patient.lastName} (${patientId})`,
+        details: `Uploaded laboratory result for ${patient.firstName} ${patient.lastName}`,
         userId: req.userId!,
       },
     });
@@ -97,6 +97,18 @@ export async function deleteLabResult(req: UserRequest, res: Response) {
       },
     });
 
+    const patient = await prisma.patient.findUnique({
+      where: { id: labResult?.patientId },
+      select: {
+        firstName: true,
+        lastName: true,
+      },
+    });
+
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found." });
+    }
+
     if (!labResult) {
       return res.status(400).json({ error: "No Lab Result found." });
     }
@@ -107,7 +119,7 @@ export async function deleteLabResult(req: UserRequest, res: Response) {
       if (err.code !== "ENOENT") throw err;
     }
 
-    const target = `Lab Result (${labResult.id})`;
+    const target = `${patient.firstName} ${patient.lastName}`;
 
     await prisma.labResult.delete({ where: { id } });
 
@@ -116,7 +128,7 @@ export async function deleteLabResult(req: UserRequest, res: Response) {
         action: "DELETE",
         module: "Laboratory",
         target,
-        details: `Deleted laboratory result for ${labResult.patient.firstName} ${labResult.patient.lastName} (${labResult.patientId})`,
+        details: `Deleted laboratory result for ${labResult.patient.firstName} ${labResult.patient.lastName} `,
         userId: req.userId!,
       },
     });

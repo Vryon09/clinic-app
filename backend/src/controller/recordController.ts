@@ -144,14 +144,14 @@ export async function addRecord(req: UserRequest, res: Response) {
       return newRecord;
     });
 
-    const target = `Consultation Record (${record.id})`;
+    const target = `${patient.firstName} ${patient.lastName}`;
 
     await prisma.systemLogs.create({
       data: {
         action: "CREATE",
         module: "Consultation",
         target,
-        details: `Created consultation record for ${patient.firstName} ${patient.lastName} (${patientId})`,
+        details: `Created consultation record for ${patient.firstName} ${patient.lastName}`,
         userId: req.userId!,
       },
     });
@@ -179,13 +179,27 @@ export async function deleteRecord(req: UserRequest, res: Response) {
       },
     });
 
+    const patient = await prisma.patient.findUnique({
+      where: { id: record?.patientId },
+      select: {
+        firstName: true,
+        lastName: true,
+      },
+    });
+
+    if (!patient) {
+      return res.status(404).json({
+        message: "Patient not found.",
+      });
+    }
+
     if (!record) {
       return res.status(404).json({
         message: "Record not found.",
       });
     }
 
-    const target = `Consultation Record (${record.id})`;
+    const target = `${patient.firstName} ${patient.lastName}`;
 
     await prisma.$transaction([
       prisma.vitalSigns.delete({ where: { recordId } }),
@@ -200,7 +214,7 @@ export async function deleteRecord(req: UserRequest, res: Response) {
         action: "DELETE",
         module: "Consultation",
         target,
-        details: `Deleted consultation record for ${record.patient.firstName} ${record.patient.lastName} (${record.patientId})`,
+        details: `Deleted consultation record for ${record.patient.firstName} ${record.patient.lastName}`,
         userId: req.userId!,
       },
     });
@@ -228,13 +242,27 @@ export async function archiveRecord(req: UserRequest, res: Response) {
       },
     });
 
+    const patient = await prisma.patient.findUnique({
+      where: { id: record?.patientId },
+      select: {
+        firstName: true,
+        lastName: true,
+      },
+    });
+
+    if (!patient) {
+      return res.status(404).json({
+        message: "Patient not found.",
+      });
+    }
+
     if (!record) {
       return res.status(404).json({
         message: "Record not found.",
       });
     }
 
-    const target = `Consultation Record (${record.id})`;
+    const target = `${patient.firstName} ${patient.lastName}`;
 
     await prisma.record.update({
       where: { id: recordId },
@@ -246,7 +274,7 @@ export async function archiveRecord(req: UserRequest, res: Response) {
         action: "ARCHIVE",
         module: "Consultation",
         target,
-        details: `Archived consultation record for ${record.patient.firstName} ${record.patient.lastName} (${record.patientId})`,
+        details: `Archived consultation record for ${record.patient.firstName} ${record.patient.lastName}`,
         userId: req.userId!,
       },
     });
@@ -274,13 +302,27 @@ export async function restoreRecord(req: UserRequest, res: Response) {
       },
     });
 
+    const patient = await prisma.patient.findUnique({
+      where: { id: record?.patientId },
+      select: {
+        firstName: true,
+        lastName: true,
+      },
+    });
+
+    if (!patient) {
+      return res.status(404).json({
+        message: "Patient not found.",
+      });
+    }
+
     if (!record) {
       return res.status(404).json({
         message: "Record not found.",
       });
     }
 
-    const target = `Consultation Record (${record.id})`;
+    const target = `${patient.firstName} ${patient.lastName}`;
 
     await prisma.record.update({
       where: { id: recordId },
@@ -292,7 +334,7 @@ export async function restoreRecord(req: UserRequest, res: Response) {
         action: "RESTORE",
         module: "Consultation",
         target,
-        details: `Restored consultation record for ${record.patient.firstName} ${record.patient.lastName} (${record.patientId})`,
+        details: `Restored consultation record for ${record.patient.firstName} ${record.patient.lastName} `,
         userId: req.userId!,
       },
     });

@@ -52,14 +52,14 @@ export async function addCase(req: UserRequest, res: Response) {
       },
     });
 
-    const target = `${newCase.caseName} (${newCase.id})`;
+    const target = `${newCase.caseName}`;
 
     await prisma.systemLogs.create({
       data: {
         action: "CREATE",
         module: "Case",
         target,
-        details: `Created new case for ${patient.firstName} ${patient.lastName} (${patientId})`,
+        details: `Created new case for ${patient.firstName} ${patient.lastName}`,
         userId: req.userId!,
       },
     });

@@ -13,6 +13,7 @@ import backupRoutes from "./routes/backupRoutes.ts";
 import authRoutes from "./routes/authRoutes.ts";
 import clinicInfoRoutes from "./routes/clinicInfoRoutes.ts";
 import caseRoutes from "./routes/caseRoutes.ts";
+import activityLogRoutes from "./routes/activityLogRoutes.ts";
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use("/api/backup", backupRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/clinicInfo", clinicInfoRoutes);
 app.use("/api/case", caseRoutes);
+app.use("/api/activityLog", activityLogRoutes);
 
 app.listen(process.env.PORT, () =>
   console.log("Listening to PORT: " + process.env.PORT),

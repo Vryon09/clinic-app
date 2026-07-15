@@ -1,5 +1,6 @@
 import { Card } from "@/ui/components/shadcn/card";
 import { Separator } from "@/ui/components/shadcn/separator";
+import ActivityLogTable from "./ActivityLogTable";
 
 function ActivityLog() {
   return (
@@ -13,6 +14,8 @@ function ActivityLog() {
       </div>
 
       <Separator />
+
+      <ActivityLogTable />
     </Card>
   );
 }
