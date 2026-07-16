@@ -64,7 +64,7 @@ function PasswordDialog({ open, onOpenChange }: IPasswordDialog) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Update your account</DialogTitle>
+          <DialogTitle>Update Password</DialogTitle>
         </DialogHeader>
 
         <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>

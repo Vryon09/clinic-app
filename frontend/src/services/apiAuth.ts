@@ -146,6 +146,33 @@ export function useUpdateUser() {
   });
 }
 
+async function handleUpdateUsername({ username }: { username: string }) {
+  const res = await api.patch("/api/auth/changeUsername", {
+    username,
+  });
+
+  return res.data || {};
+}
+
+export function useUpdateUsername() {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    unknown,
+    AxiosError<{ message: string }>,
+    { username: string }
+  >({
+    mutationFn: handleUpdateUsername,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["me"] });
+      toast.success("User updated username successfully", {
+        position: "top-center",
+      });
+    },
+  });
+}
+
 async function handleUpdateFullName({
   firstName,
   middleName,

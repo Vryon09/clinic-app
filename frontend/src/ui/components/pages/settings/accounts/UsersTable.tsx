@@ -10,7 +10,7 @@ import {
 import { Badge } from "../../../shadcn/badge";
 import { Button } from "../../../shadcn/button";
 import type { IUser } from "@/types/User";
-import UserDialog from "./UserDialog";
+// import UserDialog from "./UserDialog";
 import { useToggleUserStatus } from "@/services/apiAuth";
 import { cn } from "@/lib/utils";
 import { Card } from "@/ui/components/shadcn/card";
@@ -18,12 +18,12 @@ import { toast } from "sonner";
 
 function UsersTable({
   users,
-  selectedUser,
-  setSelectedUser,
+  // selectedUser,
+  // setSelectedUser,
 }: {
   users: IUser[];
-  selectedUser: IUser | null;
-  setSelectedUser: React.Dispatch<React.SetStateAction<IUser | null>>;
+  // selectedUser: IUser | null;
+  // setSelectedUser: React.Dispatch<React.SetStateAction<IUser | null>>;
 }) {
   const { mutate: handleToggleUserStatus } = useToggleUserStatus();
 
@@ -62,7 +62,7 @@ function UsersTable({
               </TableCell>
 
               <TableCell className="space-x-2 text-right">
-                <Button
+                {/* <Button
                   onClick={() =>
                     setSelectedUser({
                       username: user.username,
@@ -78,7 +78,7 @@ function UsersTable({
                   size="xs"
                 >
                   Edit
-                </Button>
+                </Button> */}
 
                 <Button
                   size="xs"
@@ -108,7 +108,7 @@ function UsersTable({
         </TableBody>
       </Table>
 
-      {selectedUser && (
+      {/* {selectedUser && (
         <UserDialog
           isUserDialogOpen={!!selectedUser}
           setIsUserDialogOpen={() => {
@@ -128,7 +128,7 @@ function UsersTable({
             lastName: selectedUser!.lastName,
           }}
         />
-      )}
+      )} */}
     </Card>
   );
 }

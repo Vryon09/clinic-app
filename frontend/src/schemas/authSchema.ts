@@ -92,6 +92,17 @@ export const addUserSchema = z.object({
   role: z.enum(["ADMIN", "ASSISTANT", "DOCTOR"], "Choose a role"),
 });
 
+export const updateUsernameSchema = z.object({
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters")
+    .max(30, "Username must be at most 30 characters")
+    .regex(
+      /^[a-zA-Z0-9_. ]+$/,
+      "Username can only contain letters, numbers, and underscores",
+    ),
+});
+
 export const updateFullNameSchema = z.object({
   firstName: z
     .string()
@@ -143,6 +154,7 @@ export const changeLicenseNumSchema = z.object({
 export type LoginInput = z.infer<typeof loginSchema>;
 export type SignupInput = z.infer<typeof signupSchema>;
 export type AddUserInput = z.infer<typeof addUserSchema>;
+export type UpdateUsernameInput = z.infer<typeof updateUsernameSchema>;
 export type UpdateFullNameInput = z.infer<typeof updateFullNameSchema>;
 export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
 export type ChangeLicenseNumInput = z.infer<typeof changeLicenseNumSchema>;

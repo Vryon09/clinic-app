@@ -75,7 +75,7 @@ function FullNameDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Update your account</DialogTitle>
+          <DialogTitle>Update Full Name</DialogTitle>
         </DialogHeader>
 
         <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
