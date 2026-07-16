@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Edit, Plus } from "lucide-react";
 import { Button } from "../../../shadcn/button";
 import { Card } from "../../../shadcn/card";
 import { Separator } from "../../../shadcn/separator";
@@ -94,41 +94,75 @@ function ManageAccounts() {
               <p className="text-xs text-neutral-500">{user?.role}</p>
             </div>
 
-            <div className="flex flex-col gap-4">
-              <Button
-                onClick={() => {
-                  setIsChangingUsername(true);
-                }}
-              >
-                Change Username
-              </Button>
+            <Card className="flex w-100 flex-col gap-4 p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs">Username</p>
+                  <p className="font-semibold">{user?.username}</p>
+                </div>
 
-              <Button
-                onClick={() => {
-                  setIsChangingFullName(true);
-                }}
-              >
-                Change Full Name
-              </Button>
-
-              <Button
-                onClick={() => {
-                  setIsChangingPassword(true);
-                }}
-              >
-                Change Password
-              </Button>
-
-              {user?.role === "DOCTOR" && (
                 <Button
+                  size="xs"
                   onClick={() => {
-                    setIsChangingLicenseNum(true);
+                    setIsChangingUsername(true);
                   }}
                 >
-                  Change License Number
+                  <Edit /> Edit
                 </Button>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs">Full name</p>
+                  <p className="font-semibold">
+                    {user?.firstName} {user?.middleName} {user?.lastName}
+                  </p>
+                </div>
+
+                <Button
+                  size="xs"
+                  onClick={() => {
+                    setIsChangingFullName(true);
+                  }}
+                >
+                  <Edit /> Edit
+                </Button>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs">Password</p>
+                  <p className="font-semibold">••••••••••••••••</p>
+                </div>
+
+                <Button
+                  size="xs"
+                  onClick={() => {
+                    setIsChangingPassword(true);
+                  }}
+                >
+                  <Edit /> Edit
+                </Button>
+              </div>
+
+              {user?.role === "DOCTOR" && (
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs">License Number</p>
+                    <p className="font-semibold">{user.licenseNum}</p>
+                  </div>
+
+                  <Button
+                    size="xs"
+                    onClick={() => {
+                      setIsChangingLicenseNum(true);
+                    }}
+                  >
+                    <Edit /> Edit
+                  </Button>
+                </div>
               )}
-            </div>
+            </Card>
 
             <UsernameDialog
               open={isChangingUsername}
