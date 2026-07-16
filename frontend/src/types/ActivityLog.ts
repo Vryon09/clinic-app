@@ -1,3 +1,5 @@
+import type { IUser } from "./User";
+
 export interface IActivityLog {
   createdAt: Date;
   action: string;
@@ -6,4 +8,5 @@ export interface IActivityLog {
   module: string;
   target: string;
   userId: string;
+  user: IUser;
 }
