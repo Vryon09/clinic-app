@@ -29,8 +29,10 @@ export type ClinicMinAggregateOutputType = {
   name: string | null
   address: string | null
   phone: string | null
+  lastEditedById: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  userId: string | null
 }
 
 export type ClinicMaxAggregateOutputType = {
@@ -38,8 +40,10 @@ export type ClinicMaxAggregateOutputType = {
   name: string | null
   address: string | null
   phone: string | null
+  lastEditedById: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  userId: string | null
 }
 
 export type ClinicCountAggregateOutputType = {
@@ -47,8 +51,10 @@ export type ClinicCountAggregateOutputType = {
   name: number
   address: number
   phone: number
+  lastEditedById: number
   createdAt: number
   updatedAt: number
+  userId: number
   _all: number
 }
 
@@ -58,8 +64,10 @@ export type ClinicMinAggregateInputType = {
   name?: true
   address?: true
   phone?: true
+  lastEditedById?: true
   createdAt?: true
   updatedAt?: true
+  userId?: true
 }
 
 export type ClinicMaxAggregateInputType = {
@@ -67,8 +75,10 @@ export type ClinicMaxAggregateInputType = {
   name?: true
   address?: true
   phone?: true
+  lastEditedById?: true
   createdAt?: true
   updatedAt?: true
+  userId?: true
 }
 
 export type ClinicCountAggregateInputType = {
@@ -76,8 +86,10 @@ export type ClinicCountAggregateInputType = {
   name?: true
   address?: true
   phone?: true
+  lastEditedById?: true
   createdAt?: true
   updatedAt?: true
+  userId?: true
   _all?: true
 }
 
@@ -158,8 +170,10 @@ export type ClinicGroupByOutputType = {
   name: string
   address: string | null
   phone: string | null
+  lastEditedById: string | null
   createdAt: Date
   updatedAt: Date
+  userId: string | null
   _count: ClinicCountAggregateOutputType | null
   _min: ClinicMinAggregateOutputType | null
   _max: ClinicMaxAggregateOutputType | null
@@ -188,8 +202,12 @@ export type ClinicWhereInput = {
   name?: Prisma.StringFilter<"Clinic"> | string
   address?: Prisma.StringNullableFilter<"Clinic"> | string | null
   phone?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  lastEditedById?: Prisma.StringNullableFilter<"Clinic"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
+  userId?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  lastEditedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type ClinicOrderByWithRelationInput = {
@@ -197,8 +215,12 @@ export type ClinicOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastEditedById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastEditedBy?: Prisma.UserOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type ClinicWhereUniqueInput = Prisma.AtLeast<{
@@ -209,8 +231,12 @@ export type ClinicWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Clinic"> | string
   address?: Prisma.StringNullableFilter<"Clinic"> | string | null
   phone?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  lastEditedById?: Prisma.StringNullableFilter<"Clinic"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
+  userId?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  lastEditedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type ClinicOrderByWithAggregationInput = {
@@ -218,8 +244,10 @@ export type ClinicOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastEditedById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ClinicCountOrderByAggregateInput
   _max?: Prisma.ClinicMaxOrderByAggregateInput
   _min?: Prisma.ClinicMinOrderByAggregateInput
@@ -233,8 +261,10 @@ export type ClinicScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Clinic"> | string
   address?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
+  lastEditedById?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Clinic"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Clinic"> | Date | string
+  userId?: Prisma.StringNullableWithAggregatesFilter<"Clinic"> | string | null
 }
 
 export type ClinicCreateInput = {
@@ -244,6 +274,8 @@ export type ClinicCreateInput = {
   phone?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  lastEditedBy?: Prisma.UserCreateNestedOneWithoutClinicsLastEditedInput
+  user?: Prisma.UserCreateNestedOneWithoutClinicsInput
 }
 
 export type ClinicUncheckedCreateInput = {
@@ -251,8 +283,10 @@ export type ClinicUncheckedCreateInput = {
   name: string
   address?: string | null
   phone?: string | null
+  lastEditedById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  userId?: string | null
 }
 
 export type ClinicUpdateInput = {
@@ -262,6 +296,8 @@ export type ClinicUpdateInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastEditedBy?: Prisma.UserUpdateOneWithoutClinicsLastEditedNestedInput
+  user?: Prisma.UserUpdateOneWithoutClinicsNestedInput
 }
 
 export type ClinicUncheckedUpdateInput = {
@@ -269,8 +305,10 @@ export type ClinicUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ClinicCreateManyInput = {
@@ -278,8 +316,10 @@ export type ClinicCreateManyInput = {
   name: string
   address?: string | null
   phone?: string | null
+  lastEditedById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  userId?: string | null
 }
 
 export type ClinicUpdateManyMutationInput = {
@@ -296,8 +336,10 @@ export type ClinicUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ClinicCountOrderByAggregateInput = {
@@ -305,8 +347,10 @@ export type ClinicCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  lastEditedById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type ClinicMaxOrderByAggregateInput = {
@@ -314,8 +358,10 @@ export type ClinicMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  lastEditedById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type ClinicMinOrderByAggregateInput = {
@@ -323,8 +369,20 @@ export type ClinicMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   address?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  lastEditedById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+}
+
+export type ClinicListRelationFilter = {
+  every?: Prisma.ClinicWhereInput
+  some?: Prisma.ClinicWhereInput
+  none?: Prisma.ClinicWhereInput
+}
+
+export type ClinicOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -339,6 +397,276 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type ClinicCreateNestedManyWithoutLastEditedByInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutLastEditedByInput, Prisma.ClinicUncheckedCreateWithoutLastEditedByInput> | Prisma.ClinicCreateWithoutLastEditedByInput[] | Prisma.ClinicUncheckedCreateWithoutLastEditedByInput[]
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutLastEditedByInput | Prisma.ClinicCreateOrConnectWithoutLastEditedByInput[]
+  createMany?: Prisma.ClinicCreateManyLastEditedByInputEnvelope
+  connect?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+}
+
+export type ClinicCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutUserInput, Prisma.ClinicUncheckedCreateWithoutUserInput> | Prisma.ClinicCreateWithoutUserInput[] | Prisma.ClinicUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutUserInput | Prisma.ClinicCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ClinicCreateManyUserInputEnvelope
+  connect?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+}
+
+export type ClinicUncheckedCreateNestedManyWithoutLastEditedByInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutLastEditedByInput, Prisma.ClinicUncheckedCreateWithoutLastEditedByInput> | Prisma.ClinicCreateWithoutLastEditedByInput[] | Prisma.ClinicUncheckedCreateWithoutLastEditedByInput[]
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutLastEditedByInput | Prisma.ClinicCreateOrConnectWithoutLastEditedByInput[]
+  createMany?: Prisma.ClinicCreateManyLastEditedByInputEnvelope
+  connect?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+}
+
+export type ClinicUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutUserInput, Prisma.ClinicUncheckedCreateWithoutUserInput> | Prisma.ClinicCreateWithoutUserInput[] | Prisma.ClinicUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutUserInput | Prisma.ClinicCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ClinicCreateManyUserInputEnvelope
+  connect?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+}
+
+export type ClinicUpdateManyWithoutLastEditedByNestedInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutLastEditedByInput, Prisma.ClinicUncheckedCreateWithoutLastEditedByInput> | Prisma.ClinicCreateWithoutLastEditedByInput[] | Prisma.ClinicUncheckedCreateWithoutLastEditedByInput[]
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutLastEditedByInput | Prisma.ClinicCreateOrConnectWithoutLastEditedByInput[]
+  upsert?: Prisma.ClinicUpsertWithWhereUniqueWithoutLastEditedByInput | Prisma.ClinicUpsertWithWhereUniqueWithoutLastEditedByInput[]
+  createMany?: Prisma.ClinicCreateManyLastEditedByInputEnvelope
+  set?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  disconnect?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  delete?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  connect?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  update?: Prisma.ClinicUpdateWithWhereUniqueWithoutLastEditedByInput | Prisma.ClinicUpdateWithWhereUniqueWithoutLastEditedByInput[]
+  updateMany?: Prisma.ClinicUpdateManyWithWhereWithoutLastEditedByInput | Prisma.ClinicUpdateManyWithWhereWithoutLastEditedByInput[]
+  deleteMany?: Prisma.ClinicScalarWhereInput | Prisma.ClinicScalarWhereInput[]
+}
+
+export type ClinicUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutUserInput, Prisma.ClinicUncheckedCreateWithoutUserInput> | Prisma.ClinicCreateWithoutUserInput[] | Prisma.ClinicUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutUserInput | Prisma.ClinicCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ClinicUpsertWithWhereUniqueWithoutUserInput | Prisma.ClinicUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ClinicCreateManyUserInputEnvelope
+  set?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  disconnect?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  delete?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  connect?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  update?: Prisma.ClinicUpdateWithWhereUniqueWithoutUserInput | Prisma.ClinicUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ClinicUpdateManyWithWhereWithoutUserInput | Prisma.ClinicUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ClinicScalarWhereInput | Prisma.ClinicScalarWhereInput[]
+}
+
+export type ClinicUncheckedUpdateManyWithoutLastEditedByNestedInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutLastEditedByInput, Prisma.ClinicUncheckedCreateWithoutLastEditedByInput> | Prisma.ClinicCreateWithoutLastEditedByInput[] | Prisma.ClinicUncheckedCreateWithoutLastEditedByInput[]
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutLastEditedByInput | Prisma.ClinicCreateOrConnectWithoutLastEditedByInput[]
+  upsert?: Prisma.ClinicUpsertWithWhereUniqueWithoutLastEditedByInput | Prisma.ClinicUpsertWithWhereUniqueWithoutLastEditedByInput[]
+  createMany?: Prisma.ClinicCreateManyLastEditedByInputEnvelope
+  set?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  disconnect?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  delete?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  connect?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  update?: Prisma.ClinicUpdateWithWhereUniqueWithoutLastEditedByInput | Prisma.ClinicUpdateWithWhereUniqueWithoutLastEditedByInput[]
+  updateMany?: Prisma.ClinicUpdateManyWithWhereWithoutLastEditedByInput | Prisma.ClinicUpdateManyWithWhereWithoutLastEditedByInput[]
+  deleteMany?: Prisma.ClinicScalarWhereInput | Prisma.ClinicScalarWhereInput[]
+}
+
+export type ClinicUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ClinicCreateWithoutUserInput, Prisma.ClinicUncheckedCreateWithoutUserInput> | Prisma.ClinicCreateWithoutUserInput[] | Prisma.ClinicUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ClinicCreateOrConnectWithoutUserInput | Prisma.ClinicCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ClinicUpsertWithWhereUniqueWithoutUserInput | Prisma.ClinicUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ClinicCreateManyUserInputEnvelope
+  set?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  disconnect?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  delete?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  connect?: Prisma.ClinicWhereUniqueInput | Prisma.ClinicWhereUniqueInput[]
+  update?: Prisma.ClinicUpdateWithWhereUniqueWithoutUserInput | Prisma.ClinicUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ClinicUpdateManyWithWhereWithoutUserInput | Prisma.ClinicUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ClinicScalarWhereInput | Prisma.ClinicScalarWhereInput[]
+}
+
+export type ClinicCreateWithoutLastEditedByInput = {
+  id?: string
+  name: string
+  address?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user?: Prisma.UserCreateNestedOneWithoutClinicsInput
+}
+
+export type ClinicUncheckedCreateWithoutLastEditedByInput = {
+  id?: string
+  name: string
+  address?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userId?: string | null
+}
+
+export type ClinicCreateOrConnectWithoutLastEditedByInput = {
+  where: Prisma.ClinicWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutLastEditedByInput, Prisma.ClinicUncheckedCreateWithoutLastEditedByInput>
+}
+
+export type ClinicCreateManyLastEditedByInputEnvelope = {
+  data: Prisma.ClinicCreateManyLastEditedByInput | Prisma.ClinicCreateManyLastEditedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type ClinicCreateWithoutUserInput = {
+  id?: string
+  name: string
+  address?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lastEditedBy?: Prisma.UserCreateNestedOneWithoutClinicsLastEditedInput
+}
+
+export type ClinicUncheckedCreateWithoutUserInput = {
+  id?: string
+  name: string
+  address?: string | null
+  phone?: string | null
+  lastEditedById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ClinicCreateOrConnectWithoutUserInput = {
+  where: Prisma.ClinicWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutUserInput, Prisma.ClinicUncheckedCreateWithoutUserInput>
+}
+
+export type ClinicCreateManyUserInputEnvelope = {
+  data: Prisma.ClinicCreateManyUserInput | Prisma.ClinicCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type ClinicUpsertWithWhereUniqueWithoutLastEditedByInput = {
+  where: Prisma.ClinicWhereUniqueInput
+  update: Prisma.XOR<Prisma.ClinicUpdateWithoutLastEditedByInput, Prisma.ClinicUncheckedUpdateWithoutLastEditedByInput>
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutLastEditedByInput, Prisma.ClinicUncheckedCreateWithoutLastEditedByInput>
+}
+
+export type ClinicUpdateWithWhereUniqueWithoutLastEditedByInput = {
+  where: Prisma.ClinicWhereUniqueInput
+  data: Prisma.XOR<Prisma.ClinicUpdateWithoutLastEditedByInput, Prisma.ClinicUncheckedUpdateWithoutLastEditedByInput>
+}
+
+export type ClinicUpdateManyWithWhereWithoutLastEditedByInput = {
+  where: Prisma.ClinicScalarWhereInput
+  data: Prisma.XOR<Prisma.ClinicUpdateManyMutationInput, Prisma.ClinicUncheckedUpdateManyWithoutLastEditedByInput>
+}
+
+export type ClinicScalarWhereInput = {
+  AND?: Prisma.ClinicScalarWhereInput | Prisma.ClinicScalarWhereInput[]
+  OR?: Prisma.ClinicScalarWhereInput[]
+  NOT?: Prisma.ClinicScalarWhereInput | Prisma.ClinicScalarWhereInput[]
+  id?: Prisma.StringFilter<"Clinic"> | string
+  name?: Prisma.StringFilter<"Clinic"> | string
+  address?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  phone?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  lastEditedById?: Prisma.StringNullableFilter<"Clinic"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Clinic"> | Date | string
+  userId?: Prisma.StringNullableFilter<"Clinic"> | string | null
+}
+
+export type ClinicUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ClinicWhereUniqueInput
+  update: Prisma.XOR<Prisma.ClinicUpdateWithoutUserInput, Prisma.ClinicUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.ClinicCreateWithoutUserInput, Prisma.ClinicUncheckedCreateWithoutUserInput>
+}
+
+export type ClinicUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ClinicWhereUniqueInput
+  data: Prisma.XOR<Prisma.ClinicUpdateWithoutUserInput, Prisma.ClinicUncheckedUpdateWithoutUserInput>
+}
+
+export type ClinicUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.ClinicScalarWhereInput
+  data: Prisma.XOR<Prisma.ClinicUpdateManyMutationInput, Prisma.ClinicUncheckedUpdateManyWithoutUserInput>
+}
+
+export type ClinicCreateManyLastEditedByInput = {
+  id?: string
+  name: string
+  address?: string | null
+  phone?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userId?: string | null
+}
+
+export type ClinicCreateManyUserInput = {
+  id?: string
+  name: string
+  address?: string | null
+  phone?: string | null
+  lastEditedById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ClinicUpdateWithoutLastEditedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneWithoutClinicsNestedInput
+}
+
+export type ClinicUncheckedUpdateWithoutLastEditedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type ClinicUncheckedUpdateManyWithoutLastEditedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type ClinicUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lastEditedBy?: Prisma.UserUpdateOneWithoutClinicsLastEditedNestedInput
+}
+
+export type ClinicUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ClinicUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 
 
 export type ClinicSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -346,8 +674,12 @@ export type ClinicSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name?: boolean
   address?: boolean
   phone?: boolean
+  lastEditedById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  userId?: boolean
+  lastEditedBy?: boolean | Prisma.Clinic$lastEditedByArgs<ExtArgs>
+  user?: boolean | Prisma.Clinic$userArgs<ExtArgs>
 }, ExtArgs["result"]["clinic"]>
 
 export type ClinicSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -355,8 +687,12 @@ export type ClinicSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   name?: boolean
   address?: boolean
   phone?: boolean
+  lastEditedById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  userId?: boolean
+  lastEditedBy?: boolean | Prisma.Clinic$lastEditedByArgs<ExtArgs>
+  user?: boolean | Prisma.Clinic$userArgs<ExtArgs>
 }, ExtArgs["result"]["clinic"]>
 
 export type ClinicSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -364,8 +700,12 @@ export type ClinicSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   name?: boolean
   address?: boolean
   phone?: boolean
+  lastEditedById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  userId?: boolean
+  lastEditedBy?: boolean | Prisma.Clinic$lastEditedByArgs<ExtArgs>
+  user?: boolean | Prisma.Clinic$userArgs<ExtArgs>
 }, ExtArgs["result"]["clinic"]>
 
 export type ClinicSelectScalar = {
@@ -373,22 +713,41 @@ export type ClinicSelectScalar = {
   name?: boolean
   address?: boolean
   phone?: boolean
+  lastEditedById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  userId?: boolean
 }
 
-export type ClinicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "address" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["clinic"]>
+export type ClinicOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "address" | "phone" | "lastEditedById" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["clinic"]>
+export type ClinicInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  lastEditedBy?: boolean | Prisma.Clinic$lastEditedByArgs<ExtArgs>
+  user?: boolean | Prisma.Clinic$userArgs<ExtArgs>
+}
+export type ClinicIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  lastEditedBy?: boolean | Prisma.Clinic$lastEditedByArgs<ExtArgs>
+  user?: boolean | Prisma.Clinic$userArgs<ExtArgs>
+}
+export type ClinicIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  lastEditedBy?: boolean | Prisma.Clinic$lastEditedByArgs<ExtArgs>
+  user?: boolean | Prisma.Clinic$userArgs<ExtArgs>
+}
 
 export type $ClinicPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Clinic"
-  objects: {}
+  objects: {
+    lastEditedBy: Prisma.$UserPayload<ExtArgs> | null
+    user: Prisma.$UserPayload<ExtArgs> | null
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     address: string | null
     phone: string | null
+    lastEditedById: string | null
     createdAt: Date
     updatedAt: Date
+    userId: string | null
   }, ExtArgs["result"]["clinic"]>
   composites: {}
 }
@@ -783,6 +1142,8 @@ readonly fields: ClinicFieldRefs;
  */
 export interface Prisma__ClinicClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  lastEditedBy<T extends Prisma.Clinic$lastEditedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$lastEditedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.Clinic$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Clinic$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -816,8 +1177,10 @@ export interface ClinicFieldRefs {
   readonly name: Prisma.FieldRef<"Clinic", 'String'>
   readonly address: Prisma.FieldRef<"Clinic", 'String'>
   readonly phone: Prisma.FieldRef<"Clinic", 'String'>
+  readonly lastEditedById: Prisma.FieldRef<"Clinic", 'String'>
   readonly createdAt: Prisma.FieldRef<"Clinic", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Clinic", 'DateTime'>
+  readonly userId: Prisma.FieldRef<"Clinic", 'String'>
 }
     
 
@@ -834,6 +1197,10 @@ export type ClinicFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Omit specific fields from the Clinic
    */
   omit?: Prisma.ClinicOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicInclude<ExtArgs> | null
   /**
    * Filter, which Clinic to fetch.
    */
@@ -853,6 +1220,10 @@ export type ClinicFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.ClinicOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicInclude<ExtArgs> | null
+  /**
    * Filter, which Clinic to fetch.
    */
   where: Prisma.ClinicWhereUniqueInput
@@ -870,6 +1241,10 @@ export type ClinicFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the Clinic
    */
   omit?: Prisma.ClinicOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicInclude<ExtArgs> | null
   /**
    * Filter, which Clinic to fetch.
    */
@@ -919,6 +1294,10 @@ export type ClinicFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.ClinicOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicInclude<ExtArgs> | null
+  /**
    * Filter, which Clinic to fetch.
    */
   where?: Prisma.ClinicWhereInput
@@ -967,6 +1346,10 @@ export type ClinicFindManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   omit?: Prisma.ClinicOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicInclude<ExtArgs> | null
+  /**
    * Filter, which Clinics to fetch.
    */
   where?: Prisma.ClinicWhereInput
@@ -1010,6 +1393,10 @@ export type ClinicCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   omit?: Prisma.ClinicOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicInclude<ExtArgs> | null
+  /**
    * The data needed to create a Clinic.
    */
   data: Prisma.XOR<Prisma.ClinicCreateInput, Prisma.ClinicUncheckedCreateInput>
@@ -1043,6 +1430,10 @@ export type ClinicCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    */
   data: Prisma.ClinicCreateManyInput | Prisma.ClinicCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1057,6 +1448,10 @@ export type ClinicUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Clinic
    */
   omit?: Prisma.ClinicOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicInclude<ExtArgs> | null
   /**
    * The data needed to update a Clinic.
    */
@@ -1109,6 +1504,10 @@ export type ClinicUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many Clinics to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1123,6 +1522,10 @@ export type ClinicUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Clinic
    */
   omit?: Prisma.ClinicOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicInclude<ExtArgs> | null
   /**
    * The filter to search for the Clinic to update in case it exists.
    */
@@ -1150,6 +1553,10 @@ export type ClinicDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   omit?: Prisma.ClinicOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicInclude<ExtArgs> | null
+  /**
    * Filter which Clinic to delete.
    */
   where: Prisma.ClinicWhereUniqueInput
@@ -1170,6 +1577,44 @@ export type ClinicDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
+ * Clinic.lastEditedBy
+ */
+export type Clinic$lastEditedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * Clinic.user
+ */
+export type Clinic$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
  * Clinic without action
  */
 export type ClinicDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1181,4 +1626,8 @@ export type ClinicDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Clinic
    */
   omit?: Prisma.ClinicOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicInclude<ExtArgs> | null
 }

@@ -84,8 +84,10 @@ export const ClinicScalarFieldEnum = {
   name: 'name',
   address: 'address',
   phone: 'phone',
+  lastEditedById: 'lastEditedById',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  userId: 'userId'
 } as const
 
 export type ClinicScalarFieldEnum = (typeof ClinicScalarFieldEnum)[keyof typeof ClinicScalarFieldEnum]
@@ -118,6 +120,7 @@ export const PatientScalarFieldEnum = {
   dateOfBirth: 'dateOfBirth',
   isArchived: 'isArchived',
   archivedOn: 'archivedOn',
+  lastEditedById: 'lastEditedById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -148,6 +151,7 @@ export const RecordScalarFieldEnum = {
   updatedAt: 'updatedAt',
   caseId: 'caseId',
   userId: 'userId',
+  lastEditedById: 'lastEditedById',
   createdById: 'createdById'
 } as const
 

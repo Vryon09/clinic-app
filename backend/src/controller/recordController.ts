@@ -346,7 +346,7 @@ export async function restoreRecord(req: UserRequest, res: Response) {
   }
 }
 
-export async function updateRecord(req: Request, res: Response) {
+export async function updateRecord(req: UserRequest, res: Response) {
   try {
     const {
       symptoms,
@@ -363,7 +363,13 @@ export async function updateRecord(req: Request, res: Response) {
     const updatedRecord = await prisma.$transaction(async (tx) => {
       await tx.record.update({
         where: { id: req.params.id as string },
-        data: { symptoms, signs, diagnosis, caseId },
+        data: {
+          symptoms,
+          signs,
+          diagnosis,
+          caseId,
+          lastEditedById: req.userId,
+        },
       });
 
       if (recordMedications) {

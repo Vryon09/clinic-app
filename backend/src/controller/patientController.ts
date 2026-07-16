@@ -267,6 +267,7 @@ export async function restorePatient(req: UserRequest, res: Response) {
 
 export async function updatePatient(req: UserRequest, res: Response) {
   try {
+    const data = req.body;
     const patientId = req.params.id as string;
 
     const patient = await prisma.patient.findUnique({
@@ -285,7 +286,7 @@ export async function updatePatient(req: UserRequest, res: Response) {
 
     const updatedPatient = await prisma.patient.update({
       where: { id: patientId },
-      data: req.body,
+      data: { ...data, lastEditedBy: req.userId },
     });
 
     await prisma.systemLogs.create({
