@@ -42,7 +42,7 @@ function PatientPage() {
           </Button>
         </PatientCard>
 
-        <Card className="h-full w-full border-neutral-300 px-2 pt-1 pb-4">
+        <Card className="h-full w-full px-2 pt-1 pb-4">
           <Tabs defaultValue="consultations">
             <TabsList variant="line">
               <TabsTrigger value="consultations" className="cursor-pointer">

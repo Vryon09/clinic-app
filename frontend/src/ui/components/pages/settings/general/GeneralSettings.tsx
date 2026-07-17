@@ -19,11 +19,14 @@ import { Button } from "../../../shadcn/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { clinicInfoSchema } from "@/schemas/clinicInfoSchema";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Spinner } from "../../../shadcn/spinner";
+import { Edit, X } from "lucide-react";
 
 function GeneralSettings() {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+
   const {
     data: clinicInfo,
     isPending: isClinicInfoPending,
@@ -86,11 +89,32 @@ function GeneralSettings() {
 
   return (
     <Card className="space-y-4 px-8 py-4">
-      <div>
-        <p className="text-2xl font-semibold">General Settings</p>
-        <p className="text-sm text-neutral-500">
-          Configure and customize your clinic information
-        </p>
+      <div className="flex justify-between">
+        <div>
+          <p className="text-2xl font-semibold">General Settings</p>
+          <p className="text-sm text-neutral-500">
+            Configure and customize your clinic information
+          </p>
+        </div>
+
+        <Button
+          onClick={() => {
+            if (isEditing) {
+              reset();
+            }
+            setIsEditing((prev) => !prev);
+          }}
+        >
+          {!isEditing ? (
+            <>
+              <Edit /> Edit
+            </>
+          ) : (
+            <>
+              <X /> Cancel
+            </>
+          )}
+        </Button>
       </div>
 
       <Separator />
@@ -109,6 +133,7 @@ function GeneralSettings() {
                     name
                   </FieldLabel>
                   <Input
+                    disabled={!isEditing}
                     className="border"
                     id="name"
                     {...register("name")}
@@ -128,6 +153,7 @@ function GeneralSettings() {
                     address
                   </FieldLabel>
                   <Input
+                    disabled={!isEditing}
                     className="border"
                     id="address"
                     {...register("address")}
@@ -147,6 +173,7 @@ function GeneralSettings() {
                     phone
                   </FieldLabel>
                   <Input
+                    disabled={!isEditing}
                     className="border"
                     id="phone"
                     {...register("phone")}
@@ -160,15 +187,17 @@ function GeneralSettings() {
             </FieldGroup>
           </FieldSet>
 
-          <div className="flex justify-end">
-            <Button
-              disabled={isClinicInfoPending}
-              type="submit"
-              className="mt-4 cursor-pointer"
-            >
-              Save
-            </Button>
-          </div>
+          {isEditing && (
+            <div className="flex justify-end">
+              <Button
+                disabled={isClinicInfoPending}
+                type="submit"
+                className="mt-4 cursor-pointer"
+              >
+                Save
+              </Button>
+            </div>
+          )}
         </form>
       )}
     </Card>

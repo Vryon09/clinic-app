@@ -3,6 +3,7 @@ import type { ICase } from "@/types/CaseType";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import CaseCard from "./CaseCard";
+import { Spinner } from "@/ui/components/shadcn/spinner";
 
 function ConsultationRecordsTable() {
   const { patientId } = useParams() as {
@@ -14,7 +15,12 @@ function ConsultationRecordsTable() {
     queryKey: ["cases", patientId],
   });
 
-  if (isCasesLoading) return <p>loading...</p>;
+  if (isCasesLoading)
+    return (
+      <div className="flex justify-center">
+        <Spinner className="size-8" />
+      </div>
+    );
 
   return (
     <div className="space-y-2">
