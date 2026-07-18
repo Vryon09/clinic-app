@@ -29,6 +29,8 @@ export type CaseMinAggregateOutputType = {
   caseName: string | null
   patientId: string | null
   doctorId: string | null
+  isArchived: boolean | null
+  archivedOn: Date | null
 }
 
 export type CaseMaxAggregateOutputType = {
@@ -36,6 +38,8 @@ export type CaseMaxAggregateOutputType = {
   caseName: string | null
   patientId: string | null
   doctorId: string | null
+  isArchived: boolean | null
+  archivedOn: Date | null
 }
 
 export type CaseCountAggregateOutputType = {
@@ -43,6 +47,8 @@ export type CaseCountAggregateOutputType = {
   caseName: number
   patientId: number
   doctorId: number
+  isArchived: number
+  archivedOn: number
   _all: number
 }
 
@@ -52,6 +58,8 @@ export type CaseMinAggregateInputType = {
   caseName?: true
   patientId?: true
   doctorId?: true
+  isArchived?: true
+  archivedOn?: true
 }
 
 export type CaseMaxAggregateInputType = {
@@ -59,6 +67,8 @@ export type CaseMaxAggregateInputType = {
   caseName?: true
   patientId?: true
   doctorId?: true
+  isArchived?: true
+  archivedOn?: true
 }
 
 export type CaseCountAggregateInputType = {
@@ -66,6 +76,8 @@ export type CaseCountAggregateInputType = {
   caseName?: true
   patientId?: true
   doctorId?: true
+  isArchived?: true
+  archivedOn?: true
   _all?: true
 }
 
@@ -146,6 +158,8 @@ export type CaseGroupByOutputType = {
   caseName: string
   patientId: string
   doctorId: string | null
+  isArchived: boolean
+  archivedOn: Date | null
   _count: CaseCountAggregateOutputType | null
   _min: CaseMinAggregateOutputType | null
   _max: CaseMaxAggregateOutputType | null
@@ -174,6 +188,8 @@ export type CaseWhereInput = {
   caseName?: Prisma.StringFilter<"Case"> | string
   patientId?: Prisma.StringFilter<"Case"> | string
   doctorId?: Prisma.StringNullableFilter<"Case"> | string | null
+  isArchived?: Prisma.BoolFilter<"Case"> | boolean
+  archivedOn?: Prisma.DateTimeNullableFilter<"Case"> | Date | string | null
   records?: Prisma.RecordListRelationFilter
   doctor?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
@@ -184,6 +200,8 @@ export type CaseOrderByWithRelationInput = {
   caseName?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
   doctorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
+  archivedOn?: Prisma.SortOrderInput | Prisma.SortOrder
   records?: Prisma.RecordOrderByRelationAggregateInput
   doctor?: Prisma.UserOrderByWithRelationInput
   patient?: Prisma.PatientOrderByWithRelationInput
@@ -197,6 +215,8 @@ export type CaseWhereUniqueInput = Prisma.AtLeast<{
   caseName?: Prisma.StringFilter<"Case"> | string
   patientId?: Prisma.StringFilter<"Case"> | string
   doctorId?: Prisma.StringNullableFilter<"Case"> | string | null
+  isArchived?: Prisma.BoolFilter<"Case"> | boolean
+  archivedOn?: Prisma.DateTimeNullableFilter<"Case"> | Date | string | null
   records?: Prisma.RecordListRelationFilter
   doctor?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   patient?: Prisma.XOR<Prisma.PatientScalarRelationFilter, Prisma.PatientWhereInput>
@@ -207,6 +227,8 @@ export type CaseOrderByWithAggregationInput = {
   caseName?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
   doctorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
+  archivedOn?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CaseCountOrderByAggregateInput
   _max?: Prisma.CaseMaxOrderByAggregateInput
   _min?: Prisma.CaseMinOrderByAggregateInput
@@ -220,11 +242,15 @@ export type CaseScalarWhereWithAggregatesInput = {
   caseName?: Prisma.StringWithAggregatesFilter<"Case"> | string
   patientId?: Prisma.StringWithAggregatesFilter<"Case"> | string
   doctorId?: Prisma.StringNullableWithAggregatesFilter<"Case"> | string | null
+  isArchived?: Prisma.BoolWithAggregatesFilter<"Case"> | boolean
+  archivedOn?: Prisma.DateTimeNullableWithAggregatesFilter<"Case"> | Date | string | null
 }
 
 export type CaseCreateInput = {
   id?: string
   caseName: string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
   records?: Prisma.RecordCreateNestedManyWithoutCaseInput
   doctor?: Prisma.UserCreateNestedOneWithoutCasesInput
   patient: Prisma.PatientCreateNestedOneWithoutCasesInput
@@ -235,12 +261,16 @@ export type CaseUncheckedCreateInput = {
   caseName: string
   patientId: string
   doctorId?: string | null
+  isArchived?: boolean
+  archivedOn?: Date | string | null
   records?: Prisma.RecordUncheckedCreateNestedManyWithoutCaseInput
 }
 
 export type CaseUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   caseName?: Prisma.StringFieldUpdateOperationsInput | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   records?: Prisma.RecordUpdateManyWithoutCaseNestedInput
   doctor?: Prisma.UserUpdateOneWithoutCasesNestedInput
   patient?: Prisma.PatientUpdateOneRequiredWithoutCasesNestedInput
@@ -251,6 +281,8 @@ export type CaseUncheckedUpdateInput = {
   caseName?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   doctorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   records?: Prisma.RecordUncheckedUpdateManyWithoutCaseNestedInput
 }
 
@@ -259,11 +291,15 @@ export type CaseCreateManyInput = {
   caseName: string
   patientId: string
   doctorId?: string | null
+  isArchived?: boolean
+  archivedOn?: Date | string | null
 }
 
 export type CaseUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   caseName?: Prisma.StringFieldUpdateOperationsInput | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CaseUncheckedUpdateManyInput = {
@@ -271,6 +307,8 @@ export type CaseUncheckedUpdateManyInput = {
   caseName?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   doctorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CaseListRelationFilter = {
@@ -288,6 +326,8 @@ export type CaseCountOrderByAggregateInput = {
   caseName?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
   doctorId?: Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
+  archivedOn?: Prisma.SortOrder
 }
 
 export type CaseMaxOrderByAggregateInput = {
@@ -295,6 +335,8 @@ export type CaseMaxOrderByAggregateInput = {
   caseName?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
   doctorId?: Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
+  archivedOn?: Prisma.SortOrder
 }
 
 export type CaseMinOrderByAggregateInput = {
@@ -302,6 +344,8 @@ export type CaseMinOrderByAggregateInput = {
   caseName?: Prisma.SortOrder
   patientId?: Prisma.SortOrder
   doctorId?: Prisma.SortOrder
+  isArchived?: Prisma.SortOrder
+  archivedOn?: Prisma.SortOrder
 }
 
 export type CaseScalarRelationFilter = {
@@ -410,6 +454,8 @@ export type CaseUpdateOneRequiredWithoutRecordsNestedInput = {
 export type CaseCreateWithoutDoctorInput = {
   id?: string
   caseName: string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
   records?: Prisma.RecordCreateNestedManyWithoutCaseInput
   patient: Prisma.PatientCreateNestedOneWithoutCasesInput
 }
@@ -418,6 +464,8 @@ export type CaseUncheckedCreateWithoutDoctorInput = {
   id?: string
   caseName: string
   patientId: string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
   records?: Prisma.RecordUncheckedCreateNestedManyWithoutCaseInput
 }
 
@@ -455,11 +503,15 @@ export type CaseScalarWhereInput = {
   caseName?: Prisma.StringFilter<"Case"> | string
   patientId?: Prisma.StringFilter<"Case"> | string
   doctorId?: Prisma.StringNullableFilter<"Case"> | string | null
+  isArchived?: Prisma.BoolFilter<"Case"> | boolean
+  archivedOn?: Prisma.DateTimeNullableFilter<"Case"> | Date | string | null
 }
 
 export type CaseCreateWithoutPatientInput = {
   id?: string
   caseName: string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
   records?: Prisma.RecordCreateNestedManyWithoutCaseInput
   doctor?: Prisma.UserCreateNestedOneWithoutCasesInput
 }
@@ -468,6 +520,8 @@ export type CaseUncheckedCreateWithoutPatientInput = {
   id?: string
   caseName: string
   doctorId?: string | null
+  isArchived?: boolean
+  archivedOn?: Date | string | null
   records?: Prisma.RecordUncheckedCreateNestedManyWithoutCaseInput
 }
 
@@ -500,6 +554,8 @@ export type CaseUpdateManyWithWhereWithoutPatientInput = {
 export type CaseCreateWithoutRecordsInput = {
   id?: string
   caseName: string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
   doctor?: Prisma.UserCreateNestedOneWithoutCasesInput
   patient: Prisma.PatientCreateNestedOneWithoutCasesInput
 }
@@ -509,6 +565,8 @@ export type CaseUncheckedCreateWithoutRecordsInput = {
   caseName: string
   patientId: string
   doctorId?: string | null
+  isArchived?: boolean
+  archivedOn?: Date | string | null
 }
 
 export type CaseCreateOrConnectWithoutRecordsInput = {
@@ -530,6 +588,8 @@ export type CaseUpdateToOneWithWhereWithoutRecordsInput = {
 export type CaseUpdateWithoutRecordsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   caseName?: Prisma.StringFieldUpdateOperationsInput | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   doctor?: Prisma.UserUpdateOneWithoutCasesNestedInput
   patient?: Prisma.PatientUpdateOneRequiredWithoutCasesNestedInput
 }
@@ -539,17 +599,23 @@ export type CaseUncheckedUpdateWithoutRecordsInput = {
   caseName?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
   doctorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CaseCreateManyDoctorInput = {
   id?: string
   caseName: string
   patientId: string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
 }
 
 export type CaseUpdateWithoutDoctorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   caseName?: Prisma.StringFieldUpdateOperationsInput | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   records?: Prisma.RecordUpdateManyWithoutCaseNestedInput
   patient?: Prisma.PatientUpdateOneRequiredWithoutCasesNestedInput
 }
@@ -558,6 +624,8 @@ export type CaseUncheckedUpdateWithoutDoctorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   caseName?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   records?: Prisma.RecordUncheckedUpdateManyWithoutCaseNestedInput
 }
 
@@ -565,17 +633,23 @@ export type CaseUncheckedUpdateManyWithoutDoctorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   caseName?: Prisma.StringFieldUpdateOperationsInput | string
   patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CaseCreateManyPatientInput = {
   id?: string
   caseName: string
   doctorId?: string | null
+  isArchived?: boolean
+  archivedOn?: Date | string | null
 }
 
 export type CaseUpdateWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   caseName?: Prisma.StringFieldUpdateOperationsInput | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   records?: Prisma.RecordUpdateManyWithoutCaseNestedInput
   doctor?: Prisma.UserUpdateOneWithoutCasesNestedInput
 }
@@ -584,6 +658,8 @@ export type CaseUncheckedUpdateWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   caseName?: Prisma.StringFieldUpdateOperationsInput | string
   doctorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   records?: Prisma.RecordUncheckedUpdateManyWithoutCaseNestedInput
 }
 
@@ -591,6 +667,8 @@ export type CaseUncheckedUpdateManyWithoutPatientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   caseName?: Prisma.StringFieldUpdateOperationsInput | string
   doctorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -629,6 +707,8 @@ export type CaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   caseName?: boolean
   patientId?: boolean
   doctorId?: boolean
+  isArchived?: boolean
+  archivedOn?: boolean
   records?: boolean | Prisma.Case$recordsArgs<ExtArgs>
   doctor?: boolean | Prisma.Case$doctorArgs<ExtArgs>
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
@@ -640,6 +720,8 @@ export type CaseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   caseName?: boolean
   patientId?: boolean
   doctorId?: boolean
+  isArchived?: boolean
+  archivedOn?: boolean
   doctor?: boolean | Prisma.Case$doctorArgs<ExtArgs>
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["case"]>
@@ -649,6 +731,8 @@ export type CaseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   caseName?: boolean
   patientId?: boolean
   doctorId?: boolean
+  isArchived?: boolean
+  archivedOn?: boolean
   doctor?: boolean | Prisma.Case$doctorArgs<ExtArgs>
   patient?: boolean | Prisma.PatientDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["case"]>
@@ -658,9 +742,11 @@ export type CaseSelectScalar = {
   caseName?: boolean
   patientId?: boolean
   doctorId?: boolean
+  isArchived?: boolean
+  archivedOn?: boolean
 }
 
-export type CaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "caseName" | "patientId" | "doctorId", ExtArgs["result"]["case"]>
+export type CaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "caseName" | "patientId" | "doctorId" | "isArchived" | "archivedOn", ExtArgs["result"]["case"]>
 export type CaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   records?: boolean | Prisma.Case$recordsArgs<ExtArgs>
   doctor?: boolean | Prisma.Case$doctorArgs<ExtArgs>
@@ -688,6 +774,8 @@ export type $CasePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     caseName: string
     patientId: string
     doctorId: string | null
+    isArchived: boolean
+    archivedOn: Date | null
   }, ExtArgs["result"]["case"]>
   composites: {}
 }
@@ -1118,6 +1206,8 @@ export interface CaseFieldRefs {
   readonly caseName: Prisma.FieldRef<"Case", 'String'>
   readonly patientId: Prisma.FieldRef<"Case", 'String'>
   readonly doctorId: Prisma.FieldRef<"Case", 'String'>
+  readonly isArchived: Prisma.FieldRef<"Case", 'Boolean'>
+  readonly archivedOn: Prisma.FieldRef<"Case", 'DateTime'>
 }
     
 

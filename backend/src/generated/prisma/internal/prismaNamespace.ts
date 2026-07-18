@@ -1245,7 +1245,9 @@ export const CaseScalarFieldEnum = {
   id: 'id',
   caseName: 'caseName',
   patientId: 'patientId',
-  doctorId: 'doctorId'
+  doctorId: 'doctorId',
+  isArchived: 'isArchived',
+  archivedOn: 'archivedOn'
 } as const
 
 export type CaseScalarFieldEnum = (typeof CaseScalarFieldEnum)[keyof typeof CaseScalarFieldEnum]

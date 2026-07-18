@@ -33,3 +33,72 @@ export function useAddCase(patientId: string) {
     },
   });
 }
+
+async function handleUpdateCase({
+  patientId,
+  caseName,
+  doctorId,
+  caseId,
+}: {
+  patientId: string;
+  caseName: string;
+  doctorId: string;
+  caseId: string;
+}) {
+  const res = await api.patch(`/api/case/${patientId}/${caseId}`, {
+    caseName,
+    doctorId,
+  });
+
+  return res.data || [];
+}
+
+export function useUpdateCase(patientId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleUpdateCase,
+    onSuccess: () => {
+      toast.success("Case successfully updated.", { position: "top-center" });
+      queryClient.invalidateQueries({ queryKey: ["cases", patientId] });
+    },
+  });
+}
+
+async function handleArchiveCase(caseId: string) {
+  await api.patch(`/api/case/${caseId}/archive`);
+}
+
+export function useArchiveCase() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleArchiveCase,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cases"] });
+    },
+  });
+}
+
+export async function handleGetArchivedCases({ page }: { page: number }) {
+  const res = await api.get(`/api/case/archived?page=${page}&limit=10`);
+
+  return res.data ?? [];
+}
+
+async function handleRestoreCase(id: string) {
+  const res = await api.patch(`/api/case/${id}/restore`);
+
+  console.log(res.data.message);
+}
+
+export function useRestoreCase() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleRestoreCase,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["archivedCases"] });
+    },
+  });
+}

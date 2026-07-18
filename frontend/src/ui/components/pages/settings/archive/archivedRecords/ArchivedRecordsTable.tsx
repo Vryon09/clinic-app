@@ -47,7 +47,7 @@ function ArchivedRecordsTable({
             <TableCell>{record.case.caseName}</TableCell>
 
             <TableCell>
-              {dayjs(record.archivedOn).format("MMMM DD, YYYY")}
+              {dayjs(record.archivedOn).format("hh:mm A, MMMM DD, YYYY")}
             </TableCell>
 
             <TableCell className="text-right">

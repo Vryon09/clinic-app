@@ -17,25 +17,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/ui/components/shadcn/select";
-import { Input } from "@/ui/components/shadcn/input";
 import { handleGetCases, useAddCase } from "@/services/apiCase";
 import type { ICase } from "@/types/CaseType";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Plus } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/ui/components/shadcn/dialog";
-import { Field, FieldGroup, FieldLabel } from "@/ui/components/shadcn/field";
-import { handleGetDoctors } from "@/services/apiAuth";
-import type { IDoctor } from "@/types/User";
 import { useAuth } from "@/hooks/useAuth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addCaseSchema, type AddCaseInput } from "@/schemas/caseSchema";
 import { toast } from "sonner";
+import CaseDialog from "./CaseDialog";
 
 function ConsultationsForm() {
   const [isAddingCase, setIsAddingCase] = useState<boolean>(false);
@@ -50,11 +41,6 @@ function ConsultationsForm() {
   const { data: patient, isPending: isPatientLoading } = useQuery({
     queryFn: () => handleGetPatient({ id: patientId }),
     queryKey: ["patient", patientId],
-  });
-
-  const { data: doctors, isPending: isDoctorsLoading } = useQuery<IDoctor[]>({
-    queryFn: handleGetDoctors,
-    queryKey: ["doctors"],
   });
 
   const { data: cases, isPending: isCasesLoading } = useQuery<ICase[]>({
@@ -174,67 +160,15 @@ function ConsultationsForm() {
                       )}
                     </Button>
 
-                    <Dialog open={isAddingCase} onOpenChange={setIsAddingCase}>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Add New Case</DialogTitle>
-                        </DialogHeader>
-
-                        <form
-                          onSubmit={caseHandleSubmit(caseOnSubmit, (errors) =>
-                            console.log(errors),
-                          )}
-                        >
-                          <FieldGroup>
-                            <Field>
-                              <FieldLabel>Case Name</FieldLabel>
-                              <Input
-                                type="text"
-                                {...caseRegister("caseName")}
-                              />
-                            </Field>
-
-                            <Field>
-                              <FieldLabel>Doctor</FieldLabel>
-
-                              <Controller
-                                name="doctorId"
-                                control={caseControl}
-                                render={({ field }) => (
-                                  <Select
-                                    disabled={isDoctorsLoading}
-                                    value={field.value}
-                                    onValueChange={field.onChange}
-                                  >
-                                    <SelectTrigger className="w-full cursor-pointer">
-                                      <SelectValue placeholder="Select a doctor" />
-                                    </SelectTrigger>
-
-                                    <SelectContent>
-                                      <SelectGroup>
-                                        {doctors?.map((doctor) => (
-                                          <SelectItem
-                                            key={doctor.id}
-                                            value={doctor.id}
-                                            className="cursor-pointer"
-                                          >
-                                            {doctor.username}
-                                          </SelectItem>
-                                        ))}
-                                      </SelectGroup>
-                                    </SelectContent>
-                                  </Select>
-                                )}
-                              />
-                            </Field>
-
-                            <div className="mt-4 flex justify-end">
-                              <Button type="submit">Add</Button>
-                            </div>
-                          </FieldGroup>
-                        </form>
-                      </DialogContent>
-                    </Dialog>
+                    <CaseDialog
+                      caseControl={caseControl}
+                      caseHandleSubmit={caseHandleSubmit}
+                      caseOnSubmit={caseOnSubmit}
+                      caseRegister={caseRegister}
+                      isAddingCase={isAddingCase}
+                      setIsAddingCase={setIsAddingCase}
+                      action="add"
+                    />
                   </div>
                   {/* <div className="my-1 flex gap-2 px-1">
                     <Input

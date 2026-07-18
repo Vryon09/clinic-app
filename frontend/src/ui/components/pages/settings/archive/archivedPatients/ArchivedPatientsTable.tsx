@@ -48,7 +48,7 @@ function ArchivedPatientsTable({
             <TableCell>{patient.sex.slice(0, 1)}</TableCell>
 
             <TableCell>
-              {dayjs(patient.archivedOn).format("MMMM DD, YYYY")}
+              {dayjs(patient.archivedOn).format("hh:mm A, MMMM DD, YYYY")}
             </TableCell>
 
             <TableCell className="text-right">

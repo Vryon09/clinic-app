@@ -100,6 +100,9 @@ model Case {
   doctor   User?   @relation(fields: [doctorId], references: [id])
 
   patient Patient @relation(fields: [patientId], references: [id])
+
+  isArchived Boolean   @default(false)
+  archivedOn DateTime?
 }
 
 model Record {

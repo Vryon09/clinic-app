@@ -8,6 +8,7 @@ import {
 } from "@/ui/components/shadcn/tabs";
 import ArchivedPatients from "./archivedPatients/ArchivedPatients";
 import ArchivedRecords from "./archivedRecords/ArchivedRecords";
+import ArchivedCases from "./archivedCase/ArchivedCases";
 
 function Archive() {
   return (
@@ -30,6 +31,10 @@ function Archive() {
           <TabsTrigger value="consultations" className="cursor-pointer">
             Consultations
           </TabsTrigger>
+
+          <TabsTrigger value="cases" className="cursor-pointer">
+            Cases
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="patients">
@@ -38,6 +43,10 @@ function Archive() {
 
         <TabsContent value="consultations">
           <ArchivedRecords />
+        </TabsContent>
+
+        <TabsContent value="cases">
+          <ArchivedCases />
         </TabsContent>
       </Tabs>
     </Card>
