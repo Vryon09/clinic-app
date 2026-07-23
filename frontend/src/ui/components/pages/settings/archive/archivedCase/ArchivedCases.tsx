@@ -6,6 +6,7 @@ import type { ICase } from "@/types/CaseType";
 import { handleGetArchivedCases } from "@/services/apiCase";
 import ArchivedCasesTable from "./ArchivedCasesTable";
 import type { IPatient } from "@/types/PatientType";
+import { Spinner } from "../../../../shadcn/spinner";
 
 export interface IArchivedCase extends ICase {
   archivedOn: Date;
@@ -24,9 +25,12 @@ function ArchivedCases() {
   const archivedCases = archivedCasesData?.data;
   const archivedCasesPagination = archivedCasesData?.meta;
 
-  console.log(archivedCasesData);
-
-  if (isArchivedCasesPending) return <p>loading...</p>;
+  if (isArchivedCasesPending)
+    return (
+      <div className="flex justify-center">
+        <Spinner className="size-8" />
+      </div>
+    );
 
   return (
     <div>

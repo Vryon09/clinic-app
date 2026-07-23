@@ -6,6 +6,7 @@ import { useState } from "react";
 import PaginationBar from "@/ui/components/PaginationBar";
 import type { PaginatedResponse } from "@/types/Pagination";
 import type { ICase } from "@/types/CaseType";
+import { Spinner } from "@/ui/components/shadcn/spinner";
 
 export interface IArchivedRecord extends IRecord {
   patient: { firstName: string; middleName: string; lastName: string };
@@ -24,7 +25,12 @@ function ArchivedRecords() {
   const archivedRecords = archivedRecordsData?.data;
   const archivedRecordsPagination = archivedRecordsData?.meta;
 
-  if (isArchivedRecordsPending) return <p>loading...</p>;
+  if (isArchivedRecordsPending)
+    return (
+      <div className="flex justify-center">
+        <Spinner className="size-8" />
+      </div>
+    );
 
   return (
     <div>

@@ -31,7 +31,7 @@ function PaginationBar({
         paginationData.total,
       );
   return (
-    <div className="mt-4 flex w-full items-center justify-between border-t border-neutral-300 px-2 py-2">
+    <div className="border-border mt-4 flex w-full items-center justify-between border-t px-2 py-2">
       {isLoading ? (
         <>
           <Skeleton className="h-4 w-24 bg-neutral-300" />

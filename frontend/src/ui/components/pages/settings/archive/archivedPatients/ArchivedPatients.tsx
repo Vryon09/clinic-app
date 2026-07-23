@@ -6,6 +6,7 @@ import ArchivedPatientsTable from "./ArchivedPatientsTable";
 import { useState } from "react";
 import PaginationBar from "@/ui/components/PaginationBar";
 import type { PaginatedResponse } from "@/types/Pagination";
+import { Spinner } from "@/ui/components/shadcn/spinner";
 
 export interface IArchivedPatient extends IPatient {
   archivedOn: Date;
@@ -23,7 +24,12 @@ function ArchivedPatients() {
   const archivedPatients = archivedPatientsData?.data;
   const archivedPatientsPagination = archivedPatientsData?.meta;
 
-  if (isArchivedPatientsPending) return <p>loading...</p>;
+  if (isArchivedPatientsPending)
+    return (
+      <div className="flex justify-center">
+        <Spinner className="size-8" />
+      </div>
+    );
 
   return (
     <div>

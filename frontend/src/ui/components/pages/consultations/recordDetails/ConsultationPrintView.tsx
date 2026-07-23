@@ -198,7 +198,7 @@ function ConsultationPrintView({
 
             window.print();
           }}
-          className="mt-4 cursor-pointer text-center print:hidden"
+          className="mt-4 cursor-pointer bg-[oklch(0.269_0_0)] text-center text-white hover:bg-[oklch(0.269_0_0)]/80 print:hidden"
           disabled={isClinicInfoPending || isPatientPending}
         >
           Print Report

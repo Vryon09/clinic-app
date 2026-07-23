@@ -11,7 +11,6 @@ import {
   SidebarMenuItem,
 } from "./shadcn/sidebar";
 import { CloudBackup, LogOut, Settings, User } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "./shadcn/avatar";
 import { cn } from "@/lib/utils";
 
 const modules = [
