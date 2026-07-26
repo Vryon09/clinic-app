@@ -11,9 +11,9 @@ const router = Router();
 
 router.get("/callback", googleAuthCallback);
 
-router.use(verifyToken);
-
 router.get("/", initGoogleDriveAuth);
+
+router.use(verifyToken);
 
 router.get("/data", getGoogleAuthData);
 
