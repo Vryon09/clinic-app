@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
-import { BrowserRouter } from "react-router";
+import { HashRouter } from "react-router";
 import { ThemeProvider } from "next-themes";
 
 createRoot(document.getElementById("root")!).render(
@@ -12,9 +12,9 @@ createRoot(document.getElementById("root")!).render(
       defaultTheme="system"
       storageKey="vite-ui-theme"
     >
-      <BrowserRouter>
+      <HashRouter>
         <App />
-      </BrowserRouter>
+      </HashRouter>
     </ThemeProvider>
   </StrictMode>,
 );

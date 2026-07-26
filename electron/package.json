@@ -1,0 +1,28 @@
+{
+  "name": "clinicsync",
+  "productName": "Clinic Sync",
+  "version": "1.0.0",
+  "description": "Clinic Management System",
+  "author": "Vryon Antonio",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "start": "electron .",
+    "build": "tsc",
+    "dist": "electron-builder",
+    "pack": "npm run build && electron-builder --dir"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "wait-on": "^9.1.0"
+  },
+  "devDependencies": {
+    "electron": "^43.2.0",
+    "@types/node": "^26.1.1",
+    "@types/wait-on": "^5.3.4",
+    "electron-builder": "^26.15.3",
+    "tsx": "^4.23.1",
+    "typescript": "^7.0.2"
+  }
+}

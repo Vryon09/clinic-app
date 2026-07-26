@@ -12,13 +12,13 @@ export function verifyToken(
   res: Response,
   next: NextFunction,
 ) {
-  const token = req.cookies.jwt;
+  const authHeader = req.headers.authorization;
 
-  // console.log("Token: " + token);/
-
-  if (!token) {
+  if (!authHeader?.startsWith("Bearer ")) {
     return res.status(401).json({ message: "Unauthorized" });
   }
+
+  const token = authHeader.split(" ")[1];
 
   try {
     const secret = process.env.JWT_SECRET;

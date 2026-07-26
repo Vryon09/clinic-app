@@ -1,0 +1,45 @@
+{
+  "appId": "com.vryonantonio.clinicsync",
+  "productName": "Clinic Sync",
+
+  "directories": {
+    "output": "release"
+  },
+
+  "files": ["dist/**/*"],
+
+  "extraResources": [
+    {
+      "from": "../frontend/dist",
+      "to": "frontend"
+    },
+    {
+      "from": "../backend/dist",
+      "to": "backend/dist"
+    },
+    {
+      "from": "../backend/node_modules",
+      "to": "backend/node_modules"
+    },
+    {
+      "from": "../backend/package.json",
+      "to": "backend/package.json"
+    },
+    {
+      "from": "../backend/src/generated",
+      "to": "backend/generated"
+    },
+    {
+      "from": "../backend/src/prisma",
+      "to": "backend/prisma"
+    },
+    {
+      "from": "../backend/.env",
+      "to": "backend/.env"
+    }
+  ],
+
+  "win": {
+    "target": ["portable", "nsis"]
+  }
+}

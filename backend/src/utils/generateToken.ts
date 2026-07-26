@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 export function generateToken(
   userId: string,
   role: "ADMIN" | "DOCTOR" | "ASSISTANT",
-  res: Response,
 ) {
   const payload = { id: userId, role };
 
@@ -17,13 +16,6 @@ export function generateToken(
   const token = jwt.sign(payload, secret, {
     expiresIn: (process.env.JWT_EXPIRES_IN ||
       "7d") as jwt.SignOptions["expiresIn"],
-  });
-
-  res.cookie("jwt", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    maxAge: 1000 * 60 * 60 * 24 * 7,
   });
 
   return token;

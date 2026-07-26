@@ -29,11 +29,18 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/health", (_req, res) => {
+  res.status(200).send("OK");
+});
+
+app.head("/health", (_req, res) => {
+  res.sendStatus(200);
+});
+
 app.use("/api/patients", patientRoutes);
 app.use("/api/records", recordRoutes);
 app.use("/api/vitalSigns", vitalSignsRoutes);
 app.use("/api/recordMedication", recordMedicationRoutes);
-app.use("/api/labResults", labResultsRoutes);
 app.use("/api/labResults", labResultsRoutes);
 app.use("/api/google", googleAuthRoutes);
 app.use("/api/backup", backupRoutes);
@@ -42,9 +49,11 @@ app.use("/api/clinicInfo", clinicInfoRoutes);
 app.use("/api/case", caseRoutes);
 app.use("/api/activityLog", activityLogRoutes);
 
-app.listen(process.env.PORT, () =>
-  console.log("Listening to PORT: " + process.env.PORT),
-);
+app.listen(process.env.PORT, () => {
+  // if (process.env.NODE_ENV === "development") {
+  console.log("Listening to PORT: " + process.env.PORT);
+  // }
+});
 
 process.on("SIGINT", async () => {
   await prisma.$disconnect();

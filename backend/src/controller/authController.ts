@@ -130,7 +130,7 @@ export async function registerUser(req: Request, res: Response) {
       },
     });
 
-    const token = generateToken(user.id, user.role, res);
+    const token = generateToken(user.id, user.role);
 
     res.status(201).json({
       success: true,
@@ -245,7 +245,7 @@ export async function loginUser(req: Request, res: Response) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const token = generateToken(user.id, user.role, res);
+    const token = generateToken(user.id, user.role);
 
     res.status(201).json({
       message: "User created",
@@ -268,12 +268,6 @@ export async function loginUser(req: Request, res: Response) {
 
 export async function logoutUser(req: Request, res: Response) {
   try {
-    res.clearCookie("jwt", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-    });
-
     res
       .status(200)
       .json({ success: true, message: "User logged out successfully." });

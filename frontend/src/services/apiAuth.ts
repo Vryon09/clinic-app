@@ -281,6 +281,9 @@ export function useChangeLicenseNum() {
 
 async function handleLogin({ username, password }: LoginPayload) {
   const res = await api.post("/api/auth/login", { username, password });
+
+  localStorage.setItem("token", res.data.data.token);
+
   return res.data;
 }
 
@@ -304,6 +307,7 @@ export function useLogout() {
   return useMutation({
     mutationFn: handleLogout,
     onSuccess: () => {
+      localStorage.removeItem("token");
       queryClient.setQueryData(["me"], null);
       queryClient.removeQueries({ queryKey: ["me"] });
     },
