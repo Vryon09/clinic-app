@@ -1,9 +1,9 @@
 import { LoginForm } from "../../forms/LoginForm";
-import { SignupForm } from "../../forms/SignupForm";
 import { useQuery } from "@tanstack/react-query";
 import { handleGetAuthStatus } from "@/services/apiAuth";
 import { Spinner } from "../../shadcn/spinner";
 import { Button } from "../../shadcn/button";
+import WelcomeScreen from "./WelcomeScreen";
 
 function AuthPage() {
   const {
@@ -39,7 +39,7 @@ function AuthPage() {
         ) : isSetupComplete ? (
           <LoginForm />
         ) : (
-          <SignupForm />
+          <WelcomeScreen />
         )}
       </div>
     </div>
