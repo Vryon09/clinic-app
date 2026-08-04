@@ -3,17 +3,23 @@ import { Button } from "../../shadcn/button";
 import { useRef, useState } from "react";
 import { SignupForm } from "../../forms/SignupForm";
 import { Input } from "../../shadcn/input";
+import { useRestoreBackup } from "@/services/apiBackup";
 
 function WelcomeScreen() {
   const [isStartingNew, setIsStartingNew] = useState<boolean>(false);
   const backupButtonRef = useRef<HTMLInputElement | null>(null);
+
+  const { mutate: handleRestoreBackup } = useRestoreBackup();
 
   const handleClick = () => backupButtonRef.current?.click();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
+    if (!file) return;
+
     console.log(file);
+    handleRestoreBackup({ file });
   };
 
   if (isStartingNew) return <SignupForm />;
@@ -37,6 +43,7 @@ function WelcomeScreen() {
             className="hidden"
             onChange={handleChange}
           />
+
           <Button className="w-full" onClick={handleClick}>
             <Import />
             Import backup

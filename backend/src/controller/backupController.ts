@@ -8,6 +8,7 @@ import os from "os";
 import path from "path";
 import fs from "fs";
 import { ZipArchive } from "archiver";
+import AdmZip from "adm-zip";
 
 export const backupToDrive = async (req: Request, res: Response) => {
   const tokenRecord = await prisma.googleToken.findUnique({ where: { id: 1 } });
@@ -122,3 +123,110 @@ export const backupToDrive = async (req: Request, res: Response) => {
     fileName: upload.data.name,
   });
 };
+
+export async function restoreBackup(req: Request, res: Response) {
+  try {
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).json({
+        error: "Backup file is required.",
+      });
+    }
+
+    const zipPath = file.path;
+
+    const extractDir = fs.mkdtempSync(path.join(os.tmpdir(), "restore-"));
+
+    const zip = new AdmZip(zipPath);
+
+    zip.extractAllTo(extractDir, true);
+
+    const backupPath = path.join(extractDir, "backup.json");
+
+    const backup = JSON.parse(fs.readFileSync(backupPath, "utf8"));
+
+    await prisma.$transaction(async (tx) => {
+      await tx.clinic.deleteMany();
+
+      if (backup.data.users.length) {
+        await tx.user.createMany({
+          data: backup.data.users,
+        });
+      }
+      if (backup.data.clinics.length) {
+        await tx.clinic.createMany({
+          data: backup.data.clinics,
+        });
+      }
+      if (backup.data.patients.length) {
+        await tx.patient.createMany({
+          data: backup.data.patients,
+        });
+      }
+
+      if (backup.data.cases.length) {
+        await tx.case.createMany({
+          data: backup.data.cases,
+        });
+      }
+      if (backup.data.records.length) {
+        await tx.record.createMany({
+          data: backup.data.records,
+        });
+      }
+
+      if (backup.data.vitalSigns.length) {
+        await tx.vitalSigns.createMany({
+          data: backup.data.vitalSigns,
+        });
+      }
+      if (backup.data.recordMedications.length) {
+        await tx.recordMedication.createMany({
+          data: backup.data.recordMedications,
+        });
+      }
+
+      if (backup.data.labResults.length) {
+        await tx.labResult.createMany({
+          data: backup.data.labResults,
+        });
+      }
+
+      if (backup.data.systemLogs.length) {
+        await tx.systemLogs.createMany({
+          data: backup.data.systemLogs,
+        });
+      }
+    });
+
+    const sourceDir = path.join(extractDir, "labresults");
+
+    const destinationDir = path.join(process.cwd(), "uploads", "labresults");
+
+    if (!fs.existsSync(destinationDir)) {
+      fs.mkdirSync(destinationDir, {
+        recursive: true,
+      });
+    }
+
+    for (const file of fs.readdirSync(sourceDir)) {
+      fs.copyFileSync(
+        path.join(sourceDir, file),
+        path.join(destinationDir, file),
+      );
+    }
+
+    fs.rmSync(extractDir, {
+      recursive: true,
+      force: true,
+    });
+
+    fs.unlinkSync(zipPath);
+
+    res.status(201).json({ message: "Restore backup successfully." });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json(error);
+  }
+}

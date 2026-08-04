@@ -11,6 +11,28 @@ export function useBackup() {
   });
 }
 
+async function handleRestoreBackup({ file }: { file: File }) {
+  const formData = new FormData();
+  formData.append("backup", file);
+
+  const res = await api.post("/api/backup/restore", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  console.log(res.data);
+}
+
+export function useRestoreBackup() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: handleRestoreBackup,
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["authStatus"] }),
+  });
+}
+
 export async function handleGetGoogleAuthData() {
   const res = await api.get("/api/google/data");
 

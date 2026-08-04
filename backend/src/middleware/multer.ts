@@ -1,4 +1,5 @@
 import multer from "multer";
+import os from "os";
 import fs from "fs";
 
 const storage = multer.diskStorage({
@@ -19,5 +20,9 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage });
+
+export const uploadRestore = multer({
+  dest: os.tmpdir(),
+});
 
 export default upload;

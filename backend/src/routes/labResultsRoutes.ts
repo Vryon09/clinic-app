@@ -1,5 +1,4 @@
 import { Router } from "express";
-import upload from "../config/multer";
 import {
   deleteLabResult,
   getLabResults,
@@ -8,6 +7,7 @@ import {
 import { validateSchema } from "../middleware/validateSchema";
 import { uploadLabResultSchema } from "../schemas/labResultSchema";
 import { verifyToken } from "../middleware/verifyToken";
+import upload from "../middleware/multer";
 
 const router = Router();
 
