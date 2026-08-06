@@ -14,6 +14,7 @@ import authRoutes from "./routes/authRoutes.ts";
 import clinicInfoRoutes from "./routes/clinicInfoRoutes.ts";
 import caseRoutes from "./routes/caseRoutes.ts";
 import activityLogRoutes from "./routes/activityLogRoutes.ts";
+import systemRoutes from "./routes/systemRoutes.ts";
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/clinicInfo", clinicInfoRoutes);
 app.use("/api/case", caseRoutes);
 app.use("/api/activityLog", activityLogRoutes);
+app.use("/api/system", systemRoutes);
 
 app.listen(process.env.PORT, () => {
   // if (process.env.NODE_ENV === "development") {

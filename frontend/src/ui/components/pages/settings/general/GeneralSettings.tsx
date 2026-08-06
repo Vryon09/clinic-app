@@ -22,7 +22,8 @@ import { clinicInfoSchema } from "@/schemas/clinicInfoSchema";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Spinner } from "../../../shadcn/spinner";
-import { Edit, X } from "lucide-react";
+import { Edit, TriangleAlert, X } from "lucide-react";
+import ResetDatabase from "./ResetDatabase";
 
 function GeneralSettings() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -200,6 +201,18 @@ function GeneralSettings() {
           )}
         </form>
       )}
+
+      <div className="mt-8 flex justify-between">
+        <div>
+          <p className="flex items-center gap-2 font-semibold text-red-400">
+            <TriangleAlert size={20} /> Danger Zone
+          </p>
+        </div>
+      </div>
+
+      <Separator />
+
+      <ResetDatabase />
     </Card>
   );
 }
