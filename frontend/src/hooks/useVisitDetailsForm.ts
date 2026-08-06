@@ -86,8 +86,6 @@ export function useVisitDetailsForm({
     },
   });
 
-  // console.log(errors);
-
   const {
     fields: recordMedicationField,
     append: addMedication,

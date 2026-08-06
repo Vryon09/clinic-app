@@ -15,8 +15,6 @@ function ConsultationRecordsTable() {
     queryKey: ["cases", patientId],
   });
 
-  console.log(cases);
-
   if (isCasesLoading)
     return (
       <div className="flex justify-center">

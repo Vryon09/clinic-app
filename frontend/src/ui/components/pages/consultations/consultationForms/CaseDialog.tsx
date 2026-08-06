@@ -85,11 +85,7 @@ function CaseDialog({
           </DialogTitle>
         </DialogHeader>
 
-        <form
-          onSubmit={caseHandleSubmit(caseOnSubmit, (errors) =>
-            console.log(errors),
-          )}
-        >
+        <form onSubmit={caseHandleSubmit(caseOnSubmit)}>
           <FieldGroup>
             <Field>
               <FieldLabel>Case Name</FieldLabel>

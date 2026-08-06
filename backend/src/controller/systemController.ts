@@ -1,9 +1,18 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
+import fs from "fs";
 
 export async function resetDatabase(req: Request, res: Response) {
   try {
     await prisma.$transaction(async (tx) => {
+      const labResults = await tx.labResult.findMany({
+        select: { filePath: true },
+      });
+
+      for (const labResult of labResults) {
+        await fs.promises.unlink(labResult.filePath);
+      }
+
       await tx.recordMedication.deleteMany();
       await tx.vitalSigns.deleteMany();
       await tx.record.deleteMany();

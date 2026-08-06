@@ -102,6 +102,7 @@ export function LoginForm({
                       e.preventDefault();
                       setIsPasswordShowing((prev) => !prev);
                     }}
+                    type="button"
                     variant="ghost"
                     size="icon-lg"
                     className="absolute top-1/2 right-0 h-full -translate-y-1/2 cursor-pointer rounded-r-md px-2 hover:bg-transparent"

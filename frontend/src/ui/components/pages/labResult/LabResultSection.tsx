@@ -23,8 +23,6 @@ function LabResultSection() {
   const labResults = labResultsData?.data;
   const paginationData = labResultsData?.meta;
 
-  console.log(labResults);
-
   return (
     <div>
       <UploadLabResultButton />

@@ -84,7 +84,7 @@ export const backupToDrive = async (req: Request, res: Response) => {
 
     if (fs.existsSync(absolutePath)) {
       archive.file(absolutePath, {
-        name: `labresults/${path.basename(absolutePath)}`,
+        name: `lab-results/${path.basename(absolutePath)}`,
       });
     } else {
       console.warn("Missing lab file:", absolutePath);
@@ -200,9 +200,9 @@ export async function restoreBackup(req: Request, res: Response) {
       }
     });
 
-    const sourceDir = path.join(extractDir, "labresults");
+    const sourceDir = path.join(extractDir, "lab-results");
 
-    const destinationDir = path.join(process.cwd(), "uploads", "labresults");
+    const destinationDir = path.join(process.cwd(), "uploads", "lab-results");
 
     if (!fs.existsSync(destinationDir)) {
       fs.mkdirSync(destinationDir, {
