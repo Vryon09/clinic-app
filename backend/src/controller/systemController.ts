@@ -10,7 +10,11 @@ export async function resetDatabase(req: Request, res: Response) {
       });
 
       for (const labResult of labResults) {
-        await fs.promises.unlink(labResult.filePath);
+        try {
+          await fs.promises.unlink(labResult.filePath);
+        } catch {
+          console.log("Lab result not found.");
+        }
       }
 
       await tx.recordMedication.deleteMany();

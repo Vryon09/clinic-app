@@ -286,7 +286,7 @@ export async function updatePatient(req: UserRequest, res: Response) {
 
     const updatedPatient = await prisma.patient.update({
       where: { id: patientId },
-      data: { ...data, lastEditedBy: req.userId },
+      data: { ...data, lastEditedById: req.userId },
     });
 
     await prisma.systemLogs.create({
