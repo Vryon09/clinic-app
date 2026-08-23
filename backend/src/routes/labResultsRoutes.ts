@@ -7,7 +7,7 @@ import {
 import { validateSchema } from "../middleware/validateSchema";
 import { uploadLabResultSchema } from "../schemas/labResultSchema";
 import { verifyToken } from "../middleware/verifyToken";
-import upload from "../middleware/multer";
+import { uploadLabResults } from "../middleware/multer";
 
 const router = Router();
 
@@ -16,7 +16,7 @@ router.use(verifyToken);
 router.get("/:patientId", getLabResults);
 router.post(
   "/upload",
-  upload.single("file"),
+  uploadLabResults.single("file"),
   validateSchema(uploadLabResultSchema),
   uploadLabResult,
 );

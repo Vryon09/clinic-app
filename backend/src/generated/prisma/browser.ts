@@ -58,6 +58,11 @@ export type RecordMedication = Prisma.RecordMedicationModel
  */
 export type labResult = Prisma.labResultModel
 /**
+ * Model Signature
+ * 
+ */
+export type Signature = Prisma.SignatureModel
+/**
  * Model GoogleToken
  * 
  */

@@ -59,6 +59,7 @@ export const ModelName = {
   VitalSigns: 'VitalSigns',
   RecordMedication: 'RecordMedication',
   labResult: 'labResult',
+  Signature: 'Signature',
   GoogleToken: 'GoogleToken',
   SystemLogs: 'SystemLogs'
 } as const
@@ -194,6 +195,16 @@ export const LabResultScalarFieldEnum = {
 } as const
 
 export type LabResultScalarFieldEnum = (typeof LabResultScalarFieldEnum)[keyof typeof LabResultScalarFieldEnum]
+
+
+export const SignatureScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  filePath: 'filePath',
+  uploadedAt: 'uploadedAt'
+} as const
+
+export type SignatureScalarFieldEnum = (typeof SignatureScalarFieldEnum)[keyof typeof SignatureScalarFieldEnum]
 
 
 export const GoogleTokenScalarFieldEnum = {

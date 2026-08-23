@@ -15,6 +15,7 @@ import { Spinner } from "../../../shadcn/spinner";
 import LicenseNumDialog from "./LicenseNumDialog";
 import FullNameDialog from "./FullNameDialog";
 import UsernameDialog from "./UsernameDialog";
+import SignatureSection from "./SignatureSection";
 
 function ManageAccounts() {
   // const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
@@ -33,39 +34,42 @@ function ManageAccounts() {
 
   return (
     <Card className="space-y-4 px-8 py-4">
-      <div className="flex justify-between">
-        <div>
-          <p className="text-2xl font-semibold">Manage Accounts</p>
-          <p className="text-sm text-neutral-500">
-            Create and manage user access for your clinic
-          </p>
-        </div>
+      {user?.role !== "DOCTOR" && (
+        <>
+          <div className="flex justify-between">
+            <div>
+              <p className="text-2xl font-semibold">Manage Accounts</p>
+              <p className="text-sm text-neutral-500">
+                Create and manage user access for your clinic
+              </p>
+            </div>
 
-        <Button
-          onClick={() => setIsAddingUser((prev) => !prev)}
-          disabled={isUsersLoading || isUserLoading}
-        >
-          <Plus /> Add User
-        </Button>
+            <Button
+              onClick={() => setIsAddingUser((prev) => !prev)}
+              disabled={isUsersLoading || isUserLoading}
+            >
+              <Plus /> Add User
+            </Button>
 
-        <UserDialog
-          isUserDialogOpen={isAddingUser}
-          setIsUserDialogOpen={setIsAddingUser}
-          action="create"
-          initialValues={{
-            username: "",
-            role: "DOCTOR",
-            id: "",
-            licenseNum: "",
-            isActive: true,
-            firstName: "",
-            middleName: "",
-            lastName: "",
-          }}
-        />
-      </div>
-
-      <Separator />
+            <UserDialog
+              isUserDialogOpen={isAddingUser}
+              setIsUserDialogOpen={setIsAddingUser}
+              action="create"
+              initialValues={{
+                username: "",
+                role: "DOCTOR",
+                id: "",
+                licenseNum: "",
+                isActive: true,
+                firstName: "",
+                middleName: "",
+                lastName: "",
+              }}
+            />
+          </div>
+          <Separator />
+        </>
+      )}
 
       {isUsersLoading || isUserLoading ? (
         <div className="flex h-40 items-center justify-center">
@@ -73,13 +77,12 @@ function ManageAccounts() {
         </div>
       ) : (
         <>
-          <UsersTable
-            users={users!}
-            // selectedUser={selectedUser}
-            // setSelectedUser={setSelectedUser}
-          />
-
-          <Separator />
+          {user?.role !== "DOCTOR" && (
+            <>
+              <UsersTable users={users!} />
+              <Separator />{" "}
+            </>
+          )}
 
           <div>
             <p className="text-2xl font-semibold">Manage Profile</p>
@@ -94,75 +97,79 @@ function ManageAccounts() {
               <p className="text-xs text-neutral-500">{user?.role}</p>
             </div>
 
-            <Card className="flex w-100 flex-col gap-4 p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs">Username</p>
-                  <p className="font-semibold">{user?.username}</p>
-                </div>
-
-                <Button
-                  size="xs"
-                  onClick={() => {
-                    setIsChangingUsername(true);
-                  }}
-                >
-                  <Edit /> Edit
-                </Button>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs">Full name</p>
-                  <p className="font-semibold">
-                    {user?.firstName} {user?.middleName} {user?.lastName}
-                  </p>
-                </div>
-
-                <Button
-                  size="xs"
-                  onClick={() => {
-                    setIsChangingFullName(true);
-                  }}
-                >
-                  <Edit /> Edit
-                </Button>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs">Password</p>
-                  <p className="font-semibold">••••••••••••••••</p>
-                </div>
-
-                <Button
-                  size="xs"
-                  onClick={() => {
-                    setIsChangingPassword(true);
-                  }}
-                >
-                  <Edit /> Edit
-                </Button>
-              </div>
-
-              {user?.role === "DOCTOR" && (
+            <div className="w-100">
+              <Card className="flex w-full flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs">License Number</p>
-                    <p className="font-semibold">{user.licenseNum}</p>
+                    <p className="text-xs">Username</p>
+                    <p className="font-semibold">{user?.username}</p>
                   </div>
 
                   <Button
                     size="xs"
                     onClick={() => {
-                      setIsChangingLicenseNum(true);
+                      setIsChangingUsername(true);
                     }}
                   >
                     <Edit /> Edit
                   </Button>
                 </div>
-              )}
-            </Card>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs">Full name</p>
+                    <p className="font-semibold">
+                      {user?.firstName} {user?.middleName} {user?.lastName}
+                    </p>
+                  </div>
+
+                  <Button
+                    size="xs"
+                    onClick={() => {
+                      setIsChangingFullName(true);
+                    }}
+                  >
+                    <Edit /> Edit
+                  </Button>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs">Password</p>
+                    <p className="font-semibold">••••••••••••••••</p>
+                  </div>
+
+                  <Button
+                    size="xs"
+                    onClick={() => {
+                      setIsChangingPassword(true);
+                    }}
+                  >
+                    <Edit /> Edit
+                  </Button>
+                </div>
+
+                {user?.role === "DOCTOR" && (
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs">License Number</p>
+                      <p className="font-semibold">{user.licenseNum}</p>
+                    </div>
+
+                    <Button
+                      size="xs"
+                      onClick={() => {
+                        setIsChangingLicenseNum(true);
+                      }}
+                    >
+                      <Edit /> Edit
+                    </Button>
+                  </div>
+                )}
+              </Card>
+
+              <SignatureSection />
+            </div>
 
             <UsernameDialog
               open={isChangingUsername}
