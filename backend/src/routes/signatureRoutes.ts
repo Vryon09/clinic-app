@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { uploadSignatures } from "../middleware/multer";
 import {
+  deleteSignature,
   getSignature,
   uploadSignature,
 } from "../controller/signatureController";
@@ -11,12 +12,13 @@ const router = Router();
 
 router.use(verifyToken);
 
-router.get("/", getSignature);
+router.get("/:userId", getSignature);
 router.post(
   "/upload",
   isAlreadySigned(),
   uploadSignatures.single("file"),
   uploadSignature,
 );
+router.delete("/", deleteSignature);
 
 export default router;

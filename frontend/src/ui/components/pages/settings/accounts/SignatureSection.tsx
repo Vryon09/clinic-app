@@ -2,6 +2,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { dataURLToFile } from "@/lib/dataURLtoFIle";
 import {
   handleGetSignature,
+  useDeleteSignature,
   useUploadSignature,
 } from "@/services/apiSignature";
 import { Button } from "@/ui/components/shadcn/button";
@@ -17,13 +18,19 @@ function SignatureSection() {
   const { user, isUserLoading } = useAuth();
   const sigRef = useRef<SignatureCanvas>(null);
   const { data: signatureData } = useQuery({
-    queryKey: ["signature"],
-    queryFn: handleGetSignature,
+    queryKey: ["signature", user?.id],
+    queryFn: () => {
+      if (!user?.id) throw new Error("User ID is required");
+      return handleGetSignature(user.id);
+    },
+    enabled: !!user?.id,
   });
 
   console.log(signatureData);
 
   const { mutate: handleUploadSignature } = useUploadSignature();
+  const { mutate: handleDeleteSignature, isPending: isDeletingSignature } =
+    useDeleteSignature();
 
   const uploadSignature = () => {
     if (!user) return;
@@ -106,16 +113,20 @@ function SignatureSection() {
       {signatureData && (
         <>
           <div className="rounded-xl bg-neutral-200">
-            <img
-              src={`${`http://localhost:3000/${signatureData.filePath}`}`}
-              className="w-full"
-            />
+            <img src={`${`http://localhost:3000/${signatureData.filePath}`}`} />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <Button>Replace</Button>
-            <Button variant="destructive">Remove</Button>
-          </div>
+          <Button
+            variant="destructive"
+            disabled={isDeletingSignature}
+            onClick={() => {
+              setSignature(null);
+              handleDeleteSignature();
+              setIsAddingSignature(false);
+            }}
+          >
+            Remove
+          </Button>
         </>
       )}
     </Card>

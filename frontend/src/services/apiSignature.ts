@@ -4,8 +4,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { toast } from "sonner";
 
-export async function handleGetSignature() {
-  const res = await api.get("/api/signature/");
+export async function handleGetSignature(userId: string) {
+  const res = await api.get(`/api/signature/${userId}`);
 
   console.log(res);
   return res.data || {};
@@ -31,6 +31,30 @@ export function useUploadSignature() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["signature"] });
       toast.success("Upload Signature successfully", {
+        position: "top-center",
+      });
+    },
+    onError: (error: AxiosError<ErrorResponse>) => {
+      toast.error(`${error.response?.data.message}`, {
+        position: "top-center",
+      });
+    },
+  });
+}
+
+export async function handleDeleteSignature() {
+  const res = await api.delete("/api/signature");
+  return res.data || {};
+}
+
+export function useDeleteSignature() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: handleDeleteSignature,
+    onSuccess: () => {
+      queryClient.setQueryData(["signature"], null);
+      queryClient.removeQueries({ queryKey: ["signature"] });
+      toast.success("Signature deleted successfully", {
         position: "top-center",
       });
     },
