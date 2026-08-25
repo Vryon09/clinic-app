@@ -47,6 +47,7 @@ function ConsultationPrintView({
       if (!doctorId) throw new Error("Doctor ID is required");
       return handleGetSignature(doctorId);
     },
+    retry: false,
     enabled: !!doctorId,
   });
 
@@ -208,7 +209,7 @@ function ConsultationPrintView({
 
       {/* CONTROLS (PRINT HIDDEN) */}
       <div className="mt-6 flex flex-col gap-3 print:hidden">
-        {withSignature && !isSignaturePending && !signatureData?.filePath && (
+        {withSignature && !isSignaturePending && !signatureData && (
           <div className="flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
             <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600" />
             <span>
