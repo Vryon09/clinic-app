@@ -2,21 +2,37 @@ import { Response } from "express";
 import { UserRequest } from "../types/express";
 import { prisma } from "../config/prisma";
 
-export async function uploadLabResult(req: UserRequest, res: Response) {
+export async function getSignature(req: UserRequest, res: Response) {
   try {
-    const patientId = req.body.patientId;
+    const signature = await prisma.signature.findUnique({
+      where: { userId: req.userId },
+    });
+
+    if (!signature) {
+      return res.status(404).json({ message: "Signature not found." });
+    }
+
+    res.status(200).json(signature);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+}
+
+export async function uploadSignature(req: UserRequest, res: Response) {
+  try {
     const filePath = req.file?.path as string;
 
-    const patient = await prisma.patient.findUnique({
-      where: { id: patientId },
+    const user = await prisma.user.findUnique({
+      where: { id: req.userId },
       select: {
-        firstName: true,
-        lastName: true,
+        username: true,
+        id: true,
+        signatures: true,
       },
     });
 
-    if (!patient) {
-      return res.status(404).json({ message: "Patient not found." });
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
     }
 
     if (!filePath) {
@@ -24,23 +40,23 @@ export async function uploadLabResult(req: UserRequest, res: Response) {
       return;
     }
 
-    const newLabResult = await prisma.labResult.create({
-      data: { patientId, filePath },
+    const newSignature = await prisma.signature.create({
+      data: { userId: user.id, filePath },
     });
 
-    const target = `${patient.firstName} ${patient.lastName}`;
+    const target = `${user.id}`;
 
     await prisma.systemLogs.create({
       data: {
         action: "CREATE",
-        module: "Laboratory",
+        module: "Signature",
         target,
-        details: `Uploaded laboratory result for ${patient.firstName} ${patient.lastName}`,
+        details: `Uploaded signature for ${user.id}`,
         userId: req.userId!,
       },
     });
 
-    res.status(200).json(newLabResult);
+    res.status(200).json(newSignature);
   } catch (error) {
     res.status(400).json(error);
   }

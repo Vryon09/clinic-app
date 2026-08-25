@@ -2,6 +2,7 @@ import multer from "multer";
 import os from "os";
 import fs from "fs";
 import { prisma } from "../config/prisma";
+import { UserRequest } from "../types/express";
 
 const labResultsStorage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -32,8 +33,8 @@ const signatureStorage = multer.diskStorage({
 
     cb(null, dir);
   },
-  filename: async function (req, file, cb) {
-    const userId = req.body.userId;
+  filename: async function (req: UserRequest, file, cb) {
+    const userId = req.userId!;
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -44,12 +45,12 @@ const signatureStorage = multer.diskStorage({
 
     if (!user) return;
 
-    cb(null, Date.now() + "-" + user.username);
+    cb(null, Date.now() + "-" + user.username + ".png");
   },
 });
 
 export const uploadLabResults = multer({ storage: labResultsStorage });
-export const uploadSignature = multer({ storage: signatureStorage });
+export const uploadSignatures = multer({ storage: signatureStorage });
 
 export const uploadRestore = multer({
   dest: os.tmpdir(),

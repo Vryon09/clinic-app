@@ -15,6 +15,7 @@ import clinicInfoRoutes from "./routes/clinicInfoRoutes.ts";
 import caseRoutes from "./routes/caseRoutes.ts";
 import activityLogRoutes from "./routes/activityLogRoutes.ts";
 import systemRoutes from "./routes/systemRoutes.ts";
+import signatureRoutes from "./routes/signatureRoutes.ts";
 
 const app = express();
 
@@ -50,6 +51,7 @@ app.use("/api/clinicInfo", clinicInfoRoutes);
 app.use("/api/case", caseRoutes);
 app.use("/api/activityLog", activityLogRoutes);
 app.use("/api/system", systemRoutes);
+app.use("/api/signature", signatureRoutes);
 
 app.listen(process.env.PORT, () => {
   // if (process.env.NODE_ENV === "development") {
