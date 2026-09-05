@@ -30,6 +30,7 @@ export const backupToDrive = async (req: Request, res: Response) => {
     recordMedications,
     labResults,
     systemLogs,
+    signatures
   ] = await prisma.$transaction([
     prisma.clinic.findMany(),
     prisma.user.findMany(),
@@ -40,6 +41,7 @@ export const backupToDrive = async (req: Request, res: Response) => {
     prisma.recordMedication.findMany(),
     prisma.labResult.findMany(),
     prisma.systemLogs.findMany(),
+    prisma.signature.findMany()
   ]);
 
   const backup = {
@@ -59,6 +61,7 @@ export const backupToDrive = async (req: Request, res: Response) => {
       recordMedications,
       labResults,
       systemLogs,
+      signatures
     },
   };
 
@@ -88,6 +91,20 @@ export const backupToDrive = async (req: Request, res: Response) => {
       });
     } else {
       console.warn("Missing lab file:", absolutePath);
+    }
+  }
+
+  for (const signature of signatures) {
+    if (!signature.filePath) continue;
+
+    const absolutePath = path.resolve(signature.filePath);
+
+    if (fs.existsSync(absolutePath)) {
+      archive.file(absolutePath, {
+        name: `signatures/${path.basename(absolutePath)}`,
+      });
+    } else {
+      console.warn("Missing signature file:", absolutePath);
     }
   }
 

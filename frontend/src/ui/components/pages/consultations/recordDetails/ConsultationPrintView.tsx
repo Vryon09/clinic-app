@@ -11,9 +11,8 @@ import type { IPatient } from "@/types/PatientType";
 import dayjs from "dayjs";
 import { toast } from "sonner";
 import { useState } from "react";
-import { handleGetSignature } from "@/services/apiSignature";
-import { Toggle } from "../../../shadcn/toggle";
 import { AlertTriangle } from "lucide-react";
+import { handleGetSignature } from "@/services/apiSignature";
 
 function ConsultationPrintView({
   record,
@@ -129,7 +128,7 @@ function ConsultationPrintView({
           <p>
             <span className="font-semibold">BP:</span>{" "}
             {vitalSigns?.bloodPressureSystolic &&
-            vitalSigns?.bloodPressureDiastolic
+              vitalSigns?.bloodPressureDiastolic
               ? `${vitalSigns.bloodPressureSystolic}/${vitalSigns.bloodPressureDiastolic}`
               : "N/A"}
           </p>
@@ -208,7 +207,7 @@ function ConsultationPrintView({
       </div>
 
       {/* CONTROLS (PRINT HIDDEN) */}
-      <div className="mt-6 flex flex-col gap-3 print:hidden">
+      <div className="mt-12 flex flex-col gap-3 print:hidden">
         {withSignature && !isSignaturePending && !signatureData && (
           <div className="flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
             <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600" />
@@ -226,14 +225,28 @@ function ConsultationPrintView({
         )}
 
         <div className="flex items-center justify-between gap-4">
-          <Toggle
-            variant="outline"
-            pressed={withSignature}
-            onPressedChange={setWithSignature}
-            className="cursor-pointer"
-          >
-            {withSignature ? "With Signature" : "Without Signature"}
-          </Toggle>
+          <div className="inline-flex items-center rounded-full bg-black p-1 select-none">
+            <button
+              type="button"
+              onClick={() => setWithSignature(true)}
+              className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 cursor-pointer ${withSignature
+                ? "bg-white text-black font-semibold shadow-sm"
+                : "text-zinc-300 hover:text-white"
+                }`}
+            >
+              With Signature
+            </button>
+            <button
+              type="button"
+              onClick={() => setWithSignature(false)}
+              className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 cursor-pointer ${!withSignature
+                ? "bg-white text-black font-semibold shadow-sm"
+                : "text-zinc-300 hover:text-white"
+                }`}
+            >
+              Without Signature
+            </button>
+          </div>
 
           <Button
             onClick={() => {
@@ -257,7 +270,7 @@ function ConsultationPrintView({
 
               window.print();
             }}
-            className="cursor-pointer bg-[oklch(0.269_0_0)] text-center text-white hover:bg-[oklch(0.269_0_0)]/80"
+            className="rounded-full cursor-pointer bg-[oklch(0.269_0_0)] text-center text-white hover:bg-[oklch(0.269_0_0)]/80"
             disabled={isClinicInfoPending || isPatientPending}
           >
             Print Report

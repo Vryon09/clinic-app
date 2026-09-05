@@ -168,7 +168,7 @@ function ManageAccounts() {
                 )}
               </Card>
 
-              <SignatureSection />
+              {user?.role === "DOCTOR" && <SignatureSection />}
             </div>
 
             <UsernameDialog
