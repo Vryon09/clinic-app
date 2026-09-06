@@ -141,9 +141,162 @@ export const backupToDrive = async (req: Request, res: Response) => {
   });
 };
 
+function parseDates(items: any[], dateKeys: string[]): any[] {
+  return items.map((item) => {
+    const copy: Record<string, any> = { ...item };
+    for (const key of dateKeys) {
+      if (copy[key]) {
+        copy[key] = new Date(copy[key]);
+      }
+    }
+    return copy;
+  });
+}
+
+function findBackupFile(dirPath: string): string | null {
+  const directPath = path.join(dirPath, "backup.json");
+  if (fs.existsSync(directPath)) return directPath;
+
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      const nestedPath = path.join(dirPath, entry.name, "backup.json");
+      if (fs.existsSync(nestedPath)) return nestedPath;
+    }
+  }
+  return null;
+}
+
+function copyDirIfExists(sourceDir: string, destinationDir: string) {
+  if (!fs.existsSync(sourceDir)) return;
+
+  fs.mkdirSync(destinationDir, { recursive: true });
+
+  for (const name of fs.readdirSync(sourceDir)) {
+    const srcFile = path.join(sourceDir, name);
+    const destFile = path.join(destinationDir, name);
+    if (fs.statSync(srcFile).isFile()) {
+      fs.copyFileSync(srcFile, destFile);
+    }
+  }
+}
+
 export async function restoreBackup(req: Request, res: Response) {
+  const file = req.file;
+  let extractDir: string | undefined;
+
   try {
-    const file = req.file;
+    if (!file) {
+      return res.status(400).json({
+        error: "Backup file is required.",
+      });
+    }
+
+    extractDir = fs.mkdtempSync(path.join(os.tmpdir(), "restore-"));
+
+    const zip = new AdmZip(file.path);
+    zip.extractAllTo(extractDir, true);
+
+    const backupPath = findBackupFile(extractDir);
+
+    if (!backupPath) {
+      return res.status(400).json({
+        error: "Invalid backup file. backup.json was not found.",
+      });
+    }
+
+    const baseDir = path.dirname(backupPath);
+    const backup = JSON.parse(fs.readFileSync(backupPath, "utf8"));
+
+    if (backup?.metadata?.app !== "ClinicSync" || !backup?.data) {
+      return res.status(400).json({
+        error: "Invalid ClinicSync backup file.",
+      });
+    }
+
+    const {
+      users = [],
+      clinics = [],
+      patients = [],
+      cases = [],
+      records = [],
+      vitalSigns = [],
+      recordMedications = [],
+      labResults = [],
+      systemLogs = [],
+      signatures = [],
+    } = backup.data;
+
+    const parsedUsers = parseDates(users, ["createdAt"]);
+    const parsedClinics = parseDates(clinics, ["createdAt", "updatedAt"]);
+    const parsedPatients = parseDates(patients, ["dateOfBirth", "archivedOn", "createdAt", "updatedAt"]);
+    const parsedCases = parseDates(cases, ["archivedOn"]);
+    const parsedRecords = parseDates(records, ["visitDate", "archivedOn", "createdAt", "updatedAt"]);
+    const parsedRecordMedications = parseDates(recordMedications, ["createdAt"]);
+    const parsedLabResults = parseDates(labResults, ["uploadedAt"]);
+    const parsedSignatures = parseDates(signatures, ["uploadedAt"]);
+    const parsedSystemLogs = parseDates(systemLogs, ["createdAt"]);
+
+    await prisma.$transaction(async (tx) => {
+      // Clear existing records in reverse foreign-key order
+      await tx.systemLogs.deleteMany();
+      await tx.signature.deleteMany();
+      await tx.labResult.deleteMany();
+      await tx.recordMedication.deleteMany();
+      await tx.vitalSigns.deleteMany();
+      await tx.record.deleteMany();
+      await tx.case.deleteMany();
+      await tx.patient.deleteMany();
+      await tx.clinic.deleteMany();
+      await tx.user.deleteMany();
+
+      if (parsedUsers.length) await tx.user.createMany({ data: parsedUsers });
+      if (parsedClinics.length) await tx.clinic.createMany({ data: parsedClinics });
+      if (parsedPatients.length) await tx.patient.createMany({ data: parsedPatients });
+      if (parsedCases.length) await tx.case.createMany({ data: parsedCases });
+      if (parsedRecords.length) await tx.record.createMany({ data: parsedRecords });
+      if (vitalSigns.length) await tx.vitalSigns.createMany({ data: vitalSigns });
+      if (parsedRecordMedications.length) await tx.recordMedication.createMany({ data: parsedRecordMedications });
+      if (parsedLabResults.length) await tx.labResult.createMany({ data: parsedLabResults });
+      if (parsedSignatures.length) await tx.signature.createMany({ data: parsedSignatures });
+      if (parsedSystemLogs.length) await tx.systemLogs.createMany({ data: parsedSystemLogs });
+    });
+
+    copyDirIfExists(
+      path.join(baseDir, "lab-results"),
+      path.join(process.cwd(), "uploads", "lab-results"),
+    );
+    copyDirIfExists(
+      path.join(baseDir, "signatures"),
+      path.join(process.cwd(), "uploads", "signatures"),
+    );
+
+    return res.status(201).json({ message: "Restore backup successfully." });
+  } catch (error: any) {
+    console.error("Restore backup error:", error);
+    return res.status(400).json({ error: error?.message || "Failed to restore backup." });
+  } finally {
+    if (extractDir) {
+      fs.rmSync(extractDir, { recursive: true, force: true });
+    }
+    if (file?.path && fs.existsSync(file.path)) {
+      fs.unlinkSync(file.path);
+    }
+  }
+}
+
+export async function importBackup(req: Request, res: Response) {
+  const file = req.file;
+  let extractDir: string | undefined;
+
+  try {
+    const userCount = await prisma.user.count();
+
+    if (userCount > 0) {
+      return res.status(403).json({
+        error: "Import is only allowed on a fresh setup with no existing users.",
+      });
+    }
 
     if (!file) {
       return res.status(400).json({
@@ -151,99 +304,97 @@ export async function restoreBackup(req: Request, res: Response) {
       });
     }
 
-    const zipPath = file.path;
+    extractDir = fs.mkdtempSync(path.join(os.tmpdir(), "import-"));
 
-    const extractDir = fs.mkdtempSync(path.join(os.tmpdir(), "restore-"));
-
-    const zip = new AdmZip(zipPath);
-
+    const zip = new AdmZip(file.path);
     zip.extractAllTo(extractDir, true);
 
-    const backupPath = path.join(extractDir, "backup.json");
+    const backupPath = findBackupFile(extractDir);
 
-    const backup = JSON.parse(fs.readFileSync(backupPath, "utf8"));
-
-    await prisma.$transaction(async (tx) => {
-      await tx.clinic.deleteMany();
-
-      if (backup.data.users.length) {
-        await tx.user.createMany({
-          data: backup.data.users,
-        });
-      }
-      if (backup.data.clinics.length) {
-        await tx.clinic.createMany({
-          data: backup.data.clinics,
-        });
-      }
-      if (backup.data.patients.length) {
-        await tx.patient.createMany({
-          data: backup.data.patients,
-        });
-      }
-
-      if (backup.data.cases.length) {
-        await tx.case.createMany({
-          data: backup.data.cases,
-        });
-      }
-      if (backup.data.records.length) {
-        await tx.record.createMany({
-          data: backup.data.records,
-        });
-      }
-
-      if (backup.data.vitalSigns.length) {
-        await tx.vitalSigns.createMany({
-          data: backup.data.vitalSigns,
-        });
-      }
-      if (backup.data.recordMedications.length) {
-        await tx.recordMedication.createMany({
-          data: backup.data.recordMedications,
-        });
-      }
-
-      if (backup.data.labResults.length) {
-        await tx.labResult.createMany({
-          data: backup.data.labResults,
-        });
-      }
-
-      if (backup.data.systemLogs.length) {
-        await tx.systemLogs.createMany({
-          data: backup.data.systemLogs,
-        });
-      }
-    });
-
-    const sourceDir = path.join(extractDir, "lab-results");
-
-    const destinationDir = path.join(process.cwd(), "uploads", "lab-results");
-
-    if (!fs.existsSync(destinationDir)) {
-      fs.mkdirSync(destinationDir, {
-        recursive: true,
+    if (!backupPath) {
+      return res.status(400).json({
+        error: "Invalid backup file. backup.json was not found.",
       });
     }
 
-    for (const file of fs.readdirSync(sourceDir)) {
-      fs.copyFileSync(
-        path.join(sourceDir, file),
-        path.join(destinationDir, file),
-      );
+    const baseDir = path.dirname(backupPath);
+    const backup = JSON.parse(fs.readFileSync(backupPath, "utf8"));
+
+    if (backup?.metadata?.app !== "ClinicSync" || !backup?.data) {
+      return res.status(400).json({
+        error: "Invalid ClinicSync backup file.",
+      });
     }
 
-    fs.rmSync(extractDir, {
-      recursive: true,
-      force: true,
+    const {
+      users = [],
+      clinics = [],
+      patients = [],
+      cases = [],
+      records = [],
+      vitalSigns = [],
+      recordMedications = [],
+      labResults = [],
+      systemLogs = [],
+      signatures = [],
+    } = backup.data;
+
+    const parsedUsers = parseDates(users, ["createdAt"]);
+    const parsedClinics = parseDates(clinics, ["createdAt", "updatedAt"]);
+    const parsedPatients = parseDates(patients, ["dateOfBirth", "archivedOn", "createdAt", "updatedAt"]);
+    const parsedCases = parseDates(cases, ["archivedOn"]);
+    const parsedRecords = parseDates(records, ["visitDate", "archivedOn", "createdAt", "updatedAt"]);
+    const parsedRecordMedications = parseDates(recordMedications, ["createdAt"]);
+    const parsedLabResults = parseDates(labResults, ["uploadedAt"]);
+    const parsedSignatures = parseDates(signatures, ["uploadedAt"]);
+    const parsedSystemLogs = parseDates(systemLogs, ["createdAt"]);
+
+    console.log(parsedClinics);
+
+    await prisma.$transaction(async (tx) => {
+      if (parsedUsers.length) await tx.user.createMany({ data: parsedUsers });
+      if (parsedClinics.length) await tx.clinic.upsert({
+        where: { id: "default-clinic-id" },
+        update: { ...parsedClinics[0] },
+        create: {
+          id: "default-clinic-id",
+          name: "Clinic",
+          address: "Your Address Here",
+          phone: "09XX-XXX-XXXX",
+        },
+      })
+      if (parsedPatients.length) await tx.patient.createMany({ data: parsedPatients });
+      if (parsedCases.length) await tx.case.createMany({ data: parsedCases });
+      if (parsedRecords.length) await tx.record.createMany({ data: parsedRecords });
+      if (vitalSigns.length) await tx.vitalSigns.createMany({ data: vitalSigns });
+      if (parsedRecordMedications.length) await tx.recordMedication.createMany({ data: parsedRecordMedications });
+      if (parsedLabResults.length) await tx.labResult.createMany({ data: parsedLabResults });
+      if (parsedSignatures.length) await tx.signature.createMany({ data: parsedSignatures });
+      if (parsedSystemLogs.length) await tx.systemLogs.createMany({ data: parsedSystemLogs });
     });
 
-    fs.unlinkSync(zipPath);
+    copyDirIfExists(
+      path.join(baseDir, "lab-results"),
+      path.join(process.cwd(), "uploads", "lab-results"),
+    );
+    copyDirIfExists(
+      path.join(baseDir, "signatures"),
+      path.join(process.cwd(), "uploads", "signatures"),
+    );
 
-    res.status(201).json({ message: "Restore backup successfully." });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json(error);
+    return res.status(201).json({ message: "Backup imported successfully." });
+  } catch (error: any) {
+    console.error("Import backup error:", error);
+    return res.status(400).json({
+      error: error?.message || "Failed to import backup.",
+    });
+  } finally {
+    if (extractDir) {
+      fs.rmSync(extractDir, { recursive: true, force: true });
+    }
+    if (file?.path && fs.existsSync(file.path)) {
+      fs.unlinkSync(file.path);
+    }
   }
 }
+

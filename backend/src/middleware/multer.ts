@@ -52,6 +52,23 @@ const signatureStorage = multer.diskStorage({
 export const uploadLabResults = multer({ storage: labResultsStorage });
 export const uploadSignatures = multer({ storage: signatureStorage });
 
+const zipFileFilter: multer.Options["fileFilter"] = (_req, file, cb) => {
+  const isZip =
+    file.mimetype === "application/zip" ||
+    file.mimetype === "application/x-zip-compressed" ||
+    file.mimetype === "application/zip-compressed" ||
+    file.mimetype === "application/octet-stream" ||
+    file.originalname.toLowerCase().endsWith(".zip");
+
+  if (!isZip) {
+    cb(new Error("Only .zip backup files are allowed."));
+    return;
+  }
+
+  cb(null, true);
+};
+
 export const uploadRestore = multer({
   dest: os.tmpdir(),
+  fileFilter: zipFileFilter,
 });

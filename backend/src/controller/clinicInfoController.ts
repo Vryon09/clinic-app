@@ -14,7 +14,7 @@ export async function initClinicInfo(req: Request, res: Response) {
         address: "Your Address Here",
         phone: "09XX-XXX-XXXX",
       },
-    });
+    })
 
     if (!initialClinicInfo) {
       res.status(400).json({ message: "Cannot initialize clinic info" });

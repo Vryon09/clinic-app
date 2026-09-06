@@ -9,6 +9,10 @@ export async function resetDatabase(req: Request, res: Response) {
         select: { filePath: true },
       });
 
+      const signatures = await tx.signature.findMany({
+        select: { filePath: true },
+      });
+
       for (const labResult of labResults) {
         try {
           await fs.promises.unlink(labResult.filePath);
@@ -17,11 +21,20 @@ export async function resetDatabase(req: Request, res: Response) {
         }
       }
 
+      for (const signature of signatures) {
+        try {
+          await fs.promises.unlink(signature.filePath);
+        } catch {
+          console.log("Signature not found.");
+        }
+      }
+
       await tx.recordMedication.deleteMany();
       await tx.vitalSigns.deleteMany();
       await tx.record.deleteMany();
       await tx.case.deleteMany();
       await tx.labResult.deleteMany();
+      await tx.signature.deleteMany();
       await tx.patient.deleteMany();
 
       await tx.systemLogs.deleteMany();

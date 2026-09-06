@@ -128,7 +128,7 @@ function ConsultationPrintView({
           <p>
             <span className="font-semibold">BP:</span>{" "}
             {vitalSigns?.bloodPressureSystolic &&
-              vitalSigns?.bloodPressureDiastolic
+            vitalSigns?.bloodPressureDiastolic
               ? `${vitalSigns.bloodPressureSystolic}/${vitalSigns.bloodPressureDiastolic}`
               : "N/A"}
           </p>
@@ -190,7 +190,7 @@ function ConsultationPrintView({
                 <img
                   src={`http://localhost:3000/${signatureData.filePath}`}
                   alt="Doctor's Signature"
-                  className="pointer-events-none absolute top-1/2 left-1/2 z-10 h-16 max-w-[180px] -translate-x-1/2 -translate-y-1/2 object-contain"
+                  className="pointer-events-none absolute top-1/2 left-1/2 z-10 h-16 max-w-45 -translate-x-1/2 -translate-y-1/2 object-contain"
                 />
               )}
             </span>
@@ -229,20 +229,22 @@ function ConsultationPrintView({
             <button
               type="button"
               onClick={() => setWithSignature(true)}
-              className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 cursor-pointer ${withSignature
-                ? "bg-white text-black font-semibold shadow-sm"
-                : "text-zinc-300 hover:text-white"
-                }`}
+              className={`cursor-pointer rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 ${
+                withSignature
+                  ? "bg-white font-semibold text-black shadow-sm"
+                  : "text-zinc-300 hover:text-white"
+              }`}
             >
               With Signature
             </button>
             <button
               type="button"
               onClick={() => setWithSignature(false)}
-              className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 cursor-pointer ${!withSignature
-                ? "bg-white text-black font-semibold shadow-sm"
-                : "text-zinc-300 hover:text-white"
-                }`}
+              className={`cursor-pointer rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 ${
+                !withSignature
+                  ? "bg-white font-semibold text-black shadow-sm"
+                  : "text-zinc-300 hover:text-white"
+              }`}
             >
               Without Signature
             </button>
@@ -270,7 +272,7 @@ function ConsultationPrintView({
 
               window.print();
             }}
-            className="rounded-full cursor-pointer bg-[oklch(0.269_0_0)] text-center text-white hover:bg-[oklch(0.269_0_0)]/80"
+            className="cursor-pointer rounded-full bg-[oklch(0.269_0_0)] text-center text-white hover:bg-[oklch(0.269_0_0)]/80"
             disabled={isClinicInfoPending || isPatientPending}
           >
             Print Report

@@ -1,5 +1,7 @@
 import api from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
+import { toast } from "sonner";
 
 async function handleBackup() {
   await api.post("/api/backup/drive");
@@ -11,26 +13,43 @@ export function useBackup() {
   });
 }
 
-async function handleRestoreBackup({ file }: { file: File }) {
+async function handleImportBackup({ file }: { file: File }) {
   const formData = new FormData();
   formData.append("backup", file);
 
-  const res = await api.post("/api/backup/restore", formData, {
+  const res = await api.post("/api/backup/import", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
 
-  console.log(res.data);
+  return res.data;
+}
+
+export function useImportBackup() {
+  const queryClient = useQueryClient();
+  return useMutation<
+    unknown,
+    AxiosError<{ error?: string; message?: string }>,
+    { file: File }
+  >({
+    mutationFn: handleImportBackup,
+    onSuccess: () => {
+      toast.success("Backup imported successfully!", { position: "top-center" });
+      queryClient.invalidateQueries({ queryKey: ["authStatus"] });
+    },
+    onError: (error) => {
+      const errorMessage =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        "Failed to import backup.";
+      toast.error(errorMessage, { position: "top-center" });
+    },
+  });
 }
 
 export function useRestoreBackup() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: handleRestoreBackup,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["authStatus"] }),
-  });
+  return useImportBackup();
 }
 
 export async function handleGetGoogleAuthData() {
