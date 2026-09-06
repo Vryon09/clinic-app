@@ -8,8 +8,23 @@ async function handleBackup() {
 }
 
 export function useBackup() {
-  return useMutation({
+  return useMutation<
+    unknown,
+    AxiosError<{ error?: string; message?: string }>
+  >({
     mutationFn: handleBackup,
+    onSuccess: () => {
+      toast.success("Backup uploaded to Google Drive successfully!", {
+        position: "top-center",
+      });
+    },
+    onError: (error) => {
+      const errorMessage =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        "Failed to create backup.";
+      toast.error(errorMessage, { position: "top-center" });
+    },
   });
 }
 
