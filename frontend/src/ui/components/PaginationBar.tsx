@@ -1,4 +1,4 @@
-import { ChevronsLeft, ChevronsRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -21,7 +21,7 @@ function PaginationBar({
 }) {
   const from = isLoading
     ? null
-    : !paginationData.pages
+    : !paginationData?.pages
       ? 0
       : (paginationData.page - 1) * paginationData.limit + 1;
   const to = isLoading
@@ -30,23 +30,24 @@ function PaginationBar({
         paginationData.page * paginationData.limit,
         paginationData.total,
       );
+
   return (
-    <div className="border-border mt-4 flex w-full items-center justify-between border-t px-2 py-2">
+    <div className="mt-4 flex w-full items-center justify-between border-t border-border/60 px-2 pt-3 pb-1">
       {isLoading ? (
         <>
-          <Skeleton className="h-4 w-24 bg-neutral-300" />
-          <Skeleton className="h-4 w-24 bg-neutral-300" />
+          <Skeleton className="h-4 w-32 rounded-md bg-muted/60" />
+          <Skeleton className="h-8 w-28 rounded-lg bg-muted/60" />
         </>
       ) : (
         <>
-          <p className="text-sm">
-            {itemName} {from === to ? from : `${from} - ${to}`} of{" "}
-            {paginationData.total}
+          <p className="text-xs font-medium text-muted-foreground">
+            Showing <span className="font-semibold text-foreground">{from === to ? from : `${from}–${to}`}</span> of{" "}
+            <span className="font-semibold text-foreground">{paginationData?.total || 0}</span> {itemName}s
           </p>
 
           <div className="w-fit">
             <Pagination>
-              <PaginationContent>
+              <PaginationContent className="gap-1.5">
                 <PaginationItem>
                   <Button
                     onClick={() => {
@@ -54,13 +55,19 @@ function PaginationBar({
                       setPage((prev) => prev - 1);
                     }}
                     disabled={paginationData.page === 1}
-                    variant="ghost"
-                    size="icon-sm"
+                    variant="outline"
+                    size="icon"
+                    className="size-8 rounded-lg border-border/80 text-muted-foreground hover:bg-muted/50 hover:text-foreground disabled:opacity-40"
+                    title="Previous page"
                   >
-                    <ChevronsLeft />
+                    <ChevronLeft className="size-4" />
                   </Button>
                 </PaginationItem>
-                <p className="text-sm">{paginationData.page}</p>
+
+                <div className="flex h-8 min-w-8 items-center justify-center rounded-lg border border-border/60 bg-muted/20 px-2.5 text-xs font-semibold text-foreground">
+                  {paginationData?.page || 1}
+                </div>
+
                 <PaginationItem>
                   <Button
                     onClick={() => {
@@ -75,10 +82,12 @@ function PaginationBar({
                       paginationData.page === paginationData.pages ||
                       !paginationData.pages
                     }
-                    variant="ghost"
-                    size="icon-sm"
+                    variant="outline"
+                    size="icon"
+                    className="size-8 rounded-lg border-border/80 text-muted-foreground hover:bg-muted/50 hover:text-foreground disabled:opacity-40"
+                    title="Next page"
                   >
-                    <ChevronsRight />
+                    <ChevronRight className="size-4" />
                   </Button>
                 </PaginationItem>
               </PaginationContent>

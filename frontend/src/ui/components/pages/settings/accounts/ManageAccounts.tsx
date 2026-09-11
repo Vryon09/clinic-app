@@ -33,22 +33,24 @@ function ManageAccounts() {
   const { user, isUserLoading } = useAuth();
 
   return (
-    <Card className="space-y-4 px-8 py-4">
+    <Card className="rounded-xl border border-border/80 bg-card p-6 shadow-xs space-y-6">
       {user?.role !== "DOCTOR" && (
         <>
-          <div className="flex justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <p className="text-2xl font-semibold">Manage Accounts</p>
-              <p className="text-sm text-neutral-500">
+              <h2 className="text-lg font-semibold text-foreground">Manage Accounts</h2>
+              <p className="text-xs text-muted-foreground">
                 Create and manage user access for your clinic
               </p>
             </div>
 
             <Button
+              size="sm"
+              className="gap-1.5 h-9 rounded-lg font-semibold shadow-xs"
               onClick={() => setIsAddingUser((prev) => !prev)}
               disabled={isUsersLoading || isUserLoading}
             >
-              <Plus /> Add User
+              <Plus className="size-4" /> Add User
             </Button>
 
             <UserDialog
@@ -67,108 +69,121 @@ function ManageAccounts() {
               }}
             />
           </div>
-          <Separator />
+          <Separator className="bg-border/60" />
         </>
       )}
 
       {isUsersLoading || isUserLoading ? (
         <div className="flex h-40 items-center justify-center">
-          <Spinner className="size-8" />
+          <Spinner className="size-8 text-primary" />
         </div>
       ) : (
         <>
           {user?.role !== "DOCTOR" && (
             <>
               <UsersTable users={users!} />
-              <Separator />{" "}
+              <Separator className="bg-border/60" />
             </>
           )}
 
-          <div>
-            <p className="text-2xl font-semibold">Manage Profile</p>
-            <p className="text-sm text-neutral-500">
-              Update your account information
-            </p>
-          </div>
-
-          <div className="flex justify-between">
-            <div className="flex flex-col">
-              <p className="text-2xl font-semibold">{user?.username}</p>
-              <p className="text-xs text-neutral-500">{user?.role}</p>
+          <div className="space-y-4">
+            <div>
+              <h2 className="text-lg font-semibold text-foreground">Manage Profile</h2>
+              <p className="text-xs text-muted-foreground">
+                Update your account details and authentication information
+              </p>
             </div>
 
-            <div className="w-100">
-              <Card className="flex w-full flex-col gap-4 p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs">Username</p>
-                    <p className="font-semibold">{user?.username}</p>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+              <div className="lg:col-span-2 space-y-4">
+                <div className="flex items-center gap-3 p-4 rounded-xl border border-border/80 bg-muted/20">
+                  <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary font-bold text-lg">
+                    {user?.username?.[0]?.toUpperCase() || "U"}
                   </div>
-
-                  <Button
-                    size="xs"
-                    onClick={() => {
-                      setIsChangingUsername(true);
-                    }}
-                  >
-                    <Edit /> Edit
-                  </Button>
+                  <div>
+                    <h3 className="text-base font-bold text-foreground">{user?.username}</h3>
+                    <span className="inline-flex items-center rounded-md bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                      {user?.role}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs">Full name</p>
-                    <p className="font-semibold">
-                      {user?.firstName} {user?.middleName} {user?.lastName}
-                    </p>
-                  </div>
-
-                  <Button
-                    size="xs"
-                    onClick={() => {
-                      setIsChangingFullName(true);
-                    }}
-                  >
-                    <Edit /> Edit
-                  </Button>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs">Password</p>
-                    <p className="font-semibold">••••••••••••••••</p>
-                  </div>
-
-                  <Button
-                    size="xs"
-                    onClick={() => {
-                      setIsChangingPassword(true);
-                    }}
-                  >
-                    <Edit /> Edit
-                  </Button>
-                </div>
-
-                {user?.role === "DOCTOR" && (
-                  <div className="flex items-center justify-between">
+                <div className="rounded-xl border border-border/80 bg-card p-4 divide-y divide-border/60">
+                  <div className="flex items-center justify-between py-3">
                     <div>
-                      <p className="text-xs">License Number</p>
-                      <p className="font-semibold">{user.licenseNum}</p>
+                      <p className="text-xs font-medium text-muted-foreground">Username</p>
+                      <p className="text-sm font-semibold text-foreground">{user?.username}</p>
                     </div>
 
                     <Button
-                      size="xs"
-                      onClick={() => {
-                        setIsChangingLicenseNum(true);
-                      }}
+                      variant="outline"
+                      size="sm"
+                      className="h-8 gap-1.5 rounded-lg text-xs"
+                      onClick={() => setIsChangingUsername(true)}
                     >
-                      <Edit /> Edit
+                      <Edit className="size-3.5" /> Edit
                     </Button>
                   </div>
-                )}
-              </Card>
 
-              {user?.role === "DOCTOR" && <SignatureSection />}
+                  <div className="flex items-center justify-between py-3">
+                    <div>
+                      <p className="text-xs font-medium text-muted-foreground">Full Name</p>
+                      <p className="text-sm font-semibold text-foreground">
+                        {user?.firstName} {user?.middleName} {user?.lastName}
+                      </p>
+                    </div>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 gap-1.5 rounded-lg text-xs"
+                      onClick={() => setIsChangingFullName(true)}
+                    >
+                      <Edit className="size-3.5" /> Edit
+                    </Button>
+                  </div>
+
+                  <div className="flex items-center justify-between py-3">
+                    <div>
+                      <p className="text-xs font-medium text-muted-foreground">Password</p>
+                      <p className="text-sm font-semibold text-foreground">••••••••••••••••</p>
+                    </div>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 gap-1.5 rounded-lg text-xs"
+                      onClick={() => setIsChangingPassword(true)}
+                    >
+                      <Edit className="size-3.5" /> Change
+                    </Button>
+                  </div>
+
+                  {user?.role === "DOCTOR" && (
+                    <div className="flex items-center justify-between py-3">
+                      <div>
+                        <p className="text-xs font-medium text-muted-foreground">License Number</p>
+                        <p className="text-sm font-semibold text-foreground">{user.licenseNum || "N/A"}</p>
+                      </div>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 gap-1.5 rounded-lg text-xs"
+                        onClick={() => setIsChangingLicenseNum(true)}
+                      >
+                        <Edit className="size-3.5" /> Edit
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {user?.role === "DOCTOR" && (
+                <div className="lg:col-span-1">
+                  <SignatureSection />
+                </div>
+              )}
             </div>
 
             <UsernameDialog

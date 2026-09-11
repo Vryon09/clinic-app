@@ -2,7 +2,6 @@ import type { IPatient } from "@/types/PatientType";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -16,7 +15,7 @@ import {
 } from "@/services/apiPatients";
 import dayjs from "dayjs";
 import { Button } from "../../shadcn/button";
-import { MoreHorizontalIcon, Pen, Trash } from "lucide-react";
+import { FileText, MoreHorizontalIcon, Pen, Phone, Trash, Users } from "lucide-react";
 import { useState } from "react";
 import PatientForm from "./PatientForm";
 import { useQuery } from "@tanstack/react-query";
@@ -51,129 +50,189 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
 
   const navigate = useNavigate();
 
+  // Helper to extract initials
+  const getInitials = (first: string, last: string) => {
+    return `${first?.charAt(0) || ""}${last?.charAt(0) || ""}`.toUpperCase();
+  };
+
   return (
     <>
-      <Card className="mb-4 flex-1 overflow-y-auto rounded-xl px-2">
-        <Table>
-          {!patients?.length && !isPatientsLoading && (
-            <TableCaption>
-              {searchInput === ""
-                ? "Add your first patient by clicking the Add Patient Button."
-                : "No patients found."}
-            </TableCaption>
-          )}
-          <TableHeader>
-            {isPatientsLoading ? (
-              <TableRow>
-                <TableHead>
-                  <Skeleton className="bg-muted-foreground h-4 w-16" />
+      <Card className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-2xs">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader className="bg-muted/30">
+              <TableRow className="border-border/60 hover:bg-transparent">
+                <TableHead className="w-[35%] py-3.5 pl-6 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                  Patient & Demographics
                 </TableHead>
-                <TableHead>
-                  <Skeleton className="bg-muted-foreground h-4 w-16" />
+                <TableHead className="w-[30%] py-3.5 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                  Contact Information
                 </TableHead>
-                <TableHead>
-                  <Skeleton className="bg-muted-foreground h-4 w-16" />
+                <TableHead className="w-[20%] py-3.5 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                  Clinical History
                 </TableHead>
-                <TableHead>
-                  <Skeleton className="bg-muted-foreground h-4 w-16" />
+                <TableHead className="w-[15%] py-3.5 pr-6 text-right text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                  Actions
                 </TableHead>
-                <TableHead></TableHead>
               </TableRow>
-            ) : (
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Age</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Sex</TableHead>
-                <TableHead className="text-right"></TableHead>
-              </TableRow>
-            )}
-          </TableHeader>
-          <TableBody>
-            {isPatientsLoading
-              ? Array.from({ length: 5 }).map((_, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      <Skeleton className="h-4 bg-neutral-300" />
+            </TableHeader>
+
+            <TableBody>
+              {isPatientsLoading ? (
+                Array.from({ length: 5 }).map((_, index) => (
+                  <TableRow key={index} className="border-border/40">
+                    <TableCell className="py-4 pl-6">
+                      <div className="flex items-center gap-3">
+                        <Skeleton className="size-9 rounded-lg bg-muted" />
+                        <div className="space-y-1.5">
+                          <Skeleton className="h-4 w-32 bg-muted" />
+                          <Skeleton className="h-3 w-20 bg-muted" />
+                        </div>
+                      </div>
                     </TableCell>
-                    <TableCell>
-                      <Skeleton className="h-4 bg-neutral-300" />
+                    <TableCell className="py-4">
+                      <div className="space-y-1.5">
+                        <Skeleton className="h-4 w-28 bg-muted" />
+                        <Skeleton className="h-3 w-36 bg-muted" />
+                      </div>
                     </TableCell>
-                    <TableCell>
-                      <Skeleton className="h-4 bg-neutral-300" />
+                    <TableCell className="py-4">
+                      <Skeleton className="h-5 w-24 rounded-full bg-muted" />
                     </TableCell>
-                    <TableCell>
-                      <Skeleton className="h-4 bg-neutral-300" />
-                    </TableCell>
-                    <TableCell>
-                      <Skeleton className="h-4 bg-neutral-300" />
+                    <TableCell className="py-4 pr-6 text-right">
+                      <Skeleton className="ml-auto size-8 rounded-lg bg-muted" />
                     </TableCell>
                   </TableRow>
                 ))
-              : patients?.map((patient) => (
-                  <TableRow
-                    key={patient.id}
-                    className="hover:bg-muted cursor-pointer"
-                    onClick={() => navigate(`/patients/${patient.id}`)}
-                  >
-                    <TableCell>{`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>
-                    <TableCell>
-                      {dayjs().diff(dayjs(patient.dateOfBirth), "year")}
-                    </TableCell>
-                    <TableCell>{patient.phone}</TableCell>
-                    <TableCell>{patient.sex.slice(0, 1)}</TableCell>
+              ) : !patients?.length ? (
+                <TableRow>
+                  <TableCell colSpan={4} className="py-14 text-center">
+                    <div className="mx-auto flex flex-col items-center justify-center gap-2">
+                      <div className="flex size-12 items-center justify-center rounded-2xl bg-muted/60 text-muted-foreground">
+                        <Users className="size-6" />
+                      </div>
+                      <p className="text-sm font-semibold text-foreground mt-1">
+                        {searchInput === ""
+                          ? "No patients registered yet"
+                          : "No matching patients found"}
+                      </p>
+                      <p className="text-xs text-muted-foreground max-w-xs">
+                        {searchInput === ""
+                          ? "Click 'Register Patient' to create your first clinical record."
+                          : `No patient records matched "${searchInput}". Try adjusting your search query.`}
+                      </p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                patients.map((patient) => {
+                  const age = dayjs().diff(dayjs(patient.dateOfBirth), "year");
+                  const initials = getInitials(patient.firstName, patient.lastName);
+                  const fullName = `${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.charAt(0)}.` : ""
+                    }`;
 
-                    <TableCell className="space-x-4 text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            onClick={(e) => e.stopPropagation()}
-                            variant="ghost"
-                            size="icon"
-                            className="size-8 cursor-pointer"
-                          >
-                            <MoreHorizontalIcon />
-                            <span className="sr-only">Open menu</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuItem
-                            className="cursor-pointer hover:bg-neutral-200!"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedPatient(patient);
-                            }}
-                          >
-                            <Pen /> Edit
-                          </DropdownMenuItem>
+                  return (
+                    <TableRow
+                      key={patient.id}
+                      className="group border-border/50 transition-colors hover:bg-muted/40 cursor-pointer"
+                      onClick={() => navigate(`/patients/${patient.id}`)}
+                    >
+                      {/* Patient & Demographics */}
+                      <TableCell className="py-3.5 pl-6">
+                        <div className="flex items-center gap-3">
+                          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-bold text-xs text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                            {initials}
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-foreground tracking-tight group-hover:text-primary transition-colors">
+                              {fullName}
+                            </p>
+                            <p className="text-[11px] text-muted-foreground">
+                              {patient.sex === "MALE" ? "Male" : "Female"} · {age} yrs · DOB {dayjs(patient.dateOfBirth).format("MMM DD, YYYY")}
+                            </p>
+                          </div>
+                        </div>
+                      </TableCell>
 
-                          <DropdownMenuSeparator />
+                      {/* Contact Information */}
+                      <TableCell className="py-3.5">
+                        <div className="space-y-0.5">
+                          <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
+                            <Phone className="size-3 text-muted-foreground" />
+                            <span>{patient.phone}</span>
+                          </div>
+                          <p className="text-[11px] text-muted-foreground truncate max-w-xs">
+                            {patient.address}
+                          </p>
+                        </div>
+                      </TableCell>
 
-                          <DropdownMenuItem
-                            className="cursor-pointer"
-                            variant="destructive"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleArchivePatient(patient.id);
-                            }}
-                          >
-                            <Trash /> Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-          </TableBody>
-        </Table>
+                      {/* Clinical History */}
+                      <TableCell className="py-3.5">
+                        <span className="inline-flex items-center gap-1.5 rounded-md bg-secondary/80 px-2.5 py-1 text-[11px] font-medium text-secondary-foreground">
+                          <FileText className="size-3 text-muted-foreground" />
+                          <span>{patient.records?.length ?? 0} Encounters</span> Mali to
+                        </span>
+                      </TableCell>
+
+                      {/* Actions Menu */}
+                      <TableCell className="py-3.5 pr-6 text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              onClick={(e) => e.stopPropagation()}
+                              variant="ghost"
+                              size="icon-sm"
+                              className="size-8 rounded-lg cursor-pointer text-muted-foreground hover:text-foreground"
+                            >
+                              <MoreHorizontalIcon className="size-4" />
+                              <span className="sr-only">Open menu</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-40 rounded-xl">
+                            <DropdownMenuItem
+                              className="cursor-pointer gap-2 text-xs"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedPatient(patient);
+                              }}
+                            >
+                              <Pen className="size-3.5" />
+                              <span>Edit Details</span>
+                            </DropdownMenuItem>
+
+                            <DropdownMenuSeparator />
+
+                            <DropdownMenuItem
+                              className="cursor-pointer gap-2 text-xs text-destructive focus:text-destructive"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleArchivePatient(patient.id);
+                              }}
+                            >
+                              <Trash className="size-3.5" />
+                              <span>Delete Record</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </Card>
 
-      <PaginationBar
-        itemName="Patient"
-        paginationData={paginationData!}
-        setPage={setPage}
-        isLoading={isPatientsLoading}
-      />
+      {paginationData && (
+        <PaginationBar
+          itemName="Patient"
+          paginationData={paginationData}
+          setPage={setPage}
+          isLoading={isPatientsLoading}
+        />
+      )}
 
       {selectedPatient && (
         <PatientForm

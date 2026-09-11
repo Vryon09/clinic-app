@@ -24,14 +24,27 @@ function LabResultSection() {
   const paginationData = labResultsData?.meta;
 
   return (
-    <div>
-      <UploadLabResultButton />
+    <div className="space-y-4">
+      {/* Header row */}
+      <div className="flex items-start justify-between gap-4">
+        <div className="space-y-0.5">
+          <h2 className="text-sm font-semibold text-foreground">
+            Laboratory Results
+          </h2>
+          <p className="text-xs text-muted-foreground">
+            Uploaded lab documents and diagnostic reports for this patient.
+          </p>
+        </div>
+        <UploadLabResultButton />
+      </div>
 
+      {/* Table */}
       <LabResultsTable
         labResults={labResults!}
         isLabResultsPending={isLabResultsPending}
       />
 
+      {/* Pagination */}
       <PaginationBar
         itemName="Lab Results"
         paginationData={paginationData!}

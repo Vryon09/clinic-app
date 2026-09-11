@@ -21,12 +21,13 @@ import { handleGetCases, useAddCase } from "@/services/apiCase";
 import type { ICase } from "@/types/CaseType";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Plus } from "lucide-react";
+import { CalendarDays, Plus, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addCaseSchema, type AddCaseInput } from "@/schemas/caseSchema";
 import { toast } from "sonner";
 import CaseDialog from "./CaseDialog";
+import dayjs from "dayjs";
 
 function ConsultationsForm() {
   const [isAddingCase, setIsAddingCase] = useState<boolean>(false);
@@ -112,23 +113,34 @@ function ConsultationsForm() {
   });
 
   return (
-    <div className="pb-8">
-      <div className="flex justify-between">
-        <div className="mb-4 space-y-1">
-          <p className="text-2xl font-semibold">New Consultation</p>
-          <p>
-            Patient:{" "}
-            {isPatientLoading ? (
-              <Skeleton className="h-4 w-24 bg-neutral-300" />
-            ) : (
-              <span className="font-semibold">
-                {" "}
-                {`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}
-              </span>
-            )}
-          </p>
+    <div className="pb-10">
+      {/* Page header */}
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="space-y-1">
+          <h1 className="text-xl font-semibold tracking-tight text-foreground">
+            {formType === "edit" ? "Edit Consultation" : "New Consultation"}
+          </h1>
+
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <User className="size-3.5" />
+              {isPatientLoading ? (
+                <Skeleton className="h-4 w-32 rounded" />
+              ) : (
+                <span className="font-medium text-foreground">
+                  {`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}
+                </span>
+              )}
+            </span>
+
+            <span className="flex items-center gap-1.5">
+              <CalendarDays className="size-3.5" />
+              <span>{dayjs().format("MMMM DD, YYYY")}</span>
+            </span>
+          </div>
         </div>
 
+        {/* Case selector */}
         <Controller
           name="caseId"
           control={control}
@@ -138,24 +150,25 @@ function ConsultationsForm() {
               value={field.value}
               onValueChange={field.onChange}
             >
-              <SelectTrigger className="w-full max-w-48 cursor-pointer">
+              <SelectTrigger className="h-9 w-full max-w-52 cursor-pointer rounded-lg border-border/80 text-sm sm:w-52">
                 <SelectValue placeholder="Select a case" />
               </SelectTrigger>
 
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Cases</SelectLabel>
-                  <div className="my-2 flex justify-end px-1">
+                  <SelectLabel className="text-[11px]">Cases</SelectLabel>
+                  <div className="my-1.5 px-1">
                     <Button
-                      size="xs"
-                      className="w-full text-xs"
+                      size="sm"
+                      variant="outline"
+                      className="h-8 w-full gap-1.5 rounded-lg text-xs"
                       onClick={() => setIsAddingCase(true)}
                     >
                       {isAddingCase ? (
-                        "Adding..."
+                        "Opening…"
                       ) : (
                         <>
-                          <Plus /> Add New Case
+                          <Plus className="size-3" /> Add New Case
                         </>
                       )}
                     </Button>
@@ -170,18 +183,6 @@ function ConsultationsForm() {
                       action="add"
                     />
                   </div>
-                  {/* <div className="my-1 flex gap-2 px-1">
-                    <Input
-                      type="text"
-                      value={caseName}
-                      onChange={(e) => setCaseName(e.target.value)}
-                    />
-                    <Button
-                      onClick={() => handleAddCase({ patientId, caseName })}
-                    >
-                      Add
-                    </Button>
-                  </div> */}
                   {cases?.map((caseItem) => (
                     <SelectItem
                       key={caseItem.id}
@@ -198,13 +199,14 @@ function ConsultationsForm() {
         />
       </div>
 
+      {/* Form body */}
       <form
         onSubmit={visitDetailsHandleSubmit(
           visitDetailsOnSubmit,
           onInvalidSubmit,
         )}
       >
-        <div className="grid w-full grid-cols-2 gap-4">
+        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
           <VisitDetailsForm register={register} />
           <VitalSignsForm register={register} errors={errors} />
           <RecordMedicationForm
@@ -220,17 +222,24 @@ function ConsultationsForm() {
           />
         </div>
 
-        <div className="mt-4 flex justify-end gap-4">
+        {/* Footer actions */}
+        <div className="mt-6 flex items-center justify-end gap-3 border-t border-border/60 pt-4">
           <Button
+            variant="outline"
+            size="sm"
+            className="rounded-lg"
             onClick={(e) => {
               e.preventDefault();
               navigate(`/patients/${patientId}`);
             }}
-            variant="outline"
           >
             Cancel
           </Button>
-          <Button disabled={isRecordLoading || isUserLoading}>
+          <Button
+            size="sm"
+            className="rounded-lg"
+            disabled={isRecordLoading || isUserLoading}
+          >
             Complete Consultation
           </Button>
         </div>

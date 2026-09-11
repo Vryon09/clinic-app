@@ -75,25 +75,35 @@ function CaseDialog({
   return (
     <Dialog open={isAddingCase} onOpenChange={setIsAddingCase}>
       <DialogContent
+        className="rounded-2xl sm:max-w-md"
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="text-base font-semibold">
             {action === "add" ? "Add New Case" : "Update Case"}
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={caseHandleSubmit(caseOnSubmit)}>
-          <FieldGroup>
+        <form onSubmit={caseHandleSubmit(caseOnSubmit)} className="mt-1">
+          <FieldGroup className="gap-4">
             <Field>
-              <FieldLabel>Case Name</FieldLabel>
-              <Input type="text" {...caseRegister("caseName")} />
+              <FieldLabel className="text-xs font-medium text-muted-foreground">
+                Case Name
+              </FieldLabel>
+              <Input
+                type="text"
+                placeholder="e.g. Hypertension"
+                className="h-9 rounded-lg border-border/80"
+                {...caseRegister("caseName")}
+              />
             </Field>
 
             <Field>
-              <FieldLabel>Doctor</FieldLabel>
+              <FieldLabel className="text-xs font-medium text-muted-foreground">
+                Attending Doctor
+              </FieldLabel>
 
               <Controller
                 name="doctorId"
@@ -104,7 +114,7 @@ function CaseDialog({
                     value={field.value}
                     onValueChange={field.onChange}
                   >
-                    <SelectTrigger className="w-full cursor-pointer">
+                    <SelectTrigger className="h-9 w-full cursor-pointer rounded-lg border-border/80">
                       <SelectValue placeholder="Select a doctor" />
                     </SelectTrigger>
 
@@ -126,9 +136,18 @@ function CaseDialog({
               />
             </Field>
 
-            <div className="mt-4 flex justify-end">
-              <Button type="submit">
-                {action === "add" ? "Add" : "Update"}
+            <div className="mt-2 flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="rounded-lg"
+                onClick={() => setIsAddingCase(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" size="sm" className="rounded-lg">
+                {action === "add" ? "Add Case" : "Update Case"}
               </Button>
             </div>
           </FieldGroup>

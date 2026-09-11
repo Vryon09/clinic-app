@@ -4,16 +4,15 @@ import ActivityLogTable from "./ActivityLogTable";
 
 function ActivityLog() {
   return (
-    <Card className="space-y-4 px-8 py-4">
+    <Card className="rounded-xl border border-border/80 bg-card p-6 shadow-xs space-y-6">
       <div>
-        <p className="text-2xl font-semibold">Activity Log</p>
-        <p className="text-sm text-neutral-500">
-          View a history of user activities and actions performed within the
-          application.
+        <h2 className="text-lg font-semibold text-foreground">Activity Log</h2>
+        <p className="text-xs text-muted-foreground">
+          View a audit history of user activities and system actions performed within the application.
         </p>
       </div>
 
-      <Separator />
+      <Separator className="bg-border/60" />
 
       <ActivityLogTable />
     </Card>

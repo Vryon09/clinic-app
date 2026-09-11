@@ -69,36 +69,47 @@ function UsernameDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Update Full Name</DialogTitle>
+      <DialogContent className="sm:max-w-md rounded-2xl border-border/80 p-6 shadow-xl">
+        <DialogHeader className="space-y-1">
+          <DialogTitle className="text-lg font-bold text-foreground">Update Username</DialogTitle>
         </DialogHeader>
 
-        <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
-          <FieldSet className="w-full">
-            <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor="firstName">Username</FieldLabel>
+        <form className="mt-4 space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <FieldSet className="w-full space-y-3">
+            <FieldGroup className="space-y-3">
+              <Field className="space-y-1">
+                <FieldLabel className="text-xs font-semibold text-foreground/80" htmlFor="username">Username</FieldLabel>
                 <Input
-                  className="border border-neutral-400"
-                  id="firstName"
+                  className="h-10 rounded-lg border-border/80 bg-background text-sm"
+                  id="username"
                   {...register("username")}
                   type="text"
+                  placeholder="Enter new username"
                 />
                 {errors.username && (
-                  <FieldError className="text-xs" errors={[errors.username]} />
+                  <FieldError className="text-xs text-destructive" errors={[errors.username]} />
                 )}
               </Field>
             </FieldGroup>
           </FieldSet>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-2 pt-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="h-9 rounded-lg"
+              onClick={() => onOpenChange(false)}
+            >
+              Cancel
+            </Button>
             <Button
               disabled={isUserLoading}
               type="submit"
-              className="mt-4 cursor-pointer"
+              size="sm"
+              className="h-9 rounded-lg font-semibold shadow-xs"
             >
-              Submit
+              Save Changes
             </Button>
           </div>
         </form>

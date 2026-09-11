@@ -13,80 +13,62 @@ import type { IUser } from "@/types/User";
 // import UserDialog from "./UserDialog";
 import { useToggleUserStatus } from "@/services/apiAuth";
 import { cn } from "@/lib/utils";
-import { Card } from "@/ui/components/shadcn/card";
 import { toast } from "sonner";
 
 function UsersTable({
   users,
-  // selectedUser,
-  // setSelectedUser,
 }: {
   users: IUser[];
-  // selectedUser: IUser | null;
-  // setSelectedUser: React.Dispatch<React.SetStateAction<IUser | null>>;
 }) {
   const { mutate: handleToggleUserStatus } = useToggleUserStatus();
 
   return (
-    <Card className="rounded-xl px-2">
+    <div className="rounded-xl border border-border/80 bg-card overflow-hidden shadow-2xs">
       <Table>
-        {users.length === 0 && (
-          <TableCaption className="mb-4">No users found.</TableCaption>
+        {users?.length === 0 && (
+          <TableCaption className="my-6 text-sm text-muted-foreground">No users found.</TableCaption>
         )}
-        <TableHeader>
-          <TableRow>
-            <TableHead className="font-semibold">Username</TableHead>
-            <TableHead className="font-semibold">Role</TableHead>
-            <TableHead className="font-semibold">Status</TableHead>
-            <TableHead className="text-right"></TableHead>
+        <TableHeader className="bg-muted/40">
+          <TableRow className="border-border/60 hover:bg-transparent">
+            <TableHead className="font-semibold text-xs text-muted-foreground uppercase tracking-wider py-3">Username</TableHead>
+            <TableHead className="font-semibold text-xs text-muted-foreground uppercase tracking-wider py-3">Role</TableHead>
+            <TableHead className="font-semibold text-xs text-muted-foreground uppercase tracking-wider py-3">Status</TableHead>
+            <TableHead className="text-right font-semibold text-xs text-muted-foreground uppercase tracking-wider py-3"></TableHead>
           </TableRow>
         </TableHeader>
 
-        <TableBody>
+        <TableBody className="divide-y divide-border/60">
           {users?.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.username}</TableCell>
+            <TableRow key={user.id} className="border-border/60 hover:bg-muted/30 transition-colors">
+              <TableCell className="font-medium text-sm text-foreground py-3">{user.username}</TableCell>
 
-              <TableCell>
-                <Badge>{user.role}</Badge>
+              <TableCell className="py-3">
+                <Badge variant="secondary" className="font-semibold text-xs rounded-md">
+                  {user.role}
+                </Badge>
               </TableCell>
 
-              <TableCell>
+              <TableCell className="py-3">
                 <Badge
                   className={cn(
-                    user.isActive ? "bg-green-500" : "bg-neutral-500",
+                    "font-medium text-xs rounded-full px-2.5 py-0.5",
+                    user.isActive
+                      ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 shadow-none"
+                      : "bg-muted text-muted-foreground border border-border shadow-none"
                   )}
                 >
                   {user.isActive ? "Active" : "Inactive"}
                 </Badge>
               </TableCell>
 
-              <TableCell className="space-x-2 text-right">
-                {/* <Button
-                  onClick={() =>
-                    setSelectedUser({
-                      username: user.username,
-                      role: user.role,
-                      id: user.id,
-                      isActive: user.isActive,
-                      licenseNum: user.licenseNum,
-                      firstName: user.firstName,
-                      middleName: user.middleName,
-                      lastName: user.lastName,
-                    })
-                  }
-                  size="xs"
-                >
-                  Edit
-                </Button> */}
-
+              <TableCell className="py-3 text-right">
                 <Button
-                  size="xs"
-                  className={cn(
-                    !user.isActive && "bg-green-500 hover:bg-green-500/80",
-                    "cursor-pointer",
-                  )}
+                  size="sm"
                   variant={user.isActive ? "destructive" : "default"}
+                  className={cn(
+                    "h-8 rounded-lg px-3 text-xs font-semibold shadow-xs cursor-pointer",
+                    !user.isActive && "bg-emerald-600 hover:bg-emerald-500 text-white"
+                  )}
                   onClick={() =>
                     handleToggleUserStatus(
                       { id: user.id },
@@ -107,29 +89,7 @@ function UsersTable({
           ))}
         </TableBody>
       </Table>
-
-      {/* {selectedUser && (
-        <UserDialog
-          isUserDialogOpen={!!selectedUser}
-          setIsUserDialogOpen={() => {
-            if (selectedUser) {
-              setSelectedUser(null);
-            }
-          }}
-          action="update"
-          initialValues={{
-            username: selectedUser!.username,
-            role: selectedUser!.role,
-            id: selectedUser!.id,
-            isActive: selectedUser!.isActive,
-            licenseNum: selectedUser!.licenseNum,
-            firstName: selectedUser!.firstName,
-            middleName: selectedUser!.middleName,
-            lastName: selectedUser!.lastName,
-          }}
-        />
-      )} */}
-    </Card>
+    </div>
   );
 }
 

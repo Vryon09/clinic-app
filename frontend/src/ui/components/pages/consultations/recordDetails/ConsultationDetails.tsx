@@ -9,8 +9,8 @@ import { handleGetRecordMedications } from "@/services/apiRecordMedications";
 import { useState } from "react";
 import ConsultationUserView from "./ConsultationUserView";
 import ConsultationPrintView from "./ConsultationPrintView";
-import { Button } from "../../../shadcn/button";
 import BackButton from "../../../BackButton";
+import { Eye, Printer } from "lucide-react";
 
 function ConsultationDetails() {
   const [isPrintMode, setIsPrintMode] = useState<boolean>(false);
@@ -36,29 +36,41 @@ function ConsultationDetails() {
   });
 
   return (
-    <div>
+    <div className="space-y-5">
+      {/* Header bar */}
       <div className="flex items-center justify-between print:hidden">
         <BackButton location={`/patients/${patientId}`} />
 
-        <div className="space-x-2">
-          <Button
-            size="xs"
-            variant={isPrintMode ? "outline" : "default"}
+        {/* View mode switcher */}
+        <div className="flex items-center overflow-hidden rounded-lg border border-border/80 bg-muted/30 p-0.5">
+          <button
+            type="button"
+            className={`flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all duration-150 ${
+              !isPrintMode
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
             onClick={() => setIsPrintMode(false)}
           >
-            User Mode
-          </Button>
-
-          <Button
-            size="xs"
-            variant={!isPrintMode ? "outline" : "default"}
+            <Eye className="size-3.5" />
+            User View
+          </button>
+          <button
+            type="button"
+            className={`flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all duration-150 ${
+              isPrintMode
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
             onClick={() => setIsPrintMode(true)}
           >
-            PrintMode
-          </Button>
+            <Printer className="size-3.5" />
+            Print View
+          </button>
         </div>
       </div>
 
+      {/* Content */}
       {isPrintMode ? (
         <ConsultationPrintView
           record={record!}

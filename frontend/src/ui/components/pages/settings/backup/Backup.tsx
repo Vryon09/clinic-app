@@ -59,29 +59,29 @@ function Backup() {
   const { mutate: handleLogout } = useHandleLogout();
 
   return (
-    <Card className="px-8 py-4">
-      <div
-        className={cn(
-          "flex items-center justify-between",
-          isConnected ? "mb-2" : "mb-2",
-        )}
-      >
-        <p className="text-2xl font-semibold">Backup</p>
+    <Card className="rounded-xl border border-border/80 bg-card p-6 shadow-xs space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-lg font-semibold text-foreground">Cloud Backup</h2>
+          <p className="text-xs text-muted-foreground">
+            Back up patient records, consultation history, and lab results directly to Google Drive.
+          </p>
+        </div>
 
         <Badge
           className={cn(
-            "text-xs",
+            "text-xs px-2.5 py-1 font-medium rounded-full shrink-0 shadow-none border",
             isAuthPending
-              ? "bg-neutral-200 text-neutral-600"
+              ? "bg-muted text-muted-foreground border-border"
               : isConnected
-                ? "bg-green-100 text-green-500"
-                : "bg-red-100 text-red-500",
+                ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border-emerald-500/30"
+                : "bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/30"
           )}
         >
           {isAuthPending ? (
-            <>
-              <Spinner /> {"Checking"}
-            </>
+            <span className="flex items-center gap-1.5">
+              <Spinner className="size-3 text-muted-foreground" /> Checking Status
+            </span>
           ) : isConnected ? (
             "Connected"
           ) : (
@@ -90,58 +90,66 @@ function Backup() {
         </Badge>
       </div>
 
+      <Separator className="bg-border/60" />
+
       {isAuthPending ? (
-        <div className="space-y-4">
-          <Skeleton className="h-14 w-100 bg-neutral-300" />
-          <Skeleton className="h-8 w-40 bg-neutral-300" />
+        <div className="space-y-3">
+          <Skeleton className="h-12 w-full max-w-md bg-muted/60 rounded-xl" />
+          <Skeleton className="h-9 w-36 bg-muted/60 rounded-lg" />
         </div>
       ) : (
-        <>
+        <div className="space-y-6">
           {!isConnected ? (
-            <p className="mb-4 max-w-125 text-sm text-neutral-500">
-              Connect a Google Drive account to back up all patient data,
-              consultation records, and lab results. Backups are stored in your
-              own Drive — ClinicSync never holds your data.
-            </p>
+            <div className="space-y-4">
+              <p className="max-w-xl text-xs text-muted-foreground leading-relaxed">
+                Connect a Google Drive account to back up all patient data, consultation records, and lab results.
+                Backups are securely stored in your own Google Drive container — ClinicSync never holds your private data.
+              </p>
+              <Button onClick={handleConnectDrive} size="sm" className="h-9 gap-2 rounded-lg font-semibold shadow-xs">
+                <CloudBackup className="size-4" /> Connect to Google Drive
+              </Button>
+            </div>
           ) : (
-            <p className="mb-4 max-w-125 text-sm text-neutral-500">
-              Your Google Drive is connected. Back up your all patient data,
-              consultation records, and lab results to your Drive.
-            </p>
-          )}
+            <div className="space-y-6">
+              <p className="max-w-xl text-xs text-muted-foreground leading-relaxed">
+                Your Google Drive is connected. You can trigger an instant backup of all clinic records anytime.
+              </p>
 
-          <Separator className="mb-4" />
-
-          {!isConnected && (
-            <Button onClick={handleConnectDrive}>
-              Connect to Google Drive
-            </Button>
-          )}
-
-          {isConnected && (
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold">{name}</p>
-                  <p>{email}</p>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl border border-border/80 bg-muted/20">
+                <div className="flex items-center gap-3">
+                  <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <CloudBackup className="size-5" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-foreground">{name}</p>
+                    <p className="text-xs text-muted-foreground">{email}</p>
+                  </div>
                 </div>
 
-                <Button variant="destructive" onClick={() => handleLogout()}>
-                  Disconnect
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8 rounded-lg text-xs border-destructive/30 text-destructive hover:bg-destructive/10"
+                  onClick={() => handleLogout()}
+                >
+                  Disconnect Account
                 </Button>
               </div>
 
-              <Separator />
-
-              <div className="flex justify-end">
-                <Button onClick={() => runBackup()} disabled={isBackingup}>
-                  <CloudBackup />{" "}
-                  {isBackingup ? "Backing up..." : "Backup to Google Drive"}
+              <div className="flex justify-end pt-2">
+                <Button
+                  onClick={() => runBackup()}
+                  disabled={isBackingup}
+                  size="sm"
+                  className="h-9 px-5 gap-2 rounded-lg font-semibold shadow-xs"
+                >
+                  <CloudBackup className="size-4" />
+                  {isBackingup ? "Backing up data..." : "Backup to Google Drive"}
                 </Button>
               </div>
             </div>
           )}
-        </>
+        </div>
       )}
     </Card>
   );

@@ -27,17 +27,17 @@ function ArchivedRecords() {
 
   if (isArchivedRecordsPending)
     return (
-      <div className="flex justify-center">
-        <Spinner className="size-8" />
+      <div className="flex h-40 items-center justify-center">
+        <Spinner className="size-8 text-primary" />
       </div>
     );
 
   return (
-    <div>
+    <div className="space-y-4">
       <ArchivedRecordsTable archivedRecords={archivedRecords!} />
 
       <PaginationBar
-        itemName="Archived Records"
+        itemName="Archived Record"
         isLoading={isArchivedRecordsPending}
         paginationData={archivedRecordsPagination!}
         setPage={setPage}

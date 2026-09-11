@@ -89,16 +89,19 @@ function GeneralSettings() {
   }, [clinicInfo, reset]);
 
   return (
-    <Card className="space-y-4 px-8 py-4">
-      <div className="flex justify-between">
+    <Card className="rounded-xl border border-border/80 bg-card p-6 shadow-xs space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <p className="text-2xl font-semibold">General Settings</p>
-          <p className="text-sm text-neutral-500">
+          <h2 className="text-lg font-semibold text-foreground">General Settings</h2>
+          <p className="text-xs text-muted-foreground">
             Configure and customize your clinic information
           </p>
         </div>
 
         <Button
+          variant={isEditing ? "outline" : "default"}
+          size="sm"
+          className="gap-1.5 h-9"
           onClick={() => {
             if (isEditing) {
               reset();
@@ -108,111 +111,103 @@ function GeneralSettings() {
         >
           {!isEditing ? (
             <>
-              <Edit /> Edit
+              <Edit className="size-4" /> Edit Details
             </>
           ) : (
             <>
-              <X /> Cancel
+              <X className="size-4" /> Cancel
             </>
           )}
         </Button>
       </div>
 
-      <Separator />
+      <Separator className="bg-border/60" />
 
       {isClinicInfoPending || isInitClinicInfoLoading ? (
         <div className="flex h-40 items-center justify-center">
-          <Spinner className="size-8" />
+          <Spinner className="size-8 text-primary" />
         </div>
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FieldSet className="w-full">
-            <FieldGroup>
-              <Field>
-                <div className="space-y-1">
-                  <FieldLabel className="capitalize" htmlFor="name">
-                    name
-                  </FieldLabel>
-                  <Input
-                    disabled={!isEditing}
-                    className="border"
-                    id="name"
-                    {...register("name")}
-                    type="text"
-                  />
-                </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <FieldSet className="w-full space-y-4">
+            <FieldGroup className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field className="space-y-1.5 col-span-1 md:col-span-2">
+                <FieldLabel className="text-xs font-semibold text-foreground/80 capitalize" htmlFor="name">
+                  Clinic Name
+                </FieldLabel>
+                <Input
+                  disabled={!isEditing}
+                  className="h-10 rounded-lg border-border/80 bg-background disabled:bg-muted/40"
+                  id="name"
+                  {...register("name")}
+                  type="text"
+                  placeholder="Enter clinic name"
+                />
                 {errors.name && (
-                  <FieldError className="text-xs" errors={[errors.name]} />
+                  <FieldError className="text-xs text-destructive" errors={[errors.name]} />
                 )}
               </Field>
-            </FieldGroup>
 
-            <FieldGroup>
-              <Field>
-                <div className="space-y-1">
-                  <FieldLabel className="capitalize" htmlFor="address">
-                    address
-                  </FieldLabel>
-                  <Input
-                    disabled={!isEditing}
-                    className="border"
-                    id="address"
-                    {...register("address")}
-                    type="text"
-                  />
-                </div>
+              <Field className="space-y-1.5">
+                <FieldLabel className="text-xs font-semibold text-foreground/80 capitalize" htmlFor="address">
+                  Clinic Address
+                </FieldLabel>
+                <Input
+                  disabled={!isEditing}
+                  className="h-10 rounded-lg border-border/80 bg-background disabled:bg-muted/40"
+                  id="address"
+                  {...register("address")}
+                  type="text"
+                  placeholder="Enter clinic address"
+                />
                 {errors.address && (
-                  <FieldError className="text-xs" errors={[errors.address]} />
+                  <FieldError className="text-xs text-destructive" errors={[errors.address]} />
                 )}
               </Field>
-            </FieldGroup>
 
-            <FieldGroup>
-              <Field>
-                <div className="space-y-1">
-                  <FieldLabel className="capitalize" htmlFor="phone">
-                    phone
-                  </FieldLabel>
-                  <Input
-                    disabled={!isEditing}
-                    className="border"
-                    id="phone"
-                    {...register("phone")}
-                    type="text"
-                  />
-                </div>
+              <Field className="space-y-1.5">
+                <FieldLabel className="text-xs font-semibold text-foreground/80 capitalize" htmlFor="phone">
+                  Phone Number
+                </FieldLabel>
+                <Input
+                  disabled={!isEditing}
+                  className="h-10 rounded-lg border-border/80 bg-background disabled:bg-muted/40"
+                  id="phone"
+                  {...register("phone")}
+                  type="text"
+                  placeholder="Enter phone number"
+                />
                 {errors.phone && (
-                  <FieldError className="text-xs" errors={[errors.phone]} />
+                  <FieldError className="text-xs text-destructive" errors={[errors.phone]} />
                 )}
               </Field>
             </FieldGroup>
           </FieldSet>
 
           {isEditing && (
-            <div className="flex justify-end">
+            <div className="flex justify-end pt-2">
               <Button
                 disabled={isClinicInfoPending}
                 type="submit"
-                className="mt-4 cursor-pointer"
+                size="sm"
+                className="h-9 px-6 cursor-pointer font-medium shadow-xs"
               >
-                Save
+                Save Changes
               </Button>
             </div>
           )}
         </form>
       )}
 
-      <div className="mt-8 flex justify-between">
-        <div>
-          <p className="flex items-center gap-2 font-semibold text-red-400">
-            <TriangleAlert size={20} /> Danger Zone
-          </p>
+      <div className="pt-4">
+        <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-5 space-y-4">
+          <div className="flex items-center gap-2">
+            <TriangleAlert className="size-5 text-destructive" />
+            <h3 className="text-sm font-semibold text-destructive">Danger Zone</h3>
+          </div>
+          <ResetDatabase />
         </div>
       </div>
-
-      <Separator />
-
-      <ResetDatabase />
     </Card>
   );
 }

@@ -1,7 +1,7 @@
+import { useParams } from "react-router";
 import { Upload } from "lucide-react";
 import { Button } from "../../shadcn/button";
 import { Input } from "../../shadcn/input";
-import { useParams } from "react-router";
 import { useRef } from "react";
 import { useUploadLabResult } from "@/services/apiLabResults";
 
@@ -24,18 +24,24 @@ function UploadLabResultButton() {
       inputRef.current.value = "";
     }
   };
+
   return (
-    <div className="mb-4 flex justify-end">
+    <>
       <Input
         ref={inputRef}
         type="file"
         className="hidden"
         onChange={handleChange}
       />
-      <Button onClick={handleClick}>
-        <Upload /> Upload File
+      <Button
+        size="sm"
+        className="h-9 shrink-0 gap-1.5 rounded-lg text-xs font-semibold shadow-sm cursor-pointer"
+        onClick={handleClick}
+      >
+        <Upload className="size-3.5" />
+        Upload File
       </Button>
-    </div>
+    </>
   );
 }
 

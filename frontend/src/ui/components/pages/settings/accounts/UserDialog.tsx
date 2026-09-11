@@ -16,7 +16,6 @@ import {
 import { Input } from "../../../shadcn/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addUserSchema, type AddUserInput } from "@/schemas/authSchema";
-import { Card } from "../../../shadcn/card";
 import { cn } from "@/lib/utils";
 import { useAddUser, useUpdateUser } from "@/services/apiAuth";
 import { toast } from "sonner";
@@ -135,57 +134,62 @@ function UserDialog({
 
   return (
     <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Add User</DialogTitle>
+      <DialogContent className="sm:max-w-md rounded-2xl border-border/80 p-6 shadow-xl">
+        <DialogHeader className="space-y-1">
+          <DialogTitle className="text-lg font-bold text-foreground">
+            {action === "create" ? "Add User Account" : "Update User Account"}
+          </DialogTitle>
         </DialogHeader>
 
-        <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
-          <FieldSet className="w-full">
-            <FieldGroup>
+        <form className="mt-4 space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <FieldSet className="w-full space-y-3">
+            <FieldGroup className="space-y-3">
               {action === "create" && (
                 <div className="grid grid-cols-3 gap-2">
-                  <Field>
-                    <FieldLabel htmlFor="firstName">First Name</FieldLabel>
+                  <Field className="space-y-1">
+                    <FieldLabel className="text-xs font-semibold text-foreground/80" htmlFor="firstName">First Name</FieldLabel>
                     <Input
-                      className="border border-neutral-400"
+                      className="h-9 rounded-lg border-border/80 bg-background text-sm"
                       id="firstName"
                       {...register("firstName")}
                       type="text"
+                      placeholder="First"
                     />
                     {errors.firstName && (
                       <FieldError
-                        className="text-xs"
+                        className="text-xs text-destructive"
                         errors={[errors.firstName]}
                       />
                     )}
                   </Field>
-                  <Field>
-                    <FieldLabel htmlFor="middleName">Middle Name</FieldLabel>
+                  <Field className="space-y-1">
+                    <FieldLabel className="text-xs font-semibold text-foreground/80" htmlFor="middleName">Middle Name</FieldLabel>
                     <Input
-                      className="border border-neutral-400"
+                      className="h-9 rounded-lg border-border/80 bg-background text-sm"
                       id="middleName"
                       {...register("middleName")}
                       type="text"
+                      placeholder="Middle"
                     />
                     {errors.middleName && (
                       <FieldError
-                        className="text-xs"
+                        className="text-xs text-destructive"
                         errors={[errors.middleName]}
                       />
                     )}
                   </Field>
-                  <Field>
-                    <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
+                  <Field className="space-y-1">
+                    <FieldLabel className="text-xs font-semibold text-foreground/80" htmlFor="lastName">Last Name</FieldLabel>
                     <Input
-                      className="border border-neutral-400"
+                      className="h-9 rounded-lg border-border/80 bg-background text-sm"
                       id="lastName"
                       {...register("lastName")}
                       type="text"
+                      placeholder="Last"
                     />
                     {errors.lastName && (
                       <FieldError
-                        className="text-xs"
+                        className="text-xs text-destructive"
                         errors={[errors.lastName]}
                       />
                     )}
@@ -193,90 +197,100 @@ function UserDialog({
                 </div>
               )}
 
-              <Field>
-                <div className="space-y-1">
-                  <FieldLabel htmlFor="username">Username</FieldLabel>
-                  <Input
-                    className="border border-neutral-400"
-                    id="username"
-                    {...register("username")}
-                    type="text"
-                  />
-                </div>
+              <Field className="space-y-1">
+                <FieldLabel className="text-xs font-semibold text-foreground/80" htmlFor="username">Username</FieldLabel>
+                <Input
+                  className="h-9 rounded-lg border-border/80 bg-background text-sm"
+                  id="username"
+                  {...register("username")}
+                  type="text"
+                  placeholder="Enter username"
+                />
                 {errors.username && (
-                  <FieldError className="text-xs" errors={[errors.username]} />
+                  <FieldError className="text-xs text-destructive" errors={[errors.username]} />
                 )}
               </Field>
 
               {action === "create" && role === "DOCTOR" && (
-                <Field>
-                  <div className="space-y-1">
-                    <FieldLabel htmlFor="licenseNum">License Number</FieldLabel>
-                    <Input
-                      className="border border-neutral-400"
-                      id="licenseNum"
-                      {...register("licenseNum")}
-                      type="text"
-                    />
-                  </div>
+                <Field className="space-y-1">
+                  <FieldLabel className="text-xs font-semibold text-foreground/80" htmlFor="licenseNum">License Number</FieldLabel>
+                  <Input
+                    className="h-9 rounded-lg border-border/80 bg-background text-sm"
+                    id="licenseNum"
+                    {...register("licenseNum")}
+                    type="text"
+                    placeholder="Enter 7-digit license number"
+                  />
                   {errors.licenseNum && (
                     <FieldError
-                      className="text-xs"
+                      className="text-xs text-destructive"
                       errors={[errors.licenseNum]}
                     />
                   )}
                 </Field>
               )}
 
-              <Field>
+              <Field className="space-y-1">
+                <FieldLabel className="text-xs font-semibold text-foreground/80">Account Role</FieldLabel>
                 <Controller
                   name="role"
                   control={control}
                   render={({ field }) => (
-                    <div className="grid w-full grid-cols-2 gap-2">
-                      <Card
+                    <div className="grid w-full grid-cols-2 gap-3 pt-1">
+                      <div
                         onClick={() => {
                           field.onChange("DOCTOR");
                           setValue("licenseNum", "");
                         }}
                         className={cn(
-                          "cursor-pointer px-2 py-3 text-center font-semibold",
+                          "cursor-pointer rounded-xl border p-3 text-center transition-all",
                           field.value === "DOCTOR"
-                            ? "bg-neutral-950 text-white ring"
-                            : "",
+                            ? "border-primary bg-primary/10 text-primary font-semibold shadow-2xs"
+                            : "border-border/80 hover:bg-muted/40 text-foreground/70"
                         )}
                       >
-                        Doctor
-                      </Card>
+                        <p className="text-sm font-semibold">Doctor</p>
+                        <p className="text-[10px] text-muted-foreground mt-0.5">Full clinical access</p>
+                      </div>
 
-                      <Card
+                      <div
                         onClick={() => {
                           field.onChange("ASSISTANT");
                           setValue("licenseNum", "");
                         }}
                         className={cn(
-                          "cursor-pointer px-2 py-3 text-center font-semibold",
+                          "cursor-pointer rounded-xl border p-3 text-center transition-all",
                           field.value === "ASSISTANT"
-                            ? "bg-neutral-950 text-white ring"
-                            : "",
+                            ? "border-primary bg-primary/10 text-primary font-semibold shadow-2xs"
+                            : "border-border/80 hover:bg-muted/40 text-foreground/70"
                         )}
                       >
-                        Assistant
-                      </Card>
+                        <p className="text-sm font-semibold">Assistant</p>
+                        <p className="text-[10px] text-muted-foreground mt-0.5">Front desk & intake</p>
+                      </div>
                     </div>
                   )}
                 />
 
                 {errors.role && (
-                  <FieldError className="mt-2 text-xs" errors={[errors.role]} />
+                  <FieldError className="mt-1 text-xs text-destructive" errors={[errors.role]} />
                 )}
               </Field>
             </FieldGroup>
           </FieldSet>
 
-          <div className="flex justify-end">
-            <Button type="submit" className="mt-4 cursor-pointer">
-              Submit
+          <div className="flex justify-end gap-2 pt-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="h-9 rounded-lg"
+              onClick={() => setIsUserDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" size="sm" className="h-9 rounded-lg font-semibold shadow-xs">
+              {action === "create" ? "Create Account" : "Save Changes"}
             </Button>
           </div>
         </form>

@@ -12,40 +12,40 @@ import ArchivedCases from "./archivedCase/ArchivedCases";
 
 function Archive() {
   return (
-    <Card className="space-y-4 px-8 py-4">
+    <Card className="rounded-xl border border-border/80 bg-card p-6 shadow-xs space-y-6">
       <div>
-        <p className="text-2xl font-semibold">Archive</p>
-        <p className="text-sm text-neutral-500">
-          View and restore archived patients and their consultation records.
+        <h2 className="text-lg font-semibold text-foreground">Archive Storage</h2>
+        <p className="text-xs text-muted-foreground">
+          View and restore archived patients, consultation records, and clinical cases.
         </p>
       </div>
 
-      <Separator />
+      <Separator className="bg-border/60" />
 
-      <Tabs defaultValue="patients">
-        <TabsList variant="line" className="mb-4">
-          <TabsTrigger value="patients" className="cursor-pointer">
-            Patients
+      <Tabs defaultValue="patients" className="w-full space-y-4">
+        <TabsList variant="line" className="inline-flex h-9 items-center justify-start rounded-lg bg-muted/40 p-1 text-muted-foreground">
+          <TabsTrigger value="patients" className="cursor-pointer px-3 py-1 text-xs font-semibold">
+            Archived Patients
           </TabsTrigger>
 
-          <TabsTrigger value="consultations" className="cursor-pointer">
-            Consultations
+          <TabsTrigger value="consultations" className="cursor-pointer px-3 py-1 text-xs font-semibold">
+            Archived Consultations
           </TabsTrigger>
 
-          <TabsTrigger value="cases" className="cursor-pointer">
-            Cases
+          <TabsTrigger value="cases" className="cursor-pointer px-3 py-1 text-xs font-semibold">
+            Archived Cases
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="patients">
+        <TabsContent value="patients" className="focus-visible:outline-none">
           <ArchivedPatients />
         </TabsContent>
 
-        <TabsContent value="consultations">
+        <TabsContent value="consultations" className="focus-visible:outline-none">
           <ArchivedRecords />
         </TabsContent>
 
-        <TabsContent value="cases">
+        <TabsContent value="cases" className="focus-visible:outline-none">
           <ArchivedCases />
         </TabsContent>
       </Tabs>

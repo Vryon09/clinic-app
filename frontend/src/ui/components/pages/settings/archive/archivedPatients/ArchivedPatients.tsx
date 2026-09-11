@@ -26,17 +26,17 @@ function ArchivedPatients() {
 
   if (isArchivedPatientsPending)
     return (
-      <div className="flex justify-center">
-        <Spinner className="size-8" />
+      <div className="flex h-40 items-center justify-center">
+        <Spinner className="size-8 text-primary" />
       </div>
     );
 
   return (
-    <div>
+    <div className="space-y-4">
       <ArchivedPatientsTable archivedPatients={archivedPatients!} />
 
       <PaginationBar
-        itemName="Archived Patients"
+        itemName="Archived Patient"
         isLoading={isArchivedPatientsPending}
         paginationData={archivedPatientsPagination!}
         setPage={setPage}

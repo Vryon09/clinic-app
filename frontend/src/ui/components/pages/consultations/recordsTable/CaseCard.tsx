@@ -16,13 +16,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/ui/components/shadcn/dropdown-menu";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableRow,
-} from "@/ui/components/shadcn/table";
 import dayjs from "dayjs";
 import {
   ChevronDown,
@@ -49,47 +42,66 @@ function CaseCard({ caseItem }: { caseItem: ICase }) {
   return (
     <>
       <Collapsible
-        className="flex flex-col rounded-lg border"
+        className={cn(
+          "flex flex-col overflow-hidden rounded-xl border border-border/80 bg-card transition-shadow duration-200",
+          open && "shadow-sm",
+        )}
         key={caseItem.id}
         open={open}
         onOpenChange={setOpen}
       >
+        {/* Case header / trigger */}
         <CollapsibleTrigger asChild>
           <div
             className={cn(
-              "hover:bg-muted/50 flex cursor-pointer items-center justify-between px-2 py-2 text-sm",
-              open && "border-b",
+              "flex cursor-pointer items-center justify-between px-3.5 py-3 text-sm transition-colors duration-150",
+              open
+                ? "border-b border-border/60 bg-muted/40"
+                : "hover:bg-muted/30",
             )}
           >
-            <div className="flex items-center gap-2">
-              <Folder className="size-4" />
-              <p className="capitalize">{caseItem.caseName}</p>
+            {/* Left: folder icon + case name */}
+            <div className="flex items-center gap-2.5">
+              <div className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Folder className="size-3.5" />
+              </div>
+              <p className="font-semibold capitalize text-foreground">
+                {caseItem.caseName}
+              </p>
             </div>
 
+            {/* Right: badges + menu + chevron */}
             <div className="flex items-center gap-2">
               {caseItem.records?.length !== 0 && (
-                <Badge className="dark:bg-primary bg-blue-500 dark:text-blue-500">
+                <Badge
+                  variant="secondary"
+                  className="hidden text-[10px] sm:flex"
+                >
                   Latest:{" "}
-                  {dayjs(caseItem.records[0].visitDate).format("MMMM DD, YYYY")}
+                  {dayjs(caseItem.records[0].visitDate).format("MMM DD, YYYY")}
                 </Badge>
               )}
 
-              <Badge>{caseItem.records.length} Records</Badge>
+              <Badge variant="outline" className="text-[10px]">
+                {caseItem.records.length}{" "}
+                {caseItem.records.length === 1 ? "Record" : "Records"}
+              </Badge>
 
               {caseItem.caseName !== "Default" && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
-                      size="xs"
-                      variant="secondary"
+                      size="icon-sm"
+                      variant="ghost"
+                      className="size-7 shrink-0"
                       onClick={(e) => {
                         e.stopPropagation();
                       }}
                     >
-                      <MoreHorizontal />
+                      <MoreHorizontal className="size-3.5" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent>
+                  <DropdownMenuContent align="end">
                     <DropdownMenuItem
                       className="cursor-pointer"
                       onClick={(e) => {
@@ -97,7 +109,7 @@ function CaseCard({ caseItem }: { caseItem: ICase }) {
                         setIsUpdatingCase(true);
                       }}
                     >
-                      <Pen /> Edit
+                      <Pen className="size-3.5" /> Edit
                     </DropdownMenuItem>
 
                     <DropdownMenuSeparator />
@@ -110,31 +122,33 @@ function CaseCard({ caseItem }: { caseItem: ICase }) {
                         handleArchiveCase(caseItem.id);
                       }}
                     >
-                      <Trash /> Delete
+                      <Trash className="size-3.5" /> Delete
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               )}
 
               {open ? (
-                <ChevronUp className="size-5" />
+                <ChevronUp className="size-4 shrink-0 text-muted-foreground" />
               ) : (
-                <ChevronDown className="size-5" />
+                <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
               )}
             </div>
           </div>
         </CollapsibleTrigger>
 
-        <CollapsibleContent className="flex flex-col gap-2">
-          <Table>
-            {caseItem?.records.length === 0 && (
-              <TableCaption className="pb-4">No records found</TableCaption>
-            )}
-            <TableBody>
+        {/* Expanded records list */}
+        <CollapsibleContent>
+          {caseItem?.records.length === 0 ? (
+            <p className="py-6 text-center text-xs text-muted-foreground">
+              No consultation records in this case.
+            </p>
+          ) : (
+            <div className="divide-y divide-border/60">
               {caseItem.records.map((record) => (
-                <TableRow
+                <div
                   key={record.id}
-                  className="cursor-pointer"
+                  className="flex cursor-pointer items-center justify-between px-3.5 py-3 transition-colors duration-150 hover:bg-muted/20"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(
@@ -142,65 +156,72 @@ function CaseCard({ caseItem }: { caseItem: ICase }) {
                     );
                   }}
                 >
-                  <TableCell className="w-30">
-                    {dayjs(record.visitDate).format("MMMM DD, YYYY")}
-                  </TableCell>
-
-                  <TableCell>
-                    <p>
-                      {record.symptoms ? record.symptoms.slice(0, 20) : "N/A"}
-                      {record.symptoms
-                        ? record.symptoms?.length > 20 && "..."
-                        : ""}
+                  {/* Visit date */}
+                  <div className="w-32 shrink-0">
+                    <p className="text-xs font-medium text-foreground">
+                      {dayjs(record.visitDate).format("MMM DD, YYYY")}
                     </p>
-                    <p className="text-muted-foreground text-xs">
-                      {record.signs ? record.signs.slice(0, 20) : "N/A"}
-                      {record.signs ? record.signs?.length > 20 && "..." : ""}
-                    </p>
-                  </TableCell>
+                  </div>
 
-                  <TableCell>
-                    <div className="flex items-center justify-end gap-2">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button size="icon-sm" variant="ghost">
-                            <MoreHorizontal />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuItem
-                            className="cursor-pointer"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(
-                                `/patients/${record.patientId}/consultations/${record.id}/edit`,
-                              );
-                            }}
-                          >
-                            <Pen /> Edit
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem
-                            className="cursor-pointer"
-                            variant="destructive"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleArchiveRecord(record.id);
-                            }}
-                          >
-                            <Trash /> Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                      <ChevronRight className="size-4" />
-                    </div>
-                  </TableCell>
-                </TableRow>
+                  {/* Symptoms & signs summary */}
+                  <div className="flex-1 px-4">
+                    <p className="truncate text-sm text-foreground">
+                      {record.symptoms ? record.symptoms.slice(0, 50) : "—"}
+                      {record.symptoms && record.symptoms.length > 50 && "…"}
+                    </p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {record.signs ? record.signs.slice(0, 50) : "—"}
+                      {record.signs && record.signs.length > 50 && "…"}
+                    </p>
+                  </div>
+
+                  {/* Quick actions */}
+                  <div className="flex items-center gap-1.5">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          size="icon-sm"
+                          variant="ghost"
+                          className="size-7"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <MoreHorizontal className="size-3.5" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(
+                              `/patients/${record.patientId}/consultations/${record.id}/edit`,
+                            );
+                          }}
+                        >
+                          <Pen className="size-3.5" /> Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          variant="destructive"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleArchiveRecord(record.id);
+                          }}
+                        >
+                          <Trash className="size-3.5" /> Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                    <ChevronRight className="size-3.5 text-muted-foreground" />
+                  </div>
+                </div>
               ))}
-            </TableBody>
-          </Table>
+            </div>
+          )}
         </CollapsibleContent>
       </Collapsible>
+
       {caseItem.caseName !== "Default" && (
         <CaseCardDialog
           caseItem={caseItem}

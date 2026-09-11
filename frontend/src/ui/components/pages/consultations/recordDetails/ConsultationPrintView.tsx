@@ -51,139 +51,152 @@ function ConsultationPrintView({
   });
 
   return (
-    <div className="mx-auto w-[210mm] bg-white p-10 text-black print:w-full print:p-6">
-      {/* HEADER */}
-      <div className="mb-6 border-b pb-3 text-center">
-        <h1 className="text-xl font-bold">
+    <div className="mx-auto w-[210mm] bg-white p-10 text-black shadow-md print:w-full print:p-6 print:shadow-none">
+      {/* ── HEADER ─────────────────────────────────── */}
+      <div className="mb-8 border-b-2 border-black pb-4 text-center">
+        <h1 className="text-2xl font-bold tracking-tight">
           {clinicInfo?.name ? clinicInfo.name : "ClinicSync"}
         </h1>
-        <p className="text-sm">Medical Consultation Report</p>
+        <p className="mt-0.5 text-sm text-gray-600">Medical Consultation Report</p>
       </div>
 
-      {/* CONSULTATION DETAILS */}
+      {/* ── PATIENT DETAILS ────────────────────────── */}
       <section className="mb-6">
-        <h2 className="mb-2 border-b text-sm font-bold">Patient's Details</h2>
-
-        <p className="text-sm">
-          <span className="font-semibold">Name:</span>{" "}
-          {patient?.firstName || patient?.middleName || patient?.lastName
-            ? `${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""} ${patient.lastName}`
-            : "N/A"}
-        </p>
-
-        <p className="text-sm">
-          <span className="font-semibold">Age:</span>{" "}
-          {patient?.dateOfBirth
-            ? dayjs().diff(dayjs(patient.dateOfBirth), "year")
-            : "N/A"}
-        </p>
-
-        <p className="text-sm">
-          <span className="font-semibold">Date of Birth:</span>{" "}
-          {patient?.dateOfBirth
-            ? dayjs(patient.dateOfBirth).format("MMMM DD, YYYY")
-            : "N/A"}
-        </p>
-
-        <p className="text-sm">
-          <span className="font-semibold">Sex:</span>{" "}
-          <span className="capitalize">
-            {patient?.sex ? patient.sex.toLowerCase() : "N/A"}
-          </span>
-        </p>
-
-        <p className="text-sm">
-          <span className="font-semibold">Address:</span>{" "}
-          {patient?.address ? patient.address : "N/A"}
-        </p>
-      </section>
-
-      {/* CONSULTATION DETAILS */}
-      <section className="mb-6">
-        <h2 className="mb-2 border-b text-sm font-bold">
-          Consultation Details
+        <h2 className="mb-2 border-b border-gray-300 pb-1 text-xs font-bold uppercase tracking-widest text-gray-500">
+          Patient&rsquo;s Details
         </h2>
 
-        <p className="text-sm">
-          <span className="font-semibold">Symptoms:</span>{" "}
-          {record?.symptoms ? record.symptoms : "N/A"}
-        </p>
-
-        <p className="text-sm">
-          <span className="font-semibold">Signs:</span>{" "}
-          {record?.signs ? record.signs : "N/A"}
-        </p>
-
-        <p className="text-sm">
-          <span className="font-semibold">Diagnosis:</span>{" "}
-          {record?.diagnosis ? record.diagnosis : "N/A"}
-        </p>
-      </section>
-
-      {/* VITAL SIGNS */}
-      <section className="mb-6">
-        <h2 className="mb-2 border-b text-sm font-bold">Vital Signs</h2>
-
-        <div className="grid grid-cols-3 gap-4 text-sm">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-sm">
           <p>
-            <span className="font-semibold">BP:</span>{" "}
-            {vitalSigns?.bloodPressureSystolic &&
-            vitalSigns?.bloodPressureDiastolic
-              ? `${vitalSigns.bloodPressureSystolic}/${vitalSigns.bloodPressureDiastolic}`
+            <span className="font-semibold">Name: </span>
+            {patient?.firstName || patient?.middleName || patient?.lastName
+              ? `${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""} ${patient.lastName}`
               : "N/A"}
           </p>
-
           <p>
-            <span className="font-semibold">Temp:</span>{" "}
-            {vitalSigns?.temperature ? `${vitalSigns.temperature}°C` : "N/A"}
+            <span className="font-semibold">Sex: </span>
+            <span className="capitalize">
+              {patient?.sex ? patient.sex.toLowerCase() : "N/A"}
+            </span>
           </p>
-
           <p>
-            <span className="font-semibold">Weight:</span>{" "}
-            {vitalSigns?.weightKg ? `${vitalSigns.weightKg} kg` : "N/A"}
+            <span className="font-semibold">Date of Birth: </span>
+            {patient?.dateOfBirth
+              ? dayjs(patient.dateOfBirth).format("MMMM DD, YYYY")
+              : "N/A"}
+          </p>
+          <p>
+            <span className="font-semibold">Age: </span>
+            {patient?.dateOfBirth
+              ? dayjs().diff(dayjs(patient.dateOfBirth), "year")
+              : "N/A"}
+          </p>
+          <p className="col-span-2">
+            <span className="font-semibold">Address: </span>
+            {patient?.address ? patient.address : "N/A"}
           </p>
         </div>
       </section>
 
-      {/* MEDICATIONS */}
+      {/* ── CONSULTATION DETAILS ───────────────────── */}
       <section className="mb-6">
-        <h2 className="mb-2 border-b text-sm font-bold">Medications</h2>
+        <h2 className="mb-2 border-b border-gray-300 pb-1 text-xs font-bold uppercase tracking-widest text-gray-500">
+          Consultation Details
+        </h2>
 
-        {recordMedications.length === 0 && <p className="text-sm">N/A</p>}
+        <div className="space-y-1.5 text-sm">
+          <p>
+            <span className="font-semibold">Symptoms: </span>
+            {record?.symptoms ? record.symptoms : "N/A"}
+          </p>
+          <p>
+            <span className="font-semibold">Signs: </span>
+            {record?.signs ? record.signs : "N/A"}
+          </p>
+          <p>
+            <span className="font-semibold">Diagnosis: </span>
+            {record?.diagnosis ? record.diagnosis : "N/A"}
+          </p>
+        </div>
+      </section>
+
+      {/* ── VITAL SIGNS ────────────────────────────── */}
+      <section className="mb-6">
+        <h2 className="mb-2 border-b border-gray-300 pb-1 text-xs font-bold uppercase tracking-widest text-gray-500">
+          Vital Signs
+        </h2>
+
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-gray-200 text-left">
+              <th className="pb-1 pr-4 font-semibold">Blood Pressure</th>
+              <th className="pb-1 pr-4 font-semibold">Temperature</th>
+              <th className="pb-1 font-semibold">Weight</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="pt-1.5 pr-4">
+                {vitalSigns?.bloodPressureSystolic &&
+                vitalSigns?.bloodPressureDiastolic
+                  ? `${vitalSigns.bloodPressureSystolic}/${vitalSigns.bloodPressureDiastolic} mmHg`
+                  : "N/A"}
+              </td>
+              <td className="pt-1.5 pr-4">
+                {vitalSigns?.temperature
+                  ? `${vitalSigns.temperature}°C`
+                  : "N/A"}
+              </td>
+              <td className="pt-1.5">
+                {vitalSigns?.weightKg ? `${vitalSigns.weightKg} kg` : "N/A"}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      {/* ── MEDICATIONS ────────────────────────────── */}
+      <section className="mb-8">
+        <h2 className="mb-2 border-b border-gray-300 pb-1 text-xs font-bold uppercase tracking-widest text-gray-500">
+          Medications
+        </h2>
+
+        {recordMedications.length === 0 && (
+          <p className="text-sm text-gray-500">N/A</p>
+        )}
 
         {recordMedications?.map((med, i) => (
           <div key={med.id} className="mb-3 text-sm">
             <p className="font-semibold">
               {i + 1}. {med.name ? med.name : "N/A"}
             </p>
-
-            <p>Dosage: {med.dosage ? med.dosage : "N/A"}</p>
-
-            <p>Frequency: {med.frequency ? med.frequency : "N/A"}</p>
-
-            <p>
-              Duration:{" "}
+            <p className="ml-4 text-gray-700">
+              Dosage: {med.dosage ? med.dosage : "N/A"} &nbsp;|&nbsp; Frequency:{" "}
+              {med.frequency ? med.frequency : "N/A"} &nbsp;|&nbsp; Duration:{" "}
               {med.durationDays
                 ? `${med.durationDays} ${med.durationDays > 1 ? "days" : "day"}`
                 : "N/A"}
             </p>
-
-            <p>Instructions: {med.instructions ? med.instructions : "N/A"}</p>
+            {med.instructions && (
+              <p className="ml-4 text-gray-600">
+                Instructions: {med.instructions}
+              </p>
+            )}
           </div>
         ))}
       </section>
 
-      {/* SIGNATURE */}
-      <div className="mt-10 text-sm">
+      {/* ── SIGNATURE ──────────────────────────────── */}
+      <div className="mt-12 text-sm">
         {record.case.doctor?.username && (
-          <p>
+          <p className="mb-1 font-semibold">
             Dr.{" "}
-            {`${record.case.doctor.firstName}${record.case.doctor.middleName ? ` ${record.case.doctor.middleName.slice(0, 1)}.` : ""} ${record.case.doctor.lastName}`}{" "}
+            {`${record.case.doctor.firstName}${record.case.doctor.middleName ? ` ${record.case.doctor.middleName.slice(0, 1)}.` : ""} ${record.case.doctor.lastName}`}
           </p>
         )}
-        <div className="relative my-2">
+        <div className="relative mb-1">
           <p className="relative z-0">
-            Doctor’s Signature:{" "}
+            Doctor&rsquo;s Signature:{" "}
             <span className="relative inline-block">
               __________________________
               {withSignature && signatureData?.filePath && (
@@ -197,20 +210,20 @@ function ConsultationPrintView({
           </p>
         </div>
         {record.case.doctor?.licenseNum && (
-          <p>License No.: {record.case.doctor.licenseNum} </p>
+          <p>License No.: {record.case.doctor.licenseNum}</p>
         )}
       </div>
 
-      {/* FOOTER */}
-      <div className="mt-10 text-center text-xs text-gray-500">
+      {/* ── FOOTER ─────────────────────────────────── */}
+      <div className="mt-10 border-t border-gray-200 pt-3 text-center text-xs text-gray-400">
         Generated by {clinicInfo?.name ? clinicInfo.name : "ClinicSync"}
       </div>
 
-      {/* CONTROLS (PRINT HIDDEN) */}
-      <div className="mt-12 flex flex-col gap-3 print:hidden">
+      {/* ── CONTROLS (hidden when printing) ────────── */}
+      <div className="mt-10 flex flex-col gap-3 print:hidden">
         {withSignature && !isSignaturePending && !signatureData && (
-          <div className="flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-            <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600" />
+          <div className="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+            <AlertTriangle className="h-4 w-4 shrink-0 text-amber-500" />
             <span>
               Doctor does not have a signature yet. Manage signature in account{" "}
               <span
@@ -225,14 +238,15 @@ function ConsultationPrintView({
         )}
 
         <div className="flex items-center justify-between gap-4">
-          <div className="inline-flex items-center rounded-full bg-black p-1 select-none">
+          {/* Signature toggle */}
+          <div className="inline-flex items-center overflow-hidden rounded-full bg-zinc-900 p-1 select-none">
             <button
               type="button"
               onClick={() => setWithSignature(true)}
-              className={`cursor-pointer rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 ${
+              className={`cursor-pointer rounded-full px-4 py-1.5 text-xs font-medium transition-all duration-200 ${
                 withSignature
                   ? "bg-white font-semibold text-black shadow-sm"
-                  : "text-zinc-300 hover:text-white"
+                  : "text-zinc-400 hover:text-white"
               }`}
             >
               With Signature
@@ -240,10 +254,10 @@ function ConsultationPrintView({
             <button
               type="button"
               onClick={() => setWithSignature(false)}
-              className={`cursor-pointer rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 ${
+              className={`cursor-pointer rounded-full px-4 py-1.5 text-xs font-medium transition-all duration-200 ${
                 !withSignature
                   ? "bg-white font-semibold text-black shadow-sm"
-                  : "text-zinc-300 hover:text-white"
+                  : "text-zinc-400 hover:text-white"
               }`}
             >
               Without Signature
@@ -272,7 +286,7 @@ function ConsultationPrintView({
 
               window.print();
             }}
-            className="cursor-pointer rounded-full bg-[oklch(0.269_0_0)] text-center text-white hover:bg-[oklch(0.269_0_0)]/80"
+            className="cursor-pointer rounded-full"
             disabled={isClinicInfoPending || isPatientPending}
           >
             Print Report
