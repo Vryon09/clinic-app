@@ -67,6 +67,7 @@ export async function searchPatients(req: Request, res: Response) {
     const [patients, total] = await prisma.$transaction([
       prisma.patient.findMany({
         where,
+        include: { records: true },
         orderBy: [
           { lastName: "asc" },
           { firstName: "asc" },
