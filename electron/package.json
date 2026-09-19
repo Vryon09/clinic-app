@@ -9,7 +9,7 @@
     "dev": "tsx watch src/main.ts",
     "start": "electron .",
     "build": "tsc",
-    "dist": "electron-builder",
+    "dist": "electron-rebuild --module-dir ../backend --version 43.2.0 -f -w better-sqlite3 && electron-builder",
     "pack": "npm run build && electron-builder --dir"
   },
   "keywords": [],
