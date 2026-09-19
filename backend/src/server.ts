@@ -53,10 +53,12 @@ app.use("/api/activityLog", activityLogRoutes);
 app.use("/api/system", systemRoutes);
 app.use("/api/signature", signatureRoutes);
 
-app.listen(process.env.PORT, () => {
-  // if (process.env.NODE_ENV === "development") {
-  console.log("Listening to PORT: " + process.env.PORT);
-  // }
+import { initDatabase } from "./config/initDb.ts";
+
+initDatabase().then(() => {
+  app.listen(process.env.PORT, () => {
+    console.log("Listening to PORT: " + process.env.PORT);
+  });
 });
 
 process.on("SIGINT", async () => {

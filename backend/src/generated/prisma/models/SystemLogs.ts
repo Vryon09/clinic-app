@@ -428,7 +428,6 @@ export type SystemLogsCreateOrConnectWithoutUserInput = {
 
 export type SystemLogsCreateManyUserInputEnvelope = {
   data: Prisma.SystemLogsCreateManyUserInput | Prisma.SystemLogsCreateManyUserInput[]
-  skipDuplicates?: boolean
 }
 
 export type SystemLogsUpsertWithWhereUniqueWithoutUserInput = {
@@ -1225,7 +1224,6 @@ export type SystemLogsCreateManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * The data used to create many SystemLogs.
    */
   data: Prisma.SystemLogsCreateManyInput | Prisma.SystemLogsCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1244,7 +1242,6 @@ export type SystemLogsCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
    * The data used to create many SystemLogs.
    */
   data: Prisma.SystemLogsCreateManyInput | Prisma.SystemLogsCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

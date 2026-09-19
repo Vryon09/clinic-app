@@ -508,7 +508,6 @@ export type ClinicCreateOrConnectWithoutLastEditedByInput = {
 
 export type ClinicCreateManyLastEditedByInputEnvelope = {
   data: Prisma.ClinicCreateManyLastEditedByInput | Prisma.ClinicCreateManyLastEditedByInput[]
-  skipDuplicates?: boolean
 }
 
 export type ClinicCreateWithoutUserInput = {
@@ -538,7 +537,6 @@ export type ClinicCreateOrConnectWithoutUserInput = {
 
 export type ClinicCreateManyUserInputEnvelope = {
   data: Prisma.ClinicCreateManyUserInput | Prisma.ClinicCreateManyUserInput[]
-  skipDuplicates?: boolean
 }
 
 export type ClinicUpsertWithWhereUniqueWithoutLastEditedByInput = {
@@ -1410,7 +1408,6 @@ export type ClinicCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * The data used to create many Clinics.
    */
   data: Prisma.ClinicCreateManyInput | Prisma.ClinicCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1429,7 +1426,6 @@ export type ClinicCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * The data used to create many Clinics.
    */
   data: Prisma.ClinicCreateManyInput | Prisma.ClinicCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

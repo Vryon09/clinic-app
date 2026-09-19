@@ -18,9 +18,10 @@
     "wait-on": "^9.1.0"
   },
   "devDependencies": {
-    "electron": "^43.2.0",
+    "@electron/rebuild": "^4.2.0",
     "@types/node": "^26.1.1",
     "@types/wait-on": "^5.3.4",
+    "electron": "^43.2.0",
     "electron-builder": "^26.15.3",
     "tsx": "^4.23.1",
     "typescript": "^7.0.2"
