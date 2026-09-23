@@ -476,7 +476,6 @@ export type CaseCreateOrConnectWithoutDoctorInput = {
 
 export type CaseCreateManyDoctorInputEnvelope = {
   data: Prisma.CaseCreateManyDoctorInput | Prisma.CaseCreateManyDoctorInput[]
-  skipDuplicates?: boolean
 }
 
 export type CaseUpsertWithWhereUniqueWithoutDoctorInput = {
@@ -532,7 +531,6 @@ export type CaseCreateOrConnectWithoutPatientInput = {
 
 export type CaseCreateManyPatientInputEnvelope = {
   data: Prisma.CaseCreateManyPatientInput | Prisma.CaseCreateManyPatientInput[]
-  skipDuplicates?: boolean
 }
 
 export type CaseUpsertWithWhereUniqueWithoutPatientInput = {
@@ -1437,7 +1435,6 @@ export type CaseCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * The data used to create many Cases.
    */
   data: Prisma.CaseCreateManyInput | Prisma.CaseCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1456,7 +1453,6 @@ export type CaseCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * The data used to create many Cases.
    */
   data: Prisma.CaseCreateManyInput | Prisma.CaseCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

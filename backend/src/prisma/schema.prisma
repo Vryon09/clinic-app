@@ -10,7 +10,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
 }
 
 model Clinic {
@@ -145,8 +145,8 @@ model VitalSigns {
   bloodPressureSystolic  Int?
   bloodPressureDiastolic Int?
 
-  temperature Decimal? @db.Decimal(4, 1)
-  weightKg    Decimal? @db.Decimal(5, 2)
+  temperature Float?
+  weightKg    Float?
 }
 
 model RecordMedication {

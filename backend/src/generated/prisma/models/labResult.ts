@@ -356,7 +356,6 @@ export type labResultCreateOrConnectWithoutPatientInput = {
 
 export type labResultCreateManyPatientInputEnvelope = {
   data: Prisma.labResultCreateManyPatientInput | Prisma.labResultCreateManyPatientInput[]
-  skipDuplicates?: boolean
 }
 
 export type labResultUpsertWithWhereUniqueWithoutPatientInput = {
@@ -1120,7 +1119,6 @@ export type labResultCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * The data used to create many labResults.
    */
   data: Prisma.labResultCreateManyInput | Prisma.labResultCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1139,7 +1137,6 @@ export type labResultCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exten
    * The data used to create many labResults.
    */
   data: Prisma.labResultCreateManyInput | Prisma.labResultCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

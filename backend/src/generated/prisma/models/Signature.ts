@@ -1073,7 +1073,6 @@ export type SignatureCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * The data used to create many Signatures.
    */
   data: Prisma.SignatureCreateManyInput | Prisma.SignatureCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1092,7 +1091,6 @@ export type SignatureCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exten
    * The data used to create many Signatures.
    */
   data: Prisma.SignatureCreateManyInput | Prisma.SignatureCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

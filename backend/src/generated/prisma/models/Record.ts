@@ -823,7 +823,6 @@ export type RecordCreateOrConnectWithoutLastEditedByInput = {
 
 export type RecordCreateManyLastEditedByInputEnvelope = {
   data: Prisma.RecordCreateManyLastEditedByInput | Prisma.RecordCreateManyLastEditedByInput[]
-  skipDuplicates?: boolean
 }
 
 export type RecordCreateWithoutCreatedByInput = {
@@ -869,7 +868,6 @@ export type RecordCreateOrConnectWithoutCreatedByInput = {
 
 export type RecordCreateManyCreatedByInputEnvelope = {
   data: Prisma.RecordCreateManyCreatedByInput | Prisma.RecordCreateManyCreatedByInput[]
-  skipDuplicates?: boolean
 }
 
 export type RecordCreateWithoutUserInput = {
@@ -915,7 +913,6 @@ export type RecordCreateOrConnectWithoutUserInput = {
 
 export type RecordCreateManyUserInputEnvelope = {
   data: Prisma.RecordCreateManyUserInput | Prisma.RecordCreateManyUserInput[]
-  skipDuplicates?: boolean
 }
 
 export type RecordUpsertWithWhereUniqueWithoutLastEditedByInput = {
@@ -1029,7 +1026,6 @@ export type RecordCreateOrConnectWithoutPatientInput = {
 
 export type RecordCreateManyPatientInputEnvelope = {
   data: Prisma.RecordCreateManyPatientInput | Prisma.RecordCreateManyPatientInput[]
-  skipDuplicates?: boolean
 }
 
 export type RecordUpsertWithWhereUniqueWithoutPatientInput = {
@@ -1091,7 +1087,6 @@ export type RecordCreateOrConnectWithoutCaseInput = {
 
 export type RecordCreateManyCaseInputEnvelope = {
   data: Prisma.RecordCreateManyCaseInput | Prisma.RecordCreateManyCaseInput[]
-  skipDuplicates?: boolean
 }
 
 export type RecordUpsertWithWhereUniqueWithoutCaseInput = {
@@ -2468,7 +2463,6 @@ export type RecordCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * The data used to create many Records.
    */
   data: Prisma.RecordCreateManyInput | Prisma.RecordCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -2487,7 +2481,6 @@ export type RecordCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * The data used to create many Records.
    */
   data: Prisma.RecordCreateManyInput | Prisma.RecordCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

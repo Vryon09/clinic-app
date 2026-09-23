@@ -29,15 +29,15 @@ export type AggregateVitalSigns = {
 export type VitalSignsAvgAggregateOutputType = {
   bloodPressureSystolic: number | null
   bloodPressureDiastolic: number | null
-  temperature: runtime.Decimal | null
-  weightKg: runtime.Decimal | null
+  temperature: number | null
+  weightKg: number | null
 }
 
 export type VitalSignsSumAggregateOutputType = {
   bloodPressureSystolic: number | null
   bloodPressureDiastolic: number | null
-  temperature: runtime.Decimal | null
-  weightKg: runtime.Decimal | null
+  temperature: number | null
+  weightKg: number | null
 }
 
 export type VitalSignsMinAggregateOutputType = {
@@ -45,8 +45,8 @@ export type VitalSignsMinAggregateOutputType = {
   recordId: string | null
   bloodPressureSystolic: number | null
   bloodPressureDiastolic: number | null
-  temperature: runtime.Decimal | null
-  weightKg: runtime.Decimal | null
+  temperature: number | null
+  weightKg: number | null
 }
 
 export type VitalSignsMaxAggregateOutputType = {
@@ -54,8 +54,8 @@ export type VitalSignsMaxAggregateOutputType = {
   recordId: string | null
   bloodPressureSystolic: number | null
   bloodPressureDiastolic: number | null
-  temperature: runtime.Decimal | null
-  weightKg: runtime.Decimal | null
+  temperature: number | null
+  weightKg: number | null
 }
 
 export type VitalSignsCountAggregateOutputType = {
@@ -202,8 +202,8 @@ export type VitalSignsGroupByOutputType = {
   recordId: string
   bloodPressureSystolic: number | null
   bloodPressureDiastolic: number | null
-  temperature: runtime.Decimal | null
-  weightKg: runtime.Decimal | null
+  temperature: number | null
+  weightKg: number | null
   _count: VitalSignsCountAggregateOutputType | null
   _avg: VitalSignsAvgAggregateOutputType | null
   _sum: VitalSignsSumAggregateOutputType | null
@@ -234,8 +234,8 @@ export type VitalSignsWhereInput = {
   recordId?: Prisma.StringFilter<"VitalSigns"> | string
   bloodPressureSystolic?: Prisma.IntNullableFilter<"VitalSigns"> | number | null
   bloodPressureDiastolic?: Prisma.IntNullableFilter<"VitalSigns"> | number | null
-  temperature?: Prisma.DecimalNullableFilter<"VitalSigns"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: Prisma.DecimalNullableFilter<"VitalSigns"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.FloatNullableFilter<"VitalSigns"> | number | null
+  weightKg?: Prisma.FloatNullableFilter<"VitalSigns"> | number | null
   record?: Prisma.XOR<Prisma.RecordScalarRelationFilter, Prisma.RecordWhereInput>
 }
 
@@ -257,8 +257,8 @@ export type VitalSignsWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.VitalSignsWhereInput | Prisma.VitalSignsWhereInput[]
   bloodPressureSystolic?: Prisma.IntNullableFilter<"VitalSigns"> | number | null
   bloodPressureDiastolic?: Prisma.IntNullableFilter<"VitalSigns"> | number | null
-  temperature?: Prisma.DecimalNullableFilter<"VitalSigns"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: Prisma.DecimalNullableFilter<"VitalSigns"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.FloatNullableFilter<"VitalSigns"> | number | null
+  weightKg?: Prisma.FloatNullableFilter<"VitalSigns"> | number | null
   record?: Prisma.XOR<Prisma.RecordScalarRelationFilter, Prisma.RecordWhereInput>
 }, "id" | "recordId">
 
@@ -284,16 +284,16 @@ export type VitalSignsScalarWhereWithAggregatesInput = {
   recordId?: Prisma.StringWithAggregatesFilter<"VitalSigns"> | string
   bloodPressureSystolic?: Prisma.IntNullableWithAggregatesFilter<"VitalSigns"> | number | null
   bloodPressureDiastolic?: Prisma.IntNullableWithAggregatesFilter<"VitalSigns"> | number | null
-  temperature?: Prisma.DecimalNullableWithAggregatesFilter<"VitalSigns"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: Prisma.DecimalNullableWithAggregatesFilter<"VitalSigns"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.FloatNullableWithAggregatesFilter<"VitalSigns"> | number | null
+  weightKg?: Prisma.FloatNullableWithAggregatesFilter<"VitalSigns"> | number | null
 }
 
 export type VitalSignsCreateInput = {
   id?: string
   bloodPressureSystolic?: number | null
   bloodPressureDiastolic?: number | null
-  temperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: number | null
+  weightKg?: number | null
   record: Prisma.RecordCreateNestedOneWithoutVitalSignsInput
 }
 
@@ -302,16 +302,16 @@ export type VitalSignsUncheckedCreateInput = {
   recordId: string
   bloodPressureSystolic?: number | null
   bloodPressureDiastolic?: number | null
-  temperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: number | null
+  weightKg?: number | null
 }
 
 export type VitalSignsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   bloodPressureSystolic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   bloodPressureDiastolic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  temperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   record?: Prisma.RecordUpdateOneRequiredWithoutVitalSignsNestedInput
 }
 
@@ -320,8 +320,8 @@ export type VitalSignsUncheckedUpdateInput = {
   recordId?: Prisma.StringFieldUpdateOperationsInput | string
   bloodPressureSystolic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   bloodPressureDiastolic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  temperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type VitalSignsCreateManyInput = {
@@ -329,16 +329,16 @@ export type VitalSignsCreateManyInput = {
   recordId: string
   bloodPressureSystolic?: number | null
   bloodPressureDiastolic?: number | null
-  temperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: number | null
+  weightKg?: number | null
 }
 
 export type VitalSignsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   bloodPressureSystolic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   bloodPressureDiastolic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  temperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type VitalSignsUncheckedUpdateManyInput = {
@@ -346,8 +346,8 @@ export type VitalSignsUncheckedUpdateManyInput = {
   recordId?: Prisma.StringFieldUpdateOperationsInput | string
   bloodPressureSystolic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   bloodPressureDiastolic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  temperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type VitalSignsNullableScalarRelationFilter = {
@@ -436,28 +436,28 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type NullableDecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type VitalSignsCreateWithoutRecordInput = {
   id?: string
   bloodPressureSystolic?: number | null
   bloodPressureDiastolic?: number | null
-  temperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: number | null
+  weightKg?: number | null
 }
 
 export type VitalSignsUncheckedCreateWithoutRecordInput = {
   id?: string
   bloodPressureSystolic?: number | null
   bloodPressureDiastolic?: number | null
-  temperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: number | null
+  weightKg?: number | null
 }
 
 export type VitalSignsCreateOrConnectWithoutRecordInput = {
@@ -480,16 +480,16 @@ export type VitalSignsUpdateWithoutRecordInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   bloodPressureSystolic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   bloodPressureDiastolic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  temperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type VitalSignsUncheckedUpdateWithoutRecordInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   bloodPressureSystolic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   bloodPressureDiastolic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  temperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  weightKg?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  weightKg?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 
@@ -554,8 +554,8 @@ export type $VitalSignsPayload<ExtArgs extends runtime.Types.Extensions.Internal
     recordId: string
     bloodPressureSystolic: number | null
     bloodPressureDiastolic: number | null
-    temperature: runtime.Decimal | null
-    weightKg: runtime.Decimal | null
+    temperature: number | null
+    weightKg: number | null
   }, ExtArgs["result"]["vitalSigns"]>
   composites: {}
 }
@@ -984,8 +984,8 @@ export interface VitalSignsFieldRefs {
   readonly recordId: Prisma.FieldRef<"VitalSigns", 'String'>
   readonly bloodPressureSystolic: Prisma.FieldRef<"VitalSigns", 'Int'>
   readonly bloodPressureDiastolic: Prisma.FieldRef<"VitalSigns", 'Int'>
-  readonly temperature: Prisma.FieldRef<"VitalSigns", 'Decimal'>
-  readonly weightKg: Prisma.FieldRef<"VitalSigns", 'Decimal'>
+  readonly temperature: Prisma.FieldRef<"VitalSigns", 'Float'>
+  readonly weightKg: Prisma.FieldRef<"VitalSigns", 'Float'>
 }
     
 
@@ -1215,7 +1215,6 @@ export type VitalSignsCreateManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * The data used to create many VitalSigns.
    */
   data: Prisma.VitalSignsCreateManyInput | Prisma.VitalSignsCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1234,7 +1233,6 @@ export type VitalSignsCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
    * The data used to create many VitalSigns.
    */
   data: Prisma.VitalSignsCreateManyInput | Prisma.VitalSignsCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

@@ -10,3 +10,6 @@ frontend-ai
 frontend-orig
 
 .antigravityrules
+*.db
+*.db-journal
+.env

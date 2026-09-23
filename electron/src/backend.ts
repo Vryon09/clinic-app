@@ -1,5 +1,7 @@
 import { ChildProcess, spawn } from "child_process";
 import path from "path";
+import fs from "fs";
+import { app } from "electron";
 import { isDev } from "./util";
 
 let backendProcess: ChildProcess | null = null;
@@ -13,18 +15,34 @@ export function startBackend() {
     ? path.resolve(__dirname, "../../backend")
     : path.join(process.resourcesPath, "backend");
 
+  let env: NodeJS.ProcessEnv = {
+    ...process.env,
+  };
+
+  if (!isDev()) {
+    const userDataPath = app.getPath("userData");
+    if (!fs.existsSync(userDataPath)) {
+      fs.mkdirSync(userDataPath, { recursive: true });
+    }
+    const dbPath = path.join(userDataPath, "clinic.db");
+    env = {
+      ...env,
+      ELECTRON_RUN_AS_NODE: "1",
+      PORT: "3000",
+      DATABASE_URL: `file:${dbPath}`,
+    };
+  }
+
   const child = isDev()
     ? spawn("node", [backendEntry], {
         cwd,
         stdio: "inherit",
+        env,
       })
     : spawn(process.execPath, [backendEntry], {
         cwd,
         stdio: "inherit",
-        env: {
-          ...process.env,
-          ELECTRON_RUN_AS_NODE: "1",
-        },
+        env,
       });
 
   backendProcess = child;

@@ -56,10 +56,10 @@ export async function searchPatients(req: Request, res: Response) {
 
     const where = {
       OR: [
-        { firstName: { contains: searchInput, mode: "insensitive" as const } },
-        { middleName: { contains: searchInput, mode: "insensitive" as const } },
-        { lastName: { contains: searchInput, mode: "insensitive" as const } },
-        { phone: { contains: searchInput, mode: "insensitive" as const } },
+        { firstName: { contains: searchInput } },
+        { middleName: { contains: searchInput } },
+        { lastName: { contains: searchInput } },
+        { phone: { contains: searchInput } },
       ],
       isArchived: false,
     };

@@ -1060,7 +1060,6 @@ export type GoogleTokenCreateManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * The data used to create many GoogleTokens.
    */
   data: Prisma.GoogleTokenCreateManyInput | Prisma.GoogleTokenCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1079,7 +1078,6 @@ export type GoogleTokenCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ext
    * The data used to create many GoogleTokens.
    */
   data: Prisma.GoogleTokenCreateManyInput | Prisma.GoogleTokenCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
