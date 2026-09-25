@@ -44,7 +44,7 @@ function Backup() {
     const handler = (event: MessageEvent) => {
       if (event.origin !== "http://localhost:3000") return;
 
-      if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
+      if (event.data?.type === "GOOGLE_AUTH_SUCCESS") {
         queryClient.invalidateQueries({ queryKey: ["google-status"] });
       }
     };
