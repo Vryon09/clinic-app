@@ -10,11 +10,18 @@ import {
 import { Input } from "@/ui/components/shadcn/input";
 import { useState } from "react";
 import { AlertTriangle } from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 
 function ResetDatabase() {
+  const { user } = useAuth();
   const [isResetting, setIsResetting] = useState<boolean>(false);
   const [resetInput, setResetInput] = useState<string>("");
   const { mutate: handleResetDatabase } = useResetDatabase();
+
+  if (user?.role !== "ADMIN") {
+    return null;
+  }
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -74,7 +81,14 @@ function ResetDatabase() {
                 className="h-9 rounded-lg font-semibold shadow-xs"
                 disabled={resetInput !== "reset"}
                 onClick={() => {
-                  handleResetDatabase();
+                  handleResetDatabase(undefined, {
+                    onError: (err: any) => {
+                      toast.error(
+                        err?.response?.data?.message || "Failed to reset database.",
+                        { position: "top-center" }
+                      );
+                    },
+                  });
                   setResetInput("");
                   setIsResetting(false);
                 }}

@@ -24,8 +24,10 @@ import { toast } from "sonner";
 import { Spinner } from "../../../shadcn/spinner";
 import { Edit, TriangleAlert, X } from "lucide-react";
 import ResetDatabase from "./ResetDatabase";
+import { useAuth } from "@/hooks/useAuth";
 
 function GeneralSettings() {
+  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const {
@@ -199,15 +201,17 @@ function GeneralSettings() {
         </form>
       )}
 
-      <div className="pt-4">
-        <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-5 space-y-4">
-          <div className="flex items-center gap-2">
-            <TriangleAlert className="size-5 text-destructive" />
-            <h3 className="text-sm font-semibold text-destructive">Danger Zone</h3>
+      {user?.role === "ADMIN" && (
+        <div className="pt-4">
+          <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-5 space-y-4">
+            <div className="flex items-center gap-2">
+              <TriangleAlert className="size-5 text-destructive" />
+              <h3 className="text-sm font-semibold text-destructive">Danger Zone</h3>
+            </div>
+            <ResetDatabase />
           </div>
-          <ResetDatabase />
         </div>
-      </div>
+      )}
     </Card>
   );
 }

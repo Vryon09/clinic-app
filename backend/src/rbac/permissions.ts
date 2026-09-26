@@ -4,4 +4,5 @@ export const PERMISSIONS = {
   RECORD_CREATE: "record:create",
   RECORD_UPDATE: "record:update",
   RECORD_DELETE: "record: delete",
+  SYSTEM_RESET: "system:reset",
 };
