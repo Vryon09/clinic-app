@@ -51,10 +51,12 @@ export async function googleAuthCallback(req: Request, res: Response) {
   <html>
     <body>
       <script>
-        window.opener.postMessage(
-          { type: "GOOGLE_AUTH_SUCCESS" },
-          "http://localhost:5123" 
-        );
+        if (window.opener) {
+          window.opener.postMessage(
+            { type: "GOOGLE_AUTH_SUCCESS" },
+            "*"
+          );
+        }
         window.close();
       </script>
       <p>Connecting Google Drive...</p>
