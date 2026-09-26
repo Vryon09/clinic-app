@@ -1,6 +1,13 @@
+import { useState } from "react";
 import type { ILabResult } from "@/types/LabResultType";
 import dayjs from "dayjs";
-import { ExternalLink, FileText, MoreHorizontal, Trash } from "lucide-react";
+import {
+  ExternalLink,
+  FileText,
+  Loader2,
+  MoreHorizontal,
+  Trash,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,8 +15,12 @@ import {
   DropdownMenuTrigger,
 } from "../../shadcn/dropdown-menu";
 import { Button } from "../../shadcn/button";
-import { useDeleteLabResult } from "@/services/apiLabResults";
+import {
+  handleGetLabResultFile,
+  useDeleteLabResult,
+} from "@/services/apiLabResults";
 import { Skeleton } from "../../shadcn/skeleton";
+import { toast } from "sonner";
 
 function LabResultsTable({
   labResults,
@@ -19,26 +30,44 @@ function LabResultsTable({
   isLabResultsPending: boolean;
 }) {
   const { mutate: handleDeleteLabResult } = useDeleteLabResult();
+  const [openingId, setOpeningId] = useState<string | null>(null);
+
+  const handleOpenFile = async (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    try {
+      setOpeningId(id);
+      const blob = await handleGetLabResultFile(id);
+      const fileUrl = URL.createObjectURL(blob);
+      window.open(fileUrl, "_blank");
+    } catch (error) {
+      toast.error("Failed to open lab result file", {
+        position: "top-center",
+      });
+      console.error(error);
+    } finally {
+      setOpeningId(null);
+    }
+  };
 
   // ── Loading skeleton ─────────────────────────────────────────
   if (isLabResultsPending) {
     return (
-      <div className="overflow-hidden rounded-xl border border-border/80">
+      <div className="border-border/80 overflow-hidden rounded-xl border">
         {/* Fake header */}
-        <div className="grid grid-cols-[1fr_auto_auto] items-center gap-4 border-b border-border/60 bg-muted/30 px-4 py-2.5">
-          <Skeleton className="h-3.5 w-10 rounded bg-muted" />
-          <Skeleton className="h-3.5 w-16 rounded bg-muted" />
+        <div className="border-border/60 bg-muted/30 grid grid-cols-[1fr_auto_auto] items-center gap-4 border-b px-4 py-2.5">
+          <Skeleton className="bg-muted h-3.5 w-10 rounded" />
+          <Skeleton className="bg-muted h-3.5 w-16 rounded" />
           <div className="w-8" />
         </div>
         {/* Fake rows */}
         {Array.from({ length: 5 }).map((_, i) => (
           <div
             key={i}
-            className="grid grid-cols-[1fr_auto_auto] items-center gap-4 border-b border-border/50 px-4 py-3 last:border-0"
+            className="border-border/50 grid grid-cols-[1fr_auto_auto] items-center gap-4 border-b px-4 py-3 last:border-0"
           >
-            <Skeleton className="h-4 w-32 rounded bg-muted/60" />
-            <Skeleton className="h-5 w-12 rounded-full bg-muted/60" />
-            <Skeleton className="h-7 w-7 rounded-lg bg-muted/60" />
+            <Skeleton className="bg-muted/60 h-4 w-32 rounded" />
+            <Skeleton className="bg-muted/60 h-5 w-12 rounded-full" />
+            <Skeleton className="bg-muted/60 h-7 w-7 rounded-lg" />
           </div>
         ))}
       </div>
@@ -48,14 +77,14 @@ function LabResultsTable({
   // ── Empty state ──────────────────────────────────────────────
   if (!labResults?.length) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/70 bg-card/50 p-12 text-center">
-        <div className="mb-3 flex size-12 items-center justify-center rounded-xl bg-muted text-muted-foreground">
+      <div className="border-border/70 bg-card/50 flex flex-col items-center justify-center rounded-2xl border border-dashed p-12 text-center">
+        <div className="bg-muted text-muted-foreground mb-3 flex size-12 items-center justify-center rounded-xl">
           <FileText className="size-5" />
         </div>
-        <h3 className="text-sm font-semibold text-foreground">
+        <h3 className="text-foreground text-sm font-semibold">
           No Lab Results
         </h3>
-        <p className="mt-1 max-w-xs text-xs text-muted-foreground">
+        <p className="text-muted-foreground mt-1 max-w-xs text-xs">
           No laboratory results have been uploaded for this patient yet. Click
           &ldquo;Upload File&rdquo; above to add one.
         </p>
@@ -65,16 +94,16 @@ function LabResultsTable({
 
   // ── Results table ────────────────────────────────────────────
   return (
-    <div className="overflow-hidden rounded-xl border border-border/80">
+    <div className="border-border/80 overflow-hidden rounded-xl border">
       {/* Header */}
-      <div className="grid grid-cols-[1fr_auto_auto] items-center gap-4 border-b border-border/60 bg-muted/30 px-4 py-2.5">
-        <p className="text-xs font-semibold text-muted-foreground">Date</p>
-        <p className="text-xs font-semibold text-muted-foreground">File Type</p>
+      <div className="border-border/60 bg-muted/30 grid grid-cols-[1fr_auto_auto] items-center gap-4 border-b px-4 py-2.5">
+        <p className="text-muted-foreground text-xs font-semibold">Date</p>
+        <p className="text-muted-foreground text-xs font-semibold">File Type</p>
         <div className="w-8" />
       </div>
 
       {/* Rows */}
-      <div className="divide-y divide-border/50">
+      <div className="divide-border/50 divide-y">
         {labResults.map((result) => {
           const pathSplit = result.filePath.split("\\");
           const fileName = pathSplit[pathSplit.length - 1]
@@ -87,29 +116,36 @@ function LabResultsTable({
           return (
             <div
               key={result.id}
-              className="grid cursor-pointer grid-cols-[1fr_auto_auto] items-center gap-4 px-4 py-3 transition-colors duration-150 hover:bg-muted/20"
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(`http://localhost:3000/${result.filePath}`);
-              }}
+              className="hover:bg-muted/20 grid cursor-pointer grid-cols-[1fr_auto_auto] items-center gap-4 px-4 py-3 transition-colors duration-150"
+              onClick={(e) => handleOpenFile(e, result.id)}
             >
               {/* Date + open hint */}
               <div className="flex items-center gap-2">
-                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/8 text-primary">
-                  <FileText className="size-3.5" />
+                <div className="bg-primary/8 text-primary flex size-8 shrink-0 items-center justify-center rounded-lg">
+                  {openingId === result.id ? (
+                    <Loader2 className="text-primary size-3.5 animate-spin" />
+                  ) : (
+                    <FileText className="size-3.5" />
+                  )}
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground">
+                  <p className="text-foreground text-sm font-medium">
                     {dayjs(result.uploadedAt).format("MMM DD, YYYY")}
                   </p>
-                  <p className="flex items-center gap-0.5 text-[10px] text-muted-foreground">
-                    <ExternalLink className="size-2.5" /> Open file
+                  <p className="text-muted-foreground flex items-center gap-0.5 text-[10px]">
+                    {openingId === result.id ? (
+                      "Loading..."
+                    ) : (
+                      <>
+                        <ExternalLink className="size-2.5" /> Open file
+                      </>
+                    )}
                   </p>
                 </div>
               </div>
 
               {/* File type badge */}
-              <span className="rounded-full border border-border/70 bg-muted/40 px-2.5 py-0.5 text-[11px] font-semibold text-foreground">
+              <span className="border-border/70 bg-muted/40 text-foreground rounded-full border px-2.5 py-0.5 text-[11px] font-semibold">
                 {fileName}
               </span>
 

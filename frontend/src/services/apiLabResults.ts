@@ -16,6 +16,13 @@ export async function handeGetLabResults({
   return res.data || [];
 }
 
+export async function handleGetLabResultFile(id: string): Promise<Blob> {
+  const res = await api.get(`/api/labResults/${id}/file`, {
+    responseType: "blob",
+  });
+  return res.data;
+}
+
 async function handleUploadLabResult({
   patientId,
   file,

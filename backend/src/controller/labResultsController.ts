@@ -2,7 +2,40 @@ import { Request, Response } from "express";
 import { UserRequest } from "../types/express";
 import { prisma } from "../config/prisma";
 import fs from "node:fs";
-import { success } from "zod";
+import path from "node:path";
+
+export async function getLabResultFile(req: UserRequest, res: Response) {
+  try {
+    const { id } = req.params as { id: string };
+
+    const labResult = await prisma.labResult.findUnique({
+      where: { id },
+    });
+
+    if (!labResult) {
+      return res.status(404).json({ message: "Lab result not found." });
+    }
+
+    const resolvedPath = path.resolve(process.cwd(), labResult.filePath);
+    const allowedDir = path.resolve(process.cwd(), "uploads", "lab-results");
+
+    if (!resolvedPath.startsWith(allowedDir)) {
+      return res.status(403).json({ message: "Access denied." });
+    }
+
+    if (!fs.existsSync(resolvedPath)) {
+      return res.status(404).json({ message: "File not found on server." });
+    }
+
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    return res.sendFile(resolvedPath);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Failed to retrieve lab result file." });
+  }
+}
 
 export async function getLabResults(req: Request, res: Response) {
   try {

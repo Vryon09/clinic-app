@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   deleteLabResult,
+  getLabResultFile,
   getLabResults,
   uploadLabResult,
 } from "../controller/labResultsController";
@@ -13,6 +14,7 @@ const router = Router();
 
 router.use(verifyToken);
 
+router.get("/:id/file", getLabResultFile);
 router.get("/:patientId", getLabResults);
 router.post(
   "/upload",
