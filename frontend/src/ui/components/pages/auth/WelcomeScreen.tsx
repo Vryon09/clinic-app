@@ -1,13 +1,26 @@
-import { Database, FolderArchive, ArrowRight, Loader2, Building2 } from "lucide-react";
+import { Database, FolderArchive, ArrowRight, Loader2, Building2, Lock, ShieldCheck } from "lucide-react";
 import { useRef, useState } from "react";
 import { SignupForm } from "../../forms/SignupForm";
 import { Input } from "../../shadcn/input";
+import { Button } from "../../shadcn/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../../shadcn/dialog";
 import { useImportBackup } from "@/services/apiBackup";
 import { toast } from "sonner";
 import { Card } from "../../shadcn/card";
 
 function WelcomeScreen() {
   const [isStartingNew, setIsStartingNew] = useState<boolean>(false);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [passwordDialogOpen, setPasswordDialogOpen] = useState<boolean>(false);
+  const [importPassword, setImportPassword] = useState<string>("");
+
   const backupButtonRef = useRef<HTMLInputElement | null>(null);
 
   const { mutate: handleImportBackup, isPending: isImporting } = useImportBackup();
@@ -17,29 +30,62 @@ function WelcomeScreen() {
     backupButtonRef.current?.click();
   };
 
+  const processFile = (file: File, password?: string) => {
+    handleImportBackup(
+      { file, password },
+      {
+        onSuccess: () => {
+          setPasswordDialogOpen(false);
+          setPendingFile(null);
+          setImportPassword("");
+        },
+        onError: (err: any) => {
+          const msg = err.response?.data?.error || "";
+          if (
+            msg.toLowerCase().includes("password") ||
+            msg.toLowerCase().includes("decrypt") ||
+            file.name.endsWith(".enc")
+          ) {
+            setPendingFile(file);
+            setPasswordDialogOpen(true);
+          }
+        },
+      }
+    );
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
-    if (!file.name.toLowerCase().endsWith(".zip")) {
-      toast.error("Please select a valid .zip backup file.", {
+    const lowerName = file.name.toLowerCase();
+    const isZip = lowerName.endsWith(".zip");
+    const isEnc = lowerName.endsWith(".enc") || lowerName.endsWith(".csync.enc");
+
+    if (!isZip && !isEnc) {
+      toast.error("Please select a valid .zip or encrypted .enc backup file.", {
         position: "top-center",
       });
       e.target.value = "";
       return;
     }
 
-    handleImportBackup(
-      { file },
-      {
-        onSettled: () => {
-          if (e.target) {
-            e.target.value = "";
-          }
-        },
-      }
-    );
+    if (isEnc) {
+      // Prompt password or attempt decrypt with default key
+      setPendingFile(file);
+      setPasswordDialogOpen(true);
+    } else {
+      processFile(file);
+    }
+
+    e.target.value = "";
+  };
+
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!pendingFile) return;
+    processFile(pendingFile, importPassword.trim() || undefined);
   };
 
   if (isStartingNew) {
@@ -95,7 +141,7 @@ function WelcomeScreen() {
           <Input
             ref={backupButtonRef}
             type="file"
-            accept=".zip"
+            accept=".zip,.enc,.csync.enc"
             className="hidden"
             onChange={handleChange}
             disabled={isImporting}
@@ -111,9 +157,14 @@ function WelcomeScreen() {
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
-                <h3 className="text-base font-semibold text-foreground tracking-tight">
-                  Restore from Backup
-                </h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-semibold text-foreground tracking-tight">
+                    Restore from Backup
+                  </h3>
+                  <span className="inline-flex items-center gap-1 rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+                    <ShieldCheck className="size-3" /> Encrypted (.enc/.zip)
+                  </span>
+                </div>
                 {isImporting ? (
                   <span className="text-xs font-medium text-primary animate-pulse">
                     Importing...
@@ -124,17 +175,64 @@ function WelcomeScreen() {
               </div>
               <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                 {isImporting
-                  ? "Extracting clinic database and restoring records. Please wait..."
-                  : "Import patient histories, appointments, and configuration from a .zip backup archive."}
+                  ? "Decrypting and restoring clinical database & uploads..."
+                  : "Import patient histories, appointments, and configuration from an encrypted or standard backup archive."}
               </p>
             </div>
           </div>
         </Card>
       </div>
 
+      {/* Password Dialog for Encrypted Backups */}
+      <Dialog open={passwordDialogOpen} onOpenChange={setPasswordDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <form onSubmit={handlePasswordSubmit} className="space-y-4">
+            <DialogHeader>
+              <div className="flex items-center gap-2 text-primary pb-1">
+                <Lock className="size-5" />
+                <DialogTitle>Encrypted Backup Passphrase</DialogTitle>
+              </div>
+              <DialogDescription className="text-xs text-muted-foreground leading-relaxed">
+                If this backup was created with a custom password, enter it below.
+                If it was created using the standard system key, leave this blank.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-2 py-2">
+              <Input
+                type="password"
+                placeholder="Passphrase (optional if system key used)..."
+                value={importPassword}
+                onChange={(e) => setImportPassword(e.target.value)}
+                className="text-xs"
+                autoFocus
+              />
+            </div>
+
+            <DialogFooter className="gap-2 sm:gap-0">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setPasswordDialogOpen(false);
+                  setPendingFile(null);
+                  setImportPassword("");
+                }}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" size="sm" disabled={isImporting}>
+                {isImporting ? "Decrypting..." : "Decrypt & Restore"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
       <div className="text-center">
         <p className="text-[11px] text-muted-foreground">
-          ClinicSync Clinical Operating System · Local & Secure
+          ClinicSync Clinical Operating System · Local & Encrypted
         </p>
       </div>
     </div>

@@ -3,18 +3,21 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { toast } from "sonner";
 
-async function handleBackup() {
-  await api.post("/api/backup/drive");
+async function handleBackup(payload?: { password?: string }) {
+  await api.post("/api/backup/drive", {
+    password: payload?.password || undefined,
+  });
 }
 
 export function useBackup() {
   return useMutation<
     unknown,
-    AxiosError<{ error?: string; message?: string }>
+    AxiosError<{ error?: string; message?: string }>,
+    { password?: string } | void
   >({
-    mutationFn: handleBackup,
+    mutationFn: () => handleBackup(),
     onSuccess: () => {
-      toast.success("Backup uploaded to Google Drive successfully!", {
+      toast.success("Encrypted backup uploaded to Google Drive successfully!", {
         position: "top-center",
       });
     },
@@ -28,9 +31,18 @@ export function useBackup() {
   });
 }
 
-async function handleImportBackup({ file }: { file: File }) {
+async function handleImportBackup({
+  file,
+  password,
+}: {
+  file: File;
+  password?: string;
+}) {
   const formData = new FormData();
   formData.append("backup", file);
+  if (password) {
+    formData.append("password", password);
+  }
 
   const res = await api.post("/api/backup/import", formData, {
     headers: {
@@ -46,11 +58,13 @@ export function useImportBackup() {
   return useMutation<
     unknown,
     AxiosError<{ error?: string; message?: string }>,
-    { file: File }
+    { file: File; password?: string }
   >({
     mutationFn: handleImportBackup,
     onSuccess: () => {
-      toast.success("Backup imported successfully!", { position: "top-center" });
+      toast.success("Backup imported successfully!", {
+        position: "top-center",
+      });
       queryClient.invalidateQueries({ queryKey: ["authStatus"] });
     },
     onError: (error) => {
@@ -63,8 +77,50 @@ export function useImportBackup() {
   });
 }
 
+async function handleRestoreBackup({
+  file,
+  password,
+}: {
+  file: File;
+  password?: string;
+}) {
+  const formData = new FormData();
+  formData.append("backup", file);
+  if (password) {
+    formData.append("password", password);
+  }
+
+  const res = await api.post("/api/backup/restore", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return res.data;
+}
+
 export function useRestoreBackup() {
-  return useImportBackup();
+  const queryClient = useQueryClient();
+  return useMutation<
+    unknown,
+    AxiosError<{ error?: string; message?: string }>,
+    { file: File; password?: string }
+  >({
+    mutationFn: handleRestoreBackup,
+    onSuccess: () => {
+      toast.success("Backup restored successfully!", {
+        position: "top-center",
+      });
+      queryClient.invalidateQueries({ queryKey: ["authStatus"] });
+    },
+    onError: (error) => {
+      const errorMessage =
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        "Failed to restore backup.";
+      toast.error(errorMessage, { position: "top-center" });
+    },
+  });
 }
 
 export async function handleGetGoogleAuthData() {

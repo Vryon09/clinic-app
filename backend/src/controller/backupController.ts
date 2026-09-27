@@ -9,6 +9,11 @@ import path from "path";
 import fs from "fs";
 import { ZipArchive } from "archiver";
 import AdmZip from "adm-zip";
+import {
+  encryptBackupFile,
+  decryptBackupFile,
+  isEncryptedBackupFile,
+} from "../utils/backupCrypto";
 
 export const backupToDrive = async (req: Request, res: Response) => {
   const tokenRecord = await prisma.googleToken.findUnique({ where: { id: 1 } });
@@ -65,10 +70,14 @@ export const backupToDrive = async (req: Request, res: Response) => {
     },
   };
 
-  const zipName = `ClinicSync_Backup_${Date.now()}.zip`;
-  const zipPath = path.join(os.tmpdir(), zipName);
+  const timestamp = Date.now();
+  const rawZipName = `ClinicSync_Backup_${timestamp}.zip`;
+  const rawZipPath = path.join(os.tmpdir(), rawZipName);
 
-  const output = fs.createWriteStream(zipPath);
+  const encFileName = `ClinicSync_Backup_${timestamp}.csync.enc`;
+  const encFilePath = path.join(os.tmpdir(), encFileName);
+
+  const output = fs.createWriteStream(rawZipPath);
 
   const archive = new ZipArchive({
     zlib: { level: 9 },
@@ -115,29 +124,39 @@ export const backupToDrive = async (req: Request, res: Response) => {
     output.on("error", reject);
   });
 
+  // Encrypt backup archive with AES-256-GCM
+  const customPassword = req.body?.password || req.headers["x-backup-password"];
+  await encryptBackupFile(
+    rawZipPath,
+    encFilePath,
+    typeof customPassword === "string" ? customPassword : undefined
+  );
+
   const drive = google.drive({ version: "v3", auth: oauth2Client });
 
-  // 8. Upload to Google Drive
+  // Upload encrypted backup to Google Drive
   const upload = await drive.files.create({
     requestBody: {
-      name: zipName,
-      mimeType: "application/zip",
+      name: encFileName,
+      mimeType: "application/octet-stream",
     },
 
     media: {
-      mimeType: "application/zip",
-      body: fs.createReadStream(zipPath),
+      mimeType: "application/octet-stream",
+      body: fs.createReadStream(encFilePath),
     },
 
     fields: "id,name",
   });
 
-  fs.unlinkSync(zipPath);
+  if (fs.existsSync(rawZipPath)) fs.unlinkSync(rawZipPath);
+  if (fs.existsSync(encFilePath)) fs.unlinkSync(encFilePath);
 
   return res.json({
     success: true,
     fileId: upload.data.id,
     fileName: upload.data.name,
+    encrypted: true,
   });
 };
 
@@ -184,6 +203,7 @@ function copyDirIfExists(sourceDir: string, destinationDir: string) {
 export async function restoreBackup(req: Request, res: Response) {
   const file = req.file;
   let extractDir: string | undefined;
+  let decryptedZipPath: string | undefined;
 
   try {
     if (!file) {
@@ -192,9 +212,23 @@ export async function restoreBackup(req: Request, res: Response) {
       });
     }
 
+    let archivePath = file.path;
+    const isEncrypted = isEncryptedBackupFile(file.path) || file.originalname.endsWith(".enc");
+
+    if (isEncrypted) {
+      decryptedZipPath = path.join(os.tmpdir(), `restore_decrypted_${Date.now()}.zip`);
+      const customPassword = req.body?.password || req.headers["x-backup-password"];
+      await decryptBackupFile(
+        file.path,
+        decryptedZipPath,
+        typeof customPassword === "string" ? customPassword : undefined
+      );
+      archivePath = decryptedZipPath;
+    }
+
     extractDir = fs.mkdtempSync(path.join(os.tmpdir(), "restore-"));
 
-    const zip = new AdmZip(file.path);
+    const zip = new AdmZip(archivePath);
     zip.extractAllTo(extractDir, true);
 
     const backupPath = findBackupFile(extractDir);
@@ -276,8 +310,11 @@ export async function restoreBackup(req: Request, res: Response) {
     console.error("Restore backup error:", error);
     return res.status(400).json({ error: error?.message || "Failed to restore backup." });
   } finally {
-    if (extractDir) {
+    if (extractDir && fs.existsSync(extractDir)) {
       fs.rmSync(extractDir, { recursive: true, force: true });
+    }
+    if (decryptedZipPath && fs.existsSync(decryptedZipPath)) {
+      fs.unlinkSync(decryptedZipPath);
     }
     if (file?.path && fs.existsSync(file.path)) {
       fs.unlinkSync(file.path);
@@ -288,6 +325,7 @@ export async function restoreBackup(req: Request, res: Response) {
 export async function importBackup(req: Request, res: Response) {
   const file = req.file;
   let extractDir: string | undefined;
+  let decryptedZipPath: string | undefined;
 
   try {
     const userCount = await prisma.user.count();
@@ -304,9 +342,23 @@ export async function importBackup(req: Request, res: Response) {
       });
     }
 
+    let archivePath = file.path;
+    const isEncrypted = isEncryptedBackupFile(file.path) || file.originalname.endsWith(".enc");
+
+    if (isEncrypted) {
+      decryptedZipPath = path.join(os.tmpdir(), `import_decrypted_${Date.now()}.zip`);
+      const customPassword = req.body?.password || req.headers["x-backup-password"];
+      await decryptBackupFile(
+        file.path,
+        decryptedZipPath,
+        typeof customPassword === "string" ? customPassword : undefined
+      );
+      archivePath = decryptedZipPath;
+    }
+
     extractDir = fs.mkdtempSync(path.join(os.tmpdir(), "import-"));
 
-    const zip = new AdmZip(file.path);
+    const zip = new AdmZip(archivePath);
     zip.extractAllTo(extractDir, true);
 
     const backupPath = findBackupFile(extractDir);
@@ -349,8 +401,6 @@ export async function importBackup(req: Request, res: Response) {
     const parsedSignatures = parseDates(signatures, ["uploadedAt"]);
     const parsedSystemLogs = parseDates(systemLogs, ["createdAt"]);
 
-    console.log(parsedClinics);
-
     await prisma.$transaction(async (tx) => {
       if (parsedUsers.length) await tx.user.createMany({ data: parsedUsers });
       if (parsedClinics.length) await tx.clinic.upsert({
@@ -362,7 +412,7 @@ export async function importBackup(req: Request, res: Response) {
           address: "Your Address Here",
           phone: "09XX-XXX-XXXX",
         },
-      })
+      });
       if (parsedPatients.length) await tx.patient.createMany({ data: parsedPatients });
       if (parsedCases.length) await tx.case.createMany({ data: parsedCases });
       if (parsedRecords.length) await tx.record.createMany({ data: parsedRecords });
@@ -389,8 +439,11 @@ export async function importBackup(req: Request, res: Response) {
       error: error?.message || "Failed to import backup.",
     });
   } finally {
-    if (extractDir) {
+    if (extractDir && fs.existsSync(extractDir)) {
       fs.rmSync(extractDir, { recursive: true, force: true });
+    }
+    if (decryptedZipPath && fs.existsSync(decryptedZipPath)) {
+      fs.unlinkSync(decryptedZipPath);
     }
     if (file?.path && fs.existsSync(file.path)) {
       fs.unlinkSync(file.path);
