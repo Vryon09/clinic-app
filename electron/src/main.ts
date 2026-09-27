@@ -8,29 +8,47 @@ console.log("isPackaged:", app.isPackaged);
 console.log("isDev:", isDev());
 console.log("resourcesPath:", process.resourcesPath);
 
+let mainWindow: BrowserWindow | null = null;
+let backendStarted = false;
+
 async function createWindow() {
-  startBackend();
+  if (!backendStarted) {
+    startBackend();
+    backendStarted = true;
 
-  await waitOn({
-    resources: ["http://localhost:3000/health"],
-    timeout: 300000,
-  });
+    await waitOn({
+      resources: ["http://localhost:3000/health"],
+      timeout: 300000,
+    });
+  }
 
-  const window = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1400,
     height: 900,
   });
 
   if (isDev()) {
-    await window.loadURL("http://localhost:5123");
+    await mainWindow.loadURL("http://localhost:5123");
   } else {
-    await window.loadFile(
+    await mainWindow.loadFile(
       path.join(process.resourcesPath, "frontend", "index.html"),
     );
   }
+
+  mainWindow.on("closed", () => {
+    mainWindow = null;
+  });
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  createWindow();
+
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
+});
 
 app.on("before-quit", () => {
   stopBackend();

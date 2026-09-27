@@ -1,0 +1,71 @@
+name: Build and Package Desktop App
+
+on:
+  push:
+    branches: [ main, master ]
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install root dependencies
+        run: npm ci || npm install
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm ci || npm install
+
+      - name: Generate Prisma Client
+        run: |
+          cd backend
+          npx prisma generate
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci || npm install
+
+      - name: Install electron dependencies
+        run: |
+          cd electron
+          npm ci || npm install
+
+      - name: Build all packages
+        run: npm run build
+
+      - name: Build Windows Installer
+        if: matrix.os == 'windows-latest'
+        run: npm run dist:win
+
+      - name: Build macOS Applications (DMG & ZIP)
+        if: matrix.os == 'macos-latest'
+        run: npm run dist:mac
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: clinic-sync-${{ matrix.os }}
+          path: |
+            electron/release/*.exe
+            electron/release/*.dmg
+            electron/release/*.zip
+          if-no-files-found: warn
