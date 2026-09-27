@@ -28,13 +28,17 @@ jobs:
         with:
           node-version: 22
 
+      - name: Configure node-gyp for Windows
+        if: matrix.os == 'windows-latest'
+        run: npm config set msvs_version 2022 --global
+
       - name: Install root dependencies
         run: npm install
 
       - name: Install and build backend
         working-directory: backend
         run: |
-          npm install --include=dev
+          npm install --include=dev --ignore-scripts
           npx prisma generate
           npm run build
 
