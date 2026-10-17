@@ -22,9 +22,14 @@ async function createWindow() {
     });
   }
 
+  const iconPath = isDev()
+    ? path.join(__dirname, "../../frontend/src/ui/assets/images/black-logo.png")
+    : path.join(process.resourcesPath, "frontend", "src/ui/assets/images/black-logo.png");
+
   mainWindow = new BrowserWindow({
     width: 1400,
     height: 900,
+    icon: iconPath,
   });
 
   if (isDev()) {

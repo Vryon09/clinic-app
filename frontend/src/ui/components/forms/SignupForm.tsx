@@ -21,7 +21,8 @@ import { useRegister } from "@/services/apiAuth";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import { useState } from "react";
-import { ArrowLeft, Eye, EyeClosed, Loader2, Lock, ShieldPlus, User } from "lucide-react";
+import { ArrowLeft, Eye, EyeClosed, Loader2, Lock, User } from "lucide-react";
+import { AppLogo } from "../common/AppLogo";
 
 interface SignupFormProps extends React.ComponentProps<"div"> {
   onBack?: () => void;
@@ -87,9 +88,7 @@ export function SignupForm({
           )}
 
           <div className="text-center space-y-3">
-            <div className="mx-auto flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary shadow-xs">
-              <ShieldPlus className="size-6 text-primary" />
-            </div>
+            <AppLogo variant="icon" className="mx-auto size-16" />
 
             <div className="space-y-1">
               <div className="flex items-center justify-center gap-2">

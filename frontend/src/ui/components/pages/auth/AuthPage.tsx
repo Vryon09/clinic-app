@@ -6,6 +6,7 @@ import { Button } from "../../shadcn/button";
 import WelcomeScreen from "./WelcomeScreen";
 
 import { AlertCircle, RefreshCw } from "lucide-react";
+import { AppLogo } from "../../common/AppLogo";
 
 function AuthPage() {
   const {
@@ -30,9 +31,8 @@ function AuthPage() {
       <div className="w-full max-w-md">
         {isAuthStatusPending ? (
           <div className="flex flex-col items-center justify-center gap-4 py-16">
-            <div className="flex size-12 items-center justify-center rounded-2xl bg-card border border-border/80 shadow-xs">
-              <Spinner className="size-6 text-primary" />
-            </div>
+            <AppLogo variant="icon" className="size-16" />
+            <Spinner className="size-5 text-primary" />
             <div className="text-center">
               <p className="text-sm font-semibold text-foreground tracking-tight">ClinicSync</p>
               <p className="text-xs text-muted-foreground mt-0.5">Connecting to clinical service...</p>

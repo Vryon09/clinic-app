@@ -20,8 +20,9 @@ import { loginSchema, type LoginInput } from "@/schemas/authSchema";
 import { useLogin } from "../../../services/apiAuth";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
-import { Eye, EyeClosed, Loader2, Lock, ShieldCheck, User } from "lucide-react";
+import { Eye, EyeClosed, Loader2, Lock, User } from "lucide-react";
 import { useState } from "react";
+import { AppLogo } from "../common/AppLogo";
 
 export function LoginForm({
   className,
@@ -55,9 +56,7 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden rounded-2xl border border-border/80 bg-card/95 p-2 shadow-sm backdrop-blur-sm">
         <CardHeader className="space-y-4 px-6 pt-6 pb-4 text-center">
-          <div className="mx-auto flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary shadow-xs">
-            <ShieldCheck className="size-6 text-primary" />
-          </div>
+          <AppLogo variant="icon" className="mx-auto size-16" />
 
           <div className="space-y-1">
             <div className="flex items-center justify-center gap-2">

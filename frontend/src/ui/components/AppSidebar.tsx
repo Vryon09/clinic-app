@@ -10,8 +10,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./shadcn/sidebar";
-import { CloudBackup, LogOut, Settings, User, Stethoscope } from "lucide-react";
+import { CloudBackup, LogOut, Settings, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+import { AppLogo } from "./common/AppLogo";
 
 const modules = [
   { url: "patients", label: "Patients", icon: User },
@@ -31,9 +33,7 @@ function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="hover:bg-transparent">
               <div className="flex items-center gap-2.5">
-                <div className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold shadow-xs">
-                  <Stethoscope className="size-5" />
-                </div>
+                <AppLogo variant="icon" className="size-9 shrink-0" />
                 <div className="flex flex-col">
                   <h2 className="text-base font-bold tracking-tight text-foreground">
                     ClinicSync

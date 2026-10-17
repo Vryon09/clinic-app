@@ -2,6 +2,7 @@ import { useAuth } from "@/hooks/useAuth";
 import type { ReactNode } from "react";
 import { Navigate } from "react-router";
 import { Spinner } from "../../shadcn/spinner";
+import { AppLogo } from "../../common/AppLogo";
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const { user, isUserLoading } = useAuth();
@@ -10,9 +11,8 @@ function ProtectedRoute({ children }: { children: ReactNode }) {
     return (
       <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background p-6">
         <div className="flex flex-col items-center gap-3">
-          <div className="relative flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <Spinner className="size-6 text-primary" />
-          </div>
+          <AppLogo variant="icon" className="size-16" />
+          <Spinner className="size-5 text-primary" />
           <div className="text-center">
             <p className="text-sm font-semibold text-foreground tracking-tight">ClinicSync</p>
             <p className="text-xs text-muted-foreground">Verifying access credentials...</p>

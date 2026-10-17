@@ -1,11 +1,13 @@
 import { cn } from "@/lib/utils";
-import { LogOut, Moon, Settings, Sun, User2, Stethoscope } from "lucide-react";
+import { LogOut, Moon, Settings, Sun, User2 } from "lucide-react";
 import { Button } from "../shadcn/button";
 import { useLocation, useNavigate } from "react-router";
 
 import { useLogout } from "@/services/apiAuth";
 import { Separator } from "../shadcn/separator";
 import { useTheme } from "next-themes";
+
+import { AppLogo } from "../common/AppLogo";
 
 const modules = [
   { url: "patients", label: "Patients", icon: User2 },
@@ -22,10 +24,8 @@ function TopNavBar() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur-md px-4 sm:px-6 py-2.5 flex items-center justify-between print:hidden shadow-xs">
-      <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/patients")}>
-        <div className="flex size-8 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold shadow-xs">
-          <Stethoscope className="size-4" />
-        </div>
+      <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate("/patients")}>
+        <AppLogo variant="icon" className="size-8 shrink-0" />
         <div className="flex flex-col">
           <span className="text-sm font-bold tracking-tight text-foreground leading-none">
             ClinicSync
