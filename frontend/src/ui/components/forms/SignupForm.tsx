@@ -49,7 +49,7 @@ export function SignupForm({
     handleRegister(
       {
         firstName: data.firstName,
-        middleName: data.middleName,
+        middleName: data.middleName?.trim() || "",
         lastName: data.lastName,
         username: data.username,
         password: data.password,

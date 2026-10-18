@@ -125,7 +125,7 @@ export async function registerUser(req: Request, res: Response) {
         role,
         licenseNum: "",
         firstName,
-        middleName,
+        middleName: middleName ?? "",
         lastName,
       },
     });
