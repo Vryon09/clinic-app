@@ -65,8 +65,9 @@ export const addUserSchema = z.object({
   middleName: z
     .string()
     .trim()
-    .min(1, "Middle name is required.")
-    .max(50, "Middle name must not exceed 50 characters."),
+    .max(50, "Middle name must not exceed 50 characters.")
+    .optional()
+    .or(z.literal("")),
 
   lastName: z
     .string()
@@ -114,8 +115,9 @@ export const updateFullNameSchema = z.object({
   middleName: z
     .string()
     .trim()
-    .min(1, "Middle name is required.")
-    .max(50, "Middle name must not exceed 50 characters."),
+    .max(50, "Middle name must not exceed 50 characters.")
+    .optional()
+    .or(z.literal("")),
 
   lastName: z
     .string()

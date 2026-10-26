@@ -16,12 +16,10 @@ import {
 import dayjs from "dayjs";
 import { Button } from "../../shadcn/button";
 import {
-  FileText,
   MoreHorizontalIcon,
   Pen,
   Phone,
   Trash,
-  Users,
 } from "lucide-react";
 import { useState } from "react";
 import PatientForm from "./PatientForm";
@@ -37,6 +35,8 @@ import PaginationBar from "../../PaginationBar";
 import type { PaginatedResponse } from "@/types/Pagination";
 import { Skeleton } from "../../shadcn/skeleton";
 import { Card } from "../../shadcn/card";
+import EmptyState from "../../common/EmptyState";
+import StatusBadge from "../../common/StatusBadge";
 
 function PatientsTable({ searchInput }: { searchInput: string }) {
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>();
@@ -113,22 +113,20 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                 ))
               ) : !patients?.length ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="py-14 text-center">
-                    <div className="mx-auto flex flex-col items-center justify-center gap-2">
-                      <div className="bg-muted/60 text-muted-foreground flex size-12 items-center justify-center rounded-2xl">
-                        <Users className="size-6" />
-                      </div>
-                      <p className="text-foreground mt-1 text-sm font-semibold">
-                        {searchInput === ""
+                  <TableCell colSpan={4} className="py-8">
+                    <EmptyState
+                      title={
+                        searchInput === ""
                           ? "No patients registered yet"
-                          : "No matching patients found"}
-                      </p>
-                      <p className="text-muted-foreground max-w-xs text-xs">
-                        {searchInput === ""
-                          ? "Click 'Register Patient' to create your first clinical record."
-                          : `No patient records matched "${searchInput}". Try adjusting your search query.`}
-                      </p>
-                    </div>
+                          : "No matching patients found"
+                      }
+                      description={
+                        searchInput === ""
+                          ? "Click 'Register Patient' above to create your first clinical record."
+                          : `No patient records matched "${searchInput}". Try adjusting your search query.`
+                      }
+                      showMascot={true}
+                    />
                   </TableCell>
                 </TableRow>
               ) : (
@@ -144,7 +142,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                       : ""
                   }`;
 
-                  console.log(patient)
+                  const encountersCount = patient.records?.length ?? 0;
 
                   return (
                     <TableRow
@@ -155,7 +153,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                       {/* Patient & Demographics */}
                       <TableCell className="py-3.5 pl-6">
                         <div className="flex items-center gap-3">
-                          <div className="bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground flex size-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold transition-colors">
+                          <div className="bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground flex size-9 shrink-0 items-center justify-center rounded-xl text-xs font-bold transition-colors">
                             {initials}
                           </div>
                           <div>
@@ -188,10 +186,13 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
 
                       {/* Clinical History */}
                       <TableCell className="py-3.5">
-                        <span className="bg-secondary/80 text-secondary-foreground inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[11px] font-medium">
-                          <FileText className="text-muted-foreground size-3" />
-                          <span>{patient.records?.length ?? 0} Encounters</span>
-                        </span>
+                        <StatusBadge
+                          variant={encountersCount > 0 ? "info" : "neutral"}
+                          className="font-medium"
+                        >
+                          {encountersCount}{" "}
+                          {encountersCount === 1 ? "Encounter" : "Encounters"}
+                        </StatusBadge>
                       </TableCell>
 
                       {/* Actions Menu */}

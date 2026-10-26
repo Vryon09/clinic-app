@@ -78,7 +78,7 @@ function UserDialog({
       handleAddUser(
         {
           firstName: data.firstName,
-          middleName: data.middleName,
+          middleName: data.middleName || "",
           lastName: data.lastName,
           username: data.username,
           password: "Password123",
@@ -134,7 +134,7 @@ function UserDialog({
 
   return (
     <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
-      <DialogContent className="sm:max-w-md rounded-2xl border-border/80 p-6 shadow-xl">
+      <DialogContent className="sm:max-w-lg rounded-2xl border-border/80 p-6 shadow-xl">
         <DialogHeader className="space-y-1">
           <DialogTitle className="text-lg font-bold text-foreground">
             {action === "create" ? "Add User Account" : "Update User Account"}
@@ -145,15 +145,20 @@ function UserDialog({
           <FieldSet className="w-full space-y-3">
             <FieldGroup className="space-y-3">
               {action === "create" && (
-                <div className="grid grid-cols-3 gap-2">
-                  <Field className="space-y-1">
-                    <FieldLabel className="text-xs font-semibold text-foreground/80" htmlFor="firstName">First Name</FieldLabel>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <Field className="space-y-1.5">
+                    <FieldLabel
+                      className="flex h-5 items-center justify-between text-xs font-semibold text-foreground/80"
+                      htmlFor="firstName"
+                    >
+                      First Name
+                    </FieldLabel>
                     <Input
                       className="h-9 rounded-lg border-border/80 bg-background text-sm"
                       id="firstName"
                       {...register("firstName")}
                       type="text"
-                      placeholder="First"
+                      placeholder="First name"
                     />
                     {errors.firstName && (
                       <FieldError
@@ -162,14 +167,23 @@ function UserDialog({
                       />
                     )}
                   </Field>
-                  <Field className="space-y-1">
-                    <FieldLabel className="text-xs font-semibold text-foreground/80" htmlFor="middleName">Middle Name</FieldLabel>
+
+                  <Field className="space-y-1.5">
+                    <FieldLabel
+                      className="flex h-5 items-center justify-between text-xs font-semibold text-foreground/80 whitespace-nowrap"
+                      htmlFor="middleName"
+                    >
+                      <span>Middle Name</span>
+                      <span className="text-[10px] font-normal text-muted-foreground ml-1">
+                        (Optional)
+                      </span>
+                    </FieldLabel>
                     <Input
                       className="h-9 rounded-lg border-border/80 bg-background text-sm"
                       id="middleName"
                       {...register("middleName")}
                       type="text"
-                      placeholder="Middle"
+                      placeholder="Middle name"
                     />
                     {errors.middleName && (
                       <FieldError
@@ -178,14 +192,20 @@ function UserDialog({
                       />
                     )}
                   </Field>
-                  <Field className="space-y-1">
-                    <FieldLabel className="text-xs font-semibold text-foreground/80" htmlFor="lastName">Last Name</FieldLabel>
+
+                  <Field className="space-y-1.5">
+                    <FieldLabel
+                      className="flex h-5 items-center justify-between text-xs font-semibold text-foreground/80"
+                      htmlFor="lastName"
+                    >
+                      Last Name
+                    </FieldLabel>
                     <Input
                       className="h-9 rounded-lg border-border/80 bg-background text-sm"
                       id="lastName"
                       {...register("lastName")}
                       type="text"
-                      placeholder="Last"
+                      placeholder="Last name"
                     />
                     {errors.lastName && (
                       <FieldError

@@ -55,7 +55,7 @@ function FullNameDialog({
     handleUpdateFullname(
       {
         firstName: data.firstName,
-        middleName: data.middleName,
+        middleName: data.middleName || "",
         lastName: data.lastName,
       },
       {
@@ -99,7 +99,9 @@ function FullNameDialog({
                   )}
                 </Field>
                 <Field className="space-y-1">
-                  <FieldLabel className="text-xs font-semibold text-foreground/80" htmlFor="middleName">Middle Name</FieldLabel>
+                  <FieldLabel className="text-xs font-semibold text-foreground/80" htmlFor="middleName">
+                    Middle Name <span className="text-[10px] text-muted-foreground font-normal">(Optional)</span>
+                  </FieldLabel>
                   <Input
                     className="h-10 rounded-lg border-border/80 bg-background text-sm"
                     id="middleName"
