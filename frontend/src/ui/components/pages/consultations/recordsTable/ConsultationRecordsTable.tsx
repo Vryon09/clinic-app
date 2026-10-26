@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import CaseCard from "./CaseCard";
 import { Skeleton } from "@/ui/components/shadcn/skeleton";
-import { FolderKanban } from "lucide-react";
+import EmptyState from "@/ui/components/common/EmptyState";
 
 function ConsultationRecordsTable() {
   const { patientId } = useParams() as {
@@ -30,17 +30,12 @@ function ConsultationRecordsTable() {
 
   if (!cases?.length) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/70 bg-card/50 p-12 text-center">
-        <div className="mb-3 flex size-12 items-center justify-center rounded-xl bg-muted text-muted-foreground">
-          <FolderKanban className="size-5" />
-        </div>
-        <h3 className="text-sm font-semibold text-foreground">
-          No Consultation Records
-        </h3>
-        <p className="mt-1 max-w-xs text-xs text-muted-foreground">
-          No medical cases or consultation records found for this patient. Click
-          &ldquo;New Consultation&rdquo; above to begin.
-        </p>
+      <div className="rounded-2xl border border-dashed border-border/80 bg-muted/10 p-6 text-center">
+        <EmptyState
+          title="No Consultation Records"
+          description="No medical cases or consultation records found for this patient. Click 'New Consultation' above to begin."
+          showMascot={true}
+        />
       </div>
     );
   }

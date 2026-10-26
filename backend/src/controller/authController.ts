@@ -188,7 +188,7 @@ export async function addUser(req: UserRequest, res: Response) {
         role,
         licenseNum,
         firstName,
-        middleName,
+        middleName: middleName ?? "",
         lastName,
       },
     });

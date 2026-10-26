@@ -21,6 +21,7 @@ import {
 } from "@/services/apiLabResults";
 import { Skeleton } from "../../shadcn/skeleton";
 import { toast } from "sonner";
+import EmptyState from "../../common/EmptyState";
 
 function LabResultsTable({
   labResults,
@@ -77,17 +78,12 @@ function LabResultsTable({
   // ── Empty state ──────────────────────────────────────────────
   if (!labResults?.length) {
     return (
-      <div className="border-border/70 bg-card/50 flex flex-col items-center justify-center rounded-2xl border border-dashed p-12 text-center">
-        <div className="bg-muted text-muted-foreground mb-3 flex size-12 items-center justify-center rounded-xl">
-          <FileText className="size-5" />
-        </div>
-        <h3 className="text-foreground text-sm font-semibold">
-          No Lab Results
-        </h3>
-        <p className="text-muted-foreground mt-1 max-w-xs text-xs">
-          No laboratory results have been uploaded for this patient yet. Click
-          &ldquo;Upload File&rdquo; above to add one.
-        </p>
+      <div className="rounded-2xl border border-dashed border-border/80 bg-muted/10 p-6 text-center">
+        <EmptyState
+          title="No Lab Results"
+          description="No laboratory results have been uploaded for this patient yet. Click 'Upload File' above to add one."
+          showMascot={true}
+        />
       </div>
     );
   }
