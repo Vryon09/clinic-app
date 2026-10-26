@@ -23,8 +23,8 @@ async function createWindow() {
   }
 
   const iconPath = isDev()
-    ? path.join(__dirname, "../../frontend/src/ui/assets/images/black-logo.png")
-    : path.join(process.resourcesPath, "frontend", "src/ui/assets/images/black-logo.png");
+    ? path.join(__dirname, "../../frontend/src/ui/assets/images/white-logo.png")
+    : path.join(process.resourcesPath, "build", "icon.png");
 
   mainWindow = new BrowserWindow({
     width: 1400,
