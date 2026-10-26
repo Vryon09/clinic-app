@@ -60,6 +60,7 @@ export async function searchPatients(req: Request, res: Response) {
         { middleName: { contains: searchInput } },
         { lastName: { contains: searchInput } },
         { phone: { contains: searchInput } },
+        { address: { contains: searchInput } },
       ],
       isArchived: false,
     };
