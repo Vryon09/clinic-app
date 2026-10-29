@@ -13,16 +13,15 @@ function PatientsHome() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-1">
           <div className="flex items-center gap-2.5">
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-              Patient Directory & Queue
+            <h1 className="text-foreground text-xl font-bold tracking-tight sm:text-2xl">
+              Patient Directory
             </h1>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold tracking-wide text-primary">
-              <span className="size-1.5 rounded-full bg-primary animate-pulse" />
-              Active System
+            <span className="border-border bg-muted/60 text-muted-foreground inline-flex items-center gap-1 rounded-md border px-2 py-0.5 font-mono text-[11px] font-medium">
+              Clinical Records
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Manage current active patients, encounters, lab assignments, and demographic records.
+          <p className="text-muted-foreground text-xs sm:text-sm">
+            Manage active patient charts, demographics, and encounter histories.
           </p>
         </div>
 
@@ -30,20 +29,20 @@ function PatientsHome() {
       </div>
 
       {/* Toolbar / Search Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-border/80 bg-card p-3.5 shadow-xs">
+      <div className="border-border bg-card flex flex-col justify-between gap-3 rounded-lg border p-2.5 shadow-2xs sm:flex-row sm:items-center">
         <div className="relative flex-1 sm:max-w-md">
-          <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <Input
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             type="text"
             placeholder="Search by patient name, phone number, or address..."
-            className="h-9 w-full rounded-xl border-border/80 bg-background/50 pl-9 pr-8 text-xs placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20"
+            className="border-border bg-background placeholder:text-muted-foreground focus-visible:border-primary focus-visible:ring-primary/20 h-8.5 w-full rounded-md pr-8 pl-9 text-xs focus-visible:ring-1"
           />
           {searchInput && (
             <button
               onClick={() => setSearchInput("")}
-              className="absolute top-1/2 right-2.5 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+              className="text-muted-foreground hover:text-foreground absolute top-1/2 right-2.5 -translate-y-1/2 cursor-pointer"
               title="Clear search"
             >
               <X className="size-3.5" />

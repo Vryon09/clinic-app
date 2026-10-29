@@ -2,6 +2,7 @@ import { handleGetPatient } from "@/services/apiPatients";
 import { useQuery } from "@tanstack/react-query";
 import VitalSignsForm from "./VitalSignsForm";
 import { Button } from "../../../shadcn/button";
+import BackButton from "../../../BackButton";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useAddRecord, useUpdateRecord } from "@/services/apiRecords";
 import { useVisitDetailsForm } from "@/hooks/useVisitDetailsForm";
@@ -114,6 +115,8 @@ function ConsultationsForm() {
 
   return (
     <div className="pb-10">
+      <BackButton location={`/patients/${patientId}`} />
+
       {/* Page header */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-1">

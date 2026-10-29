@@ -140,34 +140,34 @@ export function AppSidebar() {
       </SidebarContent>
 
       {/* Footer / User Profile Card */}
-      <SidebarFooter className={cn("border-t border-border/60", isCollapsed ? "p-2" : "p-3")}>
+      <SidebarFooter className={cn("border-t border-border", isCollapsed ? "p-1.5" : "p-2.5")}>
         {isCollapsed ? (
-          <div className="flex flex-col items-center justify-center gap-2.5 py-1">
+          <div className="flex flex-col items-center justify-center gap-2 py-1">
             <div
-              className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary text-xs font-bold text-primary-foreground shadow-2xs"
+              className="flex size-7 shrink-0 items-center justify-center rounded-md border border-border/80 bg-muted/80 text-[11px] font-semibold text-foreground ring-1 ring-border/40"
               title={`${fullName} (${getRoleLabel(user?.role)})`}
             >
               {getInitials(user?.firstName, user?.lastName)}
             </div>
             <button
               onClick={() => handleLogout()}
-              className="flex size-7 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive cursor-pointer"
+              className="flex size-6.5 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive cursor-pointer"
               title="Log out"
             >
               <LogOut className="size-3.5" />
             </button>
           </div>
         ) : (
-          <div className="flex items-center justify-between rounded-xl border border-border/60 bg-muted/30 p-2.5">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary text-xs font-bold text-primary-foreground shadow-2xs">
+          <div className="flex items-center justify-between rounded-md border border-border bg-muted/30 p-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="flex size-7 shrink-0 items-center justify-center rounded-md border border-border/80 bg-muted/80 text-[11px] font-semibold text-foreground ring-1 ring-border/40">
                 {getInitials(user?.firstName, user?.lastName)}
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="truncate text-xs font-semibold text-foreground leading-tight">
                   {fullName}
                 </span>
-                <span className="truncate text-[10px] text-muted-foreground leading-tight">
+                <span className="truncate font-mono text-[10px] text-muted-foreground leading-tight">
                   {getRoleLabel(user?.role)}
                 </span>
               </div>
@@ -175,7 +175,7 @@ export function AppSidebar() {
 
             <button
               onClick={() => handleLogout()}
-              className="flex size-7 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive cursor-pointer"
+              className="flex size-6.5 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive cursor-pointer"
               title="Log out"
             >
               <LogOut className="size-3.5" />

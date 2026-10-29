@@ -20,21 +20,20 @@ function PatientCard({
   };
 
   const age = patient ? dayjs().diff(dayjs(patient.dateOfBirth), "year") : null;
-  const patientIdDisplay = patient?.id ? `PT-${patient.id.slice(-6).toUpperCase()}` : "";
 
   return (
-    <Card className="flex h-fit w-full lg:w-84 shrink-0 flex-col overflow-hidden rounded-2xl border border-border/80 bg-card p-0 shadow-xs">
+    <Card className="flex h-fit w-full lg:w-84 shrink-0 flex-col overflow-hidden rounded-lg border border-border bg-card p-0 shadow-2xs">
       {/* Profile Header */}
-      <div className="border-b border-border/60 bg-muted/20 p-6">
+      <div className="border-b border-border bg-muted/30 p-5">
         {isPatientPending ? (
           <div className="flex flex-col items-center text-center">
-            <Skeleton className="size-16 rounded-2xl bg-muted" />
+            <Skeleton className="size-14 rounded-full bg-muted" />
             <Skeleton className="mt-3 h-5 w-36 bg-muted" />
             <Skeleton className="mt-2 h-4 w-24 bg-muted" />
           </div>
         ) : (
           <div className="flex flex-col items-center text-center">
-            <div className="flex size-16 items-center justify-center rounded-2xl bg-primary text-xl font-bold text-primary-foreground shadow-xs">
+            <div className="flex size-14 items-center justify-center rounded-full border border-border/80 bg-muted/80 text-lg font-semibold text-foreground ring-1 ring-border/40">
               {getInitials(patient?.firstName, patient?.lastName)}
             </div>
 
@@ -44,18 +43,13 @@ function PatientCard({
               } ${patient?.lastName || ""}`}
             </h2>
 
-            {patientIdDisplay && (
-              <span className="mt-1 font-mono text-[11px] font-medium text-muted-foreground">
-                {patientIdDisplay}
-              </span>
-            )}
 
-            <div className="mt-3 flex items-center gap-2">
-              <StatusBadge variant="success" dot={true}>
+            <div className="mt-3 flex items-center gap-1.5">
+              <StatusBadge variant="success" dot={true} className="rounded-md px-2 py-0.5 text-[11px]">
                 Active Record
               </StatusBadge>
-              <span className="inline-flex items-center rounded-md border border-border/60 bg-muted/50 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                {patient?.sex === "MALE" ? "Male" : "Female"} · {age} yrs
+              <span className="inline-flex items-center rounded-md border border-border/60 bg-background px-2 py-0.5 font-mono text-[11px] text-muted-foreground">
+                {patient?.sex === "MALE" ? "M" : "F"} · {age}y
               </span>
             </div>
           </div>
@@ -63,12 +57,12 @@ function PatientCard({
       </div>
 
       {/* Profile Body / Demographics Details */}
-      <div className="p-6 space-y-4">
+      <div className="p-4.5 space-y-3.5">
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-            Demographic Information
+          <span className="font-mono text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+            Demographic Info
           </span>
-          <span className="text-[11px] text-muted-foreground">Verified</span>
+          <span className="font-mono text-[10px] text-muted-foreground">VERIFIED</span>
         </div>
 
         {isPatientPending ? (
@@ -78,34 +72,34 @@ function PatientCard({
             <Skeleton className="h-4 w-full bg-muted" />
           </div>
         ) : (
-          <div className="space-y-3.5 text-xs">
+          <div className="space-y-2.5 text-xs">
             {/* Birthday */}
-            <div className="flex items-start gap-3 rounded-xl border border-border/40 bg-muted/15 p-2.5">
-              <Calendar className="size-4 shrink-0 text-primary mt-0.5" />
+            <div className="flex items-start gap-2.5 rounded-md border border-border bg-muted/20 p-2.5">
+              <Calendar className="size-3.5 shrink-0 text-primary mt-0.5" />
               <div className="flex-1">
-                <p className="text-[11px] text-muted-foreground">Date of Birth</p>
-                <p className="font-medium text-foreground">
-                  {dayjs(patient?.dateOfBirth).format("MMMM DD, YYYY")}
+                <p className="font-mono text-[10px] uppercase text-muted-foreground">Date of Birth</p>
+                <p className="font-mono font-medium text-foreground">
+                  {dayjs(patient?.dateOfBirth).format("YYYY-MM-DD")} ({age} yrs)
                 </p>
               </div>
             </div>
 
             {/* Phone */}
-            <div className="flex items-start gap-3 rounded-xl border border-border/40 bg-muted/15 p-2.5">
-              <Phone className="size-4 shrink-0 text-primary mt-0.5" />
+            <div className="flex items-start gap-2.5 rounded-md border border-border bg-muted/20 p-2.5">
+              <Phone className="size-3.5 shrink-0 text-primary mt-0.5" />
               <div className="flex-1">
-                <p className="text-[11px] text-muted-foreground">Contact Phone</p>
-                <p className="font-medium text-foreground">{patient?.phone || "No phone listed"}</p>
+                <p className="font-mono text-[10px] uppercase text-muted-foreground">Contact Phone</p>
+                <p className="font-mono font-medium text-foreground">{patient?.phone || "None listed"}</p>
               </div>
             </div>
 
             {/* Address */}
-            <div className="flex items-start gap-3 rounded-xl border border-border/40 bg-muted/15 p-2.5">
-              <MapPin className="size-4 shrink-0 text-primary mt-0.5" />
+            <div className="flex items-start gap-2.5 rounded-md border border-border bg-muted/20 p-2.5">
+              <MapPin className="size-3.5 shrink-0 text-primary mt-0.5" />
               <div className="flex-1">
-                <p className="text-[11px] text-muted-foreground">Residential Address</p>
+                <p className="font-mono text-[10px] uppercase text-muted-foreground">Residential Address</p>
                 <p className="font-medium text-foreground leading-relaxed">
-                  {patient?.address || "No address listed"}
+                  {patient?.address || "None listed"}
                 </p>
               </div>
             </div>

@@ -64,21 +64,21 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
 
   return (
     <>
-      <Card className="border-border/80 bg-card overflow-hidden rounded-2xl border shadow-2xs">
+      <Card className="border-border bg-card overflow-hidden rounded-lg border shadow-2xs">
         <div className="overflow-x-auto">
           <Table>
-            <TableHeader className="bg-muted/30">
-              <TableRow className="border-border/60 hover:bg-transparent">
-                <TableHead className="text-muted-foreground w-[35%] py-3.5 pl-6 text-[11px] font-semibold tracking-wider uppercase">
+            <TableHeader className="bg-muted/40 border-b border-border">
+              <TableRow className="border-border hover:bg-transparent">
+                <TableHead className="text-muted-foreground w-[35%] py-2.5 pl-5 text-[10px] font-semibold tracking-wider uppercase font-mono">
                   Patient & Demographics
                 </TableHead>
-                <TableHead className="text-muted-foreground w-[30%] py-3.5 text-[11px] font-semibold tracking-wider uppercase">
+                <TableHead className="text-muted-foreground w-[30%] py-2.5 text-[10px] font-semibold tracking-wider uppercase font-mono">
                   Contact Information
                 </TableHead>
-                <TableHead className="text-muted-foreground w-[20%] py-3.5 text-[11px] font-semibold tracking-wider uppercase">
+                <TableHead className="text-muted-foreground w-[20%] py-2.5 text-[10px] font-semibold tracking-wider uppercase font-mono">
                   Clinical History
                 </TableHead>
-                <TableHead className="text-muted-foreground w-[15%] py-3.5 pr-6 text-right text-[11px] font-semibold tracking-wider uppercase">
+                <TableHead className="text-muted-foreground w-[15%] py-2.5 pr-5 text-right text-[10px] font-semibold tracking-wider uppercase font-mono">
                   Actions
                 </TableHead>
               </TableRow>
@@ -87,27 +87,27 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
             <TableBody>
               {isPatientsLoading ? (
                 Array.from({ length: 5 }).map((_, index) => (
-                  <TableRow key={index} className="border-border/40">
-                    <TableCell className="py-4 pl-6">
-                      <div className="flex items-center gap-3">
-                        <Skeleton className="bg-muted size-9 rounded-lg" />
-                        <div className="space-y-1.5">
-                          <Skeleton className="bg-muted h-4 w-32" />
+                  <TableRow key={index} className="border-border/60">
+                    <TableCell className="py-2.5 pl-5">
+                      <div className="flex items-center gap-2.5">
+                        <Skeleton className="bg-muted size-7 rounded-full" />
+                        <div className="space-y-1">
+                          <Skeleton className="bg-muted h-3.5 w-32" />
                           <Skeleton className="bg-muted h-3 w-20" />
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell className="py-4">
-                      <div className="space-y-1.5">
-                        <Skeleton className="bg-muted h-4 w-28" />
+                    <TableCell className="py-2.5">
+                      <div className="space-y-1">
+                        <Skeleton className="bg-muted h-3.5 w-28" />
                         <Skeleton className="bg-muted h-3 w-36" />
                       </div>
                     </TableCell>
-                    <TableCell className="py-4">
-                      <Skeleton className="bg-muted h-5 w-24 rounded-full" />
+                    <TableCell className="py-2.5">
+                      <Skeleton className="bg-muted h-5 w-20 rounded-md" />
                     </TableCell>
-                    <TableCell className="py-4 pr-6 text-right">
-                      <Skeleton className="bg-muted ml-auto size-8 rounded-lg" />
+                    <TableCell className="py-2.5 pr-5 text-right">
+                      <Skeleton className="bg-muted ml-auto size-7 rounded-md" />
                     </TableCell>
                   </TableRow>
                 ))
@@ -147,24 +147,23 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                   return (
                     <TableRow
                       key={patient.id}
-                      className="group border-border/50 hover:bg-muted/40 cursor-pointer transition-colors"
+                      className="group border-border hover:bg-muted/40 cursor-pointer transition-colors"
                       onClick={() => navigate(`/patients/${patient.id}`)}
                     >
                       {/* Patient & Demographics */}
-                      <TableCell className="py-3.5 pl-6">
-                        <div className="flex items-center gap-3">
-                          <div className="bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground flex size-9 shrink-0 items-center justify-center rounded-xl text-xs font-bold transition-colors">
+                      <TableCell className="py-2.5 pl-5">
+                        <div className="flex items-center gap-2.5">
+                          <div className="flex size-7 shrink-0 items-center justify-center rounded-full border border-border/80 bg-muted/80 text-[10px] font-semibold text-muted-foreground ring-1 ring-border/30">
                             {initials}
                           </div>
                           <div>
-                            <p className="text-foreground group-hover:text-primary text-sm font-semibold tracking-tight transition-colors">
+                            <p className="text-foreground group-hover:text-primary text-xs font-semibold tracking-tight transition-colors">
                               {fullName}
                             </p>
-                            <p className="text-muted-foreground text-[11px]">
-                              {patient.sex === "MALE" ? "Male" : "Female"} ·{" "}
-                              {age} yrs · DOB{" "}
+                            <p className="text-muted-foreground font-mono tabular-nums text-[11px] leading-tight">
+                              {patient.sex === "MALE" ? "M" : "F"} · {age}y · DOB{" "}
                               {dayjs(patient.dateOfBirth).format(
-                                "MMM DD, YYYY",
+                                "YYYY-MM-DD",
                               )}
                             </p>
                           </div>
@@ -172,9 +171,9 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                       </TableCell>
 
                       {/* Contact Information */}
-                      <TableCell className="py-3.5">
+                      <TableCell className="py-2.5">
                         <div className="space-y-0.5">
-                          <div className="text-foreground flex items-center gap-1.5 text-xs font-medium">
+                          <div className="text-foreground flex items-center gap-1.5 font-mono text-xs font-medium">
                             <Phone className="text-muted-foreground size-3" />
                             <span>{patient.phone}</span>
                           </div>
@@ -185,10 +184,10 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                       </TableCell>
 
                       {/* Clinical History */}
-                      <TableCell className="py-3.5">
+                      <TableCell className="py-2.5">
                         <StatusBadge
                           variant={encountersCount > 0 ? "info" : "neutral"}
-                          className="font-medium"
+                          className="font-medium text-[11px] py-0.5 px-2 rounded-md"
                         >
                           {encountersCount}{" "}
                           {encountersCount === 1 ? "Encounter" : "Encounters"}
@@ -196,22 +195,22 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                       </TableCell>
 
                       {/* Actions Menu */}
-                      <TableCell className="py-3.5 pr-6 text-right">
+                      <TableCell className="py-2.5 pr-5 text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button
                               onClick={(e) => e.stopPropagation()}
                               variant="ghost"
                               size="icon-sm"
-                              className="text-muted-foreground hover:text-foreground size-8 cursor-pointer rounded-lg"
+                              className="text-muted-foreground hover:text-foreground size-7 cursor-pointer rounded-md"
                             >
-                              <MoreHorizontalIcon className="size-4" />
+                              <MoreHorizontalIcon className="size-3.5" />
                               <span className="sr-only">Open menu</span>
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent
                             align="end"
-                            className="w-40 rounded-xl"
+                            className="w-40 rounded-md"
                           >
                             <DropdownMenuItem
                               className="cursor-pointer gap-2 text-xs"

@@ -21,29 +21,29 @@ const variantStyles: Record<
   { bg: string; text: string; dot: string }
 > = {
   success: {
-    bg: "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200/60 dark:border-emerald-800/40",
-    text: "text-emerald-700 dark:text-emerald-300",
-    dot: "bg-emerald-500",
+    bg: "bg-emerald-500/8 dark:bg-emerald-950/25 border-emerald-600/20 dark:border-emerald-500/20",
+    text: "text-emerald-800 dark:text-emerald-300",
+    dot: "bg-emerald-600/80",
   },
   warning: {
-    bg: "bg-amber-50 dark:bg-amber-950/40 border-amber-200/60 dark:border-amber-800/40",
-    text: "text-amber-700 dark:text-amber-300",
-    dot: "bg-amber-500",
+    bg: "bg-amber-500/8 dark:bg-amber-950/25 border-amber-600/20 dark:border-amber-500/20",
+    text: "text-amber-800 dark:text-amber-300",
+    dot: "bg-amber-600/80",
   },
   danger: {
-    bg: "bg-rose-50 dark:bg-rose-950/40 border-rose-200/60 dark:border-rose-800/40",
-    text: "text-rose-700 dark:text-rose-300",
-    dot: "bg-rose-500",
+    bg: "bg-rose-500/8 dark:bg-rose-950/25 border-rose-600/20 dark:border-rose-500/20",
+    text: "text-rose-800 dark:text-rose-300",
+    dot: "bg-rose-600/80",
   },
   info: {
-    bg: "bg-teal-50 dark:bg-teal-950/40 border-teal-200/60 dark:border-teal-800/40",
-    text: "text-teal-700 dark:text-teal-300",
-    dot: "bg-teal-500",
+    bg: "bg-slate-500/8 dark:bg-slate-900/30 border-slate-500/20 dark:border-slate-400/20",
+    text: "text-slate-700 dark:text-slate-300",
+    dot: "bg-slate-500/80",
   },
   neutral: {
-    bg: "bg-slate-50 dark:bg-slate-900/40 border-slate-200/60 dark:border-slate-800/40",
-    text: "text-slate-600 dark:text-slate-300",
-    dot: "bg-slate-400",
+    bg: "bg-muted/50 border-border/80",
+    text: "text-muted-foreground",
+    dot: "bg-muted-foreground/60",
   },
 };
 
