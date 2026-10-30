@@ -33,6 +33,7 @@ export type PatientMinAggregateOutputType = {
   address: string | null
   sex: $Enums.Sex | null
   dateOfBirth: Date | null
+  allergies: string | null
   isArchived: boolean | null
   archivedOn: Date | null
   lastEditedById: string | null
@@ -49,6 +50,7 @@ export type PatientMaxAggregateOutputType = {
   address: string | null
   sex: $Enums.Sex | null
   dateOfBirth: Date | null
+  allergies: string | null
   isArchived: boolean | null
   archivedOn: Date | null
   lastEditedById: string | null
@@ -65,6 +67,7 @@ export type PatientCountAggregateOutputType = {
   address: number
   sex: number
   dateOfBirth: number
+  allergies: number
   isArchived: number
   archivedOn: number
   lastEditedById: number
@@ -83,6 +86,7 @@ export type PatientMinAggregateInputType = {
   address?: true
   sex?: true
   dateOfBirth?: true
+  allergies?: true
   isArchived?: true
   archivedOn?: true
   lastEditedById?: true
@@ -99,6 +103,7 @@ export type PatientMaxAggregateInputType = {
   address?: true
   sex?: true
   dateOfBirth?: true
+  allergies?: true
   isArchived?: true
   archivedOn?: true
   lastEditedById?: true
@@ -115,6 +120,7 @@ export type PatientCountAggregateInputType = {
   address?: true
   sex?: true
   dateOfBirth?: true
+  allergies?: true
   isArchived?: true
   archivedOn?: true
   lastEditedById?: true
@@ -204,6 +210,7 @@ export type PatientGroupByOutputType = {
   address: string
   sex: $Enums.Sex
   dateOfBirth: Date
+  allergies: string | null
   isArchived: boolean
   archivedOn: Date | null
   lastEditedById: string | null
@@ -241,6 +248,7 @@ export type PatientWhereInput = {
   address?: Prisma.StringFilter<"Patient"> | string
   sex?: Prisma.EnumSexFilter<"Patient"> | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFilter<"Patient"> | Date | string
+  allergies?: Prisma.StringNullableFilter<"Patient"> | string | null
   isArchived?: Prisma.BoolFilter<"Patient"> | boolean
   archivedOn?: Prisma.DateTimeNullableFilter<"Patient"> | Date | string | null
   lastEditedById?: Prisma.StringNullableFilter<"Patient"> | string | null
@@ -261,6 +269,7 @@ export type PatientOrderByWithRelationInput = {
   address?: Prisma.SortOrder
   sex?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
+  allergies?: Prisma.SortOrderInput | Prisma.SortOrder
   isArchived?: Prisma.SortOrder
   archivedOn?: Prisma.SortOrderInput | Prisma.SortOrder
   lastEditedById?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -284,6 +293,7 @@ export type PatientWhereUniqueInput = Prisma.AtLeast<{
   address?: Prisma.StringFilter<"Patient"> | string
   sex?: Prisma.EnumSexFilter<"Patient"> | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFilter<"Patient"> | Date | string
+  allergies?: Prisma.StringNullableFilter<"Patient"> | string | null
   isArchived?: Prisma.BoolFilter<"Patient"> | boolean
   archivedOn?: Prisma.DateTimeNullableFilter<"Patient"> | Date | string | null
   lastEditedById?: Prisma.StringNullableFilter<"Patient"> | string | null
@@ -304,6 +314,7 @@ export type PatientOrderByWithAggregationInput = {
   address?: Prisma.SortOrder
   sex?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
+  allergies?: Prisma.SortOrderInput | Prisma.SortOrder
   isArchived?: Prisma.SortOrder
   archivedOn?: Prisma.SortOrderInput | Prisma.SortOrder
   lastEditedById?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -326,6 +337,7 @@ export type PatientScalarWhereWithAggregatesInput = {
   address?: Prisma.StringWithAggregatesFilter<"Patient"> | string
   sex?: Prisma.EnumSexWithAggregatesFilter<"Patient"> | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeWithAggregatesFilter<"Patient"> | Date | string
+  allergies?: Prisma.StringNullableWithAggregatesFilter<"Patient"> | string | null
   isArchived?: Prisma.BoolWithAggregatesFilter<"Patient"> | boolean
   archivedOn?: Prisma.DateTimeNullableWithAggregatesFilter<"Patient"> | Date | string | null
   lastEditedById?: Prisma.StringNullableWithAggregatesFilter<"Patient"> | string | null
@@ -342,6 +354,7 @@ export type PatientCreateInput = {
   address: string
   sex: $Enums.Sex
   dateOfBirth: Date | string
+  allergies?: string | null
   isArchived?: boolean
   archivedOn?: Date | string | null
   createdAt?: Date | string
@@ -361,6 +374,7 @@ export type PatientUncheckedCreateInput = {
   address: string
   sex: $Enums.Sex
   dateOfBirth: Date | string
+  allergies?: string | null
   isArchived?: boolean
   archivedOn?: Date | string | null
   lastEditedById?: string | null
@@ -380,6 +394,7 @@ export type PatientUpdateInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allergies?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -399,6 +414,7 @@ export type PatientUncheckedUpdateInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allergies?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -418,6 +434,7 @@ export type PatientCreateManyInput = {
   address: string
   sex: $Enums.Sex
   dateOfBirth: Date | string
+  allergies?: string | null
   isArchived?: boolean
   archivedOn?: Date | string | null
   lastEditedById?: string | null
@@ -434,6 +451,7 @@ export type PatientUpdateManyMutationInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allergies?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -449,6 +467,7 @@ export type PatientUncheckedUpdateManyInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allergies?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -475,6 +494,7 @@ export type PatientCountOrderByAggregateInput = {
   address?: Prisma.SortOrder
   sex?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
+  allergies?: Prisma.SortOrder
   isArchived?: Prisma.SortOrder
   archivedOn?: Prisma.SortOrder
   lastEditedById?: Prisma.SortOrder
@@ -491,6 +511,7 @@ export type PatientMaxOrderByAggregateInput = {
   address?: Prisma.SortOrder
   sex?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
+  allergies?: Prisma.SortOrder
   isArchived?: Prisma.SortOrder
   archivedOn?: Prisma.SortOrder
   lastEditedById?: Prisma.SortOrder
@@ -507,6 +528,7 @@ export type PatientMinOrderByAggregateInput = {
   address?: Prisma.SortOrder
   sex?: Prisma.SortOrder
   dateOfBirth?: Prisma.SortOrder
+  allergies?: Prisma.SortOrder
   isArchived?: Prisma.SortOrder
   archivedOn?: Prisma.SortOrder
   lastEditedById?: Prisma.SortOrder
@@ -620,6 +642,7 @@ export type PatientCreateWithoutLastEditedByInput = {
   address: string
   sex: $Enums.Sex
   dateOfBirth: Date | string
+  allergies?: string | null
   isArchived?: boolean
   archivedOn?: Date | string | null
   createdAt?: Date | string
@@ -638,6 +661,7 @@ export type PatientUncheckedCreateWithoutLastEditedByInput = {
   address: string
   sex: $Enums.Sex
   dateOfBirth: Date | string
+  allergies?: string | null
   isArchived?: boolean
   archivedOn?: Date | string | null
   createdAt?: Date | string
@@ -684,6 +708,7 @@ export type PatientScalarWhereInput = {
   address?: Prisma.StringFilter<"Patient"> | string
   sex?: Prisma.EnumSexFilter<"Patient"> | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFilter<"Patient"> | Date | string
+  allergies?: Prisma.StringNullableFilter<"Patient"> | string | null
   isArchived?: Prisma.BoolFilter<"Patient"> | boolean
   archivedOn?: Prisma.DateTimeNullableFilter<"Patient"> | Date | string | null
   lastEditedById?: Prisma.StringNullableFilter<"Patient"> | string | null
@@ -700,6 +725,7 @@ export type PatientCreateWithoutCasesInput = {
   address: string
   sex: $Enums.Sex
   dateOfBirth: Date | string
+  allergies?: string | null
   isArchived?: boolean
   archivedOn?: Date | string | null
   createdAt?: Date | string
@@ -718,6 +744,7 @@ export type PatientUncheckedCreateWithoutCasesInput = {
   address: string
   sex: $Enums.Sex
   dateOfBirth: Date | string
+  allergies?: string | null
   isArchived?: boolean
   archivedOn?: Date | string | null
   lastEditedById?: string | null
@@ -752,6 +779,7 @@ export type PatientUpdateWithoutCasesInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allergies?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -770,6 +798,7 @@ export type PatientUncheckedUpdateWithoutCasesInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allergies?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -788,6 +817,7 @@ export type PatientCreateWithoutRecordsInput = {
   address: string
   sex: $Enums.Sex
   dateOfBirth: Date | string
+  allergies?: string | null
   isArchived?: boolean
   archivedOn?: Date | string | null
   createdAt?: Date | string
@@ -806,6 +836,7 @@ export type PatientUncheckedCreateWithoutRecordsInput = {
   address: string
   sex: $Enums.Sex
   dateOfBirth: Date | string
+  allergies?: string | null
   isArchived?: boolean
   archivedOn?: Date | string | null
   lastEditedById?: string | null
@@ -840,6 +871,7 @@ export type PatientUpdateWithoutRecordsInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allergies?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -858,6 +890,7 @@ export type PatientUncheckedUpdateWithoutRecordsInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allergies?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -876,6 +909,7 @@ export type PatientCreateWithoutLabResultsInput = {
   address: string
   sex: $Enums.Sex
   dateOfBirth: Date | string
+  allergies?: string | null
   isArchived?: boolean
   archivedOn?: Date | string | null
   createdAt?: Date | string
@@ -894,6 +928,7 @@ export type PatientUncheckedCreateWithoutLabResultsInput = {
   address: string
   sex: $Enums.Sex
   dateOfBirth: Date | string
+  allergies?: string | null
   isArchived?: boolean
   archivedOn?: Date | string | null
   lastEditedById?: string | null
@@ -928,6 +963,7 @@ export type PatientUpdateWithoutLabResultsInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allergies?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -946,6 +982,7 @@ export type PatientUncheckedUpdateWithoutLabResultsInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allergies?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -964,6 +1001,7 @@ export type PatientCreateManyLastEditedByInput = {
   address: string
   sex: $Enums.Sex
   dateOfBirth: Date | string
+  allergies?: string | null
   isArchived?: boolean
   archivedOn?: Date | string | null
   createdAt?: Date | string
@@ -979,6 +1017,7 @@ export type PatientUpdateWithoutLastEditedByInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allergies?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -997,6 +1036,7 @@ export type PatientUncheckedUpdateWithoutLastEditedByInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allergies?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1015,6 +1055,7 @@ export type PatientUncheckedUpdateManyWithoutLastEditedByInput = {
   address?: Prisma.StringFieldUpdateOperationsInput | string
   sex?: Prisma.EnumSexFieldUpdateOperationsInput | $Enums.Sex
   dateOfBirth?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allergies?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1079,6 +1120,7 @@ export type PatientSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   address?: boolean
   sex?: boolean
   dateOfBirth?: boolean
+  allergies?: boolean
   isArchived?: boolean
   archivedOn?: boolean
   lastEditedById?: boolean
@@ -1100,6 +1142,7 @@ export type PatientSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   address?: boolean
   sex?: boolean
   dateOfBirth?: boolean
+  allergies?: boolean
   isArchived?: boolean
   archivedOn?: boolean
   lastEditedById?: boolean
@@ -1117,6 +1160,7 @@ export type PatientSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   address?: boolean
   sex?: boolean
   dateOfBirth?: boolean
+  allergies?: boolean
   isArchived?: boolean
   archivedOn?: boolean
   lastEditedById?: boolean
@@ -1134,6 +1178,7 @@ export type PatientSelectScalar = {
   address?: boolean
   sex?: boolean
   dateOfBirth?: boolean
+  allergies?: boolean
   isArchived?: boolean
   archivedOn?: boolean
   lastEditedById?: boolean
@@ -1141,7 +1186,7 @@ export type PatientSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PatientOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "middleName" | "lastName" | "phone" | "address" | "sex" | "dateOfBirth" | "isArchived" | "archivedOn" | "lastEditedById" | "createdAt" | "updatedAt", ExtArgs["result"]["patient"]>
+export type PatientOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "middleName" | "lastName" | "phone" | "address" | "sex" | "dateOfBirth" | "allergies" | "isArchived" | "archivedOn" | "lastEditedById" | "createdAt" | "updatedAt", ExtArgs["result"]["patient"]>
 export type PatientInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   cases?: boolean | Prisma.Patient$casesArgs<ExtArgs>
   records?: boolean | Prisma.Patient$recordsArgs<ExtArgs>
@@ -1173,6 +1218,7 @@ export type $PatientPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     address: string
     sex: $Enums.Sex
     dateOfBirth: Date
+    allergies: string | null
     isArchived: boolean
     archivedOn: Date | null
     lastEditedById: string | null
@@ -1613,6 +1659,7 @@ export interface PatientFieldRefs {
   readonly address: Prisma.FieldRef<"Patient", 'String'>
   readonly sex: Prisma.FieldRef<"Patient", 'Sex'>
   readonly dateOfBirth: Prisma.FieldRef<"Patient", 'DateTime'>
+  readonly allergies: Prisma.FieldRef<"Patient", 'String'>
   readonly isArchived: Prisma.FieldRef<"Patient", 'Boolean'>
   readonly archivedOn: Prisma.FieldRef<"Patient", 'DateTime'>
   readonly lastEditedById: Prisma.FieldRef<"Patient", 'String'>

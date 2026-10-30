@@ -1,6 +1,12 @@
 import type { CreateRecordInput } from "@/schemas/recordSchema";
 import type { IDate } from "./DateType";
-import type { FieldErrors, UseFormRegister } from "react-hook-form";
+import type {
+  Control,
+  FieldErrors,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 import type { ICase } from "./CaseType";
 
 export interface IRecord extends CreateRecordInput, IDate {
@@ -42,10 +48,13 @@ export interface RecordFormValues {
 
 export interface IRecordForm {
   register: UseFormRegister<RecordFormValues>;
+  setValue?: UseFormSetValue<RecordFormValues>;
+  getValues?: UseFormGetValues<RecordFormValues>;
 }
 
 export interface IVitalSignsForm extends IRecordForm {
   errors: FieldErrors<RecordFormValues>;
+  control?: Control<RecordFormValues>;
 }
 
 // import type { CreateRecordInput } from "@/schemas/recordSchema";

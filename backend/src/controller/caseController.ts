@@ -12,6 +12,10 @@ export async function getCases(req: Request, res: Response) {
         doctor: true,
         records: {
           where: { isArchived: false },
+          include: {
+            vitalSigns: true,
+            recordMedications: true,
+          },
           orderBy: { visitDate: "desc" },
         },
       },

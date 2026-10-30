@@ -46,6 +46,7 @@ async function handleAddPatient({
   address,
   sex,
   dateOfBirth,
+  allergies,
 }: CreatePatientInput) {
   const newPatient = {
     firstName,
@@ -55,6 +56,7 @@ async function handleAddPatient({
     address,
     sex,
     dateOfBirth,
+    allergies: allergies || undefined,
   };
 
   const res = await api.post("/api/patients", newPatient);
@@ -139,6 +141,7 @@ async function handleUpdatePatient({
   dateOfBirth,
   phone,
   sex,
+  allergies,
 }: IHandleUpdatePatient) {
   const updatedPatientData = {
     firstName,
@@ -148,11 +151,12 @@ async function handleUpdatePatient({
     dateOfBirth,
     phone,
     sex,
+    allergies: allergies !== undefined ? allergies : undefined,
   };
 
   const res = await api.patch(`/api/patients/${id}/update`, updatedPatientData);
 
-  console.log(res.data);
+  return res.data;
 }
 
 export function useUpdatePatient() {
@@ -160,9 +164,10 @@ export function useUpdatePatient() {
 
   return useMutation({
     mutationFn: handleUpdatePatient,
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["patients"] });
       queryClient.invalidateQueries({ queryKey: ["patient"] });
+      queryClient.invalidateQueries({ queryKey: ["patient", variables.id] });
       toast.success("Updated patient successfully", { position: "top-center" });
     },
   });

@@ -75,6 +75,7 @@ model Patient {
   address     String
   sex         Sex
   dateOfBirth DateTime
+  allergies   String?
 
   isArchived Boolean   @default(false)
   archivedOn DateTime?

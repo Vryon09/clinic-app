@@ -45,6 +45,12 @@ export const createPatientSchema = z.object({
     },
     z.date().max(new Date(), "Date of birth cannot be in the future."),
   ),
+
+  allergies: z
+    .string()
+    .trim()
+    .max(300, "Allergies must not exceed 300 characters.")
+    .optional(),
 });
 
 export const updatePatientSchema = createPatientSchema.partial();

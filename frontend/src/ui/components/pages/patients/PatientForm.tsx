@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Button } from "../../shadcn/button";
 import {
   Dialog,
@@ -25,7 +26,7 @@ import { RadioGroup, RadioGroupItem } from "../../shadcn/radio-group";
 import { Popover, PopoverContent, PopoverTrigger } from "../../shadcn/popover";
 import { Calendar } from "../../shadcn/calendar";
 import dayjs from "dayjs";
-import { CalendarIcon, MapPin, Phone, UserPlus, PenBox } from "lucide-react";
+import { CalendarIcon, MapPin, Phone, UserPlus, PenBox, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PatientFormProps {
@@ -55,6 +56,10 @@ function PatientForm({
       ...initialValues,
     },
   });
+
+  useEffect(() => {
+    reset({ ...initialValues });
+  }, [initialValues, reset]);
 
   function onSubmit(data: CreatePatientInput) {
     handlePatient(data);
@@ -308,6 +313,31 @@ function PatientForm({
                     )}
                   </Field>
                 </div>
+              </div>
+
+              {/* Section 4: Clinical Safety & Allergies */}
+              <div>
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground block mb-2.5">
+                  Clinical Safety &amp; Allergies
+                </span>
+                <Field>
+                  <FieldLabel htmlFor="allergies" className="text-xs font-medium text-foreground/90">
+                    Known Drug &amp; Environmental Allergies
+                  </FieldLabel>
+                  <div className="relative">
+                    <Input
+                      className="h-9 rounded-lg border-border/80 bg-background/50 pl-9 text-xs focus-visible:border-primary focus-visible:ring-primary/20"
+                      id="allergies"
+                      placeholder="e.g. Penicillin, Aspirin, NSAIDs (Leave blank if NKDA)"
+                      {...register("allergies")}
+                      type="text"
+                    />
+                    <ShieldAlert className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-muted-foreground" />
+                  </div>
+                  {errors.allergies && (
+                    <FieldError className="text-xs" errors={[errors.allergies]} />
+                  )}
+                </Field>
               </div>
             </FieldGroup>
           </FieldSet>

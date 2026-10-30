@@ -22,16 +22,18 @@ import { handleGetCases, useAddCase } from "@/services/apiCase";
 import type { ICase } from "@/types/CaseType";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { CalendarDays, Plus, User } from "lucide-react";
+import { CalendarDays, History, Plus, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addCaseSchema, type AddCaseInput } from "@/schemas/caseSchema";
 import { toast } from "sonner";
 import CaseDialog from "./CaseDialog";
 import dayjs from "dayjs";
+import PatientHistoryDrawer from "./PatientHistoryDrawer";
 
 function ConsultationsForm() {
   const [isAddingCase, setIsAddingCase] = useState<boolean>(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
 
   const { user, isUserLoading } = useAuth();
 
@@ -120,86 +122,113 @@ function ConsultationsForm() {
       {/* Page header */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-1">
-          <h1 className="text-xl font-semibold tracking-tight text-foreground">
-            {formType === "edit" ? "Edit Consultation" : "New Consultation"}
-          </h1>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-xl font-bold tracking-tight text-foreground">
+              {formType === "edit" ? "Edit Consultation" : "New Consultation Encounter"}
+            </h1>
+            <span className="rounded-md border border-border/70 bg-muted/50 px-2 py-0.5 font-mono text-[11px] font-medium text-muted-foreground">
+              Clinical Note
+            </span>
+          </div>
 
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5">
-              <User className="size-3.5" />
+              <User className="size-3.5 text-primary" />
               {isPatientLoading ? (
                 <Skeleton className="h-4 w-32 rounded" />
               ) : (
-                <span className="font-medium text-foreground">
-                  {`${patient.lastName}, ${patient.firstName}${patient.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}
+                <span className="font-semibold text-foreground">
+                  {`${patient?.lastName || ""}, ${patient?.firstName || ""}${patient?.middleName ? ` ${patient.middleName.slice(0, 1)}.` : ""}`}
                 </span>
               )}
             </span>
 
+            {patient?.sex && (
+              <span className="inline-flex items-center rounded border border-border/60 bg-muted/40 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+                {patient.sex === "MALE" ? "Male" : "Female"}
+                {patient.dateOfBirth && ` · ${dayjs().diff(dayjs(patient.dateOfBirth), "year")}y`}
+              </span>
+            )}
+
             <span className="flex items-center gap-1.5">
-              <CalendarDays className="size-3.5" />
+              <CalendarDays className="size-3.5 text-muted-foreground" />
               <span>{dayjs().format("MMMM DD, YYYY")}</span>
             </span>
           </div>
         </div>
 
-        {/* Case selector */}
-        <Controller
-          name="caseId"
-          control={control}
-          render={({ field }) => (
-            <Select
-              disabled={isCasesLoading}
-              value={field.value}
-              onValueChange={field.onChange}
-            >
-              <SelectTrigger className="h-9 w-full max-w-52 cursor-pointer rounded-lg border-border/80 text-sm sm:w-52">
-                <SelectValue placeholder="Select a case" />
-              </SelectTrigger>
+        {/* Header Actions: History Drawer + Case selector & New Case Trigger */}
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            size="sm"
+            type="button"
+            variant="outline"
+            className="h-9 gap-1.5 rounded-lg border-border/80 text-xs font-semibold cursor-pointer hover:bg-muted"
+            onClick={() => setIsHistoryOpen(true)}
+            title="View past patient consultations, vitals, and prescriptions"
+          >
+            <History className="size-3.5 text-primary" />
+            <span>Past Encounters</span>
+            {cases && cases.reduce((acc, c) => acc + (c.records?.length || 0), 0) > 0 && (
+              <span className="rounded-full bg-primary/10 px-1.5 py-0.2 font-mono text-[10px] font-bold text-primary">
+                {cases.reduce((acc, c) => acc + (c.records?.length || 0), 0)}
+              </span>
+            )}
+          </Button>
 
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel className="text-[11px]">Cases</SelectLabel>
-                  <div className="my-1.5 px-1">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-8 w-full gap-1.5 rounded-lg text-xs"
-                      onClick={() => setIsAddingCase(true)}
-                    >
-                      {isAddingCase ? (
-                        "Opening…"
-                      ) : (
-                        <>
-                          <Plus className="size-3" /> Add New Case
-                        </>
-                      )}
-                    </Button>
+          <Controller
+            name="caseId"
+            control={control}
+            render={({ field }) => (
+              <Select
+                disabled={isCasesLoading}
+                value={field.value}
+                onValueChange={field.onChange}
+              >
+                <SelectTrigger className="h-9 w-full min-w-44 max-w-56 cursor-pointer rounded-lg border-border/80 text-xs sm:w-52">
+                  <SelectValue placeholder="Assign medical case..." />
+                </SelectTrigger>
 
-                    <CaseDialog
-                      caseControl={caseControl}
-                      caseHandleSubmit={caseHandleSubmit}
-                      caseOnSubmit={caseOnSubmit}
-                      caseRegister={caseRegister}
-                      isAddingCase={isAddingCase}
-                      setIsAddingCase={setIsAddingCase}
-                      action="add"
-                    />
-                  </div>
-                  {cases?.map((caseItem) => (
-                    <SelectItem
-                      key={caseItem.id}
-                      value={caseItem.id}
-                      className="cursor-pointer"
-                    >
-                      {caseItem.caseName}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          )}
-        />
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel className="text-[11px]">Active Cases</SelectLabel>
+                    {cases?.map((caseItem) => (
+                      <SelectItem
+                        key={caseItem.id}
+                        value={caseItem.id}
+                        className="cursor-pointer text-xs"
+                      >
+                        {caseItem.caseName}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          />
+
+          <Button
+            size="sm"
+            type="button"
+            variant="outline"
+            className="h-9 gap-1.5 rounded-lg border-border/80 text-xs font-medium cursor-pointer"
+            onClick={() => setIsAddingCase(true)}
+            title="Create a new medical case"
+          >
+            <Plus className="size-3.5" />
+            <span className="hidden sm:inline">New Case</span>
+          </Button>
+
+          <CaseDialog
+            caseControl={caseControl}
+            caseHandleSubmit={caseHandleSubmit}
+            caseOnSubmit={caseOnSubmit}
+            caseRegister={caseRegister}
+            isAddingCase={isAddingCase}
+            setIsAddingCase={setIsAddingCase}
+            action="add"
+          />
+        </div>
       </div>
 
       {/* Form body */}
@@ -210,8 +239,12 @@ function ConsultationsForm() {
         )}
       >
         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
-          <VisitDetailsForm register={register} />
-          <VitalSignsForm register={register} errors={errors} />
+          <VisitDetailsForm
+            register={register}
+            setValue={setValue}
+            getValues={getValues}
+          />
+          <VitalSignsForm register={register} errors={errors} control={control} />
           <RecordMedicationForm
             recordMedicationField={recordMedicationField}
             addMedication={addMedication}
@@ -224,6 +257,19 @@ function ConsultationsForm() {
             clearErrors={clearErrors}
           />
         </div>
+
+      {/* Patient Encounter History Slide-Over Drawer */}
+      <PatientHistoryDrawer
+        cases={cases}
+        isOpen={isHistoryOpen}
+        setIsOpen={setIsHistoryOpen}
+        onInsertDiagnosis={(diag) => {
+          setValue("diagnosis", diag, { shouldDirty: true, shouldValidate: true });
+        }}
+        onInsertMedication={(med) => {
+          addMedication(med);
+        }}
+      />
 
         {/* Footer actions */}
         <div className="mt-6 flex items-center justify-end gap-3 border-t border-border/60 pt-4">

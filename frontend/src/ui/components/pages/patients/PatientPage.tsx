@@ -1,9 +1,9 @@
 import { handleGetPatient, useUpdatePatient } from "@/services/apiPatients";
 import type { IPatient } from "@/types/PatientType";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Button } from "../../shadcn/button";
-import { Pen, Stethoscope, TestTubes } from "lucide-react";
+import { Pen, Plus, Stethoscope, TestTubes } from "lucide-react";
 import { useState } from "react";
 import PatientForm from "./PatientForm";
 import PatientCard from "./PatientCard";
@@ -12,34 +12,61 @@ import { Card } from "../../shadcn/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn/tabs";
 import LabResultSection from "../labResult/LabResultSection";
 import BackButton from "../../BackButton";
+import { handleGetCases } from "@/services/apiCase";
+import type { ICase } from "@/types/CaseType";
+import PatientClinicalSummaryBanner from "./PatientClinicalSummaryBanner";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const { patientId } = useParams() as { patientId: string };
+  const navigate = useNavigate();
 
   const { data: patient, isPending: isPatientPending } = useQuery<IPatient>({
     queryKey: ["patient", patientId],
     queryFn: () => handleGetPatient({ id: patientId }),
   });
 
+  const { data: cases, isPending: isCasesLoading } = useQuery<ICase[]>({
+    queryKey: ["cases", patientId],
+    queryFn: () => handleGetCases({ patientId }),
+  });
+
   const { mutate: handleUpdatePatient } = useUpdatePatient();
 
   return (
-    <div className="flex h-full flex-col space-y-4 pb-8">
+    <div className="flex h-full flex-col space-y-5 pb-8">
       {/* Top Breadcrumb / Action Bar */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <BackButton location="/patients" />
           <div>
-            <h1 className="text-lg font-bold tracking-tight text-foreground">
+            <h1 className="text-xl font-bold tracking-tight text-foreground">
               {patient ? `${patient.lastName}, ${patient.firstName}` : "Patient Details"}
             </h1>
             <p className="text-xs text-muted-foreground">
-              Patient Clinical Record & Consultation Timeline
+              Patient Clinical Record &amp; Consultation Timeline
             </p>
           </div>
         </div>
+
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            className="h-8.5 gap-1.5 rounded-lg text-xs font-semibold cursor-pointer shadow-xs"
+            onClick={() => navigate(`/patients/${patientId}/consultations/new`)}
+          >
+            <Plus className="size-3.5" />
+            <span>New Consultation</span>
+          </Button>
+        </div>
       </div>
+
+      {/* Clinical 360 Summary Banner */}
+      <PatientClinicalSummaryBanner
+        cases={cases}
+        patient={patient}
+        isCasesLoading={isCasesLoading}
+      />
 
       {/* Main Content: Left Demographic Card + Right Clinical Tabs */}
       <div className="flex flex-col lg:flex-row items-start gap-5">
@@ -107,6 +134,7 @@ function PatientPage() {
               sex: patient!.sex,
               dateOfBirth: new Date(patient!.dateOfBirth),
               middleName: patient?.middleName || "",
+              allergies: patient?.allergies || "",
             }}
             isOpen={isEditing}
             setIsOpen={() => setIsEditing((prev) => !prev)}

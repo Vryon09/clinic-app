@@ -3,7 +3,7 @@ import { Card } from "../../shadcn/card";
 import dayjs from "dayjs";
 import type { ReactNode } from "react";
 import { Skeleton } from "../../shadcn/skeleton";
-import { Calendar, MapPin, Phone } from "lucide-react";
+import { Calendar, MapPin, Phone, ShieldAlert } from "lucide-react";
 import StatusBadge from "../../common/StatusBadge";
 
 function PatientCard({
@@ -100,6 +100,21 @@ function PatientCard({
                 <p className="font-mono text-[10px] uppercase text-muted-foreground">Residential Address</p>
                 <p className="font-medium text-foreground leading-relaxed">
                   {patient?.address || "None listed"}
+                </p>
+              </div>
+            </div>
+
+            {/* Allergies */}
+            <div className="flex items-start gap-2.5 rounded-md border border-border bg-muted/20 p-2.5">
+              <ShieldAlert className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
+              <div className="flex-1">
+                <p className="font-mono text-[10px] uppercase text-muted-foreground">Allergies / Alerts</p>
+                <p className="font-medium text-foreground">
+                  {patient?.allergies ? (
+                    <span className="text-amber-700 dark:text-amber-300 font-semibold">{patient.allergies}</span>
+                  ) : (
+                    <span className="text-muted-foreground font-mono text-[11px]">NKDA (No Known Allergies)</span>
+                  )}
                 </p>
               </div>
             </div>

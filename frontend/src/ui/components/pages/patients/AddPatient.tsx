@@ -30,6 +30,7 @@ function AddPatient({ className }: { className?: string }) {
           sex: "MALE",
           dateOfBirth: new Date(),
           middleName: "",
+          allergies: "",
         }}
         isOpen={isAdding}
         setIsOpen={() => setIsAdding((prev) => !prev)}
