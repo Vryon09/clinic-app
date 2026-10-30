@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App.tsx";
 import { HashRouter } from "react-router";
 import { ThemeProvider } from "next-themes";
+import { TextSizeProvider } from "@/contexts/TextSizeContext";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -12,9 +13,12 @@ createRoot(document.getElementById("root")!).render(
       defaultTheme="system"
       storageKey="vite-ui-theme"
     >
-      <HashRouter>
-        <App />
-      </HashRouter>
+      <TextSizeProvider>
+        <HashRouter>
+          <App />
+        </HashRouter>
+      </TextSizeProvider>
     </ThemeProvider>
   </StrictMode>,
 );
+

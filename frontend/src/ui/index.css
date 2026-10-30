@@ -135,6 +135,24 @@
   }
 }
 
-* {
-  /* border: 1px solid limegreen; */
+html[data-text-size="small"] {
+  font-size: 87.5%;
 }
+
+html[data-text-size="medium"] {
+  font-size: 100%;
+}
+
+html[data-text-size="large"] {
+  font-size: 112.5%;
+}
+
+html[data-text-size="extra-large"] {
+  font-size: 125%;
+}
+
+@media print {
+  html {
+    font-size: 100% !important;
+  }
+}
