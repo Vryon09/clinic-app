@@ -4,16 +4,6 @@ import { prisma } from "./prisma";
 
 export async function initDatabase() {
   try {
-    const tables: any[] = await prisma.$queryRawUnsafe(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name='User';"
-    );
-
-    if (tables && tables.length > 0) {
-      return;
-    }
-
-    console.log("Initializing database tables...");
-
     const possiblePaths = [
       path.resolve(__dirname, "../prisma/migrations"),
       path.resolve(__dirname, "../../src/prisma/migrations"),
@@ -21,33 +11,90 @@ export async function initDatabase() {
       path.resolve(process.cwd(), "src/prisma/migrations"),
     ];
 
-    let migrationSql = "";
-
+    let migrationsPath = "";
     for (const p of possiblePaths) {
       if (fs.existsSync(p)) {
-        const dirs = fs.readdirSync(p);
-        for (const dir of dirs) {
-          const sqlFile = path.join(p, dir, "migration.sql");
-          if (fs.existsSync(sqlFile)) {
-            migrationSql += fs.readFileSync(sqlFile, "utf-8") + "\n";
-          }
-        }
-        if (migrationSql) break;
+        migrationsPath = p;
+        break;
       }
     }
 
-    if (migrationSql) {
-      const statements = migrationSql
-        .split(";")
-        .map((s) => s.trim())
-        .filter((s) => s.length > 0);
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "_migration_meta" (
+        "name" TEXT PRIMARY KEY,
+        "appliedAt" DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
 
-      for (const statement of statements) {
-        await prisma.$executeRawUnsafe(statement);
+    const userTable: any[] = await prisma.$queryRawUnsafe(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='User';"
+    );
+    const hasExistingDb = userTable && userTable.length > 0;
+
+    const applied: any[] = await prisma.$queryRawUnsafe(
+      "SELECT name FROM _migration_meta;"
+    );
+    const appliedSet = new Set(applied.map((r: any) => r.name));
+
+    if (migrationsPath) {
+      const dirs = fs.readdirSync(migrationsPath).sort();
+
+      // Legacy DB support: if tables exist but tracking table is empty, mark initial migration as applied
+      if (hasExistingDb && appliedSet.size === 0 && dirs.length > 0) {
+        const initDir = dirs[0];
+        await prisma.$executeRawUnsafe(
+          "INSERT OR IGNORE INTO _migration_meta (name) VALUES (?);",
+          initDir
+        );
+        appliedSet.add(initDir);
       }
-      console.log("Database tables initialized successfully.");
+
+      for (const dir of dirs) {
+        if (appliedSet.has(dir)) {
+          continue;
+        }
+
+        const sqlFile = path.join(migrationsPath, dir, "migration.sql");
+        if (fs.existsSync(sqlFile)) {
+          console.log(`Applying migration: ${dir}...`);
+          const migrationSql = fs.readFileSync(sqlFile, "utf-8");
+          const statements = migrationSql
+            .split(";")
+            .map((s) => s.trim())
+            .filter((s) => s.length > 0);
+
+          for (const statement of statements) {
+            await prisma.$executeRawUnsafe(statement);
+          }
+
+          await prisma.$executeRawUnsafe(
+            "INSERT OR IGNORE INTO _migration_meta (name) VALUES (?);",
+            dir
+          );
+          appliedSet.add(dir);
+          console.log(`Migration ${dir} applied successfully.`);
+        }
+      }
     } else {
-      console.warn("No migration.sql found to initialize database.");
+      console.warn("No migrations folder found.");
+    }
+
+    // Idempotent column safeguard for Patient.allergies
+    const patientTable: any[] = await prisma.$queryRawUnsafe(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='Patient';"
+    );
+    if (patientTable && patientTable.length > 0) {
+      const cols: any[] = await prisma.$queryRawUnsafe(
+        "PRAGMA table_info('Patient');"
+      );
+      const hasAllergies = cols.some((c: any) => c.name === "allergies");
+      if (!hasAllergies) {
+        console.log("Applying missing column: Patient.allergies...");
+        await prisma.$executeRawUnsafe(
+          'ALTER TABLE "Patient" ADD COLUMN "allergies" TEXT;'
+        );
+        console.log("Patient.allergies column added successfully.");
+      }
     }
   } catch (error) {
     console.error("Database initialization error:", error);
