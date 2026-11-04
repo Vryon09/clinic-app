@@ -46,6 +46,7 @@ async function createWindow() {
 }
 
 app.whenReady().then(() => {
+  app.setAppUserModelId("com.vryonantonio.clinicsync");
   createWindow();
 
   app.on("activate", () => {
