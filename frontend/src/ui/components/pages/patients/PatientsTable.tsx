@@ -69,16 +69,16 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
           <Table>
             <TableHeader className="bg-muted/40 border-b border-border">
               <TableRow className="border-border hover:bg-transparent">
-                <TableHead className="text-muted-foreground w-[35%] py-2.5 pl-5 text-[10px] font-semibold tracking-wider uppercase font-mono">
+                <TableHead className="text-muted-foreground w-[35%] py-2.5 pl-5 text-[10px] font-semibold tracking-wider uppercase">
                   Patient & Demographics
                 </TableHead>
-                <TableHead className="text-muted-foreground w-[30%] py-2.5 text-[10px] font-semibold tracking-wider uppercase font-mono">
+                <TableHead className="text-muted-foreground w-[30%] py-2.5 text-[10px] font-semibold tracking-wider uppercase">
                   Contact Information
                 </TableHead>
-                <TableHead className="text-muted-foreground w-[20%] py-2.5 text-[10px] font-semibold tracking-wider uppercase font-mono">
+                <TableHead className="text-muted-foreground w-[20%] py-2.5 text-[10px] font-semibold tracking-wider uppercase">
                   Clinical History
                 </TableHead>
-                <TableHead className="text-muted-foreground w-[15%] py-2.5 pr-5 text-right text-[10px] font-semibold tracking-wider uppercase font-mono">
+                <TableHead className="text-muted-foreground w-[15%] py-2.5 pr-5 text-right text-[10px] font-semibold tracking-wider uppercase">
                   Actions
                 </TableHead>
               </TableRow>
@@ -125,7 +125,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                           ? "Click 'Register Patient' above to create your first clinical record."
                           : `No patient records matched "${searchInput}". Try adjusting your search query.`
                       }
-                      showMascot={true}
+                      showMascot={false}
                     />
                   </TableCell>
                 </TableRow>
@@ -160,7 +160,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                             <p className="text-foreground group-hover:text-primary text-xs font-semibold tracking-tight transition-colors">
                               {fullName}
                             </p>
-                            <p className="text-muted-foreground font-mono tabular-nums text-[11px] leading-tight">
+                            <p className="text-muted-foreground tabular-nums text-[11px] leading-tight">
                               {patient.sex === "MALE" ? "M" : "F"} · {age}y · DOB{" "}
                               {dayjs(patient.dateOfBirth).format(
                                 "YYYY-MM-DD",
@@ -173,7 +173,7 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                       {/* Contact Information */}
                       <TableCell className="py-2.5">
                         <div className="space-y-0.5">
-                          <div className="text-foreground flex items-center gap-1.5 font-mono text-xs font-medium">
+                          <div className="text-foreground flex items-center gap-1.5 text-xs font-medium">
                             <Phone className="text-muted-foreground size-3" />
                             <span>{patient.phone}</span>
                           </div>

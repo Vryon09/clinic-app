@@ -102,18 +102,18 @@ function VitalSignsForm({ register, errors, control }: IVitalSignsForm) {
                     <HeartPulse className="size-3.5 text-primary" />
                     <span>Systolic</span>
                   </FieldLabel>
-                  <span className="font-mono text-[10px] text-muted-foreground">mmHg</span>
+                  <span className="text-[10px] text-muted-foreground">mmHg</span>
                 </div>
                 <div className="relative mt-1">
                   <Input
-                    className="h-9 rounded-lg border-border/80 pr-12 text-sm font-mono focus-visible:ring-1"
+                    className="h-9 rounded-lg border-border/80 pr-12 text-sm focus-visible:ring-1"
                     type="number"
                     placeholder="120"
                     {...register("vitalSigns.bloodPressureSystolic", {
                       valueAsNumber: true,
                     })}
                   />
-                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-mono text-muted-foreground">
+                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground">
                     SYS
                   </span>
                 </div>
@@ -132,18 +132,18 @@ function VitalSignsForm({ register, errors, control }: IVitalSignsForm) {
                     <HeartPulse className="size-3.5 text-primary" />
                     <span>Diastolic</span>
                   </FieldLabel>
-                  <span className="font-mono text-[10px] text-muted-foreground">mmHg</span>
+                  <span className="text-[10px] text-muted-foreground">mmHg</span>
                 </div>
                 <div className="relative mt-1">
                   <Input
-                    className="h-9 rounded-lg border-border/80 pr-12 text-sm font-mono focus-visible:ring-1"
+                    className="h-9 rounded-lg border-border/80 pr-12 text-sm focus-visible:ring-1"
                     type="number"
                     placeholder="80"
                     {...register("vitalSigns.bloodPressureDiastolic", {
                       valueAsNumber: true,
                     })}
                   />
-                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-mono text-muted-foreground">
+                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[11px] text-muted-foreground">
                     DIA
                   </span>
                 </div>
@@ -162,7 +162,7 @@ function VitalSignsForm({ register, errors, control }: IVitalSignsForm) {
                     <AlertCircle className="size-3.5 text-muted-foreground/70" />
                     {bpStatus.hint}
                   </span>
-                  <span className="font-mono font-semibold text-foreground text-[11px]">
+                  <span className="font-semibold text-foreground text-[11px]">
                     {systolic || "—"} / {diastolic || "—"} mmHg
                   </span>
                 </div>
@@ -183,7 +183,7 @@ function VitalSignsForm({ register, errors, control }: IVitalSignsForm) {
                 </div>
                 <div className="relative mt-1">
                   <Input
-                    className="h-9 rounded-lg border-border/80 pr-10 text-sm font-mono focus-visible:ring-1"
+                    className="h-9 rounded-lg border-border/80 pr-10 text-sm focus-visible:ring-1"
                     type="number"
                     step="any"
                     placeholder="36.5"
@@ -191,7 +191,7 @@ function VitalSignsForm({ register, errors, control }: IVitalSignsForm) {
                       valueAsNumber: true,
                     })}
                   />
-                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-mono text-muted-foreground">
+                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
                     °C
                   </span>
                 </div>
@@ -210,11 +210,11 @@ function VitalSignsForm({ register, errors, control }: IVitalSignsForm) {
                     <Scale className="size-3.5 text-primary" />
                     <span>Body Weight</span>
                   </FieldLabel>
-                  <span className="font-mono text-[10px] text-muted-foreground">Kilograms</span>
+                  <span className="text-[10px] text-muted-foreground">Kilograms</span>
                 </div>
                 <div className="relative mt-1">
                   <Input
-                    className="h-9 rounded-lg border-border/80 pr-10 text-sm font-mono focus-visible:ring-1"
+                    className="h-9 rounded-lg border-border/80 pr-10 text-sm focus-visible:ring-1"
                     step="any"
                     type="number"
                     placeholder="65"
@@ -222,7 +222,7 @@ function VitalSignsForm({ register, errors, control }: IVitalSignsForm) {
                       valueAsNumber: true,
                     })}
                   />
-                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs font-mono text-muted-foreground">
+                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
                     kg
                   </span>
                 </div>

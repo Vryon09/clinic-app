@@ -167,7 +167,7 @@ export function AppSidebar() {
                 <span className="truncate text-xs font-semibold text-foreground leading-tight">
                   {fullName}
                 </span>
-                <span className="truncate font-mono text-[10px] text-muted-foreground leading-tight">
+                <span className="truncate text-[10px] text-muted-foreground leading-tight">
                   {getRoleLabel(user?.role)}
                 </span>
               </div>

@@ -373,7 +373,6 @@ export async function updateRecord(req: UserRequest, res: Response) {
       });
 
       if (recordMedications) {
-        // fix update record medication
         await tx.recordMedication.deleteMany({
           where: { recordId: req.params.id as string },
         });
@@ -381,7 +380,17 @@ export async function updateRecord(req: UserRequest, res: Response) {
         await tx.recordMedication.createMany({
           data: recordMedications.map(
             (medication: CreateRecordMedicationInput) => {
-              return { ...medication, recordId: req.params.id as string };
+              return {
+                name: medication.name,
+                dosage: medication.dosage,
+                frequency: medication.frequency,
+                durationDays:
+                  medication.durationDays != null
+                    ? Number(medication.durationDays)
+                    : null,
+                instructions: medication.instructions || null,
+                recordId: req.params.id as string,
+              };
             },
           ),
         });

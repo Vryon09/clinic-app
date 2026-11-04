@@ -64,7 +64,21 @@ export async function initDatabase() {
             .filter((s) => s.length > 0);
 
           for (const statement of statements) {
-            await prisma.$executeRawUnsafe(statement);
+            try {
+              await prisma.$executeRawUnsafe(statement);
+            } catch (stmtErr: any) {
+              const msg = stmtErr?.message || "";
+              if (
+                msg.includes("duplicate column name") ||
+                msg.includes("already exists")
+              ) {
+                console.warn(
+                  `Statement skipped (already applied): ${statement}`
+                );
+              } else {
+                throw stmtErr;
+              }
+            }
           }
 
           await prisma.$executeRawUnsafe(

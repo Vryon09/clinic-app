@@ -103,7 +103,7 @@ function PatientHistoryDrawer({
                     <Calendar className="size-3.5 text-primary" />
                     <span>{dayjs(enc.visitDate).format("MMM DD, YYYY")}</span>
                   </div>
-                  <span className="flex items-center gap-1 rounded border border-border/60 bg-muted/40 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+                  <span className="flex items-center gap-1 rounded border border-border/60 bg-muted/40 px-1.5 py-0.5 text-[10px] text-muted-foreground">
                     <Folder className="size-3" />
                     {enc.caseName}
                   </span>
@@ -114,7 +114,7 @@ function PatientHistoryDrawer({
                   {enc.diagnosis ? (
                     <div className="rounded-md bg-primary/5 border border-primary/15 p-2">
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-[10px] font-semibold text-primary uppercase">
+                        <span className="text-[10px] font-semibold text-primary uppercase">
                           Diagnosis
                         </span>
                         {onInsertDiagnosis && (
@@ -150,21 +150,21 @@ function PatientHistoryDrawer({
                 {/* Vitals Summary */}
                 {enc.vitalSigns && (
                   <div className="flex flex-wrap items-center gap-1.5 pt-1 text-[11px]">
-                    <span className="flex items-center gap-1 text-[10px] font-mono text-muted-foreground">
+                    <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
                       <Activity className="size-3 text-primary" /> Vitals:
                     </span>
                     {enc.vitalSigns.bloodPressureSystolic && enc.vitalSigns.bloodPressureDiastolic && (
-                      <span className="rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[10px]">
+                      <span className="rounded bg-muted/50 px-1.5 py-0.5 text-[10px]">
                         BP {enc.vitalSigns.bloodPressureSystolic}/{enc.vitalSigns.bloodPressureDiastolic}
                       </span>
                     )}
                     {enc.vitalSigns.temperature && (
-                      <span className="rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[10px]">
+                      <span className="rounded bg-muted/50 px-1.5 py-0.5 text-[10px]">
                         {enc.vitalSigns.temperature}°C
                       </span>
                     )}
                     {enc.vitalSigns.weightKg && (
-                      <span className="rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[10px]">
+                      <span className="rounded bg-muted/50 px-1.5 py-0.5 text-[10px]">
                         {enc.vitalSigns.weightKg}kg
                       </span>
                     )}
@@ -174,7 +174,7 @@ function PatientHistoryDrawer({
                 {/* Medications Prescribed */}
                 {enc.recordMedications && enc.recordMedications.length > 0 && (
                   <div className="border-t border-border/50 pt-2 space-y-1.5">
-                    <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1">
                       <Pill className="size-3" /> Prescriptions ({enc.recordMedications.length})
                     </span>
 

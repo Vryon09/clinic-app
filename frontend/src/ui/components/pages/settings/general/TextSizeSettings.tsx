@@ -108,7 +108,7 @@ export default function TextSizeSettings() {
                       </Badge>
                     )}
                   </div>
-                  <span className="text-xs font-mono text-muted-foreground">
+                  <span className="text-xs text-muted-foreground">
                     {option.pixelEquivalent} ({option.percentage})
                   </span>
                 </div>
@@ -129,7 +129,7 @@ export default function TextSizeSettings() {
             <Eye className="size-4 text-primary" />
             <span>Live Consultation & Patient Card Preview</span>
           </div>
-          <span className="text-[11px] font-mono text-muted-foreground">
+          <span className="text-[11px] text-muted-foreground">
             Current Scale: {options.find((o) => o.value === textSize)?.percentage}
           </span>
         </div>

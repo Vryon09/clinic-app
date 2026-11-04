@@ -145,7 +145,7 @@ function LabResultsTable({
     <>
       <div className="border-border/80 overflow-hidden rounded-xl border bg-card shadow-2xs">
         {/* Header */}
-        <div className="border-border/60 bg-muted/30 grid grid-cols-[1fr_auto_auto] items-center gap-4 border-b px-4 py-2.5 text-xs font-semibold text-muted-foreground font-mono">
+        <div className="border-border/60 bg-muted/30 grid grid-cols-[1fr_auto_auto] items-center gap-4 border-b px-4 py-2.5 text-xs font-semibold text-muted-foreground">
           <span>Diagnostic Document &amp; Date</span>
           <span>Format</span>
           <div className="w-20 text-right">Actions</div>
@@ -182,7 +182,7 @@ function LabResultsTable({
                 </div>
 
                 {/* File format badge */}
-                <span className="border-border/70 bg-muted/50 text-foreground rounded-md border px-2 py-0.5 font-mono text-[10px] font-semibold">
+                <span className="border-border/70 bg-muted/50 text-foreground rounded-md border px-2 py-0.5 text-[10px] font-semibold">
                   {ext}
                 </span>
 

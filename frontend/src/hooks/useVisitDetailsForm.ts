@@ -90,6 +90,7 @@ export function useVisitDetailsForm({
     fields: recordMedicationField,
     append: addMedication,
     remove: deleteMedication,
+    update: updateMedication,
   } = useFieldArray({
     control,
     name: "recordMedications",
@@ -124,7 +125,13 @@ export function useVisitDetailsForm({
           temperature: vitalSigns?.temperature || undefined,
           weightKg: vitalSigns?.weightKg || undefined,
         },
-        recordMedications: recordMedications || [],
+        recordMedications: (recordMedications || []).map((med) => ({
+          name: med.name,
+          dosage: med.dosage,
+          frequency: med.frequency,
+          durationDays: med.durationDays ?? undefined,
+          instructions: med.instructions ?? "",
+        })),
         medicationInput: {
           name: "",
           dosage: "",
@@ -180,6 +187,7 @@ export function useVisitDetailsForm({
     recordMedicationField,
     addMedication,
     deleteMedication,
+    updateMedication,
     getValues,
     setValue,
     errors,

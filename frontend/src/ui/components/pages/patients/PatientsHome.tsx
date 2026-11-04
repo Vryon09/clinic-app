@@ -16,7 +16,7 @@ function PatientsHome() {
             <h1 className="text-foreground text-xl font-bold tracking-tight sm:text-2xl">
               Patient Directory
             </h1>
-            <span className="border-border bg-muted/60 text-muted-foreground inline-flex items-center gap-1 rounded-md border px-2 py-0.5 font-mono text-[11px] font-medium">
+            <span className="border-border bg-muted/60 text-muted-foreground inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[11px] font-medium">
               Clinical Records
             </span>
           </div>

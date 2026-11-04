@@ -11,6 +11,8 @@
 
 @theme {
   --font-sans: "DMSans", sans-serif;
+  --font-mono: "DMSans", sans-serif;
+  --font-serif: "DMSans", sans-serif;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -126,12 +128,23 @@
 }
 
 @layer base {
-  * {
+  *, ::before, ::after {
     @apply border-border outline-ring/50;
+    font-family: "DMSans", sans-serif;
   }
 
+  html,
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    font-family: "DMSans", sans-serif;
+  }
+
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: inherit;
   }
 }
 

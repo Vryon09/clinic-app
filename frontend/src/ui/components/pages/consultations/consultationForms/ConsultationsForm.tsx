@@ -98,6 +98,7 @@ function ConsultationsForm() {
     recordMedicationField,
     addMedication,
     deleteMedication,
+    updateMedication,
     getValues,
     setValue,
     errors,
@@ -126,7 +127,7 @@ function ConsultationsForm() {
             <h1 className="text-xl font-bold tracking-tight text-foreground">
               {formType === "edit" ? "Edit Consultation" : "New Consultation Encounter"}
             </h1>
-            <span className="rounded-md border border-border/70 bg-muted/50 px-2 py-0.5 font-mono text-[11px] font-medium text-muted-foreground">
+            <span className="rounded-md border border-border/70 bg-muted/50 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
               Clinical Note
             </span>
           </div>
@@ -144,7 +145,7 @@ function ConsultationsForm() {
             </span>
 
             {patient?.sex && (
-              <span className="inline-flex items-center rounded border border-border/60 bg-muted/40 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+              <span className="inline-flex items-center rounded border border-border/60 bg-muted/40 px-1.5 py-0.5 text-[10px] text-muted-foreground">
                 {patient.sex === "MALE" ? "Male" : "Female"}
                 {patient.dateOfBirth && ` · ${dayjs().diff(dayjs(patient.dateOfBirth), "year")}y`}
               </span>
@@ -170,7 +171,7 @@ function ConsultationsForm() {
             <History className="size-3.5 text-primary" />
             <span>Past Encounters</span>
             {cases && cases.reduce((acc, c) => acc + (c.records?.length || 0), 0) > 0 && (
-              <span className="rounded-full bg-primary/10 px-1.5 py-0.2 font-mono text-[10px] font-bold text-primary">
+              <span className="rounded-full bg-primary/10 px-1.5 py-0.2 text-[10px] font-bold text-primary">
                 {cases.reduce((acc, c) => acc + (c.records?.length || 0), 0)}
               </span>
             )}
@@ -249,6 +250,7 @@ function ConsultationsForm() {
             recordMedicationField={recordMedicationField}
             addMedication={addMedication}
             deleteMedication={deleteMedication}
+            updateMedication={updateMedication}
             register={register}
             getValues={getValues}
             setValue={setValue}

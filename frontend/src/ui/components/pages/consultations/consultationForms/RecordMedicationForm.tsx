@@ -24,6 +24,7 @@ function RecordMedicationForm({
   recordMedicationField,
   addMedication,
   deleteMedication,
+  updateMedication,
   register,
   getValues,
   setValue,
@@ -73,7 +74,7 @@ function RecordMedicationForm({
                 Prescription &amp; Medications
               </CardTitle>
               {recordMedicationField.length > 0 && (
-                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary font-mono">
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
                   {recordMedicationField.length} {recordMedicationField.length === 1 ? "drug" : "drugs"}
                 </span>
               )}
@@ -114,7 +115,7 @@ function RecordMedicationForm({
           <div className="rounded-xl border border-border/70 bg-muted/20 p-4 space-y-3.5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-                <span className="font-serif italic font-bold text-primary">℞</span>
+                <span className="italic font-bold text-primary">℞</span>
                 <span>Fast Medication Entry</span>
               </span>
               <span className="text-[10px] text-muted-foreground">Press &quot;Add to Prescription&quot; to queue</span>
@@ -161,10 +162,10 @@ function RecordMedicationForm({
               {/* Duration */}
               <Field>
                 <FieldLabel className="text-xs font-medium text-muted-foreground">
-                  Duration <span className="text-muted-foreground/70 font-mono">(Days)</span>
+                  Duration <span className="text-muted-foreground/70">(Days)</span>
                 </FieldLabel>
                 <Input
-                  className="h-8.5 rounded-lg border-border/80 bg-background text-xs font-mono"
+                  className="h-8.5 rounded-lg border-border/80 bg-background text-xs"
                   type="number"
                   placeholder="7"
                   {...register("medicationInput.durationDays", {
@@ -177,6 +178,23 @@ function RecordMedicationForm({
                     errors={[errors.medicationInput.durationDays]}
                   />
                 )}
+
+                {/* Duration Presets */}
+                <div className="mt-1.5 flex items-center gap-1">
+                  <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                    <Clock className="size-3" /> Duration:
+                  </span>
+                  {DURATION_PRESETS.map((days) => (
+                    <button
+                      key={days}
+                      type="button"
+                      onClick={() => setValue("medicationInput.durationDays", days, { shouldValidate: true })}
+                      className="cursor-pointer rounded-md border border-border/60 bg-background px-1.5 py-0.5 text-[10px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                    >
+                      {days}d
+                    </button>
+                  ))}
+                </div>
               </Field>
 
               {/* Frequency */}
@@ -227,23 +245,6 @@ function RecordMedicationForm({
                     errors={[errors.medicationInput.instructions]}
                   />
                 )}
-
-                {/* Duration Presets */}
-                <div className="mt-1.5 flex items-center gap-1">
-                  <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                    <Clock className="size-3" /> Duration:
-                  </span>
-                  {DURATION_PRESETS.map((days) => (
-                    <button
-                      key={days}
-                      type="button"
-                      onClick={() => setValue("medicationInput.durationDays", days, { shouldValidate: true })}
-                      className="cursor-pointer rounded-md border border-border/60 bg-background px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-                    >
-                      {days}d
-                    </button>
-                  ))}
-                </div>
               </Field>
             </div>
 
@@ -265,13 +266,14 @@ function RecordMedicationForm({
         {/* Existing Added Medications List */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
               Prescribed Medications ({recordMedicationField.length})
             </span>
           </div>
           <AddedRecordMedicationList
             recordMedicationField={recordMedicationField}
             deleteMedication={deleteMedication}
+            updateMedication={updateMedication}
           />
         </div>
       </CardContent>

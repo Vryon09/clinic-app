@@ -6,6 +6,7 @@ import type {
   FieldErrors,
   UseFieldArrayAppend,
   UseFieldArrayRemove,
+  UseFieldArrayUpdate,
   UseFormClearErrors,
   UseFormGetValues,
   UseFormSetError,
@@ -26,6 +27,7 @@ export interface IRecordMedicationForm extends IRecordForm {
   >[];
   addMedication: UseFieldArrayAppend<RecordFormValues, "recordMedications">;
   deleteMedication: UseFieldArrayRemove;
+  updateMedication: UseFieldArrayUpdate<RecordFormValues, "recordMedications">;
   getValues: UseFormGetValues<RecordFormValues>;
   setValue: UseFormSetValue<RecordFormValues>;
   errors: FieldErrors<RecordFormValues>;
@@ -40,6 +42,7 @@ export interface IAddedRecordMedicationList {
     "id"
   >[];
   deleteMedication: UseFieldArrayRemove;
+  updateMedication: UseFieldArrayUpdate<RecordFormValues, "recordMedications">;
 }
 
 export interface IRecordMedicationDialog extends IRecordForm {

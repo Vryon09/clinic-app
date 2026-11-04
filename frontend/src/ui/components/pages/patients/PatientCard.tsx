@@ -48,7 +48,7 @@ function PatientCard({
               <StatusBadge variant="success" dot={true} className="rounded-md px-2 py-0.5 text-[11px]">
                 Active Record
               </StatusBadge>
-              <span className="inline-flex items-center rounded-md border border-border/60 bg-background px-2 py-0.5 font-mono text-[11px] text-muted-foreground">
+              <span className="inline-flex items-center rounded-md border border-border/60 bg-background px-2 py-0.5 text-[11px] text-muted-foreground">
                 {patient?.sex === "MALE" ? "M" : "F"} · {age}y
               </span>
             </div>
@@ -59,10 +59,10 @@ function PatientCard({
       {/* Profile Body / Demographics Details */}
       <div className="p-4.5 space-y-3.5">
         <div className="flex items-center justify-between">
-          <span className="font-mono text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+          <span className="text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
             Demographic Info
           </span>
-          <span className="font-mono text-[10px] text-muted-foreground">VERIFIED</span>
+          <span className="text-[10px] text-muted-foreground">VERIFIED</span>
         </div>
 
         {isPatientPending ? (
@@ -77,8 +77,8 @@ function PatientCard({
             <div className="flex items-start gap-2.5 rounded-md border border-border bg-muted/20 p-2.5">
               <Calendar className="size-3.5 shrink-0 text-primary mt-0.5" />
               <div className="flex-1">
-                <p className="font-mono text-[10px] uppercase text-muted-foreground">Date of Birth</p>
-                <p className="font-mono font-medium text-foreground">
+                <p className="text-[10px] uppercase text-muted-foreground">Date of Birth</p>
+                <p className="font-medium text-foreground">
                   {dayjs(patient?.dateOfBirth).format("YYYY-MM-DD")} ({age} yrs)
                 </p>
               </div>
@@ -88,8 +88,8 @@ function PatientCard({
             <div className="flex items-start gap-2.5 rounded-md border border-border bg-muted/20 p-2.5">
               <Phone className="size-3.5 shrink-0 text-primary mt-0.5" />
               <div className="flex-1">
-                <p className="font-mono text-[10px] uppercase text-muted-foreground">Contact Phone</p>
-                <p className="font-mono font-medium text-foreground">{patient?.phone || "None listed"}</p>
+                <p className="text-[10px] uppercase text-muted-foreground">Contact Phone</p>
+                <p className="font-medium text-foreground">{patient?.phone || "None listed"}</p>
               </div>
             </div>
 
@@ -97,7 +97,7 @@ function PatientCard({
             <div className="flex items-start gap-2.5 rounded-md border border-border bg-muted/20 p-2.5">
               <MapPin className="size-3.5 shrink-0 text-primary mt-0.5" />
               <div className="flex-1">
-                <p className="font-mono text-[10px] uppercase text-muted-foreground">Residential Address</p>
+                <p className="text-[10px] uppercase text-muted-foreground">Residential Address</p>
                 <p className="font-medium text-foreground leading-relaxed">
                   {patient?.address || "None listed"}
                 </p>
@@ -108,12 +108,12 @@ function PatientCard({
             <div className="flex items-start gap-2.5 rounded-md border border-border bg-muted/20 p-2.5">
               <ShieldAlert className="size-3.5 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
               <div className="flex-1">
-                <p className="font-mono text-[10px] uppercase text-muted-foreground">Allergies / Alerts</p>
+                <p className="text-[10px] uppercase text-muted-foreground">Allergies / Alerts</p>
                 <p className="font-medium text-foreground">
                   {patient?.allergies ? (
                     <span className="text-amber-700 dark:text-amber-300 font-semibold">{patient.allergies}</span>
                   ) : (
-                    <span className="text-muted-foreground font-mono text-[11px]">NKDA (No Known Allergies)</span>
+                    <span className="text-muted-foreground text-[11px]">NKDA (No Known Allergies)</span>
                   )}
                 </p>
               </div>

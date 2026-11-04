@@ -73,7 +73,7 @@ function PatientClinicalSummaryBanner({
       {/* 1. Latest Vitals Snapshot */}
       <Card className="rounded-xl border border-border/80 bg-card p-3.5 shadow-2xs">
         <div className="flex items-center justify-between">
-          <span className="flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <span className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             <Activity className="size-3.5 text-primary" /> Latest Vitals
           </span>
           {bpStatus && (
@@ -86,14 +86,14 @@ function PatientClinicalSummaryBanner({
         {latestVitals && (latestVitals.bloodPressureSystolic || latestVitals.temperature || latestVitals.weightKg) ? (
           <div className="mt-2 space-y-1">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-base font-bold tracking-tight text-foreground font-mono">
+              <span className="text-base font-bold tracking-tight text-foreground">
                 {latestVitals.bloodPressureSystolic && latestVitals.bloodPressureDiastolic
                   ? `${latestVitals.bloodPressureSystolic}/${latestVitals.bloodPressureDiastolic}`
                   : "—"}
               </span>
-              <span className="text-[10px] text-muted-foreground font-mono">mmHg</span>
+              <span className="text-[10px] text-muted-foreground">mmHg</span>
             </div>
-            <div className="flex items-center gap-2 text-[11px] text-muted-foreground font-mono">
+            <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
               {latestVitals.temperature && <span>{latestVitals.temperature}°C</span>}
               {latestVitals.temperature && latestVitals.weightKg && <span>&middot;</span>}
               {latestVitals.weightKg && <span>{latestVitals.weightKg}kg</span>}
@@ -109,10 +109,10 @@ function PatientClinicalSummaryBanner({
       {/* 2. Last Visit & Encounters */}
       <Card className="rounded-xl border border-border/80 bg-card p-3.5 shadow-2xs">
         <div className="flex items-center justify-between">
-          <span className="flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <span className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             <Calendar className="size-3.5 text-primary" /> Last Encounter
           </span>
-          <span className="rounded bg-muted/60 px-1.5 py-0.2 font-mono text-[10px] text-muted-foreground">
+          <span className="rounded bg-muted/60 px-1.5 py-0.2 text-[10px] text-muted-foreground">
             {encounters.length} {encounters.length === 1 ? "Visit" : "Visits"}
           </span>
         </div>
@@ -136,10 +136,10 @@ function PatientClinicalSummaryBanner({
       {/* 3. Active Prescriptions */}
       <Card className="rounded-xl border border-border/80 bg-card p-3.5 shadow-2xs">
         <div className="flex items-center justify-between">
-          <span className="flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <span className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             <Pill className="size-3.5 text-primary" /> Recent Rx
           </span>
-          <span className="font-mono text-[10px] text-muted-foreground">
+          <span className="text-[10px] text-muted-foreground">
             {latestMeds.length} items
           </span>
         </div>
@@ -152,12 +152,12 @@ function PatientClinicalSummaryBanner({
                 className="inline-flex items-center gap-1 rounded-md border border-border/60 bg-muted/30 px-1.5 py-0.5 text-[10px] font-medium text-foreground truncate max-w-[140px]"
                 title={`${m.name} ${m.dosage}`}
               >
-                <span className="font-serif italic text-primary">℞</span>
+                <span className="italic text-primary">℞</span>
                 <span className="truncate">{m.name}</span>
               </span>
             ))}
             {latestMeds.length > 2 && (
-              <span className="rounded bg-muted/50 px-1 py-0.5 text-[9px] font-mono text-muted-foreground">
+              <span className="rounded bg-muted/50 px-1 py-0.5 text-[9px] text-muted-foreground">
                 +{latestMeds.length - 2} more
               </span>
             )}
@@ -172,7 +172,7 @@ function PatientClinicalSummaryBanner({
       {/* 4. Safety & Clinical Status */}
       <Card className="rounded-xl border border-border/80 bg-card p-3.5 shadow-2xs">
         <div className="flex items-center justify-between">
-          <span className="flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <span className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             {hasAllergies ? (
               <ShieldAlert className="size-3.5 text-rose-600 dark:text-rose-400" />
             ) : (
@@ -192,19 +192,19 @@ function PatientClinicalSummaryBanner({
         <div className="mt-2 space-y-1">
           {hasAllergies ? (
             <div className="flex items-center gap-1.5">
-              <span className="inline-flex items-center gap-1 rounded border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/40 px-1.5 py-0.5 font-mono text-[10px] font-bold text-rose-700 dark:text-rose-300 truncate max-w-[200px]" title={patient?.allergies || ""}>
+              <span className="inline-flex items-center gap-1 rounded border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/40 px-1.5 py-0.5 text-[10px] font-bold text-rose-700 dark:text-rose-300 truncate max-w-[200px]" title={patient?.allergies || ""}>
                 <ShieldAlert className="size-3 text-rose-600 shrink-0" /> {patient?.allergies}
               </span>
             </div>
           ) : (
             <div className="flex items-center gap-1.5">
-              <span className="inline-flex items-center gap-1 rounded bg-muted/50 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-foreground">
+              <span className="inline-flex items-center gap-1 rounded bg-muted/50 px-1.5 py-0.5 text-[10px] font-semibold text-foreground">
                 <CheckCircle2 className="size-3 text-emerald-600" /> NKDA
               </span>
               <span className="text-[10px] text-muted-foreground">No Known Allergies</span>
             </div>
           )}
-          <p className="text-[10px] font-mono text-muted-foreground truncate">
+          <p className="text-[10px] text-muted-foreground truncate">
             Cases: {cases?.map((c) => c.caseName).join(", ") || "Default"}
           </p>
         </div>

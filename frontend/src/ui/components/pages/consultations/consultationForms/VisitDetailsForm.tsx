@@ -67,7 +67,7 @@ function VisitDetailsForm({ register, setValue, getValues }: IRecordForm) {
           </div>
         </div>
 
-        <span className="rounded-md border border-border/70 bg-muted/40 px-2 py-0.5 font-mono text-[10px] text-muted-foreground font-medium">
+        <span className="rounded-md border border-border/70 bg-muted/40 px-2 py-0.5 text-[10px] text-muted-foreground font-medium">
           EMR SOAP Format
         </span>
       </CardHeader>
@@ -79,12 +79,12 @@ function VisitDetailsForm({ register, setValue, getValues }: IRecordForm) {
             <Field className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <FieldLabel className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
-                  <span className="flex size-5 items-center justify-center rounded bg-primary/15 font-mono text-[10px] font-bold text-primary">
+                  <span className="flex size-5 items-center justify-center rounded bg-primary/15 text-[10px] font-bold text-primary">
                     S
                   </span>
                   <span>Subjective &mdash; Chief Complaints &amp; Symptoms</span>
                 </FieldLabel>
-                <span className="font-mono text-[10px] text-muted-foreground">History</span>
+                <span className="text-[10px] text-muted-foreground">History</span>
               </div>
 
               <Textarea
@@ -115,12 +115,12 @@ function VisitDetailsForm({ register, setValue, getValues }: IRecordForm) {
             <Field className="space-y-1.5 border-t border-border/40 pt-4">
               <div className="flex items-center justify-between">
                 <FieldLabel className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
-                  <span className="flex size-5 items-center justify-center rounded bg-primary/15 font-mono text-[10px] font-bold text-primary">
+                  <span className="flex size-5 items-center justify-center rounded bg-primary/15 text-[10px] font-bold text-primary">
                     O
                   </span>
                   <span>Objective &mdash; Physical Examination &amp; Signs</span>
                 </FieldLabel>
-                <span className="font-mono text-[10px] text-muted-foreground">Physical Exam</span>
+                <span className="text-[10px] text-muted-foreground">Physical Exam</span>
               </div>
 
               <Textarea
@@ -151,12 +151,12 @@ function VisitDetailsForm({ register, setValue, getValues }: IRecordForm) {
             <Field className="space-y-1.5 border-t border-border/40 pt-4">
               <div className="flex items-center justify-between">
                 <FieldLabel className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
-                  <span className="flex size-5 items-center justify-center rounded bg-primary/15 font-mono text-[10px] font-bold text-primary">
+                  <span className="flex size-5 items-center justify-center rounded bg-primary/15 text-[10px] font-bold text-primary">
                     A
                   </span>
                   <span>Assessment &mdash; Primary Clinical Diagnosis</span>
                 </FieldLabel>
-                <span className="font-mono text-[10px] text-muted-foreground">Diagnosis</span>
+                <span className="text-[10px] text-muted-foreground">Diagnosis</span>
               </div>
 
               <Textarea

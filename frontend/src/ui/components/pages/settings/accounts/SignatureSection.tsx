@@ -58,10 +58,10 @@ function SignatureSection() {
 
           {isAddingSignature && (
             <div className="space-y-3">
-              <div className="h-36 rounded-xl border border-border bg-muted/10 overflow-hidden">
+              <div className="h-36 rounded-xl border border-border bg-white dark:bg-white overflow-hidden">
                 <SignatureCanvas
                   ref={sigRef}
-                  canvasProps={{ className: "w-full h-full cursor-crosshair" }}
+                  canvasProps={{ className: "w-full h-full cursor-crosshair bg-white" }}
                   onEnd={() => {
                     if (!sigRef.current) return;
                     setSignature(sigRef.current.toDataURL());
@@ -116,7 +116,7 @@ function SignatureSection() {
 
       {signatureData && (
         <div className="space-y-3">
-          <div className="flex items-center justify-center rounded-xl border border-border/80 bg-muted/20 p-3 h-36">
+          <div className="flex items-center justify-center rounded-xl border border-border/80 bg-white dark:bg-white p-3 h-36">
             <img
               src={`http://localhost:3000/${signatureData.filePath}`}
               alt="Digital Signature"
