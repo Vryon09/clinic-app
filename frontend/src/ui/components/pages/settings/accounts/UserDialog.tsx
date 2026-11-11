@@ -81,7 +81,7 @@ function UserDialog({
           middleName: data.middleName || "",
           lastName: data.lastName,
           username: data.username,
-          password: "Password123",
+          password: "Clinic123",
           role: data.role,
           licenseNum: role === "ASSISTANT" ? "" : data.licenseNum,
         },
@@ -134,9 +134,9 @@ function UserDialog({
 
   return (
     <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
-      <DialogContent className="sm:max-w-lg rounded-2xl border-border/80 p-6 shadow-xl">
+      <DialogContent className="border-border/80 rounded-2xl p-6 shadow-xl sm:max-w-lg">
         <DialogHeader className="space-y-1">
-          <DialogTitle className="text-lg font-bold text-foreground">
+          <DialogTitle className="text-foreground text-lg font-bold">
             {action === "create" ? "Add User Account" : "Update User Account"}
           </DialogTitle>
         </DialogHeader>
@@ -145,24 +145,25 @@ function UserDialog({
           <FieldSet className="w-full space-y-3">
             <FieldGroup className="space-y-3">
               {action === "create" && (
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <Field className="space-y-1.5">
                     <FieldLabel
-                      className="flex h-5 items-center justify-between text-xs font-semibold text-foreground/80"
+                      className="text-foreground/80 flex h-5 items-center justify-between text-xs font-semibold"
                       htmlFor="firstName"
                     >
                       First Name
                     </FieldLabel>
                     <Input
-                      className="h-9 rounded-lg border-border/80 bg-background text-sm"
+                      className="border-border/80 bg-background h-9 rounded-lg text-sm"
                       id="firstName"
                       {...register("firstName")}
                       type="text"
                       placeholder="First name"
+                      maxLength={50}
                     />
                     {errors.firstName && (
                       <FieldError
-                        className="text-xs text-destructive"
+                        className="text-destructive text-xs"
                         errors={[errors.firstName]}
                       />
                     )}
@@ -170,24 +171,25 @@ function UserDialog({
 
                   <Field className="space-y-1.5">
                     <FieldLabel
-                      className="flex h-5 items-center justify-between text-xs font-semibold text-foreground/80 whitespace-nowrap"
+                      className="text-foreground/80 flex h-5 items-center justify-between text-xs font-semibold whitespace-nowrap"
                       htmlFor="middleName"
                     >
                       <span>Middle Name</span>
-                      <span className="text-[10px] font-normal text-muted-foreground ml-1">
+                      <span className="text-muted-foreground ml-1 text-[10px] font-normal">
                         (Optional)
                       </span>
                     </FieldLabel>
                     <Input
-                      className="h-9 rounded-lg border-border/80 bg-background text-sm"
+                      className="border-border/80 bg-background h-9 rounded-lg text-sm"
                       id="middleName"
                       {...register("middleName")}
                       type="text"
                       placeholder="Middle name"
+                      maxLength={50}
                     />
                     {errors.middleName && (
                       <FieldError
-                        className="text-xs text-destructive"
+                        className="text-destructive text-xs"
                         errors={[errors.middleName]}
                       />
                     )}
@@ -195,21 +197,22 @@ function UserDialog({
 
                   <Field className="space-y-1.5">
                     <FieldLabel
-                      className="flex h-5 items-center justify-between text-xs font-semibold text-foreground/80"
+                      className="text-foreground/80 flex h-5 items-center justify-between text-xs font-semibold"
                       htmlFor="lastName"
                     >
                       Last Name
                     </FieldLabel>
                     <Input
-                      className="h-9 rounded-lg border-border/80 bg-background text-sm"
+                      className="border-border/80 bg-background h-9 rounded-lg text-sm"
                       id="lastName"
                       {...register("lastName")}
                       type="text"
                       placeholder="Last name"
+                      maxLength={50}
                     />
                     {errors.lastName && (
                       <FieldError
-                        className="text-xs text-destructive"
+                        className="text-destructive text-xs"
                         errors={[errors.lastName]}
                       />
                     )}
@@ -218,32 +221,47 @@ function UserDialog({
               )}
 
               <Field className="space-y-1">
-                <FieldLabel className="text-xs font-semibold text-foreground/80" htmlFor="username">Username</FieldLabel>
+                <FieldLabel
+                  className="text-foreground/80 text-xs font-semibold"
+                  htmlFor="username"
+                >
+                  Username
+                </FieldLabel>
                 <Input
-                  className="h-9 rounded-lg border-border/80 bg-background text-sm"
+                  className="border-border/80 bg-background h-9 rounded-lg text-sm"
                   id="username"
                   {...register("username")}
                   type="text"
                   placeholder="Enter username"
+                  maxLength={30}
                 />
                 {errors.username && (
-                  <FieldError className="text-xs text-destructive" errors={[errors.username]} />
+                  <FieldError
+                    className="text-destructive text-xs"
+                    errors={[errors.username]}
+                  />
                 )}
               </Field>
 
               {action === "create" && role === "DOCTOR" && (
                 <Field className="space-y-1">
-                  <FieldLabel className="text-xs font-semibold text-foreground/80" htmlFor="licenseNum">License Number</FieldLabel>
+                  <FieldLabel
+                    className="text-foreground/80 text-xs font-semibold"
+                    htmlFor="licenseNum"
+                  >
+                    License Number
+                  </FieldLabel>
                   <Input
-                    className="h-9 rounded-lg border-border/80 bg-background text-sm"
+                    className="border-border/80 bg-background h-9 rounded-lg text-sm"
                     id="licenseNum"
                     {...register("licenseNum")}
                     type="text"
                     placeholder="Enter 7-digit license number"
+                    maxLength={7}
                   />
                   {errors.licenseNum && (
                     <FieldError
-                      className="text-xs text-destructive"
+                      className="text-destructive text-xs"
                       errors={[errors.licenseNum]}
                     />
                   )}
@@ -251,7 +269,9 @@ function UserDialog({
               )}
 
               <Field className="space-y-1">
-                <FieldLabel className="text-xs font-semibold text-foreground/80">Account Role</FieldLabel>
+                <FieldLabel className="text-foreground/80 text-xs font-semibold">
+                  Account Role
+                </FieldLabel>
                 <Controller
                   name="role"
                   control={control}
@@ -266,11 +286,13 @@ function UserDialog({
                           "cursor-pointer rounded-xl border p-3 text-center transition-all",
                           field.value === "DOCTOR"
                             ? "border-primary bg-primary/10 text-primary font-semibold shadow-2xs"
-                            : "border-border/80 hover:bg-muted/40 text-foreground/70"
+                            : "border-border/80 hover:bg-muted/40 text-foreground/70",
                         )}
                       >
                         <p className="text-sm font-semibold">Doctor</p>
-                        <p className="text-[10px] text-muted-foreground mt-0.5">Full clinical access</p>
+                        <p className="text-muted-foreground mt-0.5 text-[10px]">
+                          Full clinical access
+                        </p>
                       </div>
 
                       <div
@@ -282,18 +304,23 @@ function UserDialog({
                           "cursor-pointer rounded-xl border p-3 text-center transition-all",
                           field.value === "ASSISTANT"
                             ? "border-primary bg-primary/10 text-primary font-semibold shadow-2xs"
-                            : "border-border/80 hover:bg-muted/40 text-foreground/70"
+                            : "border-border/80 hover:bg-muted/40 text-foreground/70",
                         )}
                       >
                         <p className="text-sm font-semibold">Assistant</p>
-                        <p className="text-[10px] text-muted-foreground mt-0.5">Front desk & intake</p>
+                        <p className="text-muted-foreground mt-0.5 text-[10px]">
+                          Front desk & intake
+                        </p>
                       </div>
                     </div>
                   )}
                 />
 
                 {errors.role && (
-                  <FieldError className="mt-1 text-xs text-destructive" errors={[errors.role]} />
+                  <FieldError
+                    className="text-destructive mt-1 text-xs"
+                    errors={[errors.role]}
+                  />
                 )}
               </Field>
             </FieldGroup>
@@ -309,7 +336,11 @@ function UserDialog({
             >
               Cancel
             </Button>
-            <Button type="submit" size="sm" className="h-9 rounded-lg font-semibold shadow-xs">
+            <Button
+              type="submit"
+              size="sm"
+              className="h-9 rounded-lg font-semibold shadow-xs"
+            >
               {action === "create" ? "Create Account" : "Save Changes"}
             </Button>
           </div>

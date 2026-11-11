@@ -14,10 +14,12 @@ import { CloudBackup, ShieldCheck, KeyRound, Lock } from "lucide-react";
 import { Skeleton } from "../../../shadcn/skeleton";
 import { Spinner } from "../../../shadcn/spinner";
 import { Input } from "../../../shadcn/input";
+import ConfirmDialog from "@/ui/components/common/ConfirmDialog";
 
 function Backup() {
   const [useCustomPassword, setUseCustomPassword] = useState(false);
   const [backupPassword, setBackupPassword] = useState("");
+  const [isDisconnectModalOpen, setIsDisconnectModalOpen] = useState(false);
 
   const { data: googleAuthData, isPending: isAuthPending } = useQuery({
     queryKey: ["google-status"],
@@ -144,7 +146,7 @@ function Backup() {
                   variant="outline"
                   size="sm"
                   className="h-8 rounded-lg text-xs border-destructive/30 text-destructive hover:bg-destructive/10"
-                  onClick={() => handleLogout()}
+                  onClick={() => setIsDisconnectModalOpen(true)}
                 >
                   Disconnect Account
                 </Button>
@@ -202,6 +204,18 @@ function Backup() {
           )}
         </div>
       )}
+
+      <ConfirmDialog
+        open={isDisconnectModalOpen}
+        onOpenChange={setIsDisconnectModalOpen}
+        title="Disconnect Google Drive?"
+        description="Are you sure you want to disconnect Google Drive? Automatic cloud backup sync will be stopped until you reconnect."
+        confirmLabel="Disconnect"
+        onConfirm={() => {
+          handleLogout();
+          setIsDisconnectModalOpen(false);
+        }}
+      />
     </Card>
   );
 }

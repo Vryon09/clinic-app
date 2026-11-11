@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { IRecord } from "@/types/RecordType";
 import {
   Table,
@@ -21,6 +22,7 @@ import { Button } from "../../../shadcn/button";
 import { useNavigate } from "react-router";
 import { Skeleton } from "../../../shadcn/skeleton";
 import { useArchiveRecord } from "@/services/apiRecords";
+import ConfirmDialog from "@/ui/components/common/ConfirmDialog";
 
 function ConsultationRecordsTable({
   records,
@@ -30,11 +32,13 @@ function ConsultationRecordsTable({
   isRecordsPending: boolean;
 }) {
   const navigate = useNavigate();
+  const [recordToArchive, setRecordToArchive] = useState<IRecord | null>(null);
 
   const { mutate: handleArchiveRecord } = useArchiveRecord();
 
   return (
-    <Table>
+    <>
+      <Table>
       {!isRecordsPending && !records.length && (
         <TableCaption>No consultations found for this patient.</TableCaption>
       )}
@@ -102,7 +106,7 @@ function ConsultationRecordsTable({
                         variant="destructive"
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleArchiveRecord(record.id);
+                          setRecordToArchive(record);
                         }}
                       >
                         <Trash /> Delete
@@ -114,6 +118,21 @@ function ConsultationRecordsTable({
             ))}
       </TableBody>
     </Table>
+
+    <ConfirmDialog
+      open={!!recordToArchive}
+      onOpenChange={(open) => !open && setRecordToArchive(null)}
+      title="Archive Consultation Record?"
+      description="Are you sure you want to archive this consultation record? It can be restored later from Settings > Archive."
+      confirmLabel="Archive"
+      onConfirm={() => {
+        if (recordToArchive) {
+          handleArchiveRecord(recordToArchive.id);
+          setRecordToArchive(null);
+        }
+      }}
+    />
+    </>
   );
 }
 

@@ -125,6 +125,7 @@ export function SignupForm({
                       className="h-9 rounded-lg border-border/80 bg-background/50 text-sm focus-visible:border-primary focus-visible:ring-primary/20"
                       id="firstName"
                       placeholder="e.g. Sarah"
+                      maxLength={50}
                       {...register("firstName")}
                       type="text"
                     />
@@ -144,6 +145,7 @@ export function SignupForm({
                       className="h-9 rounded-lg border-border/80 bg-background/50 text-sm focus-visible:border-primary focus-visible:ring-primary/20"
                       id="middleName"
                       placeholder="Optional"
+                      maxLength={50}
                       {...register("middleName")}
                       type="text"
                     />
@@ -163,6 +165,7 @@ export function SignupForm({
                       className="h-9 rounded-lg border-border/80 bg-background/50 text-sm focus-visible:border-primary focus-visible:ring-primary/20"
                       id="lastName"
                       placeholder="e.g. Jenkins"
+                      maxLength={50}
                       {...register("lastName")}
                       type="text"
                     />
@@ -191,6 +194,7 @@ export function SignupForm({
                       className="h-10 rounded-lg border-border/80 bg-background/50 pr-3 pl-9 text-sm focus-visible:border-primary focus-visible:ring-primary/20"
                       id="username"
                       placeholder="Choose admin username"
+                      maxLength={30}
                       type="text"
                       {...register("username")}
                       required
@@ -211,6 +215,7 @@ export function SignupForm({
                       className="h-10 rounded-lg border-border/80 bg-background/50 pr-10 pl-9 text-sm focus-visible:border-primary focus-visible:ring-primary/20"
                       id="password"
                       placeholder="••••••••"
+                      maxLength={100}
                       type={isPasswordShowing ? "text" : "password"}
                       {...register("password")}
                       required
@@ -245,6 +250,7 @@ export function SignupForm({
                       className="h-10 rounded-lg border-border/80 bg-background/50 pr-10 pl-9 text-sm focus-visible:border-primary focus-visible:ring-primary/20"
                       id="confirmPassword"
                       placeholder="••••••••"
+                      maxLength={100}
                       type={isConfirmPasswordShowing ? "text" : "password"}
                       {...register("confirmPassword")}
                       required

@@ -3,6 +3,7 @@ import type {
   CreatePatientInput,
   UpdatePatientInput,
 } from "@/schemas/patientSchema";
+import type { PatientFilterParams } from "@/types/PatientType";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -24,16 +25,27 @@ export async function handleGetPatient({ id }: { id: string }) {
   return res.data ?? {};
 }
 
-export async function handleSearchPatients({
-  search,
-  page,
-}: {
-  search: string;
-  page: number;
-}) {
-  const res = await api.get(
-    `/api/patients/search?search=${search.trim()}&page=${page}&limit=10`,
-  );
+export async function handleSearchPatients(params: PatientFilterParams = {}) {
+  const {
+    search = "",
+    page = 1,
+    limit = 10,
+    sex,
+    minAge,
+    maxAge,
+    hasAllergies,
+  } = params;
+
+  const query = new URLSearchParams();
+  if (search.trim()) query.set("search", search.trim());
+  query.set("page", String(page));
+  query.set("limit", String(limit));
+  if (sex) query.set("sex", sex);
+  if (minAge !== undefined && minAge !== "") query.set("minAge", String(minAge));
+  if (maxAge !== undefined && maxAge !== "") query.set("maxAge", String(maxAge));
+  if (hasAllergies && hasAllergies !== "all") query.set("hasAllergies", hasAllergies);
+
+  const res = await api.get(`/api/patients/search?${query.toString()}`);
 
   return res.data ?? [];
 }

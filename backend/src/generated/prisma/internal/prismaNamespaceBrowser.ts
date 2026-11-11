@@ -82,6 +82,7 @@ export const ClinicScalarFieldEnum = {
   name: 'name',
   address: 'address',
   phone: 'phone',
+  logoPath: 'logoPath',
   lastEditedById: 'lastEditedById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',

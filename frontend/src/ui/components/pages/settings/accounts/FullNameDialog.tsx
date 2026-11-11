@@ -90,6 +90,7 @@ function FullNameDialog({
                     {...register("firstName")}
                     type="text"
                     placeholder="First name"
+                    maxLength={50}
                   />
                   {errors.firstName && (
                     <FieldError
@@ -108,6 +109,7 @@ function FullNameDialog({
                     {...register("middleName")}
                     type="text"
                     placeholder="Middle name"
+                    maxLength={50}
                   />
                   {errors.middleName && (
                     <FieldError
@@ -124,6 +126,7 @@ function FullNameDialog({
                     {...register("lastName")}
                     type="text"
                     placeholder="Last name"
+                    maxLength={50}
                   />
                   {errors.lastName && (
                     <FieldError

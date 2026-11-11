@@ -1,6 +1,7 @@
 import multer from "multer";
 import os from "os";
 import fs from "fs";
+import path from "path";
 import { prisma } from "../config/prisma";
 import { UserRequest } from "../types/express";
 
@@ -51,6 +52,44 @@ const signatureStorage = multer.diskStorage({
 
 export const uploadLabResults = multer({ storage: labResultsStorage });
 export const uploadSignatures = multer({ storage: signatureStorage });
+
+const logoStorage = multer.diskStorage({
+  destination: function (_req, _file, cb) {
+    const dir = `uploads/logo`;
+
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
+    cb(null, dir);
+  },
+  filename: function (_req, file, cb) {
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, `clinic-logo-${Date.now()}${ext}`);
+  },
+});
+
+const logoFileFilter: multer.Options["fileFilter"] = (_req, file, cb) => {
+  const allowedTypes = [
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+    "image/webp",
+    "image/svg+xml",
+  ];
+
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only image files (.png, .jpg, .jpeg, .webp, .svg) are allowed."));
+  }
+};
+
+export const uploadLogo = multer({
+  storage: logoStorage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: logoFileFilter,
+});
 
 const backupFileFilter: multer.Options["fileFilter"] = (_req, file, cb) => {
   const isAllowed =

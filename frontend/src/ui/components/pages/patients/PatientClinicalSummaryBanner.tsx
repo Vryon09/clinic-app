@@ -6,28 +6,15 @@ import { Skeleton } from "../../shadcn/skeleton";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {
-  Activity,
   Calendar,
   CheckCircle2,
   Pill,
   ShieldAlert,
   ShieldCheck,
 } from "lucide-react";
-import StatusBadge, { type StatusVariant } from "../../common/StatusBadge";
+import StatusBadge from "../../common/StatusBadge";
 
 dayjs.extend(relativeTime);
-
-function getBPStatus(systolic?: number, diastolic?: number): {
-  label: string;
-  variant: StatusVariant;
-} | null {
-  if (!systolic || !diastolic) return null;
-  if (systolic >= 140 || diastolic >= 90) return { label: "HTN Stage 2", variant: "danger" };
-  if (systolic >= 130 || diastolic >= 80) return { label: "HTN Stage 1", variant: "warning" };
-  if (systolic >= 120 && diastolic < 80) return { label: "Elevated", variant: "warning" };
-  if (systolic >= 90 && diastolic >= 60) return { label: "Normal BP", variant: "success" };
-  return { label: "Low BP", variant: "info" };
-}
 
 interface PatientClinicalSummaryBannerProps {
   cases?: ICase[];
@@ -61,10 +48,6 @@ function PatientClinicalSummaryBanner({
   const latestEncounter = encounters[0];
   const latestVitals = latestEncounter?.vitalSigns;
   const latestMeds = latestEncounter?.recordMedications || [];
-  const bpStatus = getBPStatus(
-    latestVitals?.bloodPressureSystolic,
-    latestVitals?.bloodPressureDiastolic,
-  );
 
   const hasAllergies = Boolean(patient?.allergies && patient.allergies.trim().length > 0);
 
@@ -73,14 +56,9 @@ function PatientClinicalSummaryBanner({
       {/* 1. Latest Vitals Snapshot */}
       <Card className="rounded-xl border border-border/80 bg-card p-3.5 shadow-2xs">
         <div className="flex items-center justify-between">
-          <span className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-            <Activity className="size-3.5 text-primary" /> Latest Vitals
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Latest Vitals
           </span>
-          {bpStatus && (
-            <StatusBadge variant={bpStatus.variant} dot={true} className="px-1.5 py-0 text-[10px]">
-              {bpStatus.label}
-            </StatusBadge>
-          )}
         </div>
 
         {latestVitals && (latestVitals.bloodPressureSystolic || latestVitals.temperature || latestVitals.weightKg) ? (

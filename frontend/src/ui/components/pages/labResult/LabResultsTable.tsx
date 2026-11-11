@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ConfirmDialog from "@/ui/components/common/ConfirmDialog";
 import type { ILabResult } from "@/types/LabResultType";
 import dayjs from "dayjs";
 import {
@@ -58,6 +59,7 @@ function LabResultsTable({
 }) {
   const { mutate: handleDeleteLabResult } = useDeleteLabResult();
   const [openingId, setOpeningId] = useState<string | null>(null);
+  const [resultToDelete, setResultToDelete] = useState<ILabResult | null>(null);
 
   // In-app preview state
   const [previewResult, setPreviewResult] = useState<{
@@ -212,7 +214,7 @@ function LabResultsTable({
                       <DropdownMenuItem
                         className="cursor-pointer"
                         variant="destructive"
-                        onClick={() => handleDeleteLabResult(result.id)}
+                        onClick={() => setResultToDelete(result)}
                       >
                         <Trash className="size-3.5" /> Delete Result
                       </DropdownMenuItem>
@@ -314,6 +316,20 @@ function LabResultsTable({
           </DialogContent>
         </Dialog>
       )}
+
+      <ConfirmDialog
+        open={!!resultToDelete}
+        onOpenChange={(open) => !open && setResultToDelete(null)}
+        title="Delete Laboratory Result?"
+        description="Are you sure you want to delete this laboratory result? The file will be permanently removed."
+        confirmLabel="Delete"
+        onConfirm={() => {
+          if (resultToDelete) {
+            handleDeleteLabResult(resultToDelete.id);
+            setResultToDelete(null);
+          }
+        }}
+      />
     </>
   );
 }

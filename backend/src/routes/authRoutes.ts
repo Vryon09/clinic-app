@@ -20,6 +20,8 @@ import {
   addUserSchema,
   loginSchema,
   registerSchema,
+  updateFullNameSchema,
+  updateUsernameSchema,
 } from "../schemas/authSchema";
 import { verifyToken } from "../middleware/verifyToken";
 import { authorize } from "../middleware/authorize";
@@ -45,8 +47,18 @@ router.get("/doctors", verifyToken, getDoctors);
 
 router.patch("/update", verifyToken, authorize("user:update"), updateUser);
 
-router.patch("/changeUsername", verifyToken, updateUsername);
-router.patch("/changeFullName", verifyToken, updateFullName);
+router.patch(
+  "/changeUsername",
+  verifyToken,
+  validateSchema(updateUsernameSchema),
+  updateUsername,
+);
+router.patch(
+  "/changeFullName",
+  verifyToken,
+  validateSchema(updateFullNameSchema),
+  updateFullName,
+);
 router.patch("/changePassword", verifyToken, changePassword);
 router.patch("/changeLicenseNum", verifyToken, changeLicenseNum);
 router.patch(

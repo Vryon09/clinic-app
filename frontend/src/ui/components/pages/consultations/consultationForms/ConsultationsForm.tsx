@@ -22,10 +22,19 @@ import { handleGetCases, useAddCase } from "@/services/apiCase";
 import type { ICase } from "@/types/CaseType";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { CalendarDays, History, Plus, User } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/ui/components/shadcn/dialog";
+import { AlertCircle, CalendarDays, History, Plus, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addCaseSchema, type AddCaseInput } from "@/schemas/caseSchema";
+import type { CreateRecordInput } from "@/schemas/recordSchema";
 import { toast } from "sonner";
 import CaseDialog from "./CaseDialog";
 import dayjs from "dayjs";
@@ -34,6 +43,8 @@ import PatientHistoryDrawer from "./PatientHistoryDrawer";
 function ConsultationsForm() {
   const [isAddingCase, setIsAddingCase] = useState<boolean>(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
+  const [isUnsavedMedModalOpen, setIsUnsavedMedModalOpen] = useState<boolean>(false);
+  const [pendingRecordData, setPendingRecordData] = useState<CreateRecordInput | null>(null);
 
   const { user, isUserLoading } = useAuth();
 
@@ -115,6 +126,39 @@ function ConsultationsForm() {
     navigate,
     createdById: user!.id,
   });
+
+  const hasUnsavedMedication = () => {
+    const input = getValues("medicationInput");
+    if (!input) return false;
+    return Boolean(
+      (input.name && input.name.trim() !== "") ||
+        (input.dosage && input.dosage.trim() !== "") ||
+        (input.frequency && input.frequency.trim() !== "") ||
+        (input.instructions && input.instructions.trim() !== "") ||
+        (input.durationDays !== undefined &&
+          input.durationDays !== null &&
+          !isNaN(input.durationDays) &&
+          String(input.durationDays).trim() !== "" &&
+          input.durationDays > 0)
+    );
+  };
+
+  const handleConsultationSubmit = (recordData: CreateRecordInput) => {
+    if (hasUnsavedMedication()) {
+      setPendingRecordData(recordData);
+      setIsUnsavedMedModalOpen(true);
+      return;
+    }
+    visitDetailsOnSubmit(recordData);
+  };
+
+  const handleConfirmCompleteWithoutAdding = () => {
+    if (pendingRecordData) {
+      visitDetailsOnSubmit(pendingRecordData);
+      setIsUnsavedMedModalOpen(false);
+      setPendingRecordData(null);
+    }
+  };
 
   return (
     <div className="pb-10">
@@ -235,7 +279,7 @@ function ConsultationsForm() {
       {/* Form body */}
       <form
         onSubmit={visitDetailsHandleSubmit(
-          visitDetailsOnSubmit,
+          handleConsultationSubmit,
           onInvalidSubmit,
         )}
       >
@@ -257,6 +301,7 @@ function ConsultationsForm() {
             errors={errors}
             setError={setError}
             clearErrors={clearErrors}
+            control={control}
           />
         </div>
 
@@ -295,6 +340,53 @@ function ConsultationsForm() {
           </Button>
         </div>
       </form>
+
+      <Dialog
+        open={isUnsavedMedModalOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            setIsUnsavedMedModalOpen(false);
+            setPendingRecordData(null);
+          }
+        }}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex items-center gap-2 text-amber-500">
+              <AlertCircle className="size-5" />
+              <DialogTitle className="text-base font-semibold text-foreground">
+                Unsaved Prescription Entry
+              </DialogTitle>
+            </div>
+            <DialogDescription className="pt-2 text-xs text-muted-foreground leading-relaxed">
+              You have unsaved medication details in the prescription entry form. Would you like to complete this consultation anyway, or cancel to add them to the prescription?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end pt-3">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setIsUnsavedMedModalOpen(false);
+                setPendingRecordData(null);
+              }}
+              className="text-xs"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              onClick={handleConfirmCompleteWithoutAdding}
+              disabled={isRecordLoading || isUserLoading}
+              className="text-xs"
+            >
+              Proceed &amp; Complete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -117,6 +117,20 @@ export const backupToDrive = async (req: Request, res: Response) => {
     }
   }
 
+  for (const clinic of clinics) {
+    if (!clinic.logoPath) continue;
+
+    const absolutePath = path.resolve(clinic.logoPath);
+
+    if (fs.existsSync(absolutePath)) {
+      archive.file(absolutePath, {
+        name: `logo/${path.basename(absolutePath)}`,
+      });
+    } else {
+      console.warn("Missing clinic logo file:", absolutePath);
+    }
+  }
+
   await archive.finalize();
 
   await new Promise<void>((resolve, reject) => {
@@ -304,6 +318,10 @@ export async function restoreBackup(req: Request, res: Response) {
       path.join(baseDir, "signatures"),
       path.join(process.cwd(), "uploads", "signatures"),
     );
+    copyDirIfExists(
+      path.join(baseDir, "logo"),
+      path.join(process.cwd(), "uploads", "logo"),
+    );
 
     return res.status(201).json({ message: "Restore backup successfully." });
   } catch (error: any) {
@@ -430,6 +448,10 @@ export async function importBackup(req: Request, res: Response) {
     copyDirIfExists(
       path.join(baseDir, "signatures"),
       path.join(process.cwd(), "uploads", "signatures"),
+    );
+    copyDirIfExists(
+      path.join(baseDir, "logo"),
+      path.join(process.cwd(), "uploads", "logo"),
     );
 
     return res.status(201).json({ message: "Backup imported successfully." });

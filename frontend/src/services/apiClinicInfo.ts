@@ -1,6 +1,7 @@
 import api from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
+import { toast } from "sonner";
 
 export async function handleGetClinicInfo() {
   const res = await api.get("/api/clinicInfo");
@@ -58,6 +59,62 @@ export function useUpdateClinicInfo() {
     mutationFn: handleUpdateClinicInfo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["clinicInfo"] });
+    },
+  });
+}
+
+export async function handleUploadClinicLogo(file: File) {
+  const formData = new FormData();
+  formData.append("logo", file);
+
+  const res = await api.post("/api/clinicInfo/logo", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return res.data;
+}
+
+export function useUploadClinicLogo() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleUploadClinicLogo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["clinicInfo"] });
+      toast.success("Clinic logo updated successfully", {
+        position: "top-center",
+      });
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data?.message || "Failed to upload logo", {
+        position: "top-center",
+      });
+    },
+  });
+}
+
+export async function handleDeleteClinicLogo() {
+  const res = await api.delete("/api/clinicInfo/logo");
+  return res.data;
+}
+
+export function useDeleteClinicLogo() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: handleDeleteClinicLogo,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["clinicInfo"] });
+      toast.success("Clinic logo removed", {
+        position: "top-center",
+      });
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data?.message || "Failed to remove logo", {
+        position: "top-center",
+      });
     },
   });
 }

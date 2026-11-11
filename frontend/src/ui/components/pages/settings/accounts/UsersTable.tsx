@@ -14,6 +14,8 @@ import type { IUser } from "@/types/User";
 import { useToggleUserStatus } from "@/services/apiAuth";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useState } from "react";
+import ConfirmDialog from "@/ui/components/common/ConfirmDialog";
 
 function UsersTable({
   users,
@@ -21,6 +23,20 @@ function UsersTable({
   users: IUser[];
 }) {
   const { mutate: handleToggleUserStatus } = useToggleUserStatus();
+  const [userToDisable, setUserToDisable] = useState<IUser | null>(null);
+
+  const toggleStatus = (id: string) => {
+    handleToggleUserStatus(
+      { id },
+      {
+        onError: (err) => {
+          toast.error(err.response?.data?.message, {
+            position: "top-center",
+          });
+        },
+      },
+    );
+  };
 
   return (
     <div className="rounded-xl border border-border/80 bg-card overflow-hidden shadow-2xs">
@@ -69,18 +85,13 @@ function UsersTable({
                     "h-8 rounded-lg px-3 text-xs font-semibold shadow-xs cursor-pointer",
                     !user.isActive && "bg-emerald-600 hover:bg-emerald-500 text-white"
                   )}
-                  onClick={() =>
-                    handleToggleUserStatus(
-                      { id: user.id },
-                      {
-                        onError: (err) => {
-                          toast.error(err.response?.data?.message, {
-                            position: "top-center",
-                          });
-                        },
-                      },
-                    )
-                  }
+                  onClick={() => {
+                    if (user.isActive) {
+                      setUserToDisable(user);
+                    } else {
+                      toggleStatus(user.id);
+                    }
+                  }}
                 >
                   {user.isActive ? "Disable" : "Enable"}
                 </Button>
@@ -89,6 +100,20 @@ function UsersTable({
           ))}
         </TableBody>
       </Table>
+
+      <ConfirmDialog
+        open={!!userToDisable}
+        onOpenChange={(open) => !open && setUserToDisable(null)}
+        title="Disable User Account?"
+        description={`Are you sure you want to deactivate ${userToDisable ? `${userToDisable.firstName} ${userToDisable.lastName} (@${userToDisable.username})` : "this user"}? They will not be able to log in to the clinic application.`}
+        confirmLabel="Disable Account"
+        onConfirm={() => {
+          if (userToDisable) {
+            toggleStatus(userToDisable.id);
+            setUserToDisable(null);
+          }
+        }}
+      />
     </div>
   );
 }

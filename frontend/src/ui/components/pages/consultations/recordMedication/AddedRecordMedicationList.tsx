@@ -4,6 +4,7 @@ import { Button } from "@/ui/components/shadcn/button";
 import { Clock, Info, Pencil, Pill, Trash2 } from "lucide-react";
 import EditRecordMedicationDialog from "./EditRecordMedicationDialog";
 import { toast } from "sonner";
+import ConfirmDialog from "@/ui/components/common/ConfirmDialog";
 
 function AddedRecordMedicationList({
   recordMedicationField,
@@ -12,6 +13,7 @@ function AddedRecordMedicationList({
 }: IAddedRecordMedicationList) {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
+  const [medicationToDeleteIndex, setMedicationToDeleteIndex] = useState<number | null>(null);
 
   if (!recordMedicationField.length) {
     return (
@@ -101,7 +103,7 @@ function AddedRecordMedicationList({
                 size="icon-sm"
                 variant="ghost"
                 className="size-7 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive cursor-pointer transition-colors"
-                onClick={() => deleteMedication(i)}
+                onClick={() => setMedicationToDeleteIndex(i)}
                 title="Remove medication"
               >
                 <Trash2 className="size-3.5" />
@@ -125,6 +127,20 @@ function AddedRecordMedicationList({
             updateMedication(editingIndex, updatedData);
             setEditingIndex(null);
             toast.success("Medication updated", { position: "top-center" });
+          }
+        }}
+      />
+
+      <ConfirmDialog
+        open={medicationToDeleteIndex !== null}
+        onOpenChange={(open) => !open && setMedicationToDeleteIndex(null)}
+        title="Remove Medication?"
+        description={`Are you sure you want to remove ${medicationToDeleteIndex !== null ? recordMedicationField[medicationToDeleteIndex]?.name : "this medication"} from the prescription?`}
+        confirmLabel="Remove"
+        onConfirm={() => {
+          if (medicationToDeleteIndex !== null) {
+            deleteMedication(medicationToDeleteIndex);
+            setMedicationToDeleteIndex(null);
           }
         }}
       />

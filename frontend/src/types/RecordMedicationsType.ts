@@ -2,6 +2,7 @@ import type { CreateRecordMedicationInput } from "@/schemas/recordMedication";
 import type { IDate } from "./DateType";
 import type { IRecordForm, RecordFormValues } from "./RecordType";
 import type {
+  Control,
   FieldArrayWithId,
   FieldErrors,
   UseFieldArrayAppend,
@@ -33,6 +34,7 @@ export interface IRecordMedicationForm extends IRecordForm {
   errors: FieldErrors<RecordFormValues>;
   setError: UseFormSetError<RecordFormValues>;
   clearErrors: UseFormClearErrors<RecordFormValues>;
+  control?: Control<RecordFormValues>;
 }
 
 export interface IAddedRecordMedicationList {
@@ -54,4 +56,5 @@ export interface IRecordMedicationDialog extends IRecordForm {
   errors: FieldErrors<RecordFormValues>;
   setError: UseFormSetError<RecordFormValues>;
   clearErrors: UseFormClearErrors<RecordFormValues>;
+  control?: Control<RecordFormValues>;
 }

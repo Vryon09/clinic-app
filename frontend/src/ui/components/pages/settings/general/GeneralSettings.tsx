@@ -26,6 +26,7 @@ import { Edit, TriangleAlert, X } from "lucide-react";
 import ResetDatabase from "./ResetDatabase";
 import { useAuth } from "@/hooks/useAuth";
 import TextSizeSettings from "./TextSizeSettings";
+import ClinicLogoSection from "./ClinicLogoSection";
 
 
 function GeneralSettings() {
@@ -204,6 +205,8 @@ function GeneralSettings() {
           </form>
         )}
       </Card>
+
+      <ClinicLogoSection />
 
       <TextSizeSettings />
 

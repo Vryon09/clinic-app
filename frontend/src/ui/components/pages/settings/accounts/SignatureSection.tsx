@@ -11,9 +11,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useRef, useState } from "react";
 import SignatureCanvas from "react-signature-canvas";
+import ConfirmDialog from "@/ui/components/common/ConfirmDialog";
 
 function SignatureSection() {
   const [isAddingSignature, setIsAddingSignature] = useState<boolean>(false);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState<boolean>(false);
   const [signature, setSignature] = useState<string | null>(null);
   const { user, isUserLoading } = useAuth();
   const sigRef = useRef<SignatureCanvas>(null);
@@ -129,16 +131,25 @@ function SignatureSection() {
             size="sm"
             className="w-full h-8 rounded-lg text-xs font-semibold"
             disabled={isDeletingSignature}
-            onClick={() => {
-              setSignature(null);
-              handleDeleteSignature();
-              setIsAddingSignature(false);
-            }}
+            onClick={() => setIsConfirmDeleteOpen(true)}
           >
             Remove Signature
           </Button>
         </div>
       )}
+
+      <ConfirmDialog
+        open={isConfirmDeleteOpen}
+        onOpenChange={setIsConfirmDeleteOpen}
+        title="Remove Digital Signature?"
+        description="Are you sure you want to delete your digital signature? This will remove it from all future generated prescriptions."
+        confirmLabel="Remove"
+        onConfirm={() => {
+          setSignature(null);
+          handleDeleteSignature();
+          setIsAddingSignature(false);
+        }}
+      />
     </Card>
   );
 }

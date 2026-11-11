@@ -85,6 +85,7 @@ function UsernameDialog({
                   {...register("username")}
                   type="text"
                   placeholder="Enter new username"
+                  maxLength={30}
                 />
                 {errors.username && (
                   <FieldError className="text-xs text-destructive" errors={[errors.username]} />

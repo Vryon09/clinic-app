@@ -62,7 +62,11 @@ function PatientForm({
   }, [initialValues, reset]);
 
   function onSubmit(data: CreatePatientInput) {
-    handlePatient(data);
+    handlePatient({
+      ...data,
+      middleName: data.middleName?.trim() || "",
+      allergies: data.allergies?.trim() || "",
+    });
     reset();
     setIsOpen();
   }
@@ -111,6 +115,7 @@ function PatientForm({
                       className="h-9 rounded-lg border-border/80 bg-background/50 text-sm focus-visible:border-primary focus-visible:ring-primary/20"
                       id="firstName"
                       placeholder="First name"
+                      maxLength={50}
                       {...register("firstName")}
                       type="text"
                     />
@@ -124,12 +129,13 @@ function PatientForm({
 
                   <Field>
                     <FieldLabel htmlFor="middleName" className="text-xs font-medium text-foreground/90">
-                      Middle Name <span className="text-destructive">*</span>
+                      Middle Name <span className="text-[10px] font-normal text-muted-foreground ml-1">(Optional)</span>
                     </FieldLabel>
                     <Input
                       className="h-9 rounded-lg border-border/80 bg-background/50 text-sm focus-visible:border-primary focus-visible:ring-primary/20"
                       id="middleName"
                       placeholder="Middle name"
+                      maxLength={50}
                       {...register("middleName")}
                       type="text"
                     />
@@ -149,6 +155,7 @@ function PatientForm({
                       className="h-9 rounded-lg border-border/80 bg-background/50 text-sm focus-visible:border-primary focus-visible:ring-primary/20"
                       id="lastName"
                       placeholder="Last name"
+                      maxLength={50}
                       {...register("lastName")}
                       type="text"
                     />
@@ -224,6 +231,7 @@ function PatientForm({
                         className="h-9 rounded-lg border-border/80 bg-background/50 pl-9 text-xs focus-visible:border-primary focus-visible:ring-primary/20"
                         id="phone"
                         placeholder="09123456789"
+                        maxLength={11}
                         {...register("phone")}
                         type="text"
                       />
@@ -303,6 +311,7 @@ function PatientForm({
                         className="h-9 rounded-lg border-border/80 bg-background/50 pl-9 text-xs focus-visible:border-primary focus-visible:ring-primary/20"
                         id="address"
                         placeholder="Street, City, Province"
+                        maxLength={150}
                         {...register("address")}
                         type="text"
                       />
@@ -329,6 +338,7 @@ function PatientForm({
                       className="h-9 rounded-lg border-border/80 bg-background/50 pl-9 text-xs focus-visible:border-primary focus-visible:ring-primary/20"
                       id="allergies"
                       placeholder="e.g. Penicillin, Aspirin, NSAIDs (Leave blank if NKDA)"
+                      maxLength={300}
                       {...register("allergies")}
                       type="text"
                     />

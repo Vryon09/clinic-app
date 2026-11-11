@@ -54,16 +54,64 @@ export async function searchPatients(req: Request, res: Response) {
     const page = Math.max(1, parseInt(req.query.page as string)) || 1;
     const skip = (page - 1) * limit;
 
-    const where = {
-      OR: [
-        { firstName: { contains: searchInput } },
-        { middleName: { contains: searchInput } },
-        { lastName: { contains: searchInput } },
-        { phone: { contains: searchInput } },
-        { address: { contains: searchInput } },
-      ],
+    const sex = req.query.sex as string | undefined;
+    const minAge = req.query.minAge ? parseInt(req.query.minAge as string) : undefined;
+    const maxAge = req.query.maxAge ? parseInt(req.query.maxAge as string) : undefined;
+    const hasAllergies = req.query.hasAllergies as string | undefined;
+
+    const now = new Date();
+    let minDob: Date | undefined;
+    let maxDob: Date | undefined;
+
+    if (typeof maxAge === "number" && !isNaN(maxAge)) {
+      const d = new Date(now);
+      d.setFullYear(d.getFullYear() - maxAge - 1);
+      d.setDate(d.getDate() + 1);
+      d.setHours(0, 0, 0, 0);
+      minDob = d;
+    }
+
+    if (typeof minAge === "number" && !isNaN(minAge)) {
+      const d = new Date(now);
+      d.setFullYear(d.getFullYear() - minAge);
+      d.setHours(23, 59, 59, 999);
+      maxDob = d;
+    }
+
+    const where: any = {
       isArchived: false,
     };
+
+    if (searchInput.trim()) {
+      where.OR = [
+        { firstName: { contains: searchInput.trim() } },
+        { middleName: { contains: searchInput.trim() } },
+        { lastName: { contains: searchInput.trim() } },
+        { phone: { contains: searchInput.trim() } },
+        { address: { contains: searchInput.trim() } },
+      ];
+    }
+
+    if (sex === "MALE" || sex === "FEMALE") {
+      where.sex = sex;
+    }
+
+    if (hasAllergies === "yes") {
+      where.AND = where.AND || [];
+      where.AND.push({ allergies: { not: null } }, { allergies: { not: "" } });
+    } else if (hasAllergies === "no") {
+      where.AND = where.AND || [];
+      where.AND.push({
+        OR: [{ allergies: null }, { allergies: "" }],
+      });
+    }
+
+    if (minDob || maxDob) {
+      where.dateOfBirth = {
+        ...(minDob ? { gte: minDob } : {}),
+        ...(maxDob ? { lte: maxDob } : {}),
+      };
+    }
 
     const [patients, total] = await prisma.$transaction([
       prisma.patient.findMany({
@@ -122,7 +170,13 @@ export async function addPatient(req: UserRequest, res: Response) {
       return res.status(409).json({ error: "Phone number already existed" });
     }
 
-    const newPatient = await prisma.patient.create({ data: { ...req.body } });
+    const newPatient = await prisma.patient.create({
+      data: {
+        ...req.body,
+        middleName: req.body.middleName ?? "",
+        allergies: req.body.allergies ?? "",
+      },
+    });
 
     if (newPatient) {
       await prisma.case.create({
@@ -286,9 +340,17 @@ export async function updatePatient(req: UserRequest, res: Response) {
 
     const target = `${patient.firstName} ${patient.lastName}`;
 
+    const updateData = { ...data };
+    if (updateData.middleName !== undefined) {
+      updateData.middleName = updateData.middleName ?? "";
+    }
+    if (updateData.allergies !== undefined) {
+      updateData.allergies = updateData.allergies ?? "";
+    }
+
     const updatedPatient = await prisma.patient.update({
       where: { id: patientId },
-      data: { ...data, lastEditedById: req.userId },
+      data: { ...updateData, lastEditedById: req.userId },
     });
 
     await prisma.systemLogs.create({

@@ -1,4 +1,4 @@
-import type { IPatient } from "@/types/PatientType";
+import type { IPatient, PatientFilterParams } from "@/types/PatientType";
 import {
   Table,
   TableBody,
@@ -21,7 +21,7 @@ import {
   Phone,
   Trash,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PatientForm from "./PatientForm";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -37,16 +37,33 @@ import { Skeleton } from "../../shadcn/skeleton";
 import { Card } from "../../shadcn/card";
 import EmptyState from "../../common/EmptyState";
 import StatusBadge from "../../common/StatusBadge";
+import ConfirmDialog from "../../common/ConfirmDialog";
 
-function PatientsTable({ searchInput }: { searchInput: string }) {
+function PatientsTable({
+  searchInput,
+  filters,
+}: {
+  searchInput: string;
+  filters?: PatientFilterParams;
+}) {
   const [selectedPatient, setSelectedPatient] = useState<IPatient | null>();
+  const [patientToArchive, setPatientToArchive] = useState<IPatient | null>(null);
   const [page, setPage] = useState<number>(1);
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchInput, filters]);
 
   const { data: patientsData, isPending: isPatientsLoading } = useQuery<
     PaginatedResponse<IPatient>
   >({
-    queryFn: () => handleSearchPatients({ search: searchInput, page }),
-    queryKey: ["patients", searchInput, page],
+    queryFn: () =>
+      handleSearchPatients({
+        ...filters,
+        search: searchInput,
+        page,
+      }),
+    queryKey: ["patients", searchInput, page, filters],
   });
 
   const patients: IPatient[] = patientsData?.data ?? [];
@@ -229,11 +246,11 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
                               className="text-destructive focus:text-destructive cursor-pointer gap-2 text-xs"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                handleArchivePatient(patient.id);
+                                setPatientToArchive(patient);
                               }}
                             >
                               <Trash className="size-3.5" />
-                              <span>Delete Record</span>
+                              <span>Archive Patient</span>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -282,6 +299,20 @@ function PatientsTable({ searchInput }: { searchInput: string }) {
           key={selectedPatient.id}
         />
       )}
+
+      <ConfirmDialog
+        open={!!patientToArchive}
+        onOpenChange={(open) => !open && setPatientToArchive(null)}
+        title="Archive Patient Record?"
+        description={`Are you sure you want to archive ${patientToArchive ? `${patientToArchive.firstName} ${patientToArchive.lastName}` : "this patient"}? You can restore archived patients anytime from Settings > Archive.`}
+        confirmLabel="Archive"
+        onConfirm={() => {
+          if (patientToArchive) {
+            handleArchivePatient(patientToArchive.id);
+            setPatientToArchive(null);
+          }
+        }}
+      />
     </>
   );
 }

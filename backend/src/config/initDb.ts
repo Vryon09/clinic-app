@@ -110,6 +110,24 @@ export async function initDatabase() {
         console.log("Patient.allergies column added successfully.");
       }
     }
+
+    // Idempotent column safeguard for Clinic.logoPath
+    const clinicTable: any[] = await prisma.$queryRawUnsafe(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='Clinic';"
+    );
+    if (clinicTable && clinicTable.length > 0) {
+      const cols: any[] = await prisma.$queryRawUnsafe(
+        "PRAGMA table_info('Clinic');"
+      );
+      const hasLogoPath = cols.some((c: any) => c.name === "logoPath");
+      if (!hasLogoPath) {
+        console.log("Applying missing column: Clinic.logoPath...");
+        await prisma.$executeRawUnsafe(
+          'ALTER TABLE "Clinic" ADD COLUMN "logoPath" TEXT;'
+        );
+        console.log("Clinic.logoPath column added successfully.");
+      }
+    }
   } catch (error) {
     console.error("Database initialization error:", error);
   }

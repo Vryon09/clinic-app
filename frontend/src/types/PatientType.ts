@@ -6,3 +6,13 @@ export interface IPatient extends CreatePatientInput, IDate {
   id: string;
   records: IRecord[];
 }
+
+export interface PatientFilterParams {
+  search?: string;
+  page?: number;
+  limit?: number;
+  sex?: "MALE" | "FEMALE" | "";
+  minAge?: number | "";
+  maxAge?: number | "";
+  hasAllergies?: "all" | "yes" | "no";
+}

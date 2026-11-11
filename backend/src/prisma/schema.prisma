@@ -18,6 +18,7 @@ model Clinic {
   name    String
   address String?
   phone   String?
+  logoPath String?
 
   lastEditedById String?
   lastEditedBy   User?   @relation("ClinicLastEditor", fields: [lastEditedById], references: [id])

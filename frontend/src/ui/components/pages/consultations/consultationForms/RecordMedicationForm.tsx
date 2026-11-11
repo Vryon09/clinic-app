@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shadcn/card";
 import { Button } from "../../../shadcn/button";
 import { useState } from "react";
-import { ChevronUp, Clock, Pill, Plus } from "lucide-react";
+import { ChevronUp, Clock, Pill, Plus, RotateCcw } from "lucide-react";
 import AddedRecordMedicationList from "../recordMedication/AddedRecordMedicationList";
 import type { IRecordMedicationForm } from "@/types/RecordMedicationsType";
 import {
@@ -10,6 +10,7 @@ import {
 } from "@/schemas/recordMedication";
 import { Input } from "../../../shadcn/input";
 import { Field, FieldError, FieldLabel } from "../../../shadcn/field";
+import { useWatch } from "react-hook-form";
 
 const FREQUENCY_PRESETS = [
   "Once daily (OD)",
@@ -31,8 +32,36 @@ function RecordMedicationForm({
   errors,
   setError,
   clearErrors,
+  control,
 }: IRecordMedicationForm) {
   const [isOpen, setIsOpen] = useState<boolean>(true);
+
+  const medicationInputValues = useWatch({
+    control,
+    name: "medicationInput",
+  });
+
+  const hasMedicationInput = Boolean(
+    (medicationInputValues?.name && medicationInputValues.name.trim() !== "") ||
+      (medicationInputValues?.dosage && medicationInputValues.dosage.trim() !== "") ||
+      (medicationInputValues?.frequency && medicationInputValues.frequency.trim() !== "") ||
+      (medicationInputValues?.instructions && medicationInputValues.instructions.trim() !== "") ||
+      (medicationInputValues?.durationDays !== undefined &&
+        medicationInputValues?.durationDays !== null &&
+        !isNaN(medicationInputValues.durationDays) &&
+        String(medicationInputValues.durationDays).trim() !== "" &&
+        medicationInputValues.durationDays > 0)
+  );
+
+  const handleClearMedicationInput = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    setValue("medicationInput.name", "");
+    setValue("medicationInput.dosage", "");
+    setValue("medicationInput.frequency", "");
+    setValue("medicationInput.durationDays", undefined);
+    setValue("medicationInput.instructions", "");
+    clearErrors("medicationInput");
+  };
 
   const handleAddMedicationInline = (e?: React.MouseEvent | React.KeyboardEvent) => {
     if (e) e.preventDefault();
@@ -250,6 +279,18 @@ function RecordMedicationForm({
 
             {/* Action Bar */}
             <div className="flex items-center justify-end gap-2 pt-1 border-t border-border/40">
+              {hasMedicationInput && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleClearMedicationInput}
+                  className="h-8 gap-1.5 rounded-lg text-xs font-medium cursor-pointer text-muted-foreground hover:text-foreground"
+                >
+                  <RotateCcw className="size-3.5" />
+                  <span>Clear</span>
+                </Button>
+              )}
               <Button
                 type="button"
                 size="sm"

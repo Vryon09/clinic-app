@@ -29,10 +29,13 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import CaseCardDialog from "./CaseCardDialog";
+import ConfirmDialog from "@/ui/components/common/ConfirmDialog";
 
 function CaseCard({ caseItem }: { caseItem: ICase }) {
   const [open, setOpen] = useState<boolean>(false);
   const [isUpdatingCase, setIsUpdatingCase] = useState<boolean>(false);
+  const [isArchiveCaseOpen, setIsArchiveCaseOpen] = useState<boolean>(false);
+  const [recordToArchive, setRecordToArchive] = useState<{ id: string; symptoms?: string } | null>(null);
 
   const { mutate: handleArchiveRecord } = useArchiveRecord();
   const { mutate: handleArchiveCase } = useArchiveCase();
@@ -119,7 +122,7 @@ function CaseCard({ caseItem }: { caseItem: ICase }) {
                       variant="destructive"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleArchiveCase(caseItem.id);
+                        setIsArchiveCaseOpen(true);
                       }}
                     >
                       <Trash className="size-3.5" /> Delete
@@ -206,7 +209,7 @@ function CaseCard({ caseItem }: { caseItem: ICase }) {
                           variant="destructive"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleArchiveRecord(record.id);
+                            setRecordToArchive({ id: record.id, symptoms: record.symptoms });
                           }}
                         >
                           <Trash className="size-3.5" /> Delete
@@ -229,6 +232,32 @@ function CaseCard({ caseItem }: { caseItem: ICase }) {
           setIsUpdatingCase={setIsUpdatingCase}
         />
       )}
+
+      <ConfirmDialog
+        open={isArchiveCaseOpen}
+        onOpenChange={setIsArchiveCaseOpen}
+        title="Archive Case?"
+        description={`Are you sure you want to archive case "${caseItem.caseName}"? It can be restored later from Settings > Archive.`}
+        confirmLabel="Archive"
+        onConfirm={() => {
+          handleArchiveCase(caseItem.id);
+          setIsArchiveCaseOpen(false);
+        }}
+      />
+
+      <ConfirmDialog
+        open={!!recordToArchive}
+        onOpenChange={(open) => !open && setRecordToArchive(null)}
+        title="Archive Consultation Record?"
+        description={`Are you sure you want to archive this consultation record${recordToArchive?.symptoms ? ` (${recordToArchive.symptoms})` : ""}? It can be restored later from Settings > Archive.`}
+        confirmLabel="Archive"
+        onConfirm={() => {
+          if (recordToArchive) {
+            handleArchiveRecord(recordToArchive.id);
+            setRecordToArchive(null);
+          }
+        }}
+      />
     </>
   );
 }

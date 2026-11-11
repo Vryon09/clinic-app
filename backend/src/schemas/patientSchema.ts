@@ -5,19 +5,23 @@ export const createPatientSchema = z.object({
     .string()
     .trim()
     .min(1, "First name is required.")
-    .max(50, "First name must not exceed 50 characters."),
+    .max(50, "First name must not exceed 50 characters.")
+    .regex(/^[^\d]+$/, "First name cannot contain numbers."),
 
   middleName: z
     .string()
     .trim()
-    .min(1, "Middle name is required.")
-    .max(50, "Middle name must not exceed 50 characters."),
+    .max(50, "Middle name must not exceed 50 characters.")
+    .regex(/^[^\d]*$/, "Middle name cannot contain numbers.")
+    .optional()
+    .or(z.literal("")),
 
   lastName: z
     .string()
     .trim()
     .min(1, "Last name is required.")
-    .max(50, "Last name must not exceed 50 characters."),
+    .max(50, "Last name must not exceed 50 characters.")
+    .regex(/^[^\d]+$/, "Last name cannot contain numbers."),
 
   phone: z
     .string()
@@ -32,7 +36,11 @@ export const createPatientSchema = z.object({
     .string()
     .trim()
     .min(1, "Address is required.")
-    .max(150, "Address must not exceed 150 characters."),
+    .max(150, "Address must not exceed 150 characters.")
+    .refine(
+      (val) => !/^\d+$/.test(val.replace(/[\s,.-]/g, "")),
+      "Address cannot be all numbers.",
+    ),
 
   sex: z.enum(["MALE", "FEMALE"]),
 
@@ -50,7 +58,12 @@ export const createPatientSchema = z.object({
     .string()
     .trim()
     .max(300, "Allergies must not exceed 300 characters.")
-    .optional(),
+    .refine(
+      (val) => !val || !/^\d+$/.test(val.replace(/[\s,.-]/g, "")),
+      "Allergies cannot be all numbers.",
+    )
+    .optional()
+    .or(z.literal("")),
 });
 
 export const updatePatientSchema = createPatientSchema.partial();

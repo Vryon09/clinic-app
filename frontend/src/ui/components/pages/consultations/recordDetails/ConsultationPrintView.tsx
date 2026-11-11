@@ -4,7 +4,7 @@ import type { IVitalSigns } from "@/types/VitalSignsType";
 import { Button } from "../../../shadcn/button";
 import { useQuery } from "@tanstack/react-query";
 import { handleGetClinicInfo } from "@/services/apiClinicInfo";
-import type { ClinicInfoForm } from "@/schemas/clinicInfoSchema";
+import type { IClinicInfo } from "@/types/ClinicInfo";
 import { handleGetPatient } from "@/services/apiPatients";
 import { useNavigate, useParams } from "react-router";
 import type { IPatient } from "@/types/PatientType";
@@ -24,10 +24,12 @@ function ConsultationPrintView({
   recordMedications: IRecordMedications[];
 }) {
   const [withSignature, setWithSignature] = useState<boolean>(true);
+  const [withLogo, setWithLogo] = useState<boolean>(true);
+  const [logoPosition, setLogoPosition] = useState<"left" | "center" | "right">("center");
   const navigate = useNavigate();
 
   const { data: clinicInfo, isPending: isClinicInfoPending } =
-    useQuery<ClinicInfoForm>({
+    useQuery<IClinicInfo>({
       queryFn: handleGetClinicInfo,
       queryKey: ["clinicInfo"],
     });
@@ -50,14 +52,66 @@ function ConsultationPrintView({
     enabled: !!doctorId,
   });
 
+  const logoUrl = clinicInfo?.logoPath
+    ? `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/${clinicInfo.logoPath}`
+    : null;
+
   return (
     <div className="mx-auto w-[210mm] bg-white p-10 text-black shadow-md print:w-full print:p-6 print:shadow-none">
       {/* ── HEADER ─────────────────────────────────── */}
-      <div className="mb-8 border-b-2 border-black pb-4 text-center">
-        <h1 className="text-2xl font-bold tracking-tight">
-          {clinicInfo?.name ? clinicInfo.name : "ClinicSync"}
-        </h1>
-        <p className="mt-0.5 text-sm text-gray-600">Medical Consultation Report</p>
+      <div className="mb-8 border-b-2 border-black pb-4">
+        {withLogo && logoUrl ? (
+          logoPosition === "center" ? (
+            <div className="text-center">
+              <div className="mb-2 flex justify-center">
+                <img
+                  src={logoUrl}
+                  alt="Clinic Logo"
+                  className="h-16 w-auto max-w-44 object-contain"
+                />
+              </div>
+              <h1 className="text-2xl font-bold tracking-tight">
+                {clinicInfo?.name ? clinicInfo.name : "ClinicSync"}
+              </h1>
+              <p className="mt-0.5 text-sm text-gray-600">Medical Consultation Report</p>
+            </div>
+          ) : logoPosition === "left" ? (
+            <div className="flex items-center gap-4">
+              <img
+                src={logoUrl}
+                alt="Clinic Logo"
+                className="h-16 w-auto max-w-44 object-contain shrink-0"
+              />
+              <div className="text-left">
+                <h1 className="text-2xl font-bold tracking-tight">
+                  {clinicInfo?.name ? clinicInfo.name : "ClinicSync"}
+                </h1>
+                <p className="mt-0.5 text-sm text-gray-600">Medical Consultation Report</p>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between gap-4">
+              <div className="text-left">
+                <h1 className="text-2xl font-bold tracking-tight">
+                  {clinicInfo?.name ? clinicInfo.name : "ClinicSync"}
+                </h1>
+                <p className="mt-0.5 text-sm text-gray-600">Medical Consultation Report</p>
+              </div>
+              <img
+                src={logoUrl}
+                alt="Clinic Logo"
+                className="h-16 w-auto max-w-44 object-contain shrink-0"
+              />
+            </div>
+          )
+        ) : (
+          <div className="text-center">
+            <h1 className="text-2xl font-bold tracking-tight">
+              {clinicInfo?.name ? clinicInfo.name : "ClinicSync"}
+            </h1>
+            <p className="mt-0.5 text-sm text-gray-600">Medical Consultation Report</p>
+          </div>
+        )}
       </div>
 
       {/* ── PATIENT DETAILS ────────────────────────── */}
@@ -237,31 +291,99 @@ function ConsultationPrintView({
           </div>
         )}
 
-        <div className="flex items-center justify-between gap-4">
-          {/* Signature toggle */}
-          <div className="inline-flex items-center overflow-hidden rounded-full bg-zinc-900 p-1 select-none">
-            <button
-              type="button"
-              onClick={() => setWithSignature(true)}
-              className={`cursor-pointer rounded-full px-4 py-1.5 text-xs font-medium transition-all duration-200 ${
-                withSignature
-                  ? "bg-white font-semibold text-black shadow-sm"
-                  : "text-zinc-400 hover:text-white"
-              }`}
-            >
-              With Signature
-            </button>
-            <button
-              type="button"
-              onClick={() => setWithSignature(false)}
-              className={`cursor-pointer rounded-full px-4 py-1.5 text-xs font-medium transition-all duration-200 ${
-                !withSignature
-                  ? "bg-white font-semibold text-black shadow-sm"
-                  : "text-zinc-400 hover:text-white"
-              }`}
-            >
-              Without Signature
-            </button>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Signature toggle */}
+            <div className="inline-flex items-center overflow-hidden rounded-full bg-zinc-900 p-1 select-none">
+              <button
+                type="button"
+                onClick={() => setWithSignature(true)}
+                className={`cursor-pointer rounded-full px-4 py-1.5 text-xs font-medium transition-all duration-200 ${
+                  withSignature
+                    ? "bg-white font-semibold text-black shadow-sm"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                With Signature
+              </button>
+              <button
+                type="button"
+                onClick={() => setWithSignature(false)}
+                className={`cursor-pointer rounded-full px-4 py-1.5 text-xs font-medium transition-all duration-200 ${
+                  !withSignature
+                    ? "bg-white font-semibold text-black shadow-sm"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                Without Signature
+              </button>
+            </div>
+
+            {/* Logo toggle */}
+            <div className="inline-flex items-center overflow-hidden rounded-full bg-zinc-900 p-1 select-none">
+              <button
+                type="button"
+                onClick={() => setWithLogo(true)}
+                className={`cursor-pointer rounded-full px-4 py-1.5 text-xs font-medium transition-all duration-200 ${
+                  withLogo
+                    ? "bg-white font-semibold text-black shadow-sm"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                With Logo
+              </button>
+              <button
+                type="button"
+                onClick={() => setWithLogo(false)}
+                className={`cursor-pointer rounded-full px-4 py-1.5 text-xs font-medium transition-all duration-200 ${
+                  !withLogo
+                    ? "bg-white font-semibold text-black shadow-sm"
+                    : "text-zinc-400 hover:text-white"
+                }`}
+              >
+                Without Logo
+              </button>
+            </div>
+
+            {/* Logo position selector */}
+            {withLogo && logoUrl && (
+              <div className="inline-flex items-center overflow-hidden rounded-full border border-border bg-muted/40 p-1 select-none">
+                <span className="px-2 text-[11px] font-medium text-muted-foreground">Position:</span>
+                <button
+                  type="button"
+                  onClick={() => setLogoPosition("left")}
+                  className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 ${
+                    logoPosition === "left"
+                      ? "bg-white font-semibold text-black shadow-xs dark:bg-zinc-900 dark:text-white"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Left
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLogoPosition("center")}
+                  className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 ${
+                    logoPosition === "center"
+                      ? "bg-white font-semibold text-black shadow-xs dark:bg-zinc-900 dark:text-white"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Center
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLogoPosition("right")}
+                  className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 ${
+                    logoPosition === "right"
+                      ? "bg-white font-semibold text-black shadow-xs dark:bg-zinc-900 dark:text-white"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Right
+                </button>
+              </div>
+            )}
           </div>
 
           <Button

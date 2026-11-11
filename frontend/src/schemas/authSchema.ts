@@ -1,5 +1,35 @@
 import { z } from "zod";
 
+const nameField = (fieldLabel: string) =>
+  z
+    .string()
+    .trim()
+    .min(1, `${fieldLabel} is required.`)
+    .max(50, `${fieldLabel} must not exceed 50 characters.`)
+    .regex(/^[^\d]+$/, `${fieldLabel} cannot contain numbers.`);
+
+const optionalMiddleNameField = z
+  .string()
+  .trim()
+  .max(50, "Middle name must not exceed 50 characters.")
+  .regex(/^[^\d]*$/, "Middle name cannot contain numbers.")
+  .optional()
+  .or(z.literal(""));
+
+const usernameField = z
+  .string()
+  .trim()
+  .min(3, "Username must be at least 3 characters.")
+  .max(30, "Username must not exceed 30 characters.")
+  .regex(
+    /^[a-zA-Z0-9_]+$/,
+    "Username can only contain letters, numbers, and underscores.",
+  )
+  .refine(
+    (val) => !/^\d+$/.test(val),
+    "Username cannot consist only of numbers.",
+  );
+
 export const loginSchema = z.object({
   username: z.string().min(1, "Username is required."),
 
@@ -8,43 +38,25 @@ export const loginSchema = z.object({
 
 export const signupSchema = z
   .object({
-    firstName: z
-      .string()
-      .trim()
-      .min(1, "First name is required.")
-      .max(50, "First name must not exceed 50 characters."),
+    firstName: nameField("First name"),
 
-    middleName: z
-      .string()
-      .trim()
-      .max(50, "Middle name must not exceed 50 characters.")
-      .optional()
-      .or(z.literal("")),
+    middleName: optionalMiddleNameField,
 
-    lastName: z
-      .string()
-      .trim()
-      .min(1, "Last name is required.")
-      .max(50, "Last name must not exceed 50 characters."),
+    lastName: nameField("Last name"),
 
-    username: z
-      .string()
-      .min(3, "Username must be at least 3 characters")
-      .max(30, "Username must be at most 30 characters")
-      .regex(
-        /^[a-zA-Z0-9_]+$/,
-        "Username can only contain letters, numbers, and underscores",
-      ),
+    username: usernameField,
 
     password: z
       .string()
       .min(8, "Password must be at least 8 characters")
+      .max(100, "Password must not exceed 100 characters")
       .regex(/[A-Z]/, "Must contain at least one uppercase letter")
       .regex(/[0-9]/, "Must contain at least one number"),
 
     confirmPassword: z
       .string()
       .min(8, "Password must be at least 8 characters")
+      .max(100, "Password must not exceed 100 characters")
       .regex(/[A-Z]/, "Must contain at least one uppercase letter")
       .regex(/[0-9]/, "Must contain at least one number"),
 
@@ -52,37 +64,17 @@ export const signupSchema = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
-    path: ["confirmPassword"], // attach error to this field
+    path: ["confirmPassword"],
   });
 
 export const addUserSchema = z.object({
-  firstName: z
-    .string()
-    .trim()
-    .min(1, "First name is required.")
-    .max(50, "First name must not exceed 50 characters."),
+  firstName: nameField("First name"),
 
-  middleName: z
-    .string()
-    .trim()
-    .max(50, "Middle name must not exceed 50 characters.")
-    .optional()
-    .or(z.literal("")),
+  middleName: optionalMiddleNameField,
 
-  lastName: z
-    .string()
-    .trim()
-    .min(1, "Last name is required.")
-    .max(50, "Last name must not exceed 50 characters."),
+  lastName: nameField("Last name"),
 
-  username: z
-    .string()
-    .min(3, "Username must be at least 3 characters")
-    .max(30, "Username must be at most 30 characters")
-    .regex(
-      /^[a-zA-Z0-9_. ]+$/,
-      "Username can only contain letters, numbers, and underscores",
-    ),
+  username: usernameField,
 
   licenseNum: z
     .string()
@@ -95,35 +87,15 @@ export const addUserSchema = z.object({
 });
 
 export const updateUsernameSchema = z.object({
-  username: z
-    .string()
-    .min(3, "Username must be at least 3 characters")
-    .max(30, "Username must be at most 30 characters")
-    .regex(
-      /^[a-zA-Z0-9_. ]+$/,
-      "Username can only contain letters, numbers, and underscores",
-    ),
+  username: usernameField,
 });
 
 export const updateFullNameSchema = z.object({
-  firstName: z
-    .string()
-    .trim()
-    .min(1, "First name is required.")
-    .max(50, "First name must not exceed 50 characters."),
+  firstName: nameField("First name"),
 
-  middleName: z
-    .string()
-    .trim()
-    .max(50, "Middle name must not exceed 50 characters.")
-    .optional()
-    .or(z.literal("")),
+  middleName: optionalMiddleNameField,
 
-  lastName: z
-    .string()
-    .trim()
-    .min(1, "Last name is required.")
-    .max(50, "Last name must not exceed 50 characters."),
+  lastName: nameField("Last name"),
 });
 
 export const changePasswordSchema = z
@@ -131,18 +103,20 @@ export const changePasswordSchema = z
     oldPassword: z
       .string()
       .min(8, "Password must be at least 8 characters")
+      .max(100, "Password must not exceed 100 characters")
       .regex(/[A-Z]/, "Must contain at least one uppercase letter")
       .regex(/[0-9]/, "Must contain at least one number"),
 
     newPassword: z
       .string()
       .min(8, "Password must be at least 8 characters")
+      .max(100, "Password must not exceed 100 characters")
       .regex(/[A-Z]/, "Must contain at least one uppercase letter")
       .regex(/[0-9]/, "Must contain at least one number"),
   })
   .refine((data) => data.oldPassword !== data.newPassword, {
     message: "New password should not be the same as the old password",
-    path: ["newPassword"], // attach error to this field
+    path: ["newPassword"],
   });
 
 export const changeLicenseNumSchema = z.object({

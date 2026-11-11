@@ -136,7 +136,7 @@ export function useVisitDetailsForm({
           name: "",
           dosage: "",
           frequency: "",
-          durationDays: 0,
+          durationDays: undefined,
           instructions: "",
         },
       });
