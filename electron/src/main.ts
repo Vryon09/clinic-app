@@ -30,6 +30,8 @@ async function createWindow() {
     width: 1400,
     height: 900,
     icon: iconPath,
+    autoHideMenuBar: true,
+    frame: false,
   });
 
   if (isDev()) {
