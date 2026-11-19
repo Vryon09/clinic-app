@@ -6,12 +6,12 @@ import { useQuery } from "@tanstack/react-query";
 import { handleGetClinicInfo } from "@/services/apiClinicInfo";
 import type { IClinicInfo } from "@/types/ClinicInfo";
 import { handleGetPatient } from "@/services/apiPatients";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import type { IPatient } from "@/types/PatientType";
 import dayjs from "dayjs";
 import { toast } from "sonner";
 import { useState } from "react";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Settings } from "lucide-react";
 import { handleGetSignature } from "@/services/apiSignature";
 
 function ConsultationPrintView({
@@ -27,6 +27,7 @@ function ConsultationPrintView({
   const [withLogo, setWithLogo] = useState<boolean>(true);
   const [logoPosition, setLogoPosition] = useState<"left" | "center" | "right">("center");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { data: clinicInfo, isPending: isClinicInfoPending } =
     useQuery<IClinicInfo>({
@@ -345,17 +346,41 @@ function ConsultationPrintView({
               </button>
             </div>
 
+            {/* Missing logo shortcut */}
+            {withLogo && !logoUrl && (
+              <button
+                type="button"
+                onClick={() => {
+                  const patientName = patient
+                    ? `${patient.firstName} ${patient.lastName}`.trim()
+                    : "Patient";
+
+                  navigate("/settings", {
+                    state: {
+                      returnUrl: `${location.pathname}${location.search}`,
+                      patientName,
+                      contextLabel: "Consultation Print View",
+                    },
+                  });
+                }}
+                className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-300 transition-colors hover:bg-amber-500/20"
+              >
+                <Settings className="size-3" />
+                <span>No logo uploaded. Add in Settings &rarr;</span>
+              </button>
+            )}
+
             {/* Logo position selector */}
             {withLogo && logoUrl && (
-              <div className="inline-flex items-center overflow-hidden rounded-full border border-border bg-muted/40 p-1 select-none">
-                <span className="px-2 text-[11px] font-medium text-muted-foreground">Position:</span>
+              <div className="inline-flex items-center overflow-hidden rounded-full bg-zinc-900 p-1 select-none">
+                <span className="px-2 text-[11px] font-medium text-zinc-400">Position:</span>
                 <button
                   type="button"
                   onClick={() => setLogoPosition("left")}
                   className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 ${
                     logoPosition === "left"
-                      ? "bg-white font-semibold text-black shadow-xs dark:bg-zinc-900 dark:text-white"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-white font-semibold text-black shadow-sm"
+                      : "text-zinc-400 hover:text-white"
                   }`}
                 >
                   Left
@@ -365,8 +390,8 @@ function ConsultationPrintView({
                   onClick={() => setLogoPosition("center")}
                   className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 ${
                     logoPosition === "center"
-                      ? "bg-white font-semibold text-black shadow-xs dark:bg-zinc-900 dark:text-white"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-white font-semibold text-black shadow-sm"
+                      : "text-zinc-400 hover:text-white"
                   }`}
                 >
                   Center
@@ -376,8 +401,8 @@ function ConsultationPrintView({
                   onClick={() => setLogoPosition("right")}
                   className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 ${
                     logoPosition === "right"
-                      ? "bg-white font-semibold text-black shadow-xs dark:bg-zinc-900 dark:text-white"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-white font-semibold text-black shadow-sm"
+                      : "text-zinc-400 hover:text-white"
                   }`}
                 >
                   Right
@@ -398,9 +423,28 @@ function ConsultationPrintView({
               }
 
               if (record.case.doctor.licenseNum === "") {
+                const patientName = patient
+                  ? `${patient.firstName} ${patient.lastName}`.trim()
+                  : "Patient";
+
                 toast.error(
                   `Doctor should have a license number. Update the "License Number" in settings -> Accounts -> Change License Number.`,
-                  { position: "top-center", duration: 5000 },
+                  {
+                    position: "top-center",
+                    duration: 6000,
+                    action: {
+                      label: "Go to Settings",
+                      onClick: () => {
+                        navigate("/settings", {
+                          state: {
+                            returnUrl: `${location.pathname}${location.search}`,
+                            patientName,
+                            contextLabel: "Consultation Print View",
+                          },
+                        });
+                      },
+                    },
+                  },
                 );
 
                 return;

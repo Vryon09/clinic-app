@@ -3,7 +3,7 @@ import type {
   CreatePatientInput,
   UpdatePatientInput,
 } from "@/schemas/patientSchema";
-import type { PatientFilterParams } from "@/types/PatientType";
+import type { IPatient, PatientFilterParams } from "@/types/PatientType";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -59,7 +59,7 @@ async function handleAddPatient({
   sex,
   dateOfBirth,
   allergies,
-}: CreatePatientInput) {
+}: CreatePatientInput): Promise<IPatient> {
   const newPatient = {
     firstName,
     middleName,
@@ -82,6 +82,11 @@ export function useAddPatient() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["patients"] });
       toast.success("Added patient successfully", { position: "top-center" });
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.error || "Failed to add patient", {
+        position: "top-center",
+      });
     },
   });
 }

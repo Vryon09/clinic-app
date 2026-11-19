@@ -115,6 +115,13 @@ export function AppSidebar() {
                     >
                       <Link
                         to={`/${module.url}`}
+                        state={
+                          module.url === "settings" &&
+                          location.pathname.startsWith("/patients/") &&
+                          location.pathname !== "/patients"
+                            ? { returnUrl: `${location.pathname}${location.search}` }
+                            : undefined
+                        }
                         className={cn(
                           "flex items-center",
                           isCollapsed ? "size-full justify-center" : "gap-3"

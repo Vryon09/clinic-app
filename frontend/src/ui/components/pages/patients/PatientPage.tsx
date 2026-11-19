@@ -4,7 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
 import { Button } from "../../shadcn/button";
 import { Pen, Plus, Stethoscope, TestTubes } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { savePatientReturnContext } from "@/lib/patientNavigation";
 import PatientForm from "./PatientForm";
 import PatientCard from "./PatientCard";
 import ConsultationRecords from "../consultations/ConsultationRecords";
@@ -32,6 +33,16 @@ function PatientPage() {
   });
 
   const { mutate: handleUpdatePatient } = useUpdatePatient();
+
+  useEffect(() => {
+    if (patient) {
+      savePatientReturnContext({
+        returnUrl: `/patients/${patientId}`,
+        patientName: `${patient.firstName} ${patient.lastName}`.trim(),
+        contextLabel: "Patient Profile",
+      });
+    }
+  }, [patient, patientId]);
 
   return (
     <div className="flex h-full flex-col space-y-5 pb-8">

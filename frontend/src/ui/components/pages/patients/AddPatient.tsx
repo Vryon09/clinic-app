@@ -1,11 +1,13 @@
 import { UserPlus } from "lucide-react";
 import { Button } from "../../shadcn/button";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { useAddPatient } from "@/services/apiPatients";
 import PatientForm from "./PatientForm";
 
 function AddPatient({ className }: { className?: string }) {
   const [isAdding, setIsAdding] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const { mutate: handleAddPatient } = useAddPatient();
 
@@ -21,7 +23,15 @@ function AddPatient({ className }: { className?: string }) {
 
       <PatientForm
         action="create"
-        handlePatient={(data) => handleAddPatient(data)}
+        handlePatient={(data) =>
+          handleAddPatient(data, {
+            onSuccess: (newPatient) => {
+              if (newPatient?.id) {
+                navigate(`/patients/${newPatient.id}`);
+              }
+            },
+          })
+        }
         initialValues={{
           firstName: "",
           lastName: "",

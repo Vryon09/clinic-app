@@ -1,14 +1,26 @@
-import { Moon, Sun } from "lucide-react";
+import { ArrowLeft, Moon, Sun } from "lucide-react";
 import { Button } from "../shadcn/button";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { Separator } from "../shadcn/separator";
 import { useTheme } from "next-themes";
 import dayjs from "dayjs";
 import { SidebarTrigger } from "../shadcn/sidebar";
+import { getPatientReturnContext } from "@/lib/patientNavigation";
 
 export function TopNavBar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
+
+  const isSettingsPage = location.pathname.startsWith("/settings");
+  const returnContext = isSettingsPage
+    ? (location.state?.returnUrl
+        ? {
+            returnUrl: location.state.returnUrl,
+            patientName: location.state.patientName,
+          }
+        : getPatientReturnContext())
+    : null;
 
   const getBreadcrumbs = () => {
     const parts = location.pathname.split("/").filter(Boolean);
@@ -59,6 +71,18 @@ export function TopNavBar() {
 
       {/* Right Controls */}
       <div className="flex items-center gap-3">
+        {returnContext && (
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => navigate(returnContext.returnUrl)}
+            className="h-7 gap-1.5 border-primary/30 bg-primary/10 px-2.5 text-[11px] font-semibold text-primary hover:bg-primary/20 hover:text-primary cursor-pointer shadow-xs dark:border-teal-400/40 dark:bg-teal-950/70 dark:text-teal-200 dark:hover:bg-teal-900/80 dark:hover:text-teal-100"
+          >
+            <ArrowLeft className="size-3" />
+            <span>Back to {returnContext.patientName ? returnContext.patientName.split(" ")[0] : "Patient"}</span>
+          </Button>
+        )}
+
         {/* Current Date */}
         <span className="hidden md:inline-block text-[11px] font-medium text-muted-foreground">
           {currentDate}
