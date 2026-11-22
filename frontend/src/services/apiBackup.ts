@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { toast } from "sonner";
 
-async function handleBackup(payload?: { password?: string }) {
+async function handleBackup(payload?: { password?: string } | void) {
   await api.post("/api/backup/drive", {
     password: payload?.password || undefined,
   });
@@ -15,7 +15,7 @@ export function useBackup() {
     AxiosError<{ error?: string; message?: string }>,
     { password?: string } | void
   >({
-    mutationFn: () => handleBackup(),
+    mutationFn: handleBackup,
     onSuccess: () => {
       toast.success("Google Drive Backup Created", {
         description:
