@@ -73,8 +73,16 @@ export function useAddRecord() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["patient"] });
       queryClient.invalidateQueries({ queryKey: ["records"] });
-      toast.success("Created new record successfully", {
-        position: "top-center",
+      toast.success("Consultation Record Saved", {
+        description:
+          "Visit details, vitals, and prescription have been recorded.",
+      });
+    },
+    onError: (error) => {
+      toast.error("Failed to Save Record", {
+        description:
+          error?.response?.data?.message ||
+          "An unexpected error occurred while saving the consultation record.",
       });
     },
   });
@@ -92,6 +100,16 @@ export function useDeleteRecord() {
     onSuccess: () => {
       // queryClient.invalidateQueries({ queryKey: ["patient"] });
       queryClient.invalidateQueries({ queryKey: ["records"] });
+      toast.success("Record Deleted", {
+        description: "The consultation record has been permanently deleted.",
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Delete Record", {
+        description:
+          error?.response?.data?.message ||
+          "Could not delete consultation record.",
+      });
     },
   });
 }
@@ -108,6 +126,17 @@ export function useArchiveRecord() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["records"] });
       queryClient.invalidateQueries({ queryKey: ["cases"] });
+      toast.success("Record Archived", {
+        description:
+          "Consultation record moved to Archive. Restore anytime from Settings > Archive.",
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Archive Record", {
+        description:
+          error?.response?.data?.message ||
+          "Could not archive consultation record.",
+      });
     },
   });
 }
@@ -127,6 +156,17 @@ export function useRestoreRecord() {
       queryClient.invalidateQueries({ queryKey: ["records"] });
       queryClient.invalidateQueries({ queryKey: ["archivedRecords"] });
       queryClient.invalidateQueries({ queryKey: ["cases"] });
+      toast.success("Record Restored", {
+        description:
+          "Consultation record has been restored to active case records.",
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Restore Record", {
+        description:
+          error?.response?.data?.message ||
+          "Could not restore consultation record.",
+      });
     },
   });
 }
@@ -168,7 +208,16 @@ export function useUpdateRecord() {
       // queryClient.invalidateQueries({ queryKey: ["patient"] });
       queryClient.invalidateQueries({ queryKey: ["records"] });
       queryClient.invalidateQueries({ queryKey: ["cases"] });
-      toast.success("Updated record successfully", { position: "top-center" });
+      toast.success("Consultation Record Updated", {
+        description: "Clinical notes and prescription changes have been saved.",
+      });
+    },
+    onError: (error) => {
+      toast.error("Failed to Update Record", {
+        description:
+          error?.response?.data?.message ||
+          "Could not update the consultation record.",
+      });
     },
   });
 }

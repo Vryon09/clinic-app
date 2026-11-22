@@ -75,8 +75,9 @@ function WelcomeScreen() {
       lowerName.endsWith(".enc") || lowerName.endsWith(".csync.enc");
 
     if (!isZip && !isEnc) {
-      toast.error("Please select a valid .zip or encrypted .enc backup file.", {
-        position: "top-center",
+      toast.warning("Invalid File Format", {
+        description:
+          "Please select a valid .zip archive or encrypted .enc backup file.",
       });
       e.target.value = "";
       return;

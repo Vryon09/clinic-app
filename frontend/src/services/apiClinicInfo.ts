@@ -83,13 +83,14 @@ export function useUploadClinicLogo() {
     mutationFn: handleUploadClinicLogo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["clinicInfo"] });
-      toast.success("Clinic logo updated successfully", {
-        position: "top-center",
+      toast.success("Clinic Logo Updated", {
+        description:
+          "New logo uploaded and will appear on consultation print documents.",
       });
     },
     onError: (error: AxiosError<{ message: string }>) => {
-      toast.error(error.response?.data?.message || "Failed to upload logo", {
-        position: "top-center",
+      toast.error("Failed to Upload Logo", {
+        description: error.response?.data?.message || "Could not upload clinic logo.",
       });
     },
   });
@@ -107,13 +108,13 @@ export function useDeleteClinicLogo() {
     mutationFn: handleDeleteClinicLogo,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["clinicInfo"] });
-      toast.success("Clinic logo removed", {
-        position: "top-center",
+      toast.success("Clinic Logo Removed", {
+        description: "Clinic logo has been removed from profile.",
       });
     },
     onError: (error: AxiosError<{ message: string }>) => {
-      toast.error(error.response?.data?.message || "Failed to remove logo", {
-        position: "top-center",
+      toast.error("Failed to Remove Logo", {
+        description: error.response?.data?.message || "Could not remove clinic logo.",
       });
     },
   });

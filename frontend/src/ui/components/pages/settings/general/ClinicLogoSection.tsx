@@ -38,15 +38,16 @@ function ClinicLogoSection() {
     ];
 
     if (!allowedTypes.includes(file.type)) {
-      toast.error("Please select a valid image file (.png, .jpg, .webp, .svg)", {
-        position: "top-center",
+      toast.warning("Invalid Image Type", {
+        description:
+          "Please select a valid image file (.png, .jpg, .webp, .svg).",
       });
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      toast.error("File size must be less than 5MB", {
-        position: "top-center",
+      toast.warning("File Size Exceeded", {
+        description: "Clinic logo image size must be less than 5MB.",
       });
       return;
     }

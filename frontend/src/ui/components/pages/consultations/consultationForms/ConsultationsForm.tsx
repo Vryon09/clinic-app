@@ -87,7 +87,9 @@ function ConsultationsForm() {
 
   function caseOnSubmit(caseData: AddCaseInput) {
     if (!patientId) {
-      toast.error("patientId not found.", { position: "top-center" });
+      toast.error("Patient Not Selected", {
+        description: "Cannot create case without a valid patient record.",
+      });
       return;
     }
 

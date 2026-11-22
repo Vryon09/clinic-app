@@ -82,11 +82,17 @@ function ResetDatabase() {
                 disabled={resetInput !== "reset"}
                 onClick={() => {
                   handleResetDatabase(undefined, {
+                    onSuccess: () => {
+                      toast.success("Database Reset Complete", {
+                        description: "All database records have been cleared.",
+                      });
+                    },
                     onError: (err: any) => {
-                      toast.error(
-                        err?.response?.data?.message || "Failed to reset database.",
-                        { position: "top-center" }
-                      );
+                      toast.error("Database Reset Failed", {
+                        description:
+                          err?.response?.data?.message ||
+                          "Failed to reset clinic database.",
+                      });
                     },
                   });
                   setResetInput("");

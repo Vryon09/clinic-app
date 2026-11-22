@@ -49,8 +49,16 @@ export function useUploadLabResult() {
     mutationFn: handleUploadLabResult,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["labResults"] });
-      toast.success("Uploaded lab result successfully", {
-        position: "top-center",
+      toast.success("Lab Result Attached", {
+        description:
+          "Laboratory test document uploaded to patient record.",
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Upload Lab Result", {
+        description:
+          error?.response?.data?.message ||
+          "Could not upload laboratory test file.",
       });
     },
   });
@@ -67,6 +75,16 @@ export function useDeleteLabResult() {
     mutationFn: handleDeleteLabResult,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["labResults"] });
+      toast.success("Lab Result Removed", {
+        description: "The laboratory file was removed from the patient record.",
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Remove Lab Result", {
+        description:
+          error?.response?.data?.message ||
+          "Could not remove laboratory file.",
+      });
     },
   });
 }

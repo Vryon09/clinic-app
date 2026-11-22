@@ -122,7 +122,9 @@ function PatientHistoryDrawer({
                             type="button"
                             onClick={() => {
                               onInsertDiagnosis(enc.diagnosis!);
-                              toast.success("Diagnosis copied to current note");
+                              toast.success("Diagnosis Copied", {
+                                description: `Inserted "${enc.diagnosis}" into current consultation note.`,
+                              });
                             }}
                             className="flex items-center gap-1 text-[10px] text-primary hover:underline cursor-pointer"
                           >
@@ -207,7 +209,9 @@ function PatientHistoryDrawer({
                                   durationDays: med.durationDays,
                                   instructions: med.instructions,
                                 });
-                                toast.success(`Added ${med.name} to prescription`);
+                                toast.success("Medication Added to Prescription", {
+                                  description: `${med.name} (${med.dosage} - ${med.frequency}) added from history.`,
+                                });
                               }}
                             >
                               <Plus className="size-2.5" />

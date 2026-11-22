@@ -58,11 +58,18 @@ export function SignupForm({
       },
       {
         onSuccess: () => {
-          toast.success("Sign up successful", { position: "top-center" });
+          toast.success("Registration Successful", {
+            description:
+              "Administrator account created. Welcome to the clinic management system.",
+          });
           navigate("/patients");
         },
         onError: (err) => {
-          toast.error(err.response?.data?.message, { position: "top-center" });
+          toast.error("Registration Failed", {
+            description:
+              err.response?.data?.message ||
+              "Could not complete account setup.",
+          });
         },
       },
     );

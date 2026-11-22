@@ -83,8 +83,9 @@ function LabResultsTable({
         uploadedAt: result.uploadedAt,
       });
     } catch (error) {
-      toast.error("Failed to load lab result preview", {
-        position: "top-center",
+      toast.error("Preview Unavailable", {
+        description:
+          "Could not generate file preview. Please try opening the file externally.",
       });
       console.error(error);
     } finally {
@@ -100,7 +101,9 @@ function LabResultsTable({
       const fileUrl = URL.createObjectURL(blob);
       window.open(fileUrl, "_blank");
     } catch (error) {
-      toast.error("Failed to open file", { position: "top-center" });
+      toast.error("Unable to Open File", {
+        description: "Could not retrieve the laboratory file from storage.",
+      });
       console.error(error);
     } finally {
       setOpeningId(null);

@@ -91,8 +91,9 @@ function UserDialog({
             setIsUserDialogOpen(false);
           },
           onError: (err) => {
-            toast.error(err.response?.data?.message, {
-              position: "top-center",
+            toast.error("Failed to Create Account", {
+              description:
+                err.response?.data?.message || "Could not create user account.",
             });
           },
         },
@@ -105,7 +106,9 @@ function UserDialog({
         data.role === initialValues.role &&
         data.licenseNum === initialValues.licenseNum
       ) {
-        toast.error("No changes", { position: "top-center" });
+        toast.info("No Changes Detected", {
+          description: "User account information was not modified.",
+        });
         setIsUserDialogOpen(false);
         return;
       }
@@ -123,8 +126,9 @@ function UserDialog({
             setIsUserDialogOpen(false);
           },
           onError: (err) => {
-            toast.error(err.response?.data?.message, {
-              position: "top-center",
+            toast.error("Failed to Update Account", {
+              description:
+                err.response?.data?.message || "Could not update user account.",
             });
           },
         },

@@ -126,7 +126,9 @@ function AddedRecordMedicationList({
           if (editingIndex !== null) {
             updateMedication(editingIndex, updatedData);
             setEditingIndex(null);
-            toast.success("Medication updated", { position: "top-center" });
+            toast.success("Medication Updated", {
+              description: `${updatedData.name} dosage and instructions updated.`,
+            });
           }
         }}
       />

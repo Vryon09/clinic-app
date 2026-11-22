@@ -52,8 +52,10 @@ function PasswordDialog({ open, onOpenChange }: IPasswordDialog) {
           onOpenChange(false);
         },
         onError: (err) => {
-          toast.error(err.response?.data?.message, {
-            position: "top-center",
+          toast.error("Password Update Failed", {
+            description:
+              err.response?.data?.message ||
+              "Could not change password. Please check your current password.",
           });
         },
       },

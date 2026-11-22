@@ -63,8 +63,9 @@ function FullNameDialog({
           onOpenChange(false);
         },
         onError: (err) => {
-          toast.error(err.response?.data?.message, {
-            position: "top-center",
+          toast.error("Failed to Update Name", {
+            description:
+              err.response?.data?.message || "Could not update profile name.",
           });
         },
       },

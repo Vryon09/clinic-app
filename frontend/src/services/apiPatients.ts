@@ -79,13 +79,18 @@ export function useAddPatient() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: handleAddPatient,
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["patients"] });
-      toast.success("Added patient successfully", { position: "top-center" });
+      toast.success("Patient Registered", {
+        description: `${variables.firstName} ${variables.lastName} has been added to clinic records.`,
+      });
     },
     onError: (error: any) => {
-      toast.error(error?.response?.data?.error || "Failed to add patient", {
-        position: "top-center",
+      toast.error("Failed to Register Patient", {
+        description:
+          error?.response?.data?.error ||
+          error?.response?.data?.message ||
+          "An unexpected error occurred while saving the patient record.",
       });
     },
   });
@@ -105,6 +110,15 @@ export function useDeletePatient() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["patients"] });
       queryClient.invalidateQueries({ queryKey: ["records"] });
+      toast.success("Patient Deleted", {
+        description: "The patient record has been permanently removed.",
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Delete Patient", {
+        description:
+          error?.response?.data?.message || "Could not delete patient record.",
+      });
     },
   });
 }
@@ -123,6 +137,16 @@ export function useArchivePatient() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["patients"] });
       queryClient.invalidateQueries({ queryKey: ["records"] });
+      toast.success("Patient Archived", {
+        description:
+          "Patient has been moved to Archive. You can restore them anytime from Settings > Archive.",
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Archive Patient", {
+        description:
+          error?.response?.data?.message || "Could not archive patient record.",
+      });
     },
   });
 }
@@ -141,6 +165,15 @@ export function useRestorePatient() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["patients"] });
       queryClient.invalidateQueries({ queryKey: ["archivedPatients"] });
+      toast.success("Patient Restored", {
+        description: "Patient record has been restored to the active list.",
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Restore Patient", {
+        description:
+          error?.response?.data?.message || "Could not restore patient record.",
+      });
     },
   });
 }
@@ -185,7 +218,16 @@ export function useUpdatePatient() {
       queryClient.invalidateQueries({ queryKey: ["patients"] });
       queryClient.invalidateQueries({ queryKey: ["patient"] });
       queryClient.invalidateQueries({ queryKey: ["patient", variables.id] });
-      toast.success("Updated patient successfully", { position: "top-center" });
+      toast.success("Patient Record Updated", {
+        description: `Changes saved for ${variables.firstName} ${variables.lastName}.`,
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Update Patient", {
+        description:
+          error?.response?.data?.message ||
+          "Could not save patient record changes.",
+      });
     },
   });
 }

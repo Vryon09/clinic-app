@@ -27,9 +27,17 @@ export function useAddCase(patientId: string) {
 
   return useMutation({
     mutationFn: handleAddCase,
-    onSuccess: () => {
-      toast.success("Case successfully created.", { position: "top-center" });
+    onSuccess: (_data, variables) => {
+      toast.success("Case Folder Created", {
+        description: `Case "${variables.caseName}" has been opened for this patient.`,
+      });
       queryClient.invalidateQueries({ queryKey: ["cases", patientId] });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Create Case", {
+        description:
+          error?.response?.data?.message || "Could not create new case folder.",
+      });
     },
   });
 }
@@ -58,9 +66,17 @@ export function useUpdateCase(patientId: string) {
 
   return useMutation({
     mutationFn: handleUpdateCase,
-    onSuccess: () => {
-      toast.success("Case successfully updated.", { position: "top-center" });
+    onSuccess: (_data, variables) => {
+      toast.success("Case Folder Updated", {
+        description: `Case "${variables.caseName}" details and physician assignment updated.`,
+      });
       queryClient.invalidateQueries({ queryKey: ["cases", patientId] });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Update Case", {
+        description:
+          error?.response?.data?.message || "Could not update case folder.",
+      });
     },
   });
 }
@@ -76,6 +92,16 @@ export function useArchiveCase() {
     mutationFn: handleArchiveCase,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cases"] });
+      toast.success("Case Archived", {
+        description:
+          "Case folder and its consultations moved to Archive. Restore anytime from Settings > Archive.",
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Archive Case", {
+        description:
+          error?.response?.data?.message || "Could not archive case folder.",
+      });
     },
   });
 }
@@ -98,7 +124,18 @@ export function useRestoreCase() {
   return useMutation({
     mutationFn: handleRestoreCase,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cases"] });
       queryClient.invalidateQueries({ queryKey: ["archivedCases"] });
+      toast.success("Case Restored", {
+        description:
+          "Case folder and its consultations restored to active cases.",
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Restore Case", {
+        description:
+          error?.response?.data?.message || "Could not restore case folder.",
+      });
     },
   });
 }

@@ -45,7 +45,16 @@ export function useRegister() {
       mutationFn: handleRegister,
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["users"] });
-        toast.success("Registered successfully", { position: "top-center" });
+        toast.success("Registration Successful", {
+          description: "Administrator account created. You can now log in.",
+        });
+      },
+      onError: (error) => {
+        toast.error("Registration Failed", {
+          description:
+            error?.response?.data?.message ||
+            "Could not complete account registration.",
+        });
       },
     },
   );
@@ -78,9 +87,18 @@ export function useAddUser() {
   return useMutation<unknown, AxiosError<{ message: string }>, RegisterPayload>(
     {
       mutationFn: handleAddUser,
-      onSuccess: () => {
+      onSuccess: (_data, variables) => {
         queryClient.invalidateQueries({ queryKey: ["users"] });
-        toast.success("User added successfully", { position: "top-center" });
+        toast.success("Staff Account Created", {
+          description: `User account for "${variables.username}" (${variables.role}) created successfully.`,
+        });
+      },
+      onError: (error) => {
+        toast.error("Failed to Create Account", {
+          description:
+            error?.response?.data?.message ||
+            "Could not create user account.",
+        });
       },
     },
   );
@@ -139,9 +157,17 @@ export function useUpdateUser() {
     }
   >({
     mutationFn: handleUpdateUser,
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      toast.success("User updated successfully", { position: "top-center" });
+      toast.success("Account Details Updated", {
+        description: `Settings updated for "${variables.username}".`,
+      });
+    },
+    onError: (error) => {
+      toast.error("Failed to Update Account", {
+        description:
+          error?.response?.data?.message || "Could not update user account.",
+      });
     },
   });
 }
@@ -163,11 +189,17 @@ export function useUpdateUsername() {
     { username: string }
   >({
     mutationFn: handleUpdateUsername,
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["me"] });
-      toast.success("User updated username successfully", {
-        position: "top-center",
+      toast.success("Username Changed", {
+        description: `Your username has been updated to "${variables.username}".`,
+      });
+    },
+    onError: (error) => {
+      toast.error("Failed to Change Username", {
+        description:
+          error?.response?.data?.message || "Could not update username.",
       });
     },
   });
@@ -204,11 +236,17 @@ export function useUpdateFullName() {
     }
   >({
     mutationFn: handleUpdateFullName,
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["me"] });
-      toast.success("User updated full name successfully", {
-        position: "top-center",
+      toast.success("Profile Name Updated", {
+        description: `Name updated to ${variables.firstName} ${variables.lastName}.`,
+      });
+    },
+    onError: (error) => {
+      toast.error("Failed to Update Name", {
+        description:
+          error?.response?.data?.message || "Could not update profile name.",
       });
     },
   });
@@ -243,8 +281,15 @@ export function useChangePassword() {
     mutationFn: handleChangePassword,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      toast.success("User updated password successfully", {
-        position: "top-center",
+      toast.success("Password Updated", {
+        description: "Your account password has been changed successfully.",
+      });
+    },
+    onError: (error) => {
+      toast.error("Password Change Failed", {
+        description:
+          error?.response?.data?.message ||
+          "Could not change password. Please verify current password.",
       });
     },
   });
@@ -269,11 +314,17 @@ export function useChangeLicenseNum() {
     }
   >({
     mutationFn: handleChangeLicenseNum,
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["me"] });
-      toast.success("User updated License Number successfully", {
-        position: "top-center",
+      toast.success("License Number Updated", {
+        description: `Medical license number set to "${variables.licenseNum}".`,
+      });
+    },
+    onError: (error) => {
+      toast.error("Failed to Update License Number", {
+        description:
+          error?.response?.data?.message || "Could not update license number.",
       });
     },
   });
@@ -310,6 +361,14 @@ export function useLogout() {
       localStorage.removeItem("token");
       queryClient.setQueryData(["me"], null);
       queryClient.removeQueries({ queryKey: ["me"] });
+      toast.info("Logged Out", {
+        description: "You have been logged out of the application.",
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Logout Failed", {
+        description: error?.response?.data?.message || "Could not log out.",
+      });
     },
   });
 }
@@ -333,6 +392,16 @@ export function useToggleUserStatus() {
     mutationFn: handleToggleUserStatus,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("User Access Updated", {
+        description: "Staff account status has been updated.",
+      });
+    },
+    onError: (error) => {
+      toast.error("Failed to Update Access", {
+        description:
+          error?.response?.data?.message ||
+          "Could not update user account status.",
+      });
     },
   });
 }

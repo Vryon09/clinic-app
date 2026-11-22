@@ -55,8 +55,10 @@ function LicenseNumDialog({
           onOpenChange(false);
         },
         onError: (err) => {
-          toast.error(err.response?.data?.message, {
-            position: "top-center",
+          toast.error("Failed to Update License Number", {
+            description:
+              err.response?.data?.message ||
+              "Could not update medical license number.",
           });
         },
       },

@@ -17,11 +17,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import ConfirmDialog from "@/ui/components/common/ConfirmDialog";
 
-function UsersTable({
-  users,
-}: {
-  users: IUser[];
-}) {
+function UsersTable({ users }: { users: IUser[] }) {
   const { mutate: handleToggleUserStatus } = useToggleUserStatus();
   const [userToDisable, setUserToDisable] = useState<IUser | null>(null);
 
@@ -30,8 +26,10 @@ function UsersTable({
       { id },
       {
         onError: (err) => {
-          toast.error(err.response?.data?.message, {
-            position: "top-center",
+          toast.error("Failed to Update User Status", {
+            description:
+              err.response?.data?.message ||
+              "Could not change staff account access status.",
           });
         },
       },
@@ -39,27 +37,43 @@ function UsersTable({
   };
 
   return (
-    <div className="rounded-xl border border-border/80 bg-card overflow-hidden shadow-2xs">
+    <div className="border-border/80 bg-card overflow-hidden rounded-xl border shadow-2xs">
       <Table>
         {users?.length === 0 && (
-          <TableCaption className="my-6 text-sm text-muted-foreground">No users found.</TableCaption>
+          <TableCaption className="text-muted-foreground my-6 text-sm">
+            No users found.
+          </TableCaption>
         )}
         <TableHeader className="bg-muted/40">
           <TableRow className="border-border/60 hover:bg-transparent">
-            <TableHead className="font-semibold text-xs text-muted-foreground uppercase tracking-wider py-3">Username</TableHead>
-            <TableHead className="font-semibold text-xs text-muted-foreground uppercase tracking-wider py-3">Role</TableHead>
-            <TableHead className="font-semibold text-xs text-muted-foreground uppercase tracking-wider py-3">Status</TableHead>
-            <TableHead className="text-right font-semibold text-xs text-muted-foreground uppercase tracking-wider py-3"></TableHead>
+            <TableHead className="text-muted-foreground py-3 text-xs font-semibold tracking-wider uppercase">
+              Username
+            </TableHead>
+            <TableHead className="text-muted-foreground py-3 text-xs font-semibold tracking-wider uppercase">
+              Role
+            </TableHead>
+            <TableHead className="text-muted-foreground py-3 text-xs font-semibold tracking-wider uppercase">
+              Status
+            </TableHead>
+            <TableHead className="text-muted-foreground py-3 text-right text-xs font-semibold tracking-wider uppercase"></TableHead>
           </TableRow>
         </TableHeader>
 
-        <TableBody className="divide-y divide-border/60">
+        <TableBody className="divide-border/60 divide-y">
           {users?.map((user) => (
-            <TableRow key={user.id} className="border-border/60 hover:bg-muted/30 transition-colors">
-              <TableCell className="font-medium text-sm text-foreground py-3">{user.username}</TableCell>
+            <TableRow
+              key={user.id}
+              className="border-border/60 hover:bg-muted/30 transition-colors"
+            >
+              <TableCell className="text-foreground py-3 text-sm font-medium">
+                {user.username}
+              </TableCell>
 
               <TableCell className="py-3">
-                <Badge variant="secondary" className="font-semibold text-xs rounded-md">
+                <Badge
+                  variant="secondary"
+                  className="rounded-md text-xs font-semibold"
+                >
                   {user.role}
                 </Badge>
               </TableCell>
@@ -67,10 +81,10 @@ function UsersTable({
               <TableCell className="py-3">
                 <Badge
                   className={cn(
-                    "font-medium text-xs rounded-full px-2.5 py-0.5",
+                    "rounded-full px-2.5 py-0.5 text-xs font-medium",
                     user.isActive
-                      ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 shadow-none"
-                      : "bg-muted text-muted-foreground border border-border shadow-none"
+                      ? "border border-emerald-500/30 bg-emerald-500/15 text-emerald-700 shadow-none dark:text-emerald-400"
+                      : "bg-muted text-muted-foreground border-border border shadow-none",
                   )}
                 >
                   {user.isActive ? "Active" : "Inactive"}
@@ -82,8 +96,9 @@ function UsersTable({
                   size="sm"
                   variant={user.isActive ? "destructive" : "default"}
                   className={cn(
-                    "h-8 rounded-lg px-3 text-xs font-semibold shadow-xs cursor-pointer",
-                    !user.isActive && "bg-emerald-600 hover:bg-emerald-500 text-white"
+                    "h-8 cursor-pointer rounded-lg px-3 text-xs font-semibold shadow-xs",
+                    !user.isActive &&
+                      "bg-emerald-600 text-white hover:bg-emerald-500",
                   )}
                   onClick={() => {
                     if (user.isActive) {

@@ -17,16 +17,19 @@ export function useBackup() {
   >({
     mutationFn: () => handleBackup(),
     onSuccess: () => {
-      toast.success("Encrypted backup uploaded to Google Drive successfully!", {
-        position: "top-center",
+      toast.success("Google Drive Backup Created", {
+        description:
+          "Encrypted database backup was successfully uploaded to Google Drive.",
       });
     },
     onError: (error) => {
       const errorMessage =
         error.response?.data?.error ||
         error.response?.data?.message ||
-        "Failed to create backup.";
-      toast.error(errorMessage, { position: "top-center" });
+        "Failed to create and upload backup.";
+      toast.error("Backup Upload Failed", {
+        description: errorMessage,
+      });
     },
   });
 }
@@ -62,8 +65,9 @@ export function useImportBackup() {
   >({
     mutationFn: handleImportBackup,
     onSuccess: () => {
-      toast.success("Backup imported successfully!", {
-        position: "top-center",
+      toast.success("Backup File Imported", {
+        description:
+          "The backup archive was validated and imported into the system.",
       });
       queryClient.invalidateQueries({ queryKey: ["authStatus"] });
     },
@@ -72,7 +76,9 @@ export function useImportBackup() {
         error.response?.data?.error ||
         error.response?.data?.message ||
         "Failed to import backup.";
-      toast.error(errorMessage, { position: "top-center" });
+      toast.error("Backup Import Failed", {
+        description: errorMessage,
+      });
     },
   });
 }
@@ -108,8 +114,9 @@ export function useRestoreBackup() {
   >({
     mutationFn: handleRestoreBackup,
     onSuccess: () => {
-      toast.success("Backup restored successfully!", {
-        position: "top-center",
+      toast.success("Database Restored Successfully", {
+        description:
+          "Database records have been restored. Please log in with credentials from the backup.",
       });
       queryClient.invalidateQueries({ queryKey: ["authStatus"] });
     },
@@ -118,7 +125,9 @@ export function useRestoreBackup() {
         error.response?.data?.error ||
         error.response?.data?.message ||
         "Failed to restore backup.";
-      toast.error(errorMessage, { position: "top-center" });
+      toast.error("Database Restoration Failed", {
+        description: errorMessage,
+      });
     },
   });
 }
@@ -138,7 +147,17 @@ export function useHandleLogout() {
 
   return useMutation({
     mutationFn: logout,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["google-status"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["google-status"] });
+      toast.success("Google Drive Disconnected", {
+        description: "Your Google account has been unlinked from backup storage.",
+      });
+    },
+    onError: (error: any) => {
+      toast.error("Failed to Disconnect Google Drive", {
+        description:
+          error?.response?.data?.message || "Could not unlink Google account.",
+      });
+    },
   });
 }

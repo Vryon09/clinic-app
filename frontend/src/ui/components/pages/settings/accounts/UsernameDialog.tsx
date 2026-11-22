@@ -59,8 +59,9 @@ function UsernameDialog({
           onOpenChange(false);
         },
         onError: (err) => {
-          toast.error(err.response?.data?.message, {
-            position: "top-center",
+          toast.error("Failed to Change Username", {
+            description:
+              err.response?.data?.message || "Could not update username.",
           });
         },
       },

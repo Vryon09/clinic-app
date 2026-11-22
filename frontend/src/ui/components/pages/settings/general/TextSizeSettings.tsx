@@ -11,33 +11,34 @@ export default function TextSizeSettings() {
 
   const handleSelectSize = (size: TextSize, label: string) => {
     setTextSize(size);
-    toast.success(`Text size changed to ${label}`, {
-      position: "top-center",
+    toast.success("Text Size Updated", {
+      description: `Application text size set to ${label}.`,
       duration: 2000,
     });
   };
 
   const handleReset = () => {
     resetTextSize();
-    toast.info("Text size reset to Medium (Default)", {
-      position: "top-center",
+    toast.info("Text Size Reset", {
+      description: "Application text size reset to Medium (Default).",
       duration: 2000,
     });
   };
 
   return (
-    <Card className="rounded-xl border border-border/80 bg-card p-6 shadow-xs space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <Card className="border-border/80 bg-card space-y-6 rounded-xl border p-6 shadow-xs">
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div className="flex items-start gap-3">
-          <div className="rounded-lg bg-primary/10 p-2 text-primary">
+          <div className="bg-primary/10 text-primary rounded-lg p-2">
             <Type className="size-5" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-foreground">
+            <h2 className="text-foreground text-lg font-semibold">
               Display & Text Size
             </h2>
-            <p className="text-xs text-muted-foreground">
-              Adjust the application text scale for better legibility and reading comfort
+            <p className="text-muted-foreground text-xs">
+              Adjust the application text scale for better legibility and
+              reading comfort
             </p>
           </div>
         </div>
@@ -47,7 +48,7 @@ export default function TextSizeSettings() {
           size="sm"
           onClick={handleReset}
           disabled={textSize === "medium"}
-          className="gap-1.5 h-9 text-xs cursor-pointer"
+          className="h-9 cursor-pointer gap-1.5 text-xs"
         >
           <RotateCcw className="size-3.5" /> Reset to Default
         </Button>
@@ -56,7 +57,7 @@ export default function TextSizeSettings() {
       <Separator className="bg-border/60" />
 
       {/* Size Selection Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {options.map((option) => {
           const isSelected = textSize === option.value;
           return (
@@ -64,23 +65,23 @@ export default function TextSizeSettings() {
               key={option.value}
               type="button"
               onClick={() => handleSelectSize(option.value, option.label)}
-              className={`relative flex flex-col justify-between rounded-xl border p-4 text-left transition-all cursor-pointer ${
+              className={`relative flex cursor-pointer flex-col justify-between rounded-xl border p-4 text-left transition-all ${
                 isSelected
-                  ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-xs"
+                  ? "border-primary bg-primary/5 ring-primary/20 shadow-xs ring-2"
                   : "border-border/80 bg-background/50 hover:border-border hover:bg-muted/40"
               }`}
             >
-              <div className="space-y-2 w-full">
+              <div className="w-full space-y-2">
                 <div className="flex items-center justify-between">
                   <span
                     className={`flex items-center justify-center rounded-md font-bold transition-transform ${
                       option.value === "small"
                         ? "size-7 text-xs"
                         : option.value === "medium"
-                        ? "size-8 text-sm"
-                        : option.value === "large"
-                        ? "size-9 text-base"
-                        : "size-10 text-lg"
+                          ? "size-8 text-sm"
+                          : option.value === "large"
+                            ? "size-9 text-base"
+                            : "size-10 text-lg"
                     } ${
                       isSelected
                         ? "bg-primary text-primary-foreground"
@@ -91,7 +92,7 @@ export default function TextSizeSettings() {
                   </span>
 
                   {isSelected && (
-                    <span className="flex size-5 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                    <span className="bg-primary text-primary-foreground flex size-5 items-center justify-center rounded-full">
                       <Check className="size-3" />
                     </span>
                   )}
@@ -99,21 +100,24 @@ export default function TextSizeSettings() {
 
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-sm font-semibold text-foreground">
+                    <span className="text-foreground text-sm font-semibold">
                       {option.label}
                     </span>
                     {option.value === "medium" && (
-                      <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                      <Badge
+                        variant="outline"
+                        className="px-1.5 py-0 text-[10px]"
+                      >
                         Default
                       </Badge>
                     )}
                   </div>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-muted-foreground text-xs">
                     {option.pixelEquivalent} ({option.percentage})
                   </span>
                 </div>
 
-                <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                <p className="text-muted-foreground line-clamp-2 text-xs leading-relaxed">
                   {option.description}
                 </p>
               </div>
@@ -123,29 +127,30 @@ export default function TextSizeSettings() {
       </div>
 
       {/* Live Preview Box */}
-      <div className="rounded-xl border border-border/70 bg-muted/20 p-4 space-y-3">
+      <div className="border-border/70 bg-muted/20 space-y-3 rounded-xl border p-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
-            <Eye className="size-4 text-primary" />
+          <div className="text-muted-foreground flex items-center gap-1.5 text-xs font-semibold">
+            <Eye className="text-primary size-4" />
             <span>Live Consultation & Patient Card Preview</span>
           </div>
-          <span className="text-[11px] text-muted-foreground">
-            Current Scale: {options.find((o) => o.value === textSize)?.percentage}
+          <span className="text-muted-foreground text-[11px]">
+            Current Scale:{" "}
+            {options.find((o) => o.value === textSize)?.percentage}
           </span>
         </div>
 
-        <div className="rounded-lg border border-border/80 bg-card p-4 space-y-3 shadow-xs">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 pb-3">
+        <div className="border-border/80 bg-card space-y-3 rounded-lg border p-4 shadow-xs">
+          <div className="border-border/60 flex flex-wrap items-center justify-between gap-2 border-b pb-3">
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-foreground text-sm">
+                <span className="text-foreground text-sm font-semibold">
                   Dela Cruz, Juan M.
                 </span>
                 <Badge variant="secondary" className="text-xs font-medium">
                   Patient #2026-0042
                 </Badge>
               </div>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <p className="text-muted-foreground mt-0.5 text-xs">
                 45 years old • Male • Last visit: Oct 28, 2026
               </p>
             </div>
@@ -156,9 +161,9 @@ export default function TextSizeSettings() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div className="rounded-md bg-muted/40 p-2.5">
-              <span className="font-semibold text-foreground block mb-0.5">
+          <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
+            <div className="bg-muted/40 rounded-md p-2.5">
+              <span className="text-foreground mb-0.5 block font-semibold">
                 Chief Complaint
               </span>
               <p className="text-muted-foreground">
@@ -166,8 +171,8 @@ export default function TextSizeSettings() {
               </p>
             </div>
 
-            <div className="rounded-md bg-muted/40 p-2.5">
-              <span className="font-semibold text-foreground block mb-0.5">
+            <div className="bg-muted/40 rounded-md p-2.5">
+              <span className="text-foreground mb-0.5 block font-semibold">
                 Vitals & Assessment
               </span>
               <p className="text-muted-foreground">

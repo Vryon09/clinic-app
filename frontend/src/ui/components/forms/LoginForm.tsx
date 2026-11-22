@@ -43,11 +43,17 @@ export function LoginForm({
   function onSubmit(data: LoginInput) {
     handleLogin(data, {
       onSuccess: () => {
-        toast.success("Login successful", { position: "top-center" });
+        toast.success("Login Successful", {
+          description: `Welcome back to the clinic application.`,
+        });
         navigate("/patients");
       },
       onError: (err) => {
-        toast.error(err.response?.data?.message, { position: "top-center" });
+        toast.error("Login Failed", {
+          description:
+            err.response?.data?.message ||
+            "Invalid username or password. Please try again.",
+        });
       },
     });
   }

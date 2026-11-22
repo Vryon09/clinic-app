@@ -414,10 +414,10 @@ function ConsultationPrintView({
           <Button
             onClick={() => {
               if (!record.case.doctor) {
-                toast.error(
-                  `Record is under "Default" case. Update this record to a case under a doctor.`,
-                  { position: "top-center" },
-                );
+                toast.warning("Doctor Assignment Required", {
+                  description:
+                    'This record is under "Default" case. Reassign it to a case with a designated physician to print documents.',
+                });
 
                 return;
               }
@@ -427,12 +427,11 @@ function ConsultationPrintView({
                   ? `${patient.firstName} ${patient.lastName}`.trim()
                   : "Patient";
 
-                toast.error(
-                  `Doctor should have a license number. Update the "License Number" in settings -> Accounts -> Change License Number.`,
-                  {
-                    position: "top-center",
-                    duration: 6000,
-                    action: {
+                toast.warning("License Number Missing", {
+                  description:
+                    "Medical documents require the doctor's license number. Update the license number in Settings > Accounts.",
+                  duration: 6000,
+                  action: {
                       label: "Go to Settings",
                       onClick: () => {
                         navigate("/settings", {

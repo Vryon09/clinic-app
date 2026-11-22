@@ -145,7 +145,10 @@ export function useVisitDetailsForm({
 
   function onInvalidSubmit(errors: FieldErrors<CreateRecordInput>) {
     if (errors.caseId) {
-      toast.error("Select a case", { position: "top-center" });
+      toast.warning("Case Assignment Required", {
+        description:
+          "Please assign this consultation to an existing case folder or create a new case before saving.",
+      });
     }
   }
 
@@ -155,8 +158,10 @@ export function useVisitDetailsForm({
         { ...recordData, patientId, createdById },
         {
           onError: (err) => {
-            toast.error(err.response?.data?.message, {
-              position: "top-center",
+            toast.error("Failed to Save Consultation", {
+              description:
+                err.response?.data?.message ||
+                "An unexpected error occurred while saving the consultation record.",
             });
           },
         },
@@ -166,8 +171,10 @@ export function useVisitDetailsForm({
         { ...recordData, consultationId },
         {
           onError: (err) => {
-            toast.error(err.response?.data?.message, {
-              position: "top-center",
+            toast.error("Failed to Update Consultation", {
+              description:
+                err.response?.data?.message ||
+                "Could not update consultation record.",
             });
           },
         },

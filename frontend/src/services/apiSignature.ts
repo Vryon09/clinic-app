@@ -30,13 +30,15 @@ export function useUploadSignature() {
     mutationFn: handleUploadSignature,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["signature"] });
-      toast.success("Upload Signature successfully", {
-        position: "top-center",
+      toast.success("Signature Saved", {
+        description:
+          "Digital signature updated for medical prescriptions and certificates.",
       });
     },
     onError: (error: AxiosError<ErrorResponse>) => {
-      toast.error(`${error.response?.data.message}`, {
-        position: "top-center",
+      toast.error("Failed to Upload Signature", {
+        description:
+          error.response?.data?.message || "Could not save digital signature.",
       });
     },
   });
@@ -54,13 +56,14 @@ export function useDeleteSignature() {
     onSuccess: () => {
       queryClient.setQueryData(["signature"], null);
       queryClient.removeQueries({ queryKey: ["signature"] });
-      toast.success("Signature deleted successfully", {
-        position: "top-center",
+      toast.success("Signature Removed", {
+        description: "Digital signature removed from your profile.",
       });
     },
     onError: (error: AxiosError<ErrorResponse>) => {
-      toast.error(`${error.response?.data.message}`, {
-        position: "top-center",
+      toast.error("Failed to Remove Signature", {
+        description:
+          error.response?.data?.message || "Could not delete digital signature.",
       });
     },
   });
