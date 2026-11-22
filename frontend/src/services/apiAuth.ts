@@ -2,6 +2,7 @@ import api from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { toast } from "sonner";
+import type { IUser } from "@/types/User";
 
 type RegisterPayload = {
   firstName: string;
@@ -239,8 +240,10 @@ export function useUpdateFullName() {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       queryClient.invalidateQueries({ queryKey: ["me"] });
+      const currentUser = queryClient.getQueryData<IUser>(["me"]);
+      const prefix = currentUser?.role === "DOCTOR" ? "Dr. " : "";
       toast.success("Profile Name Updated", {
-        description: `Name updated to ${variables.firstName} ${variables.lastName}.`,
+        description: `Name updated to ${prefix}${variables.firstName} ${variables.lastName}.`,
       });
     },
     onError: (error) => {

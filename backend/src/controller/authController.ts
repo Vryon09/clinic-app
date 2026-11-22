@@ -193,7 +193,7 @@ export async function addUser(req: UserRequest, res: Response) {
       },
     });
 
-    const target = `${user.firstName} ${user.lastName}`;
+    const target = user.role === "DOCTOR" ? `Dr. ${user.firstName} ${user.lastName}` : `${user.firstName} ${user.lastName}`;
 
     await prisma.systemLogs.create({
       data: {
@@ -310,12 +310,12 @@ export async function updateUser(req: UserRequest, res: Response) {
       return res.status(400).json({ message: "User not found" });
     }
 
-    const target = `${user.firstName} ${user.lastName} `;
-
     const updatedUser = await prisma.user.update({
       where: { id },
       data: { username, role, licenseNum },
     });
+
+    const target = updatedUser.role === "DOCTOR" ? `Dr. ${user.firstName} ${user.lastName}` : `${user.firstName} ${user.lastName}`;
 
     await prisma.systemLogs.create({
       data: {
@@ -510,7 +510,7 @@ export async function toggleUserStatus(req: UserRequest, res: Response) {
       data: { isActive: !user.isActive },
     });
 
-    const target = `${toggledUser.firstName} ${toggledUser.lastName}`;
+    const target = toggledUser.role === "DOCTOR" ? `Dr. ${toggledUser.firstName} ${toggledUser.lastName}` : `${toggledUser.firstName} ${toggledUser.lastName}`;
 
     if (!toggledUser) {
       res.status(400).json({ message: "Toggling user status failed." });

@@ -13,7 +13,7 @@ import {
   useSidebar,
 } from "./shadcn/sidebar";
 import { LogOut, Settings, Users } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatUserName } from "@/lib/utils";
 import { AppLogo } from "./common/AppLogo";
 import { useAuth } from "@/hooks/useAuth";
 import { useLogout } from "@/services/apiAuth";
@@ -48,9 +48,7 @@ export function AppSidebar() {
     }
   };
 
-  const fullName = user
-    ? `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.username
-    : "Staff Member";
+  const fullName = formatUserName(user, { fallback: "Staff Member" });
 
   return (
     <Sidebar collapsible="icon" className="border-r border-border bg-sidebar transition-all duration-200">

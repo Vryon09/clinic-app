@@ -12,7 +12,7 @@ import { Button } from "../../../shadcn/button";
 import type { IUser } from "@/types/User";
 // import UserDialog from "./UserDialog";
 import { useToggleUserStatus } from "@/services/apiAuth";
-import { cn } from "@/lib/utils";
+import { cn, formatUserName } from "@/lib/utils";
 import { toast } from "sonner";
 import { useState } from "react";
 import ConfirmDialog from "@/ui/components/common/ConfirmDialog";
@@ -120,7 +120,7 @@ function UsersTable({ users }: { users: IUser[] }) {
         open={!!userToDisable}
         onOpenChange={(open) => !open && setUserToDisable(null)}
         title="Disable User Account?"
-        description={`Are you sure you want to deactivate ${userToDisable ? `${userToDisable.firstName} ${userToDisable.lastName} (@${userToDisable.username})` : "this user"}? They will not be able to log in to the clinic application.`}
+        description={`Are you sure you want to deactivate ${userToDisable ? `${formatUserName(userToDisable)} (@${userToDisable.username})` : "this user"}? They will not be able to log in to the clinic application.`}
         confirmLabel="Disable Account"
         onConfirm={() => {
           if (userToDisable) {

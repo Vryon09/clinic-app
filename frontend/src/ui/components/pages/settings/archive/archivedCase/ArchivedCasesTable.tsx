@@ -12,6 +12,7 @@ import { Button } from "@/ui/components/shadcn/button";
 import { ArchiveRestore } from "lucide-react";
 import type { IArchivedCase } from "./ArchivedCases";
 import { useRestoreCase } from "@/services/apiCase";
+import { formatUserName } from "@/lib/utils";
 
 function ArchivedCasesTable({
   archivedCases,
@@ -43,7 +44,7 @@ function ArchivedCasesTable({
 
               <TableCell className="text-xs font-medium text-foreground py-3">{`${caseItem.patient.lastName}, ${caseItem.patient.firstName}${caseItem.patient.middleName ? ` ${caseItem.patient.middleName.slice(0, 1)}.` : ""}`}</TableCell>
 
-              <TableCell className="text-xs text-muted-foreground py-3">{caseItem.doctor.username}</TableCell>
+              <TableCell className="text-xs text-muted-foreground py-3">{formatUserName(caseItem.doctor)}</TableCell>
 
               <TableCell className="text-xs text-muted-foreground whitespace-nowrap py-3">
                 {dayjs(caseItem.archivedOn).format("hh:mm A, MMM DD, YYYY")}

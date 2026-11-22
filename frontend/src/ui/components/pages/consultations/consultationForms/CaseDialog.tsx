@@ -1,5 +1,6 @@
 import { handleGetDoctors } from "@/services/apiAuth";
 import type { IDoctor } from "@/types/User";
+import { formatUserName } from "@/lib/utils";
 import { Button } from "@/ui/components/shadcn/button";
 import {
   Dialog,
@@ -126,7 +127,7 @@ function CaseDialog({
                             value={doctor.id}
                             className="cursor-pointer"
                           >
-                            {doctor.username}
+                            {formatUserName(doctor)}
                           </SelectItem>
                         ))}
                       </SelectGroup>

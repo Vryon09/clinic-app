@@ -1,4 +1,5 @@
 import { Edit, Plus } from "lucide-react";
+import { formatUserName } from "@/lib/utils";
 import { Button } from "../../../shadcn/button";
 import { Card } from "../../../shadcn/card";
 import { Separator } from "../../../shadcn/separator";
@@ -129,7 +130,7 @@ function ManageAccounts() {
                     <div>
                       <p className="text-xs font-medium text-muted-foreground">Full Name</p>
                       <p className="text-sm font-semibold text-foreground">
-                        {user?.firstName} {user?.middleName} {user?.lastName}
+                        {formatUserName(user, { includeMiddle: true }) || "—"}
                       </p>
                     </div>
 

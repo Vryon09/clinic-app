@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { AlertTriangle, Settings } from "lucide-react";
 import { handleGetSignature } from "@/services/apiSignature";
+import { formatUserName } from "@/lib/utils";
 
 function ConsultationPrintView({
   record,
@@ -245,8 +246,10 @@ function ConsultationPrintView({
       <div className="mt-12 text-sm">
         {record.case.doctor?.username && (
           <p className="mb-1 font-semibold">
-            Dr.{" "}
-            {`${record.case.doctor.firstName}${record.case.doctor.middleName ? ` ${record.case.doctor.middleName.slice(0, 1)}.` : ""} ${record.case.doctor.lastName}`}
+            {formatUserName(record.case.doctor, {
+              includeMiddle: true,
+              useMiddleInitial: true,
+            })}
           </p>
         )}
         <div className="relative mb-1">
