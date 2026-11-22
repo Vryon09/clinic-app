@@ -164,6 +164,9 @@ function CaseCard({ caseItem }: { caseItem: ICase }) {
                     <p className="text-xs font-medium text-foreground">
                       {dayjs(record.visitDate).format("MMM DD, YYYY")}
                     </p>
+                    <p className="text-[11px] text-muted-foreground">
+                      {dayjs(record.visitDate).format("h:mm A")}
+                    </p>
                   </div>
 
                   {/* Symptoms & signs summary */}
