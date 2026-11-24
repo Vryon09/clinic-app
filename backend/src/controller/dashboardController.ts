@@ -10,7 +10,11 @@ export const getDashboardSummary = async (req: Request, res: Response) => {
 
     const now = new Date();
     const startDate = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
-    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfToday = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+    );
 
     const [
       activePatientsCount,
@@ -31,7 +35,9 @@ export const getDashboardSummary = async (req: Request, res: Response) => {
       prisma.patient.count({
         where: { isArchived: false, createdAt: { gte: startDate } },
       }),
-      prisma.case.count({ where: { isArchived: false } }),
+      prisma.case.count({
+        where: { isArchived: false, caseName: { not: "Default" } },
+      }),
       prisma.record.count({
         where: { isArchived: false, visitDate: { gte: startOfToday } },
       }),
@@ -96,7 +102,7 @@ export const getDashboardSummary = async (req: Request, res: Response) => {
       ([date, count]) => ({
         date,
         count,
-      })
+      }),
     );
 
     // 3. Top Diagnoses
