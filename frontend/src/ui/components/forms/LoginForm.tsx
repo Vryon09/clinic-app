@@ -46,7 +46,7 @@ export function LoginForm({
         toast.success("Login Successful", {
           description: `Welcome back to the clinic application.`,
         });
-        navigate("/patients");
+        navigate("/dashboard");
       },
       onError: (err) => {
         toast.error("Login Failed", {

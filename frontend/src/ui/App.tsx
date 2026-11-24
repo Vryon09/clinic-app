@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router";
 import { AppLayout } from "./components/layout/AppLayout";
+import DashboardPage from "./components/pages/dashboard/DashboardPage";
 import PatientsPage from "./components/pages/patients/PatientsPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import PatientsHome from "./components/pages/patients/PatientsHome";
@@ -32,6 +33,15 @@ function App() {
               <AuthGate>
                 <AuthPage />
               </AuthGate>
+            }
+          />
+
+          <Route
+            path="dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
             }
           />
 

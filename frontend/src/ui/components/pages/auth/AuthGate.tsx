@@ -35,7 +35,7 @@ function AuthGate({ children }: { children: ReactNode }) {
     }
 
     if (user) {
-      navigate("/patients");
+      navigate("/dashboard");
     }
   }, [
     user,

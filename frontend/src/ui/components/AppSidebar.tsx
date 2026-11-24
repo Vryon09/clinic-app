@@ -12,13 +12,14 @@ import {
   SidebarRail,
   useSidebar,
 } from "./shadcn/sidebar";
-import { LogOut, Settings, Users } from "lucide-react";
+import { LayoutDashboard, LogOut, Settings, Users } from "lucide-react";
 import { cn, formatUserName } from "@/lib/utils";
 import { AppLogo } from "./common/AppLogo";
 import { useAuth } from "@/hooks/useAuth";
 import { useLogout } from "@/services/apiAuth";
 
 const modules = [
+  { url: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { url: "patients", label: "Patients", icon: Users },
   { url: "settings", label: "Settings", icon: Settings },
 ];
@@ -56,7 +57,7 @@ export function AppSidebar() {
       <SidebarHeader className={cn("border-b border-border/50", isCollapsed ? "p-2.5 flex items-center justify-center" : "p-4")}>
         {isCollapsed ? (
           <Link
-            to="/patients"
+            to="/dashboard"
             title="ClinicSync"
             className="flex size-9 items-center justify-center rounded-xl hover:bg-muted/60 transition-colors"
           >
@@ -64,7 +65,7 @@ export function AppSidebar() {
           </Link>
         ) : (
           <Link
-            to="/patients"
+            to="/dashboard"
             className="flex items-center gap-3 p-0 hover:opacity-90 transition-opacity"
             title="ClinicSync"
           >

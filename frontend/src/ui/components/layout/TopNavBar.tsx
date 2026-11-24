@@ -24,7 +24,10 @@ export function TopNavBar() {
 
   const getBreadcrumbs = () => {
     const parts = location.pathname.split("/").filter(Boolean);
-    if (!parts.length || parts[0] === "patients") {
+    if (!parts.length || parts[0] === "dashboard") {
+      return ["Dashboard", "Overview"];
+    }
+    if (parts[0] === "patients") {
       if (parts.length > 1) {
         if (parts.includes("consultations") && parts.includes("new")) {
           return ["Patients", "New Consultation"];

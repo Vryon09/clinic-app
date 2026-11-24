@@ -62,7 +62,7 @@ export function SignupForm({
             description:
               "Administrator account created. Welcome to the clinic management system.",
           });
-          navigate("/patients");
+          navigate("/dashboard");
         },
         onError: (err) => {
           toast.error("Registration Failed", {

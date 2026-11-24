@@ -16,6 +16,7 @@ import caseRoutes from "./routes/caseRoutes.ts";
 import activityLogRoutes from "./routes/activityLogRoutes.ts";
 import systemRoutes from "./routes/systemRoutes.ts";
 import signatureRoutes from "./routes/signatureRoutes.ts";
+import dashboardRoutes from "./routes/dashboardRoutes.ts";
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.use("/api/case", caseRoutes);
 app.use("/api/activityLog", activityLogRoutes);
 app.use("/api/system", systemRoutes);
 app.use("/api/signature", signatureRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 import { initDatabase } from "./config/initDb.ts";
 
