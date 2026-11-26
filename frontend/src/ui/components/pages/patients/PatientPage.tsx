@@ -3,7 +3,7 @@ import type { IPatient } from "@/types/PatientType";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
 import { Button } from "../../shadcn/button";
-import { Pen, Plus, Stethoscope, TestTubes } from "lucide-react";
+import { Pen, Plus, ReceiptText, Stethoscope, TestTubes } from "lucide-react";
 import { useEffect, useState } from "react";
 import { savePatientReturnContext } from "@/lib/patientNavigation";
 import PatientForm from "./PatientForm";
@@ -16,6 +16,7 @@ import BackButton from "../../BackButton";
 import { handleGetCases } from "@/services/apiCase";
 import type { ICase } from "@/types/CaseType";
 import PatientClinicalSummaryBanner from "./PatientClinicalSummaryBanner";
+import { PatientBillingTab } from "../billing/PatientBillingTab";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -116,6 +117,13 @@ function PatientPage() {
                   <TestTubes className="size-3.5" />
                   Laboratory Results
                 </TabsTrigger>
+                <TabsTrigger
+                  value="billing"
+                  className="cursor-pointer gap-2 py-2.5 text-xs font-semibold data-[state=active]:text-primary"
+                >
+                  <ReceiptText className="size-3.5" />
+                  Billing &amp; Invoices
+                </TabsTrigger>
               </TabsList>
             </div>
 
@@ -126,6 +134,10 @@ function PatientPage() {
 
               <TabsContent value="lab-results" className="mt-0 outline-none">
                 <LabResultSection />
+              </TabsContent>
+
+              <TabsContent value="billing" className="mt-0 outline-none p-0 -m-6">
+                <PatientBillingTab patientId={patientId} />
               </TabsContent>
             </div>
           </Tabs>

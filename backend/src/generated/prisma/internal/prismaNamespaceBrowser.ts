@@ -61,7 +61,11 @@ export const ModelName = {
   labResult: 'labResult',
   Signature: 'Signature',
   GoogleToken: 'GoogleToken',
-  SystemLogs: 'SystemLogs'
+  SystemLogs: 'SystemLogs',
+  ServiceCatalog: 'ServiceCatalog',
+  Invoice: 'Invoice',
+  InvoiceItem: 'InvoiceItem',
+  Payment: 'Payment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -229,6 +233,82 @@ export const SystemLogsScalarFieldEnum = {
 } as const
 
 export type SystemLogsScalarFieldEnum = (typeof SystemLogsScalarFieldEnum)[keyof typeof SystemLogsScalarFieldEnum]
+
+
+export const ServiceCatalogScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  category: 'category',
+  defaultPrice: 'defaultPrice',
+  description: 'description',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ServiceCatalogScalarFieldEnum = (typeof ServiceCatalogScalarFieldEnum)[keyof typeof ServiceCatalogScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  invoiceNumber: 'invoiceNumber',
+  patientId: 'patientId',
+  recordId: 'recordId',
+  createdById: 'createdById',
+  issueDate: 'issueDate',
+  dueDate: 'dueDate',
+  status: 'status',
+  subtotal: 'subtotal',
+  discountType: 'discountType',
+  discountValue: 'discountValue',
+  discountAmount: 'discountAmount',
+  discountReason: 'discountReason',
+  taxRate: 'taxRate',
+  taxAmount: 'taxAmount',
+  totalAmount: 'totalAmount',
+  paidAmount: 'paidAmount',
+  balance: 'balance',
+  notes: 'notes',
+  isArchived: 'isArchived',
+  archivedOn: 'archivedOn',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const InvoiceItemScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  serviceId: 'serviceId',
+  name: 'name',
+  category: 'category',
+  unitPrice: 'unitPrice',
+  quantity: 'quantity',
+  total: 'total',
+  createdAt: 'createdAt'
+} as const
+
+export type InvoiceItemScalarFieldEnum = (typeof InvoiceItemScalarFieldEnum)[keyof typeof InvoiceItemScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  receiptNumber: 'receiptNumber',
+  invoiceId: 'invoiceId',
+  patientId: 'patientId',
+  receivedById: 'receivedById',
+  amount: 'amount',
+  paymentMethod: 'paymentMethod',
+  referenceNumber: 'referenceNumber',
+  paymentDate: 'paymentDate',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -38,6 +38,7 @@ interface IUseVisitDetailsForm {
     IHandleUpdateRecord,
     unknown
   >;
+  onSaved?: (recordId: string) => void;
 }
 
 export function useVisitDetailsForm({
@@ -48,6 +49,7 @@ export function useVisitDetailsForm({
   handleAddRecord,
   handleUpdateRecord,
   createdById,
+  onSaved,
 }: IUseVisitDetailsForm) {
   const {
     register,
@@ -157,7 +159,15 @@ export function useVisitDetailsForm({
       handleAddRecord(
         { ...recordData, patientId, createdById },
         {
-          onError: (err) => {
+          onSuccess: (created: any) => {
+            reset();
+            if (onSaved && created?.id) {
+              onSaved(created.id);
+            } else {
+              navigate(`/patients/${patientId}`);
+            }
+          },
+          onError: (err: any) => {
             toast.error("Failed to Save Consultation", {
               description:
                 err.response?.data?.message ||
@@ -170,7 +180,15 @@ export function useVisitDetailsForm({
       handleUpdateRecord(
         { ...recordData, consultationId },
         {
-          onError: (err) => {
+          onSuccess: () => {
+            reset();
+            if (onSaved) {
+              onSaved(consultationId);
+            } else {
+              navigate(`/patients/${patientId}`);
+            }
+          },
+          onError: (err: any) => {
             toast.error("Failed to Update Consultation", {
               description:
                 err.response?.data?.message ||
@@ -180,9 +198,6 @@ export function useVisitDetailsForm({
         },
       );
     }
-
-    navigate(`/patients/${patientId}`);
-    reset();
   }
 
   return {

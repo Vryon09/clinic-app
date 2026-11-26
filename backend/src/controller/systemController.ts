@@ -29,6 +29,10 @@ export async function resetDatabase(req: Request, res: Response) {
         }
       }
 
+      await tx.payment.deleteMany();
+      await tx.invoiceItem.deleteMany();
+      await tx.invoice.deleteMany();
+      await tx.serviceCatalog.deleteMany();
       await tx.recordMedication.deleteMany();
       await tx.vitalSigns.deleteMany();
       await tx.record.deleteMany();

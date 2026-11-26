@@ -24,3 +24,49 @@ export const Sex = {
 } as const
 
 export type Sex = (typeof Sex)[keyof typeof Sex]
+
+
+export const ServiceCategory = {
+  CONSULTATION: 'CONSULTATION',
+  PROCEDURE: 'PROCEDURE',
+  MEDICATION: 'MEDICATION',
+  LABORATORY: 'LABORATORY',
+  SUPPLIES: 'SUPPLIES',
+  OTHER: 'OTHER'
+} as const
+
+export type ServiceCategory = (typeof ServiceCategory)[keyof typeof ServiceCategory]
+
+
+export const InvoiceStatus = {
+  DRAFT: 'DRAFT',
+  UNPAID: 'UNPAID',
+  PARTIALLY_PAID: 'PARTIALLY_PAID',
+  PAID: 'PAID',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type InvoiceStatus = (typeof InvoiceStatus)[keyof typeof InvoiceStatus]
+
+
+export const DiscountType = {
+  NONE: 'NONE',
+  PERCENTAGE: 'PERCENTAGE',
+  FIXED: 'FIXED'
+} as const
+
+export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType]
+
+
+export const PaymentMethod = {
+  CASH: 'CASH',
+  GCASH: 'GCASH',
+  MAYA: 'MAYA',
+  CREDIT_CARD: 'CREDIT_CARD',
+  DEBIT_CARD: 'DEBIT_CARD',
+  BANK_TRANSFER: 'BANK_TRANSFER',
+  HMO_INSURANCE: 'HMO_INSURANCE',
+  OTHER: 'OTHER'
+} as const
+
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]

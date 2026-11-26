@@ -30,7 +30,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/ui/components/shadcn/dialog";
-import { AlertCircle, CalendarDays, History, Plus, User } from "lucide-react";
+import { AlertCircle, CalendarDays, CheckCircle2, History, Plus, ReceiptText, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addCaseSchema, type AddCaseInput } from "@/schemas/caseSchema";
@@ -39,12 +39,15 @@ import { toast } from "sonner";
 import CaseDialog from "./CaseDialog";
 import dayjs from "dayjs";
 import PatientHistoryDrawer from "./PatientHistoryDrawer";
+import { InvoiceFormDialog } from "../../billing/InvoiceFormDialog";
 
 function ConsultationsForm() {
   const [isAddingCase, setIsAddingCase] = useState<boolean>(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
   const [isUnsavedMedModalOpen, setIsUnsavedMedModalOpen] = useState<boolean>(false);
   const [pendingRecordData, setPendingRecordData] = useState<CreateRecordInput | null>(null);
+  const [completedRecordId, setCompletedRecordId] = useState<string | null>(null);
+  const [isBillingOpen, setIsBillingOpen] = useState<boolean>(false);
 
   const { user, isUserLoading } = useAuth();
 
@@ -127,6 +130,9 @@ function ConsultationsForm() {
     handleUpdateRecord,
     navigate,
     createdById: user!.id,
+    onSaved: (recordId) => {
+      setCompletedRecordId(recordId);
+    },
   });
 
   const hasUnsavedMedication = () => {
@@ -389,6 +395,79 @@ function ConsultationsForm() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Post-Completion Billing Prompt */}
+      <Dialog
+        open={!!completedRecordId && !isBillingOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            setCompletedRecordId(null);
+            navigate(`/patients/${patientId}`);
+          }
+        }}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex items-center gap-2 text-emerald-600">
+              <CheckCircle2 className="size-5" />
+              <DialogTitle className="text-base font-semibold text-foreground">
+                Consultation Completed
+              </DialogTitle>
+            </div>
+            <DialogDescription className="pt-2 text-xs text-muted-foreground leading-relaxed">
+              The consultation record has been saved. Would you like to create an invoice and proceed to billing now?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end pt-3">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setCompletedRecordId(null);
+                navigate(`/patients/${patientId}`);
+              }}
+              className="text-xs cursor-pointer"
+            >
+              Back to Patient
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                const recId = completedRecordId;
+                setCompletedRecordId(null);
+                navigate(`/patients/${patientId}/consultations/${recId}/details`);
+              }}
+              className="text-xs cursor-pointer"
+            >
+              View Record
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              onClick={() => setIsBillingOpen(true)}
+              className="text-xs gap-1.5 cursor-pointer"
+            >
+              <ReceiptText className="size-3.5" />
+              Proceed to Billing
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <InvoiceFormDialog
+        open={isBillingOpen}
+        onOpenChange={setIsBillingOpen}
+        defaultPatientId={patientId}
+        defaultRecordId={completedRecordId || undefined}
+        onSuccess={(invoiceId) => {
+          setIsBillingOpen(false);
+          setCompletedRecordId(null);
+          navigate(`/billing/invoices/${invoiceId}`);
+        }}
+      />
     </div>
   );
 }

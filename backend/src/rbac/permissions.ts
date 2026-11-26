@@ -5,4 +5,9 @@ export const PERMISSIONS = {
   RECORD_UPDATE: "record:update",
   RECORD_DELETE: "record: delete",
   SYSTEM_RESET: "system:reset",
+  BILLING_VIEW: "billing:view",
+  BILLING_CREATE: "billing:create",
+  BILLING_UPDATE: "billing:update",
+  BILLING_PAYMENT: "billing:payment",
+  BILLING_ADMIN: "billing:admin",
 };

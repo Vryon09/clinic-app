@@ -12,6 +12,10 @@ import AuthPage from "./components/pages/auth/AuthPage";
 import { Toaster } from "./components/shadcn/sonner";
 import ProtectedRoute from "./components/pages/auth/ProtectedRoute";
 import AuthGate from "./components/pages/auth/AuthGate";
+import BillingPage from "./components/pages/billing/BillingPage";
+import InvoiceDetailPage from "./components/pages/billing/InvoiceDetailPage";
+import InvoicePrintView from "./components/pages/billing/InvoicePrintView";
+import ReceiptPrintView from "./components/pages/billing/ReceiptPrintView";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -77,6 +81,39 @@ function App() {
               </ProtectedRoute>
             }
           ></Route>
+
+          <Route
+            path="billing"
+            element={
+              <ProtectedRoute>
+                <BillingPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="billing/invoices/:invoiceId"
+            element={
+              <ProtectedRoute>
+                <InvoiceDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="billing/invoices/:invoiceId/print"
+            element={
+              <ProtectedRoute>
+                <InvoicePrintView />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="billing/receipts/:paymentId/print"
+            element={
+              <ProtectedRoute>
+                <ReceiptPrintView />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
       <Toaster />

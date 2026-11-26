@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
+import { UserRequest } from "../types/express";
 
-export const getDashboardSummary = async (req: Request, res: Response) => {
+export const getDashboardSummary = async (req: UserRequest, res: Response) => {
   try {
     const range = (req.query.range as string) || "30d";
     let days = 30;
@@ -196,7 +197,7 @@ export const getDashboardSummary = async (req: Request, res: Response) => {
 
     // 8. Admin snapshot (if requested by ADMIN)
     let adminSnapshot = null;
-    if (req.user && req.user.role === "ADMIN") {
+    if (req.role === "ADMIN") {
       const [recentLogs, activeUsersCount, googleToken] = await Promise.all([
         prisma.systemLogs.findMany({
           orderBy: { createdAt: "desc" },

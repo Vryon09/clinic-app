@@ -72,3 +72,23 @@ export type GoogleToken = Prisma.GoogleTokenModel
  * 
  */
 export type SystemLogs = Prisma.SystemLogsModel
+/**
+ * Model ServiceCatalog
+ * 
+ */
+export type ServiceCatalog = Prisma.ServiceCatalogModel
+/**
+ * Model Invoice
+ * 
+ */
+export type Invoice = Prisma.InvoiceModel
+/**
+ * Model InvoiceItem
+ * 
+ */
+export type InvoiceItem = Prisma.InvoiceItemModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel

@@ -261,6 +261,7 @@ export type RecordWhereInput = {
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   lastEditedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  invoices?: Prisma.InvoiceListRelationFilter
 }
 
 export type RecordOrderByWithRelationInput = {
@@ -285,6 +286,7 @@ export type RecordOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   lastEditedBy?: Prisma.UserOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
+  invoices?: Prisma.InvoiceOrderByRelationAggregateInput
 }
 
 export type RecordWhereUniqueInput = Prisma.AtLeast<{
@@ -312,6 +314,7 @@ export type RecordWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   lastEditedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  invoices?: Prisma.InvoiceListRelationFilter
 }, "id">
 
 export type RecordOrderByWithAggregationInput = {
@@ -371,6 +374,7 @@ export type RecordCreateInput = {
   user?: Prisma.UserCreateNestedOneWithoutRecordsInput
   lastEditedBy?: Prisma.UserCreateNestedOneWithoutRecordsLastEditedInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutRecordInput
 }
 
 export type RecordUncheckedCreateInput = {
@@ -390,6 +394,7 @@ export type RecordUncheckedCreateInput = {
   createdById: string
   vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
   recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutRecordInput
 }
 
 export type RecordUpdateInput = {
@@ -409,6 +414,7 @@ export type RecordUpdateInput = {
   user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
   lastEditedBy?: Prisma.UserUpdateOneWithoutRecordsLastEditedNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordUncheckedUpdateInput = {
@@ -428,6 +434,7 @@ export type RecordUncheckedUpdateInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
   recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordCreateManyInput = {
@@ -540,6 +547,11 @@ export type RecordMinOrderByAggregateInput = {
 export type RecordScalarRelationFilter = {
   is?: Prisma.RecordWhereInput
   isNot?: Prisma.RecordWhereInput
+}
+
+export type RecordNullableScalarRelationFilter = {
+  is?: Prisma.RecordWhereInput | null
+  isNot?: Prisma.RecordWhereInput | null
 }
 
 export type RecordCreateNestedManyWithoutLastEditedByInput = {
@@ -780,6 +792,22 @@ export type RecordUpdateOneRequiredWithoutRecordMedicationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.RecordUpdateToOneWithWhereWithoutRecordMedicationsInput, Prisma.RecordUpdateWithoutRecordMedicationsInput>, Prisma.RecordUncheckedUpdateWithoutRecordMedicationsInput>
 }
 
+export type RecordCreateNestedOneWithoutInvoicesInput = {
+  create?: Prisma.XOR<Prisma.RecordCreateWithoutInvoicesInput, Prisma.RecordUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.RecordCreateOrConnectWithoutInvoicesInput
+  connect?: Prisma.RecordWhereUniqueInput
+}
+
+export type RecordUpdateOneWithoutInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.RecordCreateWithoutInvoicesInput, Prisma.RecordUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.RecordCreateOrConnectWithoutInvoicesInput
+  upsert?: Prisma.RecordUpsertWithoutInvoicesInput
+  disconnect?: Prisma.RecordWhereInput | boolean
+  delete?: Prisma.RecordWhereInput | boolean
+  connect?: Prisma.RecordWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.RecordUpdateToOneWithWhereWithoutInvoicesInput, Prisma.RecordUpdateWithoutInvoicesInput>, Prisma.RecordUncheckedUpdateWithoutInvoicesInput>
+}
+
 export type RecordCreateWithoutLastEditedByInput = {
   id?: string
   visitDate?: Date | string
@@ -796,6 +824,7 @@ export type RecordCreateWithoutLastEditedByInput = {
   case: Prisma.CaseCreateNestedOneWithoutRecordsInput
   user?: Prisma.UserCreateNestedOneWithoutRecordsInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutRecordInput
 }
 
 export type RecordUncheckedCreateWithoutLastEditedByInput = {
@@ -814,6 +843,7 @@ export type RecordUncheckedCreateWithoutLastEditedByInput = {
   createdById: string
   vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
   recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutRecordInput
 }
 
 export type RecordCreateOrConnectWithoutLastEditedByInput = {
@@ -841,6 +871,7 @@ export type RecordCreateWithoutCreatedByInput = {
   case: Prisma.CaseCreateNestedOneWithoutRecordsInput
   user?: Prisma.UserCreateNestedOneWithoutRecordsInput
   lastEditedBy?: Prisma.UserCreateNestedOneWithoutRecordsLastEditedInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutRecordInput
 }
 
 export type RecordUncheckedCreateWithoutCreatedByInput = {
@@ -859,6 +890,7 @@ export type RecordUncheckedCreateWithoutCreatedByInput = {
   lastEditedById?: string | null
   vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
   recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutRecordInput
 }
 
 export type RecordCreateOrConnectWithoutCreatedByInput = {
@@ -886,6 +918,7 @@ export type RecordCreateWithoutUserInput = {
   case: Prisma.CaseCreateNestedOneWithoutRecordsInput
   lastEditedBy?: Prisma.UserCreateNestedOneWithoutRecordsLastEditedInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutRecordInput
 }
 
 export type RecordUncheckedCreateWithoutUserInput = {
@@ -904,6 +937,7 @@ export type RecordUncheckedCreateWithoutUserInput = {
   createdById: string
   vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
   recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutRecordInput
 }
 
 export type RecordCreateOrConnectWithoutUserInput = {
@@ -999,6 +1033,7 @@ export type RecordCreateWithoutPatientInput = {
   user?: Prisma.UserCreateNestedOneWithoutRecordsInput
   lastEditedBy?: Prisma.UserCreateNestedOneWithoutRecordsLastEditedInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutRecordInput
 }
 
 export type RecordUncheckedCreateWithoutPatientInput = {
@@ -1017,6 +1052,7 @@ export type RecordUncheckedCreateWithoutPatientInput = {
   createdById: string
   vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
   recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutRecordInput
 }
 
 export type RecordCreateOrConnectWithoutPatientInput = {
@@ -1060,6 +1096,7 @@ export type RecordCreateWithoutCaseInput = {
   user?: Prisma.UserCreateNestedOneWithoutRecordsInput
   lastEditedBy?: Prisma.UserCreateNestedOneWithoutRecordsLastEditedInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutRecordInput
 }
 
 export type RecordUncheckedCreateWithoutCaseInput = {
@@ -1078,6 +1115,7 @@ export type RecordUncheckedCreateWithoutCaseInput = {
   createdById: string
   vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
   recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutRecordInput
 }
 
 export type RecordCreateOrConnectWithoutCaseInput = {
@@ -1121,6 +1159,7 @@ export type RecordCreateWithoutVitalSignsInput = {
   user?: Prisma.UserCreateNestedOneWithoutRecordsInput
   lastEditedBy?: Prisma.UserCreateNestedOneWithoutRecordsLastEditedInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutRecordInput
 }
 
 export type RecordUncheckedCreateWithoutVitalSignsInput = {
@@ -1139,6 +1178,7 @@ export type RecordUncheckedCreateWithoutVitalSignsInput = {
   lastEditedById?: string | null
   createdById: string
   recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutRecordInput
 }
 
 export type RecordCreateOrConnectWithoutVitalSignsInput = {
@@ -1173,6 +1213,7 @@ export type RecordUpdateWithoutVitalSignsInput = {
   user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
   lastEditedBy?: Prisma.UserUpdateOneWithoutRecordsLastEditedNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordUncheckedUpdateWithoutVitalSignsInput = {
@@ -1191,6 +1232,7 @@ export type RecordUncheckedUpdateWithoutVitalSignsInput = {
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordCreateWithoutRecordMedicationsInput = {
@@ -1209,6 +1251,7 @@ export type RecordCreateWithoutRecordMedicationsInput = {
   user?: Prisma.UserCreateNestedOneWithoutRecordsInput
   lastEditedBy?: Prisma.UserCreateNestedOneWithoutRecordsLastEditedInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutRecordInput
 }
 
 export type RecordUncheckedCreateWithoutRecordMedicationsInput = {
@@ -1227,6 +1270,7 @@ export type RecordUncheckedCreateWithoutRecordMedicationsInput = {
   lastEditedById?: string | null
   createdById: string
   vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutRecordInput
 }
 
 export type RecordCreateOrConnectWithoutRecordMedicationsInput = {
@@ -1261,6 +1305,7 @@ export type RecordUpdateWithoutRecordMedicationsInput = {
   user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
   lastEditedBy?: Prisma.UserUpdateOneWithoutRecordsLastEditedNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordUncheckedUpdateWithoutRecordMedicationsInput = {
@@ -1279,6 +1324,99 @@ export type RecordUncheckedUpdateWithoutRecordMedicationsInput = {
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutRecordNestedInput
+}
+
+export type RecordCreateWithoutInvoicesInput = {
+  id?: string
+  visitDate?: Date | string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
+  symptoms?: string | null
+  signs?: string | null
+  diagnosis?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  patient: Prisma.PatientCreateNestedOneWithoutRecordsInput
+  vitalSigns?: Prisma.VitalSignsCreateNestedOneWithoutRecordInput
+  recordMedications?: Prisma.RecordMedicationCreateNestedManyWithoutRecordInput
+  case: Prisma.CaseCreateNestedOneWithoutRecordsInput
+  user?: Prisma.UserCreateNestedOneWithoutRecordsInput
+  lastEditedBy?: Prisma.UserCreateNestedOneWithoutRecordsLastEditedInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedRecordsInput
+}
+
+export type RecordUncheckedCreateWithoutInvoicesInput = {
+  id?: string
+  patientId: string
+  visitDate?: Date | string
+  isArchived?: boolean
+  archivedOn?: Date | string | null
+  symptoms?: string | null
+  signs?: string | null
+  diagnosis?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  caseId: string
+  userId?: string | null
+  lastEditedById?: string | null
+  createdById: string
+  vitalSigns?: Prisma.VitalSignsUncheckedCreateNestedOneWithoutRecordInput
+  recordMedications?: Prisma.RecordMedicationUncheckedCreateNestedManyWithoutRecordInput
+}
+
+export type RecordCreateOrConnectWithoutInvoicesInput = {
+  where: Prisma.RecordWhereUniqueInput
+  create: Prisma.XOR<Prisma.RecordCreateWithoutInvoicesInput, Prisma.RecordUncheckedCreateWithoutInvoicesInput>
+}
+
+export type RecordUpsertWithoutInvoicesInput = {
+  update: Prisma.XOR<Prisma.RecordUpdateWithoutInvoicesInput, Prisma.RecordUncheckedUpdateWithoutInvoicesInput>
+  create: Prisma.XOR<Prisma.RecordCreateWithoutInvoicesInput, Prisma.RecordUncheckedCreateWithoutInvoicesInput>
+  where?: Prisma.RecordWhereInput
+}
+
+export type RecordUpdateToOneWithWhereWithoutInvoicesInput = {
+  where?: Prisma.RecordWhereInput
+  data: Prisma.XOR<Prisma.RecordUpdateWithoutInvoicesInput, Prisma.RecordUncheckedUpdateWithoutInvoicesInput>
+}
+
+export type RecordUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  patient?: Prisma.PatientUpdateOneRequiredWithoutRecordsNestedInput
+  vitalSigns?: Prisma.VitalSignsUpdateOneWithoutRecordNestedInput
+  recordMedications?: Prisma.RecordMedicationUpdateManyWithoutRecordNestedInput
+  case?: Prisma.CaseUpdateOneRequiredWithoutRecordsNestedInput
+  user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
+  lastEditedBy?: Prisma.UserUpdateOneWithoutRecordsLastEditedNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
+}
+
+export type RecordUncheckedUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  patientId?: Prisma.StringFieldUpdateOperationsInput | string
+  visitDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isArchived?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  archivedOn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  symptoms?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signs?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diagnosis?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  caseId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
+  recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordCreateManyLastEditedByInput = {
@@ -1345,6 +1483,7 @@ export type RecordUpdateWithoutLastEditedByInput = {
   case?: Prisma.CaseUpdateOneRequiredWithoutRecordsNestedInput
   user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordUncheckedUpdateWithoutLastEditedByInput = {
@@ -1363,6 +1502,7 @@ export type RecordUncheckedUpdateWithoutLastEditedByInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
   recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordUncheckedUpdateManyWithoutLastEditedByInput = {
@@ -1397,6 +1537,7 @@ export type RecordUpdateWithoutCreatedByInput = {
   case?: Prisma.CaseUpdateOneRequiredWithoutRecordsNestedInput
   user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
   lastEditedBy?: Prisma.UserUpdateOneWithoutRecordsLastEditedNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordUncheckedUpdateWithoutCreatedByInput = {
@@ -1415,6 +1556,7 @@ export type RecordUncheckedUpdateWithoutCreatedByInput = {
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
   recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordUncheckedUpdateManyWithoutCreatedByInput = {
@@ -1449,6 +1591,7 @@ export type RecordUpdateWithoutUserInput = {
   case?: Prisma.CaseUpdateOneRequiredWithoutRecordsNestedInput
   lastEditedBy?: Prisma.UserUpdateOneWithoutRecordsLastEditedNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordUncheckedUpdateWithoutUserInput = {
@@ -1467,6 +1610,7 @@ export type RecordUncheckedUpdateWithoutUserInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
   recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordUncheckedUpdateManyWithoutUserInput = {
@@ -1517,6 +1661,7 @@ export type RecordUpdateWithoutPatientInput = {
   user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
   lastEditedBy?: Prisma.UserUpdateOneWithoutRecordsLastEditedNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordUncheckedUpdateWithoutPatientInput = {
@@ -1535,6 +1680,7 @@ export type RecordUncheckedUpdateWithoutPatientInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
   recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordUncheckedUpdateManyWithoutPatientInput = {
@@ -1585,6 +1731,7 @@ export type RecordUpdateWithoutCaseInput = {
   user?: Prisma.UserUpdateOneWithoutRecordsNestedInput
   lastEditedBy?: Prisma.UserUpdateOneWithoutRecordsLastEditedNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedRecordsNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordUncheckedUpdateWithoutCaseInput = {
@@ -1603,6 +1750,7 @@ export type RecordUncheckedUpdateWithoutCaseInput = {
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   vitalSigns?: Prisma.VitalSignsUncheckedUpdateOneWithoutRecordNestedInput
   recordMedications?: Prisma.RecordMedicationUncheckedUpdateManyWithoutRecordNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutRecordNestedInput
 }
 
 export type RecordUncheckedUpdateManyWithoutCaseInput = {
@@ -1628,10 +1776,12 @@ export type RecordUncheckedUpdateManyWithoutCaseInput = {
 
 export type RecordCountOutputType = {
   recordMedications: number
+  invoices: number
 }
 
 export type RecordCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   recordMedications?: boolean | RecordCountOutputTypeCountRecordMedicationsArgs
+  invoices?: boolean | RecordCountOutputTypeCountInvoicesArgs
 }
 
 /**
@@ -1649,6 +1799,13 @@ export type RecordCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
  */
 export type RecordCountOutputTypeCountRecordMedicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.RecordMedicationWhereInput
+}
+
+/**
+ * RecordCountOutputType without action
+ */
+export type RecordCountOutputTypeCountInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvoiceWhereInput
 }
 
 
@@ -1674,6 +1831,7 @@ export type RecordSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   user?: boolean | Prisma.Record$userArgs<ExtArgs>
   lastEditedBy?: boolean | Prisma.Record$lastEditedByArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  invoices?: boolean | Prisma.Record$invoicesArgs<ExtArgs>
   _count?: boolean | Prisma.RecordCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["record"]>
 
@@ -1747,6 +1905,7 @@ export type RecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   user?: boolean | Prisma.Record$userArgs<ExtArgs>
   lastEditedBy?: boolean | Prisma.Record$lastEditedByArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  invoices?: boolean | Prisma.Record$invoicesArgs<ExtArgs>
   _count?: boolean | Prisma.RecordCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type RecordIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1774,6 +1933,7 @@ export type $RecordPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     user: Prisma.$UserPayload<ExtArgs> | null
     lastEditedBy: Prisma.$UserPayload<ExtArgs> | null
     createdBy: Prisma.$UserPayload<ExtArgs>
+    invoices: Prisma.$InvoicePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2191,6 +2351,7 @@ export interface Prisma__RecordClient<T, Null = never, ExtArgs extends runtime.T
   user<T extends Prisma.Record$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Record$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   lastEditedBy<T extends Prisma.Record$lastEditedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Record$lastEditedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  invoices<T extends Prisma.Record$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Record$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2706,6 +2867,30 @@ export type Record$lastEditedByArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Record.invoices
+ */
+export type Record$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invoice
+   */
+  select?: Prisma.InvoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invoice
+   */
+  omit?: Prisma.InvoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvoiceInclude<ExtArgs> | null
+  where?: Prisma.InvoiceWhereInput
+  orderBy?: Prisma.InvoiceOrderByWithRelationInput | Prisma.InvoiceOrderByWithRelationInput[]
+  cursor?: Prisma.InvoiceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvoiceScalarFieldEnum | Prisma.InvoiceScalarFieldEnum[]
 }
 
 /**

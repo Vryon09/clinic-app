@@ -35,7 +35,11 @@ export const backupToDrive = async (req: Request, res: Response) => {
     recordMedications,
     labResults,
     systemLogs,
-    signatures
+    signatures,
+    serviceCatalogs,
+    invoices,
+    invoiceItems,
+    payments
   ] = await prisma.$transaction([
     prisma.clinic.findMany(),
     prisma.user.findMany(),
@@ -46,7 +50,11 @@ export const backupToDrive = async (req: Request, res: Response) => {
     prisma.recordMedication.findMany(),
     prisma.labResult.findMany(),
     prisma.systemLogs.findMany(),
-    prisma.signature.findMany()
+    prisma.signature.findMany(),
+    prisma.serviceCatalog.findMany(),
+    prisma.invoice.findMany(),
+    prisma.invoiceItem.findMany(),
+    prisma.payment.findMany()
   ]);
 
   const backup = {
@@ -66,7 +74,11 @@ export const backupToDrive = async (req: Request, res: Response) => {
       recordMedications,
       labResults,
       systemLogs,
-      signatures
+      signatures,
+      serviceCatalogs,
+      invoices,
+      invoiceItems,
+      payments
     },
   };
 
@@ -273,6 +285,10 @@ export async function restoreBackup(req: Request, res: Response) {
       labResults = [],
       systemLogs = [],
       signatures = [],
+      serviceCatalogs = [],
+      invoices = [],
+      invoiceItems = [],
+      payments = [],
     } = backup.data;
 
     const parsedUsers = parseDates(users, ["createdAt"]);
@@ -284,9 +300,17 @@ export async function restoreBackup(req: Request, res: Response) {
     const parsedLabResults = parseDates(labResults, ["uploadedAt"]);
     const parsedSignatures = parseDates(signatures, ["uploadedAt"]);
     const parsedSystemLogs = parseDates(systemLogs, ["createdAt"]);
+    const parsedServices = parseDates(serviceCatalogs, ["createdAt", "updatedAt"]);
+    const parsedInvoices = parseDates(invoices, ["issueDate", "dueDate", "archivedOn", "createdAt", "updatedAt"]);
+    const parsedInvoiceItems = parseDates(invoiceItems, ["createdAt"]);
+    const parsedPayments = parseDates(payments, ["paymentDate", "createdAt", "updatedAt"]);
 
     await prisma.$transaction(async (tx) => {
       // Clear existing records in reverse foreign-key order
+      await tx.payment.deleteMany();
+      await tx.invoiceItem.deleteMany();
+      await tx.invoice.deleteMany();
+      await tx.serviceCatalog.deleteMany();
       await tx.systemLogs.deleteMany();
       await tx.signature.deleteMany();
       await tx.labResult.deleteMany();
@@ -308,6 +332,10 @@ export async function restoreBackup(req: Request, res: Response) {
       if (parsedLabResults.length) await tx.labResult.createMany({ data: parsedLabResults });
       if (parsedSignatures.length) await tx.signature.createMany({ data: parsedSignatures });
       if (parsedSystemLogs.length) await tx.systemLogs.createMany({ data: parsedSystemLogs });
+      if (parsedServices.length) await tx.serviceCatalog.createMany({ data: parsedServices });
+      if (parsedInvoices.length) await tx.invoice.createMany({ data: parsedInvoices });
+      if (parsedInvoiceItems.length) await tx.invoiceItem.createMany({ data: parsedInvoiceItems });
+      if (parsedPayments.length) await tx.payment.createMany({ data: parsedPayments });
     });
 
     copyDirIfExists(
@@ -407,6 +435,10 @@ export async function importBackup(req: Request, res: Response) {
       labResults = [],
       systemLogs = [],
       signatures = [],
+      serviceCatalogs = [],
+      invoices = [],
+      invoiceItems = [],
+      payments = [],
     } = backup.data;
 
     const parsedUsers = parseDates(users, ["createdAt"]);
@@ -418,6 +450,10 @@ export async function importBackup(req: Request, res: Response) {
     const parsedLabResults = parseDates(labResults, ["uploadedAt"]);
     const parsedSignatures = parseDates(signatures, ["uploadedAt"]);
     const parsedSystemLogs = parseDates(systemLogs, ["createdAt"]);
+    const parsedServices = parseDates(serviceCatalogs, ["createdAt", "updatedAt"]);
+    const parsedInvoices = parseDates(invoices, ["issueDate", "dueDate", "archivedOn", "createdAt", "updatedAt"]);
+    const parsedInvoiceItems = parseDates(invoiceItems, ["createdAt"]);
+    const parsedPayments = parseDates(payments, ["paymentDate", "createdAt", "updatedAt"]);
 
     await prisma.$transaction(async (tx) => {
       if (parsedUsers.length) await tx.user.createMany({ data: parsedUsers });
@@ -439,6 +475,10 @@ export async function importBackup(req: Request, res: Response) {
       if (parsedLabResults.length) await tx.labResult.createMany({ data: parsedLabResults });
       if (parsedSignatures.length) await tx.signature.createMany({ data: parsedSignatures });
       if (parsedSystemLogs.length) await tx.systemLogs.createMany({ data: parsedSystemLogs });
+      if (parsedServices.length) await tx.serviceCatalog.createMany({ data: parsedServices });
+      if (parsedInvoices.length) await tx.invoice.createMany({ data: parsedInvoices });
+      if (parsedInvoiceItems.length) await tx.invoiceItem.createMany({ data: parsedInvoiceItems });
+      if (parsedPayments.length) await tx.payment.createMany({ data: parsedPayments });
     });
 
     copyDirIfExists(

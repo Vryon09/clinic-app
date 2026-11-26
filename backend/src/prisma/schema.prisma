@@ -65,6 +65,9 @@ model User {
   systemLogs SystemLogs[]
   clinics    Clinic[]
   signatures Signature?
+
+  invoicesCreated  Invoice[] @relation("InvoiceCreator")
+  paymentsReceived Payment[] @relation("PaymentReceiver")
 }
 
 model Patient {
@@ -90,6 +93,8 @@ model Patient {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @default(now()) @updatedAt
   labResults labResult[]
+  invoices   Invoice[]
+  payments   Payment[]
 }
 
 model Case {
@@ -137,6 +142,8 @@ model Record {
 
   createdById String
   createdBy   User   @relation("RecordCreator", fields: [createdById], references: [id])
+
+  invoices Invoice[]
 }
 
 model VitalSigns {
@@ -202,4 +209,125 @@ model SystemLogs {
   user   User   @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
+}
+
+enum ServiceCategory {
+  CONSULTATION
+  PROCEDURE
+  MEDICATION
+  LABORATORY
+  SUPPLIES
+  OTHER
+}
+
+enum InvoiceStatus {
+  DRAFT
+  UNPAID
+  PARTIALLY_PAID
+  PAID
+  CANCELLED
+}
+
+enum DiscountType {
+  NONE
+  PERCENTAGE
+  FIXED
+}
+
+enum PaymentMethod {
+  CASH
+  GCASH
+  MAYA
+  CREDIT_CARD
+  DEBIT_CARD
+  BANK_TRANSFER
+  HMO_INSURANCE
+  OTHER
+}
+
+model ServiceCatalog {
+  id           String          @id @default(uuid())
+  name         String
+  category     ServiceCategory @default(CONSULTATION)
+  defaultPrice Float
+  description  String?
+  isActive     Boolean         @default(true)
+
+  invoiceItems InvoiceItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Invoice {
+  id            String        @id @default(uuid())
+  invoiceNumber String        @unique
+  patientId     String
+  patient       Patient       @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  recordId      String?
+  record        Record?       @relation(fields: [recordId], references: [id], onDelete: SetNull)
+  createdById   String
+  createdBy     User          @relation("InvoiceCreator", fields: [createdById], references: [id])
+
+  issueDate DateTime  @default(now())
+  dueDate   DateTime?
+  status    InvoiceStatus @default(UNPAID)
+
+  subtotal       Float        @default(0)
+  discountType   DiscountType @default(NONE)
+  discountValue  Float        @default(0)
+  discountAmount Float        @default(0)
+  discountReason String?
+  taxRate        Float        @default(0)
+  taxAmount      Float        @default(0)
+  totalAmount    Float        @default(0)
+  paidAmount     Float        @default(0)
+  balance        Float        @default(0)
+  notes          String?
+
+  isArchived Boolean   @default(false)
+  archivedOn DateTime?
+
+  items    InvoiceItem[]
+  payments Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InvoiceItem {
+  id        String  @id @default(uuid())
+  invoiceId String
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  serviceId String?
+  service   ServiceCatalog? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+
+  name      String
+  category  ServiceCategory @default(OTHER)
+  unitPrice Float
+  quantity  Int             @default(1)
+  total     Float
+
+  createdAt DateTime @default(now())
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  receiptNumber String        @unique
+  invoiceId     String
+  invoice       Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  patientId     String
+  patient       Patient       @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  receivedById  String
+  receivedBy    User          @relation("PaymentReceiver", fields: [receivedById], references: [id])
+
+  amount          Float
+  paymentMethod   PaymentMethod @default(CASH)
+  referenceNumber String?
+  paymentDate     DateTime      @default(now())
+  notes           String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

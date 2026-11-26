@@ -12,7 +12,7 @@ import {
   SidebarRail,
   useSidebar,
 } from "./shadcn/sidebar";
-import { LayoutDashboard, LogOut, Settings, Users } from "lucide-react";
+import { LayoutDashboard, LogOut, ReceiptText, Settings, Users } from "lucide-react";
 import { cn, formatUserName } from "@/lib/utils";
 import { AppLogo } from "./common/AppLogo";
 import { useAuth } from "@/hooks/useAuth";
@@ -21,6 +21,7 @@ import { useLogout } from "@/services/apiAuth";
 const modules = [
   { url: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { url: "patients", label: "Patients", icon: Users },
+  { url: "billing", label: "Billing", icon: ReceiptText },
   { url: "settings", label: "Settings", icon: Settings },
 ];
 
