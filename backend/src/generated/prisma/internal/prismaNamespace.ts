@@ -398,7 +398,8 @@ export const ModelName = {
   ServiceCatalog: 'ServiceCatalog',
   Invoice: 'Invoice',
   InvoiceItem: 'InvoiceItem',
-  Payment: 'Payment'
+  Payment: 'Payment',
+  LabRequest: 'LabRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "clinic" | "user" | "patient" | "case" | "record" | "vitalSigns" | "recordMedication" | "labResult" | "signature" | "googleToken" | "systemLogs" | "serviceCatalog" | "invoice" | "invoiceItem" | "payment"
+    modelProps: "clinic" | "user" | "patient" | "case" | "record" | "vitalSigns" | "recordMedication" | "labResult" | "signature" | "googleToken" | "systemLogs" | "serviceCatalog" | "invoice" | "invoiceItem" | "payment" | "labRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1528,6 +1529,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LabRequest: {
+      payload: Prisma.$LabRequestPayload<ExtArgs>
+      fields: Prisma.LabRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LabRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LabRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LabRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LabRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.LabRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LabRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LabRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LabRequestPayload>
+        }
+        findMany: {
+          args: Prisma.LabRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LabRequestPayload>[]
+        }
+        create: {
+          args: Prisma.LabRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LabRequestPayload>
+        }
+        createMany: {
+          args: Prisma.LabRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LabRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LabRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.LabRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LabRequestPayload>
+        }
+        update: {
+          args: Prisma.LabRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LabRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.LabRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LabRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LabRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LabRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.LabRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LabRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.LabRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLabRequest>
+        }
+        groupBy: {
+          args: Prisma.LabRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LabRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LabRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LabRequestCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1794,6 +1869,22 @@ export const PaymentScalarFieldEnum = {
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
+export const LabRequestScalarFieldEnum = {
+  id: 'id',
+  patientId: 'patientId',
+  doctorId: 'doctorId',
+  requestDate: 'requestDate',
+  selectedTests: 'selectedTests',
+  customTests: 'customTests',
+  otherExaminations: 'otherExaminations',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LabRequestScalarFieldEnum = (typeof LabRequestScalarFieldEnum)[keyof typeof LabRequestScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2002,6 +2093,7 @@ export type GlobalOmitConfig = {
   invoice?: Prisma.InvoiceOmit
   invoiceItem?: Prisma.InvoiceItemOmit
   payment?: Prisma.PaymentOmit
+  labRequest?: Prisma.LabRequestOmit
 }
 
 /* Types for Logging */

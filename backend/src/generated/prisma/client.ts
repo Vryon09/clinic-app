@@ -114,3 +114,8 @@ export type InvoiceItem = Prisma.InvoiceItemModel
  * 
  */
 export type Payment = Prisma.PaymentModel
+/**
+ * Model LabRequest
+ * 
+ */
+export type LabRequest = Prisma.LabRequestModel

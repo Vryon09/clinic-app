@@ -3,7 +3,7 @@ import type { IPatient } from "@/types/PatientType";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
 import { Button } from "../../shadcn/button";
-import { Pen, Plus, ReceiptText, Stethoscope, TestTubes } from "lucide-react";
+import { ClipboardList, Pen, Plus, ReceiptText, Stethoscope, TestTubes } from "lucide-react";
 import { useEffect, useState } from "react";
 import { savePatientReturnContext } from "@/lib/patientNavigation";
 import PatientForm from "./PatientForm";
@@ -17,6 +17,7 @@ import { handleGetCases } from "@/services/apiCase";
 import type { ICase } from "@/types/CaseType";
 import PatientClinicalSummaryBanner from "./PatientClinicalSummaryBanner";
 import { PatientBillingTab } from "../billing/PatientBillingTab";
+import { PatientLabRequestsTab } from "../labRequests/PatientLabRequestsTab";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -62,6 +63,15 @@ function PatientPage() {
         </div>
 
         <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8.5 gap-1.5 rounded-lg text-xs font-semibold cursor-pointer shadow-2xs"
+            onClick={() => navigate(`/patients/${patientId}/lab-requests/print?mode=digital`)}
+          >
+            <ClipboardList className="size-3.5" />
+            <span>New Lab Request</span>
+          </Button>
           <Button
             size="sm"
             className="h-8.5 gap-1.5 rounded-lg text-xs font-semibold cursor-pointer shadow-xs"
@@ -111,6 +121,13 @@ function PatientPage() {
                   Consultation Records
                 </TabsTrigger>
                 <TabsTrigger
+                  value="lab-requests"
+                  className="cursor-pointer gap-2 py-2.5 text-xs font-semibold data-[state=active]:text-primary"
+                >
+                  <ClipboardList className="size-3.5" />
+                  Lab Requests
+                </TabsTrigger>
+                <TabsTrigger
                   value="lab-results"
                   className="cursor-pointer gap-2 py-2.5 text-xs font-semibold data-[state=active]:text-primary"
                 >
@@ -130,6 +147,10 @@ function PatientPage() {
             <div className="p-6">
               <TabsContent value="consultations" className="mt-0 outline-none">
                 <ConsultationRecords patient={patient!} />
+              </TabsContent>
+
+              <TabsContent value="lab-requests" className="mt-0 outline-none">
+                <PatientLabRequestsTab />
               </TabsContent>
 
               <TabsContent value="lab-results" className="mt-0 outline-none">

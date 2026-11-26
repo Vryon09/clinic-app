@@ -18,6 +18,7 @@ import systemRoutes from "./routes/systemRoutes.ts";
 import signatureRoutes from "./routes/signatureRoutes.ts";
 import dashboardRoutes from "./routes/dashboardRoutes.ts";
 import billingRoutes from "./routes/billingRoutes.ts";
+import labRequestRoutes from "./routes/labRequestRoutes.ts";
 
 const app = express();
 
@@ -62,6 +63,7 @@ app.use("/api/system", systemRoutes);
 app.use("/api/signature", signatureRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/billing", billingRoutes);
+app.use("/api/labRequests", labRequestRoutes);
 
 import { initDatabase } from "./config/initDb.ts";
 
