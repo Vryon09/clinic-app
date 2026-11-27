@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../../shadcn/button";
 import {
   Dialog,
@@ -26,8 +26,8 @@ import { RadioGroup, RadioGroupItem } from "../../shadcn/radio-group";
 import { Popover, PopoverContent, PopoverTrigger } from "../../shadcn/popover";
 import { Calendar } from "../../shadcn/calendar";
 import dayjs from "dayjs";
-import { CalendarIcon, MapPin, Phone, UserPlus, PenBox, ShieldAlert } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { CalendarIcon, MapPin, Phone, UserPlus, PenBox, ShieldAlert, Plus, X } from "lucide-react";
+import { cn, formatAllergies, parseAllergies } from "@/lib/utils";
 
 interface PatientFormProps {
   isOpen: boolean;
@@ -44,29 +44,50 @@ function PatientForm({
   initialValues,
   handlePatient,
 }: PatientFormProps) {
+  const [allergyInput, setAllergyInput] = useState("");
   const {
     register,
     handleSubmit,
     reset,
     control,
+    setError,
     formState: { errors },
   } = useForm<CreatePatientInput>({
     resolver: zodResolver(createPatientSchema),
     defaultValues: {
       ...initialValues,
+      allergies: formatAllergies(initialValues.allergies),
     },
   });
 
   useEffect(() => {
-    reset({ ...initialValues });
+    reset({
+      ...initialValues,
+      allergies: formatAllergies(initialValues.allergies),
+    });
+    setAllergyInput("");
   }, [initialValues, reset]);
 
   function onSubmit(data: CreatePatientInput) {
+    const combinedAllergies = formatAllergies(
+      [data.allergies, allergyInput].filter(Boolean).join(", "),
+    );
+    if (allergyInput.trim()) {
+      const parsed = createPatientSchema.shape.allergies.safeParse(combinedAllergies);
+      if (!parsed.success) {
+        setError("allergies", {
+          type: "manual",
+          message: parsed.error.issues[0]?.message || "Invalid allergy value.",
+        });
+        return;
+      }
+    }
     handlePatient({
       ...data,
       middleName: data.middleName?.trim() || "",
-      allergies: data.allergies?.trim() || "",
+      allergies: combinedAllergies,
     });
+    setAllergyInput("");
     reset();
     setIsOpen();
   }
@@ -333,17 +354,89 @@ function PatientForm({
                   <FieldLabel htmlFor="allergies" className="text-xs font-medium text-foreground/90">
                     Known Drug &amp; Environmental Allergies
                   </FieldLabel>
-                  <div className="relative">
-                    <Input
-                      className="h-9 rounded-lg border-border/80 bg-background/50 pl-9 text-xs focus-visible:border-primary focus-visible:ring-primary/20"
-                      id="allergies"
-                      placeholder="e.g. Penicillin, Aspirin, NSAIDs (Leave blank if NKDA)"
-                      maxLength={300}
-                      {...register("allergies")}
-                      type="text"
-                    />
-                    <ShieldAlert className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-muted-foreground" />
-                  </div>
+                    <Controller
+                    name="allergies"
+                    control={control}
+                    render={({ field }) => {
+                      const allergyList = parseAllergies(field.value);
+
+                      const addAllergy = () => {
+                        if (!allergyInput.trim()) return;
+                        const next = formatAllergies(
+                          [field.value, allergyInput].filter(Boolean).join(", "),
+                        );
+                        field.onChange(next);
+                        setAllergyInput("");
+                      };
+
+                      const removeAllergy = (target: string) => {
+                        const next = allergyList.filter((item) => item !== target);
+                        field.onChange(next.join(", "));
+                      };
+
+                      return (
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                            <div className="relative flex-1">
+                              <Input
+                                className="h-9 rounded-lg border-border/80 bg-background/50 pl-9 text-xs focus-visible:border-primary focus-visible:ring-primary/20"
+                                id="allergies"
+                                placeholder="e.g. Penicillin (Leave blank if NKDA)"
+                                maxLength={300}
+                                value={allergyInput}
+                                onChange={(e) => setAllergyInput(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    addAllergy();
+                                  }
+                                }}
+                                type="text"
+                              />
+                              <ShieldAlert className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-muted-foreground" />
+                            </div>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={addAllergy}
+                              disabled={!allergyInput.trim()}
+                              className="h-9 shrink-0 rounded-lg px-3 text-xs font-medium cursor-pointer"
+                            >
+                              <Plus className="size-3.5" />
+                              Add
+                            </Button>
+                          </div>
+
+                          {allergyList.length > 0 && (
+                            <div className="space-y-1.5">
+                              <div className="flex flex-wrap gap-1.5">
+                                {allergyList.map((allergy) => (
+                                  <span
+                                    key={allergy}
+                                    className="inline-flex items-center gap-1 rounded-md border border-amber-300/80 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 text-[11px] font-medium text-amber-800 dark:text-amber-200"
+                                  >
+                                    {allergy}
+                                    <button
+                                      type="button"
+                                      onClick={() => removeAllergy(allergy)}
+                                      aria-label={"Remove " + allergy}
+                                      className="rounded-sm p-0.5 text-amber-700/80 hover:bg-amber-200/60 hover:text-amber-900 dark:text-amber-300/80 dark:hover:bg-amber-900/60 cursor-pointer"
+                                    >
+                                      <X className="size-3" />
+                                    </button>
+                                  </span>
+                                ))}
+                              </div>
+                              <p className="text-[11px] text-muted-foreground">
+                                Formatted: <span className="font-medium text-foreground">{allergyList.join(", ")}</span>
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    }}
+                  />
                   {errors.allergies && (
                     <FieldError className="text-xs" errors={[errors.allergies]} />
                   )}
@@ -359,6 +452,7 @@ function PatientForm({
               variant="outline"
               size="sm"
               onClick={() => {
+                setAllergyInput("");
                 reset();
                 setIsOpen();
               }}

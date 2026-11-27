@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { Skeleton } from "../../shadcn/skeleton";
 import { Calendar, MapPin, Phone, ShieldAlert } from "lucide-react";
 import StatusBadge from "../../common/StatusBadge";
+import { formatAllergies } from "@/lib/utils";
 
 function PatientCard({
   patient,
@@ -110,8 +111,10 @@ function PatientCard({
               <div className="flex-1">
                 <p className="text-[10px] uppercase text-muted-foreground">Allergies / Alerts</p>
                 <p className="font-medium text-foreground">
-                  {patient?.allergies ? (
-                    <span className="text-amber-700 dark:text-amber-300 font-semibold">{patient.allergies}</span>
+                  {formatAllergies(patient?.allergies) ? (
+                    <span className="text-amber-700 dark:text-amber-300 font-semibold">
+                      {formatAllergies(patient?.allergies)}
+                    </span>
                   ) : (
                     <span className="text-muted-foreground text-[11px]">NKDA (No Known Allergies)</span>
                   )}

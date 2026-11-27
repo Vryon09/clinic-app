@@ -13,6 +13,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import StatusBadge from "../../common/StatusBadge";
+import { parseAllergies } from "@/lib/utils";
 
 dayjs.extend(relativeTime);
 
@@ -49,7 +50,8 @@ function PatientClinicalSummaryBanner({
   const latestVitals = latestEncounter?.vitalSigns;
   const latestMeds = latestEncounter?.recordMedications || [];
 
-  const hasAllergies = Boolean(patient?.allergies && patient.allergies.trim().length > 0);
+  const allergyList = parseAllergies(patient?.allergies);
+  const hasAllergies = allergyList.length > 0;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -169,10 +171,17 @@ function PatientClinicalSummaryBanner({
 
         <div className="mt-2 space-y-1">
           {hasAllergies ? (
-            <div className="flex items-center gap-1.5">
-              <span className="inline-flex items-center gap-1 rounded border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/40 px-1.5 py-0.5 text-[10px] font-bold text-rose-700 dark:text-rose-300 truncate max-w-[200px]" title={patient?.allergies || ""}>
-                <ShieldAlert className="size-3 text-rose-600 shrink-0" /> {patient?.allergies}
-              </span>
+            <div className="flex flex-wrap items-center gap-1" title={allergyList.join(", ")}>
+              {allergyList.map((allergy) => (
+                <span
+                  key={allergy}
+                  className="inline-flex items-center gap-1 rounded border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/40 px-1.5 py-0.5 text-[10px] font-bold text-rose-700 dark:text-rose-300 max-w-[160px] truncate"
+                  title={allergy}
+                >
+                  <ShieldAlert className="size-3 text-rose-600 shrink-0" />
+                  <span className="truncate">{allergy}</span>
+                </span>
+              ))}
             </div>
           ) : (
             <div className="flex items-center gap-1.5">

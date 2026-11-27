@@ -61,3 +61,22 @@ export function formatNameWithRole(
   return trimmed;
 }
 
+export function parseAllergies(allergies?: string | null): string[] {
+  if (!allergies) return [];
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const part of allergies.split(",")) {
+    const trimmed = part.trim();
+    if (!trimmed) continue;
+    const key = trimmed.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    result.push(trimmed);
+  }
+  return result;
+}
+
+export function formatAllergies(allergies?: string | null): string {
+  return parseAllergies(allergies).join(", ");
+}
+
