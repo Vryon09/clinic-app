@@ -143,7 +143,6 @@ function ConsultationUserView({
             <EmptyState
               title="No Medications Prescribed"
               description="No pharmacological treatments were recorded for this encounter."
-              showMascot={false}
               icon={Pill}
               className="p-4 sm:p-4"
             />

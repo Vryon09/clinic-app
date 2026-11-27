@@ -6,6 +6,7 @@ import {
 } from "./shadcn/pagination";
 import { Button } from "./shadcn/button";
 import type { IPagination } from "@/types/Pagination";
+import { cn } from "@/lib/utils";
 import { Skeleton } from "./shadcn/skeleton";
 
 function PaginationBar({
@@ -13,11 +14,13 @@ function PaginationBar({
   paginationData,
   setPage,
   isLoading,
+  className,
 }: {
   itemName: string;
   paginationData: IPagination;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   isLoading: boolean;
+  className?: string;
 }) {
   const from = isLoading
     ? null
@@ -32,7 +35,12 @@ function PaginationBar({
       );
 
   return (
-    <div className="mt-4 flex w-full items-center justify-between border-t border-border/60 px-2 pt-3 pb-1">
+    <div
+      className={cn(
+        "mt-4 flex w-full items-center justify-between border-t border-border/60 px-2 pt-3 pb-1",
+        className,
+      )}
+    >
       {isLoading ? (
         <>
           <Skeleton className="h-4 w-32 rounded-md bg-muted/60" />

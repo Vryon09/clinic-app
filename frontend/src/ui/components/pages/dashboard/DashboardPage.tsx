@@ -1,21 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
+import { UserPlus } from "lucide-react";
 import { useDashboardSummary } from "@/services/apiDashboard";
 import type { DashboardRange } from "@/types/DashboardType";
 import { DashboardKpis } from "./DashboardKpis";
 import { ConsultationTrendChart } from "./ConsultationTrendChart";
-import { TopClinicalInsights } from "./TopClinicalInsights";
 import { RecentConsultationsList } from "./RecentConsultationsList";
-import { QuickActionsCard } from "./QuickActionsCard";
 import { DemographicsCard } from "./DemographicsCard";
-import { AdminActivitySnapshot } from "./AdminActivitySnapshot";
 import { Button } from "../../shadcn/button";
 import { Skeleton } from "../../shadcn/skeleton";
-import { useAuth } from "@/hooks/useAuth";
 
 export default function DashboardPage() {
   const [range, setRange] = useState<DashboardRange>("30d");
   const { data, isLoading } = useDashboardSummary(range);
-  const { user } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className="space-y-6 pb-8">
@@ -35,21 +33,32 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        {/* Range Buttons */}
-        <div className="inline-flex rounded-lg border border-border/80 bg-muted/40 p-1">
-          {(["7d", "30d", "90d"] as DashboardRange[]).map((r) => (
-            <Button
-              key={r}
-              variant={range === r ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setRange(r)}
-              className={`h-7 px-3 text-xs font-semibold rounded-md cursor-pointer ${
-                range === r ? "shadow-xs" : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {r === "7d" ? "Past 7 Days" : r === "90d" ? "Past 90 Days" : "Past 30 Days"}
-            </Button>
-          ))}
+        {/* Range Buttons + Quick Action */}
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="inline-flex rounded-lg border border-border/80 bg-muted/40 p-1">
+            {(["7d", "30d", "90d"] as DashboardRange[]).map((r) => (
+              <Button
+                key={r}
+                variant={range === r ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setRange(r)}
+                className={`h-7 px-3 text-xs font-semibold rounded-md cursor-pointer ${
+                  range === r ? "shadow-xs" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {r === "7d" ? "Past 7 Days" : r === "90d" ? "Past 90 Days" : "Past 30 Days"}
+              </Button>
+            ))}
+          </div>
+
+          <Button
+            onClick={() => navigate("/patients")}
+            size="sm"
+            className="h-9 gap-2 rounded-lg px-3.5 text-xs font-semibold cursor-pointer"
+          >
+            <UserPlus className="size-4" />
+            <span>Add / Search Patients</span>
+          </Button>
         </div>
       </div>
 
@@ -64,45 +73,30 @@ export default function DashboardPage() {
             <Skeleton className="h-72 rounded-2xl lg:col-span-2" />
             <Skeleton className="h-72 rounded-2xl" />
           </div>
+          <Skeleton className="h-72 rounded-2xl" />
         </div>
       ) : (
         <>
           {/* Top KPI Cards */}
           <DashboardKpis kpis={data?.kpis} range={range} />
 
-          {/* Consultation Trend + Top Clinical Insights */}
+          {/* Consultation Trend + Demographics */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <ConsultationTrendChart data={data?.consultationTrends || []} />
             </div>
             <div>
-              <TopClinicalInsights
-                topDiagnoses={data?.topDiagnoses || []}
-                topMedications={data?.topMedications || []}
-              />
-            </div>
-          </div>
-
-          {/* Quick Actions + Recent Consultations + Demographics */}
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <div className="space-y-6">
-              <QuickActionsCard />
               <DemographicsCard
                 demographics={data?.demographics}
                 doctorWorkload={data?.doctorWorkload}
               />
             </div>
-            <div className="lg:col-span-2">
-              <RecentConsultationsList
-                consultations={data?.recentConsultations || []}
-              />
-            </div>
           </div>
 
-          {/* Admin Snapshot */}
-          {user?.role === "ADMIN" && data?.adminSnapshot && (
-            <AdminActivitySnapshot snapshot={data.adminSnapshot} />
-          )}
+          {/* Recent Consultations */}
+          <RecentConsultationsList
+            consultations={data?.recentConsultations || []}
+          />
         </>
       )}
     </div>

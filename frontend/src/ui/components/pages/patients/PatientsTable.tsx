@@ -142,7 +142,6 @@ function PatientsTable({
                           ? "Click 'Register Patient' above to create your first clinical record."
                           : `No patient records matched "${searchInput}". Try adjusting your search query.`
                       }
-                      showMascot={false}
                     />
                   </TableCell>
                 </TableRow>

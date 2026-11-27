@@ -32,7 +32,7 @@ export function RecentConsultationsList({
   };
 
   return (
-    <Card className="flex flex-col justify-between rounded-2xl border border-border/80 bg-card p-5 shadow-2xs">
+    <Card className="flex flex-col rounded-2xl border border-border/80 bg-card p-5 shadow-2xs">
       <div>
         <div className="flex items-center justify-between pb-3">
           <div>
@@ -41,7 +41,7 @@ export function RecentConsultationsList({
           </div>
           <Link
             to="/patients"
-            className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-primary dark:text-teal-300 hover:underline"
           >
             <span>View all</span>
             <ArrowUpRight className="size-3" />
@@ -90,6 +90,7 @@ export function RecentConsultationsList({
           paginationData={paginationData}
           setPage={setPage}
           isLoading={false}
+          className="mt-0 px-0 pb-0"
         />
       )}
     </Card>

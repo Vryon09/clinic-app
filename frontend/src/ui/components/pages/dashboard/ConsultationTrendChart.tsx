@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Card } from "../../shadcn/card";
 import type { ConsultationTrendPoint } from "@/types/DashboardType";
 import dayjs from "dayjs";
@@ -8,6 +8,7 @@ interface ConsultationTrendChartProps {
 }
 
 export function ConsultationTrendChart({ data }: ConsultationTrendChartProps) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const maxCount = useMemo(() => {
     if (!data.length) return 1;
     const max = Math.max(...data.map((d) => d.count));
@@ -50,8 +51,11 @@ export function ConsultationTrendChart({ data }: ConsultationTrendChartProps) {
     return `${linePath} L ${last.x} ${bottom} L ${first.x} ${bottom} Z`;
   }, [points, linePath, chartHeight]);
 
+  const hoveredPoint =
+    hoveredIndex !== null && points[hoveredIndex] ? points[hoveredIndex] : null;
+
   return (
-    <Card className="flex flex-col overflow-hidden rounded-2xl border border-border/80 bg-card p-5 shadow-2xs">
+    <Card className="flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card p-5 shadow-2xs">
       <div className="flex items-center justify-between pb-3">
         <div>
           <h3 className="text-sm font-bold text-foreground">Consultation Volume</h3>
@@ -64,78 +68,120 @@ export function ConsultationTrendChart({ data }: ConsultationTrendChartProps) {
       </div>
 
       {/* Responsive SVG Chart container */}
-      <div className="relative w-full overflow-hidden pt-2">
+      <div className="relative my-auto w-full pt-2">
         {!data.length ? (
           <div className="flex h-44 w-full items-center justify-center text-xs text-muted-foreground">
             No consultation data available for this range.
           </div>
         ) : (
-          <svg
-            viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-            className="h-44 w-full overflow-visible"
-            preserveAspectRatio="none"
+          <div
+            className="relative h-44 w-full"
+            onMouseLeave={() => setHoveredIndex(null)}
           >
-            <defs>
-              <linearGradient id="trendGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="var(--color-primary, #0d9488)" stopOpacity="0.35" />
-                <stop offset="100%" stopColor="var(--color-primary, #0d9488)" stopOpacity="0.0" />
-              </linearGradient>
-            </defs>
+            <svg
+              viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+              className="h-full w-full overflow-visible"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <linearGradient id="trendGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--color-chart-1, #0d9488)" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="var(--color-chart-1, #0d9488)" stopOpacity="0.0" />
+                </linearGradient>
+              </defs>
 
-            {/* Horizontal guide lines */}
-            <line
-              x1={paddingX}
-              y1={20}
-              x2={chartWidth - paddingX}
-              y2={20}
-              stroke="currentColor"
-              className="text-border/40"
-              strokeDasharray="4 4"
-            />
-            <line
-              x1={paddingX}
-              y1={chartHeight / 2}
-              x2={chartWidth - paddingX}
-              y2={chartHeight / 2}
-              stroke="currentColor"
-              className="text-border/40"
-              strokeDasharray="4 4"
-            />
-            <line
-              x1={paddingX}
-              y1={chartHeight - 10}
-              x2={chartWidth - paddingX}
-              y2={chartHeight - 10}
-              stroke="currentColor"
-              className="text-border/60"
-            />
+              {/* Horizontal guide lines */}
+              <line
+                x1={paddingX}
+                y1={20}
+                x2={chartWidth - paddingX}
+                y2={20}
+                stroke="currentColor"
+                className="text-border/60 dark:text-muted-foreground/25"
+                strokeDasharray="4 4"
+              />
+              <line
+                x1={paddingX}
+                y1={chartHeight / 2}
+                x2={chartWidth - paddingX}
+                y2={chartHeight / 2}
+                stroke="currentColor"
+                className="text-border/60 dark:text-muted-foreground/25"
+                strokeDasharray="4 4"
+              />
+              <line
+                x1={paddingX}
+                y1={chartHeight - 10}
+                x2={chartWidth - paddingX}
+                y2={chartHeight - 10}
+                stroke="currentColor"
+                className="text-border/80 dark:text-muted-foreground/40"
+              />
 
-            {/* Area fill */}
-            <path d={areaPath} fill="url(#trendGradient)" />
+              {/* Area fill */}
+              <path d={areaPath} fill="url(#trendGradient)" />
 
-            {/* Trend line */}
-            <path
-              d={linePath}
-              fill="none"
-              stroke="var(--color-primary, #0d9488)"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+              {/* Trend line */}
+              <path
+                d={linePath}
+                fill="none"
+                stroke="var(--color-chart-1, #0d9488)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
 
-            {/* Interactive Data points (shown when reasonable count, e.g. 7d or 30d) */}
+            {/* Interactive Data points overlay (keeps dots circular and scales from center without SVG transform-origin glitches) */}
             {points.length <= 35 &&
-              points.map((p) => (
-                <g key={p.date} className="group">
-                  <circle
-                    cx={p.x}
-                    cy={p.y}
-                    r="3.5"
-                    className="fill-background stroke-primary stroke-2 transition-transform hover:scale-150 cursor-pointer"
-                  />
-                </g>
-              ))}
-          </svg>
+              points.map((p, idx) => {
+                const isHovered = hoveredIndex === idx;
+                const leftPct = (p.x / chartWidth) * 100;
+                const topPct = (p.y / chartHeight) * 100;
+
+                return (
+                  <div
+                    key={p.date}
+                    onMouseEnter={() => setHoveredIndex(idx)}
+                    onMouseLeave={() => setHoveredIndex((prev) => (prev === idx ? null : prev))}
+                    style={{ left: `${leftPct}%`, top: `${topPct}%` }}
+                    className="absolute flex size-4 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center"
+                  >
+                    <span
+                      className={`block size-2 rounded-full border-2 border-chart-1 bg-background dark:bg-card transition-transform duration-150 ${
+                        isHovered ? "scale-150 bg-chart-1/20" : ""
+                      }`}
+                    />
+                  </div>
+                );
+              })}
+
+            {/* Hover tooltip */}
+            {hoveredPoint && points.length <= 35 && (
+              <div
+                style={{
+                  left: `${(hoveredPoint.x / chartWidth) * 100}%`,
+                  top: `${(hoveredPoint.y / chartHeight) * 100}%`,
+                }}
+                className={`pointer-events-none absolute z-10 whitespace-nowrap rounded-lg border border-border bg-popover px-2.5 py-1.5 text-xs shadow-md ${
+                  hoveredPoint.y < 52 ? "translate-y-3" : "-translate-y-[calc(100%+10px)]"
+                } ${
+                  (hoveredPoint.x / chartWidth) * 100 < 15
+                    ? "-translate-x-2"
+                    : (hoveredPoint.x / chartWidth) * 100 > 85
+                      ? "-translate-x-[calc(100%-8px)]"
+                      : "-translate-x-1/2"
+                }`}
+              >
+                <div className="font-semibold text-foreground">
+                  {hoveredPoint.count} {hoveredPoint.count === 1 ? "visit" : "visits"}
+                </div>
+                <div className="text-[10px] text-muted-foreground">
+                  {dayjs(hoveredPoint.date).format("MMM D, YYYY")}
+                </div>
+              </div>
+            )}
+          </div>
         )}
       </div>
 

@@ -24,7 +24,7 @@ export function MetricCard({
   return (
     <Card
       className={cn(
-        "group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-card p-5 shadow-xs transition-all hover:border-primary/40 hover:shadow-sm",
+        "group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/80 bg-card p-5 shadow-xs transition-all hover:border-primary/40 dark:hover:border-teal-400/50 hover:shadow-sm",
         className
       )}
     >
@@ -35,7 +35,7 @@ export function MetricCard({
             {value}
           </p>
         </div>
-        <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+        <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground dark:bg-teal-400/15 dark:text-teal-300 dark:group-hover:bg-teal-400 dark:group-hover:text-slate-950">
           <Icon className="size-5" />
         </div>
       </div>
@@ -44,12 +44,12 @@ export function MetricCard({
         <div className="mt-4 space-y-2 border-t border-border/40 pt-3">
           <div className="flex items-center justify-between text-[11px] text-muted-foreground">
             {subtitle && <span>{subtitle}</span>}
-            {trend && <span className="font-semibold text-primary">{trend}</span>}
+            {trend && <span className="font-semibold text-primary dark:text-teal-300">{trend}</span>}
           </div>
           {progressPercent !== undefined && (
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full bg-primary transition-all duration-500 rounded-full"
+                className="h-full bg-primary dark:bg-teal-400 transition-all duration-500 rounded-full"
                 style={{ width: `${Math.min(100, Math.max(0, progressPercent))}%` }}
               />
             </div>

@@ -34,7 +34,6 @@ function ConsultationRecordsTable() {
         <EmptyState
           title="No Consultation Records"
           description="No medical cases or consultation records found for this patient. Click 'New Consultation' above to begin."
-          showMascot={true}
         />
       </div>
     );

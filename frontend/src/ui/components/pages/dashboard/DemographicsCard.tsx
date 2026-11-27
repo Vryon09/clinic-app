@@ -23,7 +23,7 @@ export function DemographicsCard({
   const maxAgeCount = Math.max(...Object.values(ageBuckets), 1);
 
   return (
-    <Card className="flex flex-col gap-5 rounded-2xl border border-border/80 bg-card p-5 shadow-2xs">
+    <Card className="flex h-full flex-col gap-5 rounded-2xl border border-border/80 bg-card p-5 shadow-2xs">
       <div>
         <h3 className="text-sm font-bold text-foreground">Patient Demographics & Staff</h3>
         <p className="text-xs text-muted-foreground">Demographic profile and provider caseload</p>
@@ -54,7 +54,7 @@ export function DemographicsCard({
                 <div className="flex h-12 items-end justify-center rounded bg-muted/30 p-1">
                   <div
                     style={{ height: `${Math.max(15, pct)}%` }}
-                    className="w-full rounded-sm bg-primary/80 transition-all"
+                    className="w-full rounded-sm bg-primary/80 dark:bg-teal-400/80 transition-all"
                   />
                 </div>
                 <div className="text-[10px] font-semibold text-foreground">{group}</div>
@@ -73,7 +73,7 @@ export function DemographicsCard({
             {doctorWorkload.map((doc) => (
               <div key={doc.doctorName} className="flex justify-between text-xs">
                 <span className="text-foreground">{doc.doctorName}</span>
-                <span className="font-semibold text-primary">{doc.count} cases</span>
+                <span className="font-semibold text-primary dark:text-teal-300">{doc.count} cases</span>
               </div>
             ))}
           </div>

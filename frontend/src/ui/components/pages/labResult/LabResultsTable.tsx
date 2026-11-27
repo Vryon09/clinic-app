@@ -140,7 +140,6 @@ function LabResultsTable({
         <EmptyState
           title="No Lab Results"
           description="No laboratory diagnostic results have been uploaded for this patient yet."
-          showMascot={false}
         />
       </div>
     );
