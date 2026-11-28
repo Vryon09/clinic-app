@@ -56,12 +56,17 @@ export function clearPatientReturnContextIfMatches(patientId: string): void {
   }
 }
 
+const PRESERVED_SESSION_KEYS = new Set(["me", "authStatus", "clinicInfo"]);
+
 export function resetClientSessionState(queryClient: QueryClient): void {
   localStorage.removeItem("token");
   clearPatientReturnContext();
   void queryClient.cancelQueries();
   queryClient.setQueryData(["me"], null);
   queryClient.removeQueries({
-    predicate: (query) => query.queryKey[0] !== "me",
+    predicate: (query) =>
+      !PRESERVED_SESSION_KEYS.has(String(query.queryKey[0] ?? "")),
   });
+  void queryClient.invalidateQueries({ queryKey: ["authStatus"] });
+  void queryClient.invalidateQueries({ queryKey: ["clinicInfo"] });
 }
