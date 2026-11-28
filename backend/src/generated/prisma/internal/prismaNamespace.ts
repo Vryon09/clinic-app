@@ -399,7 +399,8 @@ export const ModelName = {
   Invoice: 'Invoice',
   InvoiceItem: 'InvoiceItem',
   Payment: 'Payment',
-  LabRequest: 'LabRequest'
+  LabRequest: 'LabRequest',
+  MedicalCertificate: 'MedicalCertificate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -415,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "clinic" | "user" | "patient" | "case" | "record" | "vitalSigns" | "recordMedication" | "labResult" | "signature" | "googleToken" | "systemLogs" | "serviceCatalog" | "invoice" | "invoiceItem" | "payment" | "labRequest"
+    modelProps: "clinic" | "user" | "patient" | "case" | "record" | "vitalSigns" | "recordMedication" | "labResult" | "signature" | "googleToken" | "systemLogs" | "serviceCatalog" | "invoice" | "invoiceItem" | "payment" | "labRequest" | "medicalCertificate"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1603,6 +1604,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MedicalCertificate: {
+      payload: Prisma.$MedicalCertificatePayload<ExtArgs>
+      fields: Prisma.MedicalCertificateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MedicalCertificateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCertificatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MedicalCertificateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCertificatePayload>
+        }
+        findFirst: {
+          args: Prisma.MedicalCertificateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCertificatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MedicalCertificateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCertificatePayload>
+        }
+        findMany: {
+          args: Prisma.MedicalCertificateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCertificatePayload>[]
+        }
+        create: {
+          args: Prisma.MedicalCertificateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCertificatePayload>
+        }
+        createMany: {
+          args: Prisma.MedicalCertificateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MedicalCertificateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCertificatePayload>[]
+        }
+        delete: {
+          args: Prisma.MedicalCertificateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCertificatePayload>
+        }
+        update: {
+          args: Prisma.MedicalCertificateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCertificatePayload>
+        }
+        deleteMany: {
+          args: Prisma.MedicalCertificateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MedicalCertificateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MedicalCertificateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCertificatePayload>[]
+        }
+        upsert: {
+          args: Prisma.MedicalCertificateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MedicalCertificatePayload>
+        }
+        aggregate: {
+          args: Prisma.MedicalCertificateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMedicalCertificate>
+        }
+        groupBy: {
+          args: Prisma.MedicalCertificateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MedicalCertificateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MedicalCertificateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MedicalCertificateCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1885,6 +1960,28 @@ export const LabRequestScalarFieldEnum = {
 export type LabRequestScalarFieldEnum = (typeof LabRequestScalarFieldEnum)[keyof typeof LabRequestScalarFieldEnum]
 
 
+export const MedicalCertificateScalarFieldEnum = {
+  id: 'id',
+  patientId: 'patientId',
+  doctorId: 'doctorId',
+  templateType: 'templateType',
+  certificateDate: 'certificateDate',
+  dateSeen: 'dateSeen',
+  reasonForVisit: 'reasonForVisit',
+  vitalSigns: 'vitalSigns',
+  physicalExam: 'physicalExam',
+  labResults: 'labResults',
+  fitnessClass: 'fitnessClass',
+  diagnosis: 'diagnosis',
+  remarks: 'remarks',
+  purpose: 'purpose',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MedicalCertificateScalarFieldEnum = (typeof MedicalCertificateScalarFieldEnum)[keyof typeof MedicalCertificateScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1981,6 +2078,13 @@ export type EnumDiscountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'PaymentMethod'
  */
 export type EnumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethod'>
+    
+
+
+/**
+ * Reference to a field of type 'MedicalCertificateTemplate'
+ */
+export type EnumMedicalCertificateTemplateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MedicalCertificateTemplate'>
     
 
 /**
@@ -2094,6 +2198,7 @@ export type GlobalOmitConfig = {
   invoiceItem?: Prisma.InvoiceItemOmit
   payment?: Prisma.PaymentOmit
   labRequest?: Prisma.LabRequestOmit
+  medicalCertificate?: Prisma.MedicalCertificateOmit
 }
 
 /* Types for Logging */

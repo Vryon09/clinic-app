@@ -66,9 +66,10 @@ model User {
   clinics    Clinic[]
   signatures Signature?
 
-  invoicesCreated  Invoice[] @relation("InvoiceCreator")
-  paymentsReceived Payment[] @relation("PaymentReceiver")
-  labRequests      LabRequest[] @relation("DoctorLabRequests")
+  invoicesCreated     Invoice[]            @relation("InvoiceCreator")
+  paymentsReceived    Payment[]            @relation("PaymentReceiver")
+  labRequests         LabRequest[]         @relation("DoctorLabRequests")
+  medicalCertificates MedicalCertificate[] @relation("DoctorMedicalCertificates")
 }
 
 model Patient {
@@ -93,10 +94,11 @@ model Patient {
 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @default(now()) @updatedAt
-  labResults  labResult[]
-  labRequests LabRequest[]
-  invoices    Invoice[]
-  payments    Payment[]
+  labResults          labResult[]
+  labRequests         LabRequest[]
+  medicalCertificates MedicalCertificate[]
+  invoices            Invoice[]
+  payments            Payment[]
 }
 
 model Case {
@@ -349,4 +351,35 @@ model LabRequest {
 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+}
+
+enum MedicalCertificateTemplate {
+  GENERAL_CLEARANCE
+  CONSULTATION_DIAGNOSIS
+  PRE_EMPLOYMENT_PE
+}
+
+model MedicalCertificate {
+  id              String                     @id @default(uuid())
+  patientId       String
+  patient         Patient                    @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctorId        String?
+  doctor          User?                      @relation("DoctorMedicalCertificates", fields: [doctorId], references: [id], onDelete: SetNull)
+
+  templateType    MedicalCertificateTemplate @default(GENERAL_CLEARANCE)
+  certificateDate DateTime                   @default(now())
+
+  dateSeen        DateTime?
+  reasonForVisit  String?
+
+  vitalSigns      String?
+  physicalExam    String?
+  labResults      String?
+  fitnessClass    String?
+  diagnosis       String?
+  remarks         String?
+  purpose         String?
+
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @updatedAt
 }

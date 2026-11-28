@@ -95,8 +95,8 @@ export function PatientLabRequestsTab() {
   return (
     <div className="space-y-4">
       {/* Header Row */}
-      <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-        <div className="space-y-0.5">
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0 flex-1 space-y-0.5">
           <h2 className="text-sm font-semibold text-foreground">
             Laboratory Requests &amp; Referral Slips
           </h2>
@@ -106,7 +106,7 @@ export function PatientLabRequestsTab() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex shrink-0 flex-col items-stretch gap-1.5">
           <Button
             variant="outline"
             size="sm"

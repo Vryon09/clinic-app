@@ -354,6 +354,23 @@ export type EnumPaymentMethodWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumPaymentMethodFilter<$PrismaModel>
 }
 
+export type EnumMedicalCertificateTemplateFilter<$PrismaModel = never> = {
+  equals?: $Enums.MedicalCertificateTemplate | Prisma.EnumMedicalCertificateTemplateFieldRefInput<$PrismaModel>
+  in?: $Enums.MedicalCertificateTemplate[]
+  notIn?: $Enums.MedicalCertificateTemplate[]
+  not?: Prisma.NestedEnumMedicalCertificateTemplateFilter<$PrismaModel> | $Enums.MedicalCertificateTemplate
+}
+
+export type EnumMedicalCertificateTemplateWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MedicalCertificateTemplate | Prisma.EnumMedicalCertificateTemplateFieldRefInput<$PrismaModel>
+  in?: $Enums.MedicalCertificateTemplate[]
+  notIn?: $Enums.MedicalCertificateTemplate[]
+  not?: Prisma.NestedEnumMedicalCertificateTemplateWithAggregatesFilter<$PrismaModel> | $Enums.MedicalCertificateTemplate
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMedicalCertificateTemplateFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMedicalCertificateTemplateFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[]
@@ -687,6 +704,23 @@ export type NestedEnumPaymentMethodWithAggregatesFilter<$PrismaModel = never> = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPaymentMethodFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPaymentMethodFilter<$PrismaModel>
+}
+
+export type NestedEnumMedicalCertificateTemplateFilter<$PrismaModel = never> = {
+  equals?: $Enums.MedicalCertificateTemplate | Prisma.EnumMedicalCertificateTemplateFieldRefInput<$PrismaModel>
+  in?: $Enums.MedicalCertificateTemplate[]
+  notIn?: $Enums.MedicalCertificateTemplate[]
+  not?: Prisma.NestedEnumMedicalCertificateTemplateFilter<$PrismaModel> | $Enums.MedicalCertificateTemplate
+}
+
+export type NestedEnumMedicalCertificateTemplateWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MedicalCertificateTemplate | Prisma.EnumMedicalCertificateTemplateFieldRefInput<$PrismaModel>
+  in?: $Enums.MedicalCertificateTemplate[]
+  notIn?: $Enums.MedicalCertificateTemplate[]
+  not?: Prisma.NestedEnumMedicalCertificateTemplateWithAggregatesFilter<$PrismaModel> | $Enums.MedicalCertificateTemplate
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMedicalCertificateTemplateFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMedicalCertificateTemplateFilter<$PrismaModel>
 }
 
 

@@ -66,7 +66,8 @@ export const ModelName = {
   Invoice: 'Invoice',
   InvoiceItem: 'InvoiceItem',
   Payment: 'Payment',
-  LabRequest: 'LabRequest'
+  LabRequest: 'LabRequest',
+  MedicalCertificate: 'MedicalCertificate'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -326,6 +327,28 @@ export const LabRequestScalarFieldEnum = {
 } as const
 
 export type LabRequestScalarFieldEnum = (typeof LabRequestScalarFieldEnum)[keyof typeof LabRequestScalarFieldEnum]
+
+
+export const MedicalCertificateScalarFieldEnum = {
+  id: 'id',
+  patientId: 'patientId',
+  doctorId: 'doctorId',
+  templateType: 'templateType',
+  certificateDate: 'certificateDate',
+  dateSeen: 'dateSeen',
+  reasonForVisit: 'reasonForVisit',
+  vitalSigns: 'vitalSigns',
+  physicalExam: 'physicalExam',
+  labResults: 'labResults',
+  fitnessClass: 'fitnessClass',
+  diagnosis: 'diagnosis',
+  remarks: 'remarks',
+  purpose: 'purpose',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MedicalCertificateScalarFieldEnum = (typeof MedicalCertificateScalarFieldEnum)[keyof typeof MedicalCertificateScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -70,3 +70,12 @@ export const PaymentMethod = {
 } as const
 
 export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]
+
+
+export const MedicalCertificateTemplate = {
+  GENERAL_CLEARANCE: 'GENERAL_CLEARANCE',
+  CONSULTATION_DIAGNOSIS: 'CONSULTATION_DIAGNOSIS',
+  PRE_EMPLOYMENT_PE: 'PRE_EMPLOYMENT_PE'
+} as const
+
+export type MedicalCertificateTemplate = (typeof MedicalCertificateTemplate)[keyof typeof MedicalCertificateTemplate]

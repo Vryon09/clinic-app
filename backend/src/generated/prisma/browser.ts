@@ -97,3 +97,8 @@ export type Payment = Prisma.PaymentModel
  * 
  */
 export type LabRequest = Prisma.LabRequestModel
+/**
+ * Model MedicalCertificate
+ * 
+ */
+export type MedicalCertificate = Prisma.MedicalCertificateModel

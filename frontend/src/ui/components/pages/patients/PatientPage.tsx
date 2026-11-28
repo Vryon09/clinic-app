@@ -3,7 +3,7 @@ import type { IPatient } from "@/types/PatientType";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
 import { Button } from "../../shadcn/button";
-import { ClipboardList, Pen, Plus, ReceiptText, Stethoscope, TestTubes } from "lucide-react";
+import { ClipboardList, FileCheck2, Pen, Plus, ReceiptText, Stethoscope, TestTubes } from "lucide-react";
 import { useEffect, useState } from "react";
 import { savePatientReturnContext } from "@/lib/patientNavigation";
 import PatientForm from "./PatientForm";
@@ -18,6 +18,7 @@ import type { ICase } from "@/types/CaseType";
 import PatientClinicalSummaryBanner from "./PatientClinicalSummaryBanner";
 import { PatientBillingTab } from "../billing/PatientBillingTab";
 import { PatientLabRequestsTab } from "../labRequests/PatientLabRequestsTab";
+import { PatientMedicalCertificatesTab } from "../medicalCertificates/PatientMedicalCertificatesTab";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -109,37 +110,47 @@ function PatientPage() {
         </PatientCard>
 
         {/* Right Column: Encounters & Lab Results Tabs */}
-        <Card className="flex-1 w-full overflow-hidden rounded-2xl border border-border/80 bg-card p-0 shadow-2xs">
-          <Tabs defaultValue="consultations" className="w-full">
-            <div className="border-b border-border/60 bg-muted/20 px-6 pt-3">
-              <TabsList variant="line" className="gap-4">
+        <Card className="flex-1 min-w-0 w-full overflow-hidden rounded-2xl border border-border/80 bg-card p-0 shadow-2xs">
+          <Tabs defaultValue="consultations" className="w-full gap-0">
+            <div className="border-b border-border/60 bg-muted/20 px-4 pt-2.5 sm:px-6">
+              <TabsList
+                variant="line"
+                className="h-auto w-full flex-wrap justify-start gap-x-3 gap-y-1 p-0"
+              >
                 <TabsTrigger
                   value="consultations"
-                  className="cursor-pointer gap-2 py-2.5 text-xs font-semibold data-[state=active]:text-primary"
+                  className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
                 >
                   <Stethoscope className="size-3.5" />
-                  Consultation Records
+                  Consultations
                 </TabsTrigger>
                 <TabsTrigger
                   value="lab-requests"
-                  className="cursor-pointer gap-2 py-2.5 text-xs font-semibold data-[state=active]:text-primary"
+                  className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
                 >
                   <ClipboardList className="size-3.5" />
                   Lab Requests
                 </TabsTrigger>
                 <TabsTrigger
+                  value="medical-certificates"
+                  className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
+                >
+                  <FileCheck2 className="size-3.5" />
+                  Med Certs
+                </TabsTrigger>
+                <TabsTrigger
                   value="lab-results"
-                  className="cursor-pointer gap-2 py-2.5 text-xs font-semibold data-[state=active]:text-primary"
+                  className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
                 >
                   <TestTubes className="size-3.5" />
-                  Laboratory Results
+                  Lab Results
                 </TabsTrigger>
                 <TabsTrigger
                   value="billing"
-                  className="cursor-pointer gap-2 py-2.5 text-xs font-semibold data-[state=active]:text-primary"
+                  className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
                 >
                   <ReceiptText className="size-3.5" />
-                  Billing &amp; Invoices
+                  Billing
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -151,6 +162,10 @@ function PatientPage() {
 
               <TabsContent value="lab-requests" className="mt-0 outline-none">
                 <PatientLabRequestsTab />
+              </TabsContent>
+
+              <TabsContent value="medical-certificates" className="mt-0 outline-none">
+                <PatientMedicalCertificatesTab />
               </TabsContent>
 
               <TabsContent value="lab-results" className="mt-0 outline-none">

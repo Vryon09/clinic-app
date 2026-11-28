@@ -17,6 +17,7 @@ import InvoiceDetailPage from "./components/pages/billing/InvoiceDetailPage";
 import InvoicePrintView from "./components/pages/billing/InvoicePrintView";
 import ReceiptPrintView from "./components/pages/billing/ReceiptPrintView";
 import LabRequestPrintView from "./components/pages/labRequests/LabRequestPrintView";
+import MedicalCertificatePrintView from "./components/pages/medicalCertificates/MedicalCertificatePrintView";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -75,6 +76,10 @@ function App() {
             <Route
               path=":patientId/lab-requests/print"
               element={<LabRequestPrintView />}
+            />
+            <Route
+              path=":patientId/medical-certificates/print"
+              element={<MedicalCertificatePrintView />}
             />
           </Route>
 
