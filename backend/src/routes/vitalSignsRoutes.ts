@@ -6,12 +6,20 @@ import {
   getVitalSigns,
 } from "../controller/vitalSignsController";
 import { verifyToken } from "../middleware/verifyToken";
+import { requireFeature } from "../middleware/requireFeature";
+import { authorize } from "../middleware/authorize";
+import { PERMISSIONS } from "../rbac/permissions";
 
 const router = Router();
 
-router.use(verifyToken);
+router.use(verifyToken, requireFeature("patients.consultations"));
 
-router.post("/", validateSchema(createVitalSignsSchema), addVitalSigns);
+router.post(
+  "/",
+  authorize(PERMISSIONS.RECORD_CREATE),
+  validateSchema(createVitalSignsSchema),
+  addVitalSigns,
+);
 router.get("/:recordId", getVitalSigns);
 
 export default router;

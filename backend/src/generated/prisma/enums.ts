@@ -9,13 +9,13 @@
 * 🟢 You can import this file directly.
 */
 
-export const UserRole = {
-  ADMIN: 'ADMIN',
-  DOCTOR: 'DOCTOR',
-  ASSISTANT: 'ASSISTANT'
+export const FeatureState = {
+  ENABLED: 'ENABLED',
+  DISABLED: 'DISABLED',
+  HIDDEN: 'HIDDEN'
 } as const
 
-export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+export type FeatureState = (typeof FeatureState)[keyof typeof FeatureState]
 
 
 export const Sex = {

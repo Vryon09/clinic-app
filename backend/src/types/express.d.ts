@@ -1,8 +1,11 @@
+import type { RoleAccess } from "../rbac/accessService";
+
 declare global {
   namespace Express {
     interface Request {
       userId?: string;
-      role?: "ADMIN" | "DOCTOR" | "ASSISTANT";
+      role?: string;
+      access?: RoleAccess;
     }
   }
 }

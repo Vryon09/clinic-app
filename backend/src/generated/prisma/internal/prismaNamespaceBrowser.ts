@@ -52,6 +52,9 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Clinic: 'Clinic',
+  Role: 'Role',
+  RolePermission: 'RolePermission',
+  RoleFeature: 'RoleFeature',
   User: 'User',
   Patient: 'Patient',
   Case: 'Case',
@@ -96,6 +99,38 @@ export const ClinicScalarFieldEnum = {
 } as const
 
 export type ClinicScalarFieldEnum = (typeof ClinicScalarFieldEnum)[keyof typeof ClinicScalarFieldEnum]
+
+
+export const RoleScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  name: 'name',
+  description: 'description',
+  isSystem: 'isSystem',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
+
+
+export const RolePermissionScalarFieldEnum = {
+  id: 'id',
+  roleId: 'roleId',
+  permission: 'permission'
+} as const
+
+export type RolePermissionScalarFieldEnum = (typeof RolePermissionScalarFieldEnum)[keyof typeof RolePermissionScalarFieldEnum]
+
+
+export const RoleFeatureScalarFieldEnum = {
+  id: 'id',
+  roleId: 'roleId',
+  feature: 'feature',
+  state: 'state'
+} as const
+
+export type RoleFeatureScalarFieldEnum = (typeof RoleFeatureScalarFieldEnum)[keyof typeof RoleFeatureScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

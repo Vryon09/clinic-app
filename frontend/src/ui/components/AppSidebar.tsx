@@ -15,30 +15,43 @@ import {
 import { LayoutDashboard, LogOut, ReceiptText, Settings, Users } from "lucide-react";
 import { cn, formatUserName } from "@/lib/utils";
 import { AppLogo } from "./common/AppLogo";
-import { useAuth } from "@/hooks/useAuth";
+import { useAccess } from "@/hooks/useAccess";
 import { useLogout } from "@/services/apiAuth";
+import type { FeatureKey } from "@/lib/features";
 
-const modules = [
-  { url: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { url: "patients", label: "Patients", icon: Users },
-  { url: "billing", label: "Billing", icon: ReceiptText },
+const modules: {
+  url: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  feature?: FeatureKey;
+}[] = [
+  { url: "dashboard", label: "Dashboard", icon: LayoutDashboard, feature: "dashboard" },
+  { url: "patients", label: "Patients", icon: Users, feature: "patients" },
+  { url: "billing", label: "Billing", icon: ReceiptText, feature: "billing" },
   { url: "settings", label: "Settings", icon: Settings },
 ];
 
 export function AppSidebar() {
   const location = useLocation();
   const currTab = location.pathname.split("/").slice(1)[0];
-  const { user } = useAuth();
+  const { user, isHidden } = useAccess();
   const { mutate: handleLogout } = useLogout();
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
+
+  const visibleModules = modules.filter(
+    (m) => !m.feature || !isHidden(m.feature),
+  );
 
   const getInitials = (first?: string, last?: string) => {
     return `${first?.charAt(0) || ""}${last?.charAt(0) || ""}`.toUpperCase() || "CS";
   };
 
-  const getRoleLabel = (role?: string) => {
+  const getRoleLabel = (role?: string, roleName?: string) => {
+    if (roleName) return roleName;
     switch (role) {
+      case "SUPER_ADMIN":
+        return "Super Administrator";
       case "ADMIN":
         return "Clinic Manager";
       case "DOCTOR":
@@ -46,7 +59,7 @@ export function AppSidebar() {
       case "ASSISTANT":
         return "Clinical Assistant";
       default:
-        return "Staff Member";
+        return role || "Staff Member";
     }
   };
 
@@ -93,7 +106,7 @@ export function AppSidebar() {
               </div>
             )}
             <SidebarMenu className={cn("space-y-1.5", isCollapsed && "items-center")}>
-              {modules.map((module) => {
+              {visibleModules.map((module) => {
                 const isActive = currTab === module.url;
                 return (
                   <SidebarMenuItem
@@ -152,7 +165,7 @@ export function AppSidebar() {
           <div className="flex flex-col items-center justify-center gap-2 py-1">
             <div
               className="flex size-7 shrink-0 items-center justify-center rounded-md border border-border/80 bg-muted/80 text-[11px] font-semibold text-foreground ring-1 ring-border/40"
-              title={`${fullName} (${getRoleLabel(user?.role)})`}
+              title={`${fullName} (${getRoleLabel(user?.role, user?.roleName)})`}
             >
               {getInitials(user?.firstName, user?.lastName)}
             </div>
@@ -175,7 +188,7 @@ export function AppSidebar() {
                   {fullName}
                 </span>
                 <span className="truncate text-[10px] text-muted-foreground leading-tight">
-                  {getRoleLabel(user?.role)}
+                  {getRoleLabel(user?.role, user?.roleName)}
                 </span>
               </div>
             </div>

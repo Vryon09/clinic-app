@@ -3,6 +3,9 @@ import { prisma } from "../config/prisma";
 import bcrypt from "bcrypt";
 import { generateToken } from "../utils/generateToken";
 import { UserRequest } from "../types/express";
+import { SUPER_ADMIN_ROLE_KEY } from "../rbac/roles";
+import { PERMISSIONS } from "../rbac/permissions";
+import { computeEffectiveFeatures, getRoleAccess } from "../rbac/accessService";
 
 export async function getAuthStatus(req: Request, res: Response) {
   try {
@@ -19,25 +22,33 @@ export async function getUsers(req: UserRequest, res: Response) {
   try {
     const userId = req.userId;
 
-    const users = await prisma.user.findMany({
-      where: { AND: [{ role: { not: "ADMIN" } }, { id: { not: userId } }] },
-      select: {
-        id: true,
-        firstName: true,
-        middleName: true,
-        lastName: true,
-        username: true,
-        role: true,
-        isActive: true,
-        licenseNum: true,
-      },
-    });
+    const [users, roles] = await Promise.all([
+      prisma.user.findMany({
+        where: {
+          AND: [{ role: { not: SUPER_ADMIN_ROLE_KEY } }, { id: { not: userId } }],
+        },
+        select: {
+          id: true,
+          firstName: true,
+          middleName: true,
+          lastName: true,
+          username: true,
+          role: true,
+          isActive: true,
+          licenseNum: true,
+        },
+      }),
+      prisma.role.findMany({ select: { key: true, name: true } }),
+    ]);
 
-    if (!users) {
-      return res.status(400).json({ message: "Users not found" });
-    }
+    const roleNameMap = new Map(roles.map((r) => [r.key, r.name]));
 
-    res.status(200).json(users);
+    res.status(200).json(
+      users.map((u) => ({
+        ...u,
+        roleName: roleNameMap.get(u.role) ?? u.role,
+      })),
+    );
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
@@ -46,8 +57,16 @@ export async function getUsers(req: UserRequest, res: Response) {
 
 export async function getDoctors(req: UserRequest, res: Response) {
   try {
+    const attendingRoles = await prisma.rolePermission.findMany({
+      where: { permission: PERMISSIONS.CLINICAL_ATTENDING },
+      select: { role: { select: { key: true } } },
+    });
+    const roleKeys = Array.from(
+      new Set(["DOCTOR", ...attendingRoles.map((r) => r.role.key)]),
+    );
+
     const doctors = await prisma.user.findMany({
-      where: { role: "DOCTOR", isActive: true },
+      where: { role: { in: roleKeys }, isActive: true },
       select: {
         id: true,
         firstName: true,
@@ -62,10 +81,6 @@ export async function getDoctors(req: UserRequest, res: Response) {
         createdAt: true,
       },
     });
-
-    if (!doctors) {
-      return res.status(400).json({ message: "Doctors not found" });
-    }
 
     res.status(200).json(doctors);
   } catch (error) {
@@ -96,7 +111,18 @@ export async function getMe(req: UserRequest, res: Response) {
       return res.status(401).json({ message: "User not found" });
     }
 
-    res.status(200).json(user);
+    const access = req.access ?? (await getRoleAccess(user.role));
+    if (!access) {
+      return res.status(401).json({ message: "Role not found" });
+    }
+
+    res.status(200).json({
+      ...user,
+      roleName: access.roleName,
+      isSuperAdmin: access.isSuperAdmin,
+      permissions: Array.from(access.permissions),
+      features: computeEffectiveFeatures(access),
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
@@ -105,8 +131,14 @@ export async function getMe(req: UserRequest, res: Response) {
 
 export async function registerUser(req: Request, res: Response) {
   try {
-    const { username, password, role, firstName, middleName, lastName } =
-      req.body;
+    const existingCount = await prisma.user.count();
+    if (existingCount > 0) {
+      return res
+        .status(400)
+        .json({ message: "Initial setup is already complete." });
+    }
+
+    const { username, password, firstName, middleName, lastName } = req.body;
 
     const existingUser = await prisma.user.findUnique({
       where: { username },
@@ -122,7 +154,7 @@ export async function registerUser(req: Request, res: Response) {
       data: {
         username,
         password: hashedPassword,
-        role,
+        role: SUPER_ADMIN_ROLE_KEY,
         licenseNum: "",
         firstName,
         middleName: middleName ?? "",
@@ -138,6 +170,7 @@ export async function registerUser(req: Request, res: Response) {
         user: {
           id: user.id,
           username,
+          role: user.role,
           firstName,
           middleName,
           lastName,
@@ -162,6 +195,17 @@ export async function addUser(req: UserRequest, res: Response) {
       middleName,
       lastName,
     } = req.body;
+
+    if (role === SUPER_ADMIN_ROLE_KEY) {
+      return res
+        .status(400)
+        .json({ message: "Cannot assign Super Admin role." });
+    }
+
+    const roleExists = await prisma.role.findUnique({ where: { key: role } });
+    if (!roleExists) {
+      return res.status(400).json({ message: "Selected role does not exist." });
+    }
 
     const existingUser = await prisma.user.findUnique({
       where: { username },
@@ -281,6 +325,17 @@ export async function updateUser(req: UserRequest, res: Response) {
   try {
     const { id, username, role, licenseNum } = req.body;
 
+    if (role === SUPER_ADMIN_ROLE_KEY) {
+      return res
+        .status(400)
+        .json({ message: "Cannot assign Super Admin role." });
+    }
+
+    const roleExists = await prisma.role.findUnique({ where: { key: role } });
+    if (!roleExists) {
+      return res.status(400).json({ message: "Selected role does not exist." });
+    }
+
     const isUsernameUsed = await prisma.user.findUnique({
       where: { username },
     });
@@ -295,19 +350,26 @@ export async function updateUser(req: UserRequest, res: Response) {
         firstName: true,
         lastName: true,
         username: true,
+        role: true,
       },
     });
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    if (user.role === SUPER_ADMIN_ROLE_KEY) {
+      return res
+        .status(400)
+        .json({ message: "Super Admin account cannot be edited here." });
+    }
 
     if (isUsernameUsed && isUsernameUsed.id !== id) {
       return res.status(400).json({ message: "Username already used" });
     }
 
-    if (isLicenseNumUsed && licenseNum !== "") {
+    if (isLicenseNumUsed && isLicenseNumUsed.id !== id && licenseNum !== "") {
       return res.status(400).json({ message: "License Number already used" });
-    }
-
-    if (!user) {
-      return res.status(400).json({ message: "User not found" });
     }
 
     const updatedUser = await prisma.user.update({
@@ -498,11 +560,23 @@ export async function toggleUserStatus(req: UserRequest, res: Response) {
   try {
     const { id } = req.body;
 
+    if (id === req.userId) {
+      return res
+        .status(400)
+        .json({ message: "You cannot disable your own account." });
+    }
+
     const user = await prisma.user.findUnique({ where: { id } });
 
     if (!user) {
       res.status(400).json({ message: "User not found." });
       return;
+    }
+
+    if (user.role === SUPER_ADMIN_ROLE_KEY) {
+      return res
+        .status(400)
+        .json({ message: "Super Admin account cannot be disabled." });
     }
 
     const toggledUser = await prisma.user.update({

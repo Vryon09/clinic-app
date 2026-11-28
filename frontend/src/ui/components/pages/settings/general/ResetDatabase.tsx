@@ -11,15 +11,15 @@ import { Input } from "@/ui/components/shadcn/input";
 import { useState } from "react";
 import { AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
-import { useAuth } from "@/hooks/useAuth";
+import { useAccess } from "@/hooks/useAccess";
 
 function ResetDatabase() {
-  const { user } = useAuth();
+  const { can } = useAccess();
   const [isResetting, setIsResetting] = useState<boolean>(false);
   const [resetInput, setResetInput] = useState<string>("");
   const { mutate: handleResetDatabase } = useResetDatabase();
 
-  if (user?.role !== "ADMIN") {
+  if (!can("system:reset")) {
     return null;
   }
 

@@ -11,7 +11,7 @@ type RegisterPayload = {
   username: string;
   password: string;
   licenseNum: string;
-  role: "ADMIN" | "DOCTOR" | "ASSISTANT";
+  role?: string;
 };
 
 type LoginPayload = {
@@ -47,7 +47,8 @@ export function useRegister() {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["users"] });
         toast.success("Registration Successful", {
-          description: "Administrator account created. You can now log in.",
+          description:
+            "Super Administrator account created. You can now log in.",
         });
       },
       onError: (error) => {
@@ -97,8 +98,7 @@ export function useAddUser() {
       onError: (error) => {
         toast.error("Failed to Create Account", {
           description:
-            error?.response?.data?.message ||
-            "Could not create user account.",
+            error?.response?.data?.message || "Could not create user account.",
         });
       },
     },
@@ -130,7 +130,7 @@ async function handleUpdateUser({
   licenseNum,
 }: {
   username: string;
-  role: "ADMIN" | "DOCTOR" | "ASSISTANT";
+  role: string;
   id: string;
   licenseNum: string;
 }) {
@@ -152,7 +152,7 @@ export function useUpdateUser() {
     AxiosError<{ message: string }>,
     {
       username: string;
-      role: "ADMIN" | "DOCTOR" | "ASSISTANT";
+      role: string;
       id: string;
       licenseNum: string;
     }

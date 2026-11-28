@@ -18,6 +18,7 @@ import InvoicePrintView from "./components/pages/billing/InvoicePrintView";
 import ReceiptPrintView from "./components/pages/billing/ReceiptPrintView";
 import LabRequestPrintView from "./components/pages/labRequests/LabRequestPrintView";
 import MedicalCertificatePrintView from "./components/pages/medicalCertificates/MedicalCertificatePrintView";
+import { FeatureRoute } from "./components/common/FeatureGate";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,7 +47,9 @@ function App() {
             path="dashboard"
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <FeatureRoute feature="dashboard">
+                  <DashboardPage />
+                </FeatureRoute>
               </ProtectedRoute>
             }
           />
@@ -55,7 +58,9 @@ function App() {
             path="patients"
             element={
               <ProtectedRoute>
-                <PatientsPage />
+                <FeatureRoute feature="patients">
+                  <PatientsPage />
+                </FeatureRoute>
               </ProtectedRoute>
             }
           >
@@ -63,23 +68,43 @@ function App() {
             <Route path=":patientId" element={<PatientPage />} />
             <Route
               path=":patientId/consultations/new"
-              element={<ConsultationsForm />}
+              element={
+                <FeatureRoute feature="patients.consultations">
+                  <ConsultationsForm />
+                </FeatureRoute>
+              }
             />
             <Route
               path=":patientId/consultations/:consultationId/edit"
-              element={<ConsultationsForm />}
+              element={
+                <FeatureRoute feature="patients.consultations">
+                  <ConsultationsForm />
+                </FeatureRoute>
+              }
             />
             <Route
               path=":patientId/consultations/:consultationId/details"
-              element={<ConsultationDetails />}
+              element={
+                <FeatureRoute feature="patients.consultations">
+                  <ConsultationDetails />
+                </FeatureRoute>
+              }
             />
             <Route
               path=":patientId/lab-requests/print"
-              element={<LabRequestPrintView />}
+              element={
+                <FeatureRoute feature="patients.labRequests">
+                  <LabRequestPrintView />
+                </FeatureRoute>
+              }
             />
             <Route
               path=":patientId/medical-certificates/print"
-              element={<MedicalCertificatePrintView />}
+              element={
+                <FeatureRoute feature="patients.medicalCertificates">
+                  <MedicalCertificatePrintView />
+                </FeatureRoute>
+              }
             />
           </Route>
 
@@ -96,7 +121,9 @@ function App() {
             path="billing"
             element={
               <ProtectedRoute>
-                <BillingPage />
+                <FeatureRoute feature="billing">
+                  <BillingPage />
+                </FeatureRoute>
               </ProtectedRoute>
             }
           />
@@ -104,7 +131,9 @@ function App() {
             path="billing/invoices/:invoiceId"
             element={
               <ProtectedRoute>
-                <InvoiceDetailPage />
+                <FeatureRoute feature="billing">
+                  <InvoiceDetailPage />
+                </FeatureRoute>
               </ProtectedRoute>
             }
           />
@@ -112,7 +141,9 @@ function App() {
             path="billing/invoices/:invoiceId/print"
             element={
               <ProtectedRoute>
-                <InvoicePrintView />
+                <FeatureRoute feature="billing">
+                  <InvoicePrintView />
+                </FeatureRoute>
               </ProtectedRoute>
             }
           />
@@ -120,7 +151,9 @@ function App() {
             path="billing/receipts/:paymentId/print"
             element={
               <ProtectedRoute>
-                <ReceiptPrintView />
+                <FeatureRoute feature="billing">
+                  <ReceiptPrintView />
+                </FeatureRoute>
               </ProtectedRoute>
             }
           />

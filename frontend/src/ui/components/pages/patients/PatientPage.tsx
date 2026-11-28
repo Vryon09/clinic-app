@@ -19,11 +19,14 @@ import PatientClinicalSummaryBanner from "./PatientClinicalSummaryBanner";
 import { PatientBillingTab } from "../billing/PatientBillingTab";
 import { PatientLabRequestsTab } from "../labRequests/PatientLabRequestsTab";
 import { PatientMedicalCertificatesTab } from "../medicalCertificates/PatientMedicalCertificatesTab";
+import { useAccess } from "@/hooks/useAccess";
+import { ReadOnlyNotice } from "../../common/FeatureGate";
 
 function PatientPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const { patientId } = useParams() as { patientId: string };
   const navigate = useNavigate();
+  const { can, isHidden, isReadOnly } = useAccess();
 
   const { data: patient, isPending: isPatientPending } = useQuery<IPatient>({
     queryKey: ["patient", patientId],
@@ -99,6 +102,7 @@ function PatientPage() {
             variant="outline"
             size="sm"
             className="h-8 gap-1.5 rounded-lg border-border/80 text-xs font-semibold hover:bg-muted cursor-pointer"
+            disabled={isReadOnly("patients") || !can("patient:update")}
             onClick={(e) => {
               e.stopPropagation();
               setIsEditing(true);
@@ -111,70 +115,110 @@ function PatientPage() {
 
         {/* Right Column: Encounters & Lab Results Tabs */}
         <Card className="flex-1 min-w-0 w-full overflow-hidden rounded-2xl border border-border/80 bg-card p-0 shadow-2xs">
-          <Tabs defaultValue="consultations" className="w-full gap-0">
+          <Tabs
+            defaultValue={
+              !isHidden("patients.consultations")
+                ? "consultations"
+                : !isHidden("patients.labRequests")
+                  ? "lab-requests"
+                  : !isHidden("patients.medicalCertificates")
+                    ? "medical-certificates"
+                    : !isHidden("patients.labResults")
+                      ? "lab-results"
+                      : "billing"
+            }
+            className="w-full gap-0"
+          >
             <div className="border-b border-border/60 bg-muted/20 px-4 pt-2.5 sm:px-6">
               <TabsList
                 variant="line"
                 className="h-auto w-full flex-wrap justify-start gap-x-3 gap-y-1 p-0"
               >
-                <TabsTrigger
-                  value="consultations"
-                  className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
-                >
-                  <Stethoscope className="size-3.5" />
-                  Consultations
-                </TabsTrigger>
-                <TabsTrigger
-                  value="lab-requests"
-                  className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
-                >
-                  <ClipboardList className="size-3.5" />
-                  Lab Requests
-                </TabsTrigger>
-                <TabsTrigger
-                  value="medical-certificates"
-                  className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
-                >
-                  <FileCheck2 className="size-3.5" />
-                  Med Certs
-                </TabsTrigger>
-                <TabsTrigger
-                  value="lab-results"
-                  className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
-                >
-                  <TestTubes className="size-3.5" />
-                  Lab Results
-                </TabsTrigger>
-                <TabsTrigger
-                  value="billing"
-                  className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
-                >
-                  <ReceiptText className="size-3.5" />
-                  Billing
-                </TabsTrigger>
+                {!isHidden("patients.consultations") && (
+                  <TabsTrigger
+                    value="consultations"
+                    className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
+                  >
+                    <Stethoscope className="size-3.5" />
+                    Consultations
+                  </TabsTrigger>
+                )}
+                {!isHidden("patients.labRequests") && (
+                  <TabsTrigger
+                    value="lab-requests"
+                    className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
+                  >
+                    <ClipboardList className="size-3.5" />
+                    Lab Requests
+                  </TabsTrigger>
+                )}
+                {!isHidden("patients.medicalCertificates") && (
+                  <TabsTrigger
+                    value="medical-certificates"
+                    className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
+                  >
+                    <FileCheck2 className="size-3.5" />
+                    Med Certs
+                  </TabsTrigger>
+                )}
+                {!isHidden("patients.labResults") && (
+                  <TabsTrigger
+                    value="lab-results"
+                    className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
+                  >
+                    <TestTubes className="size-3.5" />
+                    Lab Results
+                  </TabsTrigger>
+                )}
+                {!isHidden("billing") && (
+                  <TabsTrigger
+                    value="billing"
+                    className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
+                  >
+                    <ReceiptText className="size-3.5" />
+                    Billing
+                  </TabsTrigger>
+                )}
               </TabsList>
             </div>
 
             <div className="p-6">
-              <TabsContent value="consultations" className="mt-0 outline-none">
-                <ConsultationRecords patient={patient!} />
-              </TabsContent>
+              {!isHidden("patients.consultations") && (
+                <TabsContent value="consultations" className="mt-0 outline-none space-y-4">
+                  <ReadOnlyNotice feature="patients.consultations" label="Consultations" />
+                  <ConsultationRecords patient={patient!} />
+                </TabsContent>
+              )}
 
-              <TabsContent value="lab-requests" className="mt-0 outline-none">
-                <PatientLabRequestsTab />
-              </TabsContent>
+              {!isHidden("patients.labRequests") && (
+                <TabsContent value="lab-requests" className="mt-0 outline-none space-y-4">
+                  <ReadOnlyNotice feature="patients.labRequests" label="Lab Requests" />
+                  <PatientLabRequestsTab />
+                </TabsContent>
+              )}
 
-              <TabsContent value="medical-certificates" className="mt-0 outline-none">
-                <PatientMedicalCertificatesTab />
-              </TabsContent>
+              {!isHidden("patients.medicalCertificates") && (
+                <TabsContent value="medical-certificates" className="mt-0 outline-none space-y-4">
+                  <ReadOnlyNotice feature="patients.medicalCertificates" label="Medical Certificates" />
+                  <PatientMedicalCertificatesTab />
+                </TabsContent>
+              )}
 
-              <TabsContent value="lab-results" className="mt-0 outline-none">
-                <LabResultSection />
-              </TabsContent>
+              {!isHidden("patients.labResults") && (
+                <TabsContent value="lab-results" className="mt-0 outline-none space-y-4">
+                  <ReadOnlyNotice feature="patients.labResults" label="Lab Results" />
+                  <LabResultSection />
+                </TabsContent>
+              )}
 
-              <TabsContent value="billing" className="mt-0 outline-none p-0 -m-6">
-                <PatientBillingTab patientId={patientId} />
-              </TabsContent>
+              {!isHidden("billing") && (
+                <TabsContent value="billing" className="mt-0 outline-none p-0 -m-6">
+                  <div className="p-6 pb-0 empty:hidden">
+                    <ReadOnlyNotice feature="billing" label="Billing" />
+                  </div>
+                  <PatientBillingTab patientId={patientId} />
+                </TabsContent>
+              )}
             </div>
           </Tabs>
         </Card>

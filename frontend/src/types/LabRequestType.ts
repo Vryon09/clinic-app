@@ -21,7 +21,7 @@ export interface ILabRequestDoctor {
   firstName: string;
   middleName?: string;
   lastName: string;
-  role: "ADMIN" | "DOCTOR" | "ASSISTANT";
+  role: string;
   licenseNum?: string | null;
 }
 

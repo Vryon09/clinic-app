@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { prisma } from "./prisma";
+import { seedDefaultRoles } from "../rbac/accessService";
 
 export async function initDatabase() {
   try {
@@ -128,6 +129,8 @@ export async function initDatabase() {
         console.log("Clinic.logoPath column added successfully.");
       }
     }
+
+    await seedDefaultRoles();
   } catch (error) {
     console.error("Database initialization error:", error);
   }

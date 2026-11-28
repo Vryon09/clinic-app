@@ -16,22 +16,52 @@ import {
   updatePatientSchema,
 } from "../schemas/patientSchema";
 import { verifyToken } from "../middleware/verifyToken";
+import { requireFeature } from "../middleware/requireFeature";
+import { authorize } from "../middleware/authorize";
+import { PERMISSIONS } from "../rbac/permissions";
 
 const router = Router();
 
 router.use(verifyToken);
 
-router.get("/", getPatients);
-router.get("/search", searchPatients);
-router.get("/archived", getArchivedPatients);
-router.get("/:id", getPatient);
+router.get("/", requireFeature("patients"), getPatients);
+router.get("/search", requireFeature("patients"), searchPatients);
+router.get("/archived", requireFeature("settings.archive"), getArchivedPatients);
+router.get("/:id", requireFeature("patients"), getPatient);
 
-router.post("/", validateSchema(createPatientSchema), addPatient);
+router.post(
+  "/",
+  requireFeature("patients"),
+  authorize(PERMISSIONS.PATIENT_CREATE),
+  validateSchema(createPatientSchema),
+  addPatient,
+);
 
-router.patch("/:id/archive", archivePatient);
-router.patch("/:id/restore", restorePatient);
-router.patch("/:id/update", validateSchema(updatePatientSchema), updatePatient);
+router.patch(
+  "/:id/archive",
+  requireFeature("patients"),
+  authorize(PERMISSIONS.PATIENT_ARCHIVE),
+  archivePatient,
+);
+router.patch(
+  "/:id/restore",
+  requireFeature("settings.archive"),
+  authorize(PERMISSIONS.ARCHIVE_RESTORE),
+  restorePatient,
+);
+router.patch(
+  "/:id/update",
+  requireFeature("patients"),
+  authorize(PERMISSIONS.PATIENT_UPDATE),
+  validateSchema(updatePatientSchema),
+  updatePatient,
+);
 
-router.delete("/:id", deletePatient);
+router.delete(
+  "/:id",
+  requireFeature("patients"),
+  authorize(PERMISSIONS.PATIENT_DELETE),
+  deletePatient,
+);
 
 export default router;

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { verifyToken } from "../middleware/verifyToken";
 import { authorize } from "../middleware/authorize";
+import { requireFeature } from "../middleware/requireFeature";
 import { validateSchema } from "../middleware/validateSchema";
 import { PERMISSIONS } from "../rbac/permissions";
 import {
@@ -27,7 +28,7 @@ import {
 
 const router = Router();
 
-router.use(verifyToken);
+router.use(verifyToken, requireFeature("billing"));
 
 // Summary
 router.get("/summary", authorize(PERMISSIONS.BILLING_VIEW), getBillingSummary);

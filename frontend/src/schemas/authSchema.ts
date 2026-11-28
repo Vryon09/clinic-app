@@ -60,7 +60,7 @@ export const signupSchema = z
       .regex(/[A-Z]/, "Must contain at least one uppercase letter")
       .regex(/[0-9]/, "Must contain at least one number"),
 
-    role: z.enum(["ADMIN", "ASSISTANT", "DOCTOR"]).default("ADMIN"),
+    role: z.string().min(1).optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -83,7 +83,7 @@ export const addUserSchema = z.object({
     })
     .or(z.literal("")),
 
-  role: z.enum(["ADMIN", "ASSISTANT", "DOCTOR"], "Choose a role"),
+  role: z.string().min(1, "Choose a role"),
 });
 
 export const updateUsernameSchema = z.object({

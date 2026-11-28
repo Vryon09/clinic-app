@@ -53,14 +53,13 @@ export function SignupForm({
         lastName: data.lastName,
         username: data.username,
         password: data.password,
-        role: "ADMIN",
         licenseNum: "",
       },
       {
         onSuccess: () => {
           toast.success("Registration Successful", {
             description:
-              "Administrator account created. Welcome to the clinic management system.",
+              "Super Administrator account created. Welcome to the clinic management system.",
           });
           navigate("/dashboard");
         },

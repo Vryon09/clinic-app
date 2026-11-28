@@ -1,16 +1,22 @@
+import type { FeatureKey, FeatureState } from "@/lib/features";
 import type { ICase } from "./CaseType";
 import type { IRecord } from "./RecordType";
 
 export interface IUser {
   id: string;
   username: string;
-  role: "ADMIN" | "DOCTOR" | "ASSISTANT";
+  role: string;
+  roleName?: string;
+  isSuperAdmin?: boolean;
+  permissions?: string[];
+  features?: Record<FeatureKey, FeatureState>;
   licenseNum: string;
   isActive: boolean;
   firstName: string;
   middleName: string;
   lastName: string;
 }
+
 export interface IMe extends IUser {
   password: string;
 }

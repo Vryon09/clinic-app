@@ -24,12 +24,13 @@ import { toast } from "sonner";
 import { Spinner } from "../../../shadcn/spinner";
 import { Edit, TriangleAlert, X } from "lucide-react";
 import ResetDatabase from "./ResetDatabase";
-import { useAuth } from "@/hooks/useAuth";
+import { useAccess } from "@/hooks/useAccess";
 import TextSizeSettings from "./TextSizeSettings";
 import ClinicLogoSection from "./ClinicLogoSection";
 
 function GeneralSettings() {
-  const { user } = useAuth();
+  const { can, isReadOnly } = useAccess();
+  const readOnly = isReadOnly("settings.general") || !can("clinic:update");
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const {
@@ -112,6 +113,7 @@ function GeneralSettings() {
             variant={isEditing ? "outline" : "default"}
             size="sm"
             className="h-9 gap-1.5"
+            disabled={readOnly}
             onClick={() => {
               if (isEditing) {
                 reset();
@@ -232,7 +234,7 @@ function GeneralSettings() {
 
       <TextSizeSettings />
 
-      {user?.role === "ADMIN" && (
+      {can("system:reset") && (
         <div className="border-destructive/20 bg-destructive/5 space-y-4 rounded-xl border p-5">
           <div className="flex items-center gap-2">
             <TriangleAlert className="text-destructive size-5" />

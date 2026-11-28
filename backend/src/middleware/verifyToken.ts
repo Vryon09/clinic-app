@@ -1,13 +1,15 @@
-import { NextFunction, Request, Response } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import { NextFunction, Response } from "express";
+import jwt from "jsonwebtoken";
 import { UserRequest } from "../types/express";
+import { prisma } from "../config/prisma";
+import { getRoleAccess } from "../rbac/accessService";
 
-interface IVerifyToken extends JwtPayload {
+interface IVerifyToken {
   id: string;
-  role: "ADMIN" | "DOCTOR" | "ASSISTANT";
+  role: string;
 }
 
-export function verifyToken(
+export async function verifyToken(
   req: UserRequest,
   res: Response,
   next: NextFunction,
@@ -29,8 +31,23 @@ export function verifyToken(
 
     const decoded = jwt.verify(token, secret) as IVerifyToken;
 
-    req.userId = decoded.id;
-    req.role = decoded.role;
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.id },
+      select: { id: true, role: true, isActive: true },
+    });
+
+    if (!user || !user.isActive) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const access = await getRoleAccess(user.role);
+    if (!access) {
+      return res.status(401).json({ message: "Role not found" });
+    }
+
+    req.userId = user.id;
+    req.role = user.role;
+    req.access = access;
 
     next();
   } catch (error) {

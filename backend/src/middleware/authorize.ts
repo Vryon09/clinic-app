@@ -1,25 +1,40 @@
 import { NextFunction, Response } from "express";
 import { UserRequest } from "../types/express";
-import { rolePermissions } from "../rbac/roles";
+import { Permission } from "../rbac/permissions";
 
-export function authorize(permission: string) {
+export function authorize(permission: Permission | string) {
   return (req: UserRequest, res: Response, next: NextFunction) => {
-    const role: "ADMIN" | "DOCTOR" | "ASSISTANT" = req.role!;
+    const access = req.access;
 
-    if (!role) {
-      return res.status(400).json({ message: "Unauthorized" });
+    if (!access) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const permissions = rolePermissions[role];
-
-    if (!permissions) {
-      return res.status(400).json({ message: "Role not found" });
-    }
-
-    if (permissions.includes("*") || permissions.includes(permission)) {
+    if (access.isSuperAdmin || access.permissions.has(permission)) {
       return next();
     }
 
-    return res.status(400).json({ message: "Forbidden" });
+    return res.status(403).json({
+      code: "FORBIDDEN",
+      message: "You don't have permission for this action.",
+    });
   };
+}
+
+export function requireSuperAdmin(
+  req: UserRequest,
+  res: Response,
+  next: NextFunction,
+) {
+  const access = req.access;
+  if (!access) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  if (!access.isSuperAdmin) {
+    return res.status(403).json({
+      code: "FORBIDDEN",
+      message: "Super Admin access required.",
+    });
+  }
+  return next();
 }

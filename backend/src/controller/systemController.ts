@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
 import fs from "fs";
+import { seedDefaultRoles } from "../rbac/accessService";
 
 export async function resetDatabase(req: Request, res: Response) {
   try {
@@ -60,6 +61,8 @@ export async function resetDatabase(req: Request, res: Response) {
 
       await tx.user.deleteMany();
     });
+
+    await seedDefaultRoles();
 
     return res.status(200).json({
       success: true,

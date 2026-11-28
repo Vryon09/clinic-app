@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma";
 import { UserRequest } from "../types/express";
+import { PERMISSIONS } from "../rbac/permissions";
 
 export const getDashboardSummary = async (req: UserRequest, res: Response) => {
   try {
@@ -195,9 +196,12 @@ export const getDashboardSummary = async (req: UserRequest, res: Response) => {
       .map(([doctorName, count]) => ({ doctorName, count }))
       .sort((a, b) => b.count - a.count);
 
-    // 8. Admin snapshot (if requested by ADMIN)
+    // 8. Admin snapshot (if requested by user with dashboard:admin)
     let adminSnapshot = null;
-    if (req.role === "ADMIN") {
+    if (
+      req.access?.isSuperAdmin ||
+      req.access?.permissions.has(PERMISSIONS.DASHBOARD_ADMIN)
+    ) {
       const [recentLogs, activeUsersCount, googleToken] = await Promise.all([
         prisma.systemLogs.findMany({
           orderBy: { createdAt: "desc" },

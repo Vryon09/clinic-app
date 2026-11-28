@@ -1,10 +1,20 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn/tabs";
 import Backup from "./backup/Backup";
 import GeneralSettings from "./general/GeneralSettings";
-import ManageAccounts from "./accounts/ManageAccounts";
+import MyProfile from "./accounts/MyProfile";
 import Archive from "./archive/Archive";
 import ActivityLog from "./activityLog/ActivityLog";
-import { Building2, Users, History, Archive as ArchiveIcon, Cloud, ArrowLeft, X } from "lucide-react";
+import UserManagement from "./userManagement/UserManagement";
+import {
+  Building2,
+  UserCircle,
+  Users,
+  History,
+  Archive as ArchiveIcon,
+  Cloud,
+  ArrowLeft,
+  X,
+} from "lucide-react";
 import { useLocation, useNavigate } from "react-router";
 import { useState } from "react";
 import { Button } from "../../shadcn/button";
@@ -13,11 +23,14 @@ import {
   getPatientReturnContext,
   type PatientNavigationContext,
 } from "@/lib/patientNavigation";
+import { useAccess } from "@/hooks/useAccess";
+import { ReadOnlyNotice } from "../../common/FeatureGate";
 
 function SettingsPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isDismissed, setIsDismissed] = useState(false);
+  const { isSuperAdmin, isHidden } = useAccess();
 
   const returnContext: PatientNavigationContext | null = (() => {
     if (location.state?.returnUrl) {
@@ -30,28 +43,30 @@ function SettingsPage() {
     return getPatientReturnContext();
   })();
 
+  const defaultTab = !isHidden("settings.general") ? "general" : "myProfile";
+
   return (
     <div className="space-y-6">
       {returnContext && !isDismissed && (
-        <div className="flex flex-col gap-3 rounded-xl border border-primary/25 bg-primary/5 p-4 sm:flex-row sm:items-center sm:justify-between shadow-xs dark:border-teal-500/30 dark:bg-teal-950/20">
+        <div className="border-primary/25 bg-primary/5 flex flex-col gap-3 rounded-xl border p-4 shadow-xs sm:flex-row sm:items-center sm:justify-between dark:border-teal-500/30 dark:bg-teal-950/20">
           <div className="flex items-center gap-3">
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary dark:bg-teal-500/20 dark:text-teal-300">
+            <div className="bg-primary/10 text-primary flex size-9 shrink-0 items-center justify-center rounded-lg dark:bg-teal-500/20 dark:text-teal-300">
               <ArrowLeft className="size-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-foreground">
+                <span className="text-foreground text-xs font-semibold">
                   Active Patient Workspace
                 </span>
                 {returnContext.contextLabel && (
-                  <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary dark:bg-teal-500/20 dark:text-teal-300">
+                  <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-[10px] font-medium dark:bg-teal-500/20 dark:text-teal-300">
                     {returnContext.contextLabel}
                   </span>
                 )}
               </div>
-              <p className="mt-0.5 text-xs text-muted-foreground">
+              <p className="text-muted-foreground mt-0.5 text-xs">
                 You were working on{" "}
-                <span className="font-semibold text-foreground">
+                <span className="text-foreground font-semibold">
                   {returnContext.patientName || "a patient record"}
                 </span>
                 . Return when you finish updating settings.
@@ -67,7 +82,7 @@ function SettingsPage() {
                 setIsDismissed(true);
                 clearPatientReturnContext();
               }}
-              className="h-8 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
+              className="text-muted-foreground hover:text-foreground h-8 cursor-pointer text-xs"
             >
               <X className="mr-1 size-3" />
               Dismiss
@@ -75,7 +90,7 @@ function SettingsPage() {
             <Button
               size="sm"
               onClick={() => navigate(returnContext.returnUrl)}
-              className="h-8 gap-1.5 text-xs font-semibold shadow-xs cursor-pointer dark:bg-teal-600 dark:text-white dark:hover:bg-teal-500"
+              className="h-8 cursor-pointer gap-1.5 text-xs font-semibold shadow-xs dark:bg-teal-600 dark:text-white dark:hover:bg-teal-500"
             >
               <ArrowLeft className="size-3.5" />
               Back to Patient
@@ -85,63 +100,140 @@ function SettingsPage() {
       )}
 
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">Settings</h1>
-        <p className="text-sm text-muted-foreground">
-          Manage your clinic details, accounts, activity logs, data archive, and cloud backups.
+        <h1 className="text-foreground text-2xl font-bold tracking-tight">
+          Settings
+        </h1>
+        <p className="text-muted-foreground text-sm">
+          Manage your clinic details, profile, activity logs, data archive, and
+          cloud backups.
         </p>
       </div>
 
-      <Tabs defaultValue="general" className="w-full space-y-6">
-        <TabsList variant="line" className="inline-flex h-10 items-center justify-start rounded-lg bg-muted/40 p-1 text-muted-foreground">
-          <TabsTrigger value="general" className="cursor-pointer gap-2 px-3 py-1.5 text-xs font-semibold">
-            <Building2 className="size-4" />
-            General
+      <Tabs defaultValue={defaultTab} className="w-full space-y-6">
+        <TabsList
+          variant="line"
+          className="bg-muted/40 text-muted-foreground inline-flex h-10 flex-wrap items-center justify-start rounded-lg p-1"
+        >
+          {!isHidden("settings.general") && (
+            <TabsTrigger
+              value="general"
+              className="cursor-pointer gap-2 px-3 py-1.5 text-xs font-semibold"
+            >
+              <Building2 className="size-4" />
+              General
+            </TabsTrigger>
+          )}
+
+          <TabsTrigger
+            value="myProfile"
+            className="cursor-pointer gap-2 px-3 py-1.5 text-xs font-semibold"
+          >
+            <UserCircle className="size-4" />
+            My Profile
           </TabsTrigger>
 
-          <TabsTrigger value="manageAccounts" className="cursor-pointer gap-2 px-3 py-1.5 text-xs font-semibold">
-            <Users className="size-4" />
-            Accounts
-          </TabsTrigger>
+          {isSuperAdmin && (
+            <TabsTrigger
+              value="userManagement"
+              className="cursor-pointer gap-2 px-3 py-1.5 text-xs font-semibold"
+            >
+              <Users className="size-4" />
+              User Management
+            </TabsTrigger>
+          )}
 
-          <TabsTrigger value="activityLog" className="cursor-pointer gap-2 px-3 py-1.5 text-xs font-semibold">
-            <History className="size-4" />
-            Activity Log
-          </TabsTrigger>
+          {!isHidden("settings.activityLog") && (
+            <TabsTrigger
+              value="activityLog"
+              className="cursor-pointer gap-2 px-3 py-1.5 text-xs font-semibold"
+            >
+              <History className="size-4" />
+              Activity Log
+            </TabsTrigger>
+          )}
 
-          <TabsTrigger value="archive" className="cursor-pointer gap-2 px-3 py-1.5 text-xs font-semibold">
-            <ArchiveIcon className="size-4" />
-            Archive
-          </TabsTrigger>
+          {!isHidden("settings.archive") && (
+            <TabsTrigger
+              value="archive"
+              className="cursor-pointer gap-2 px-3 py-1.5 text-xs font-semibold"
+            >
+              <ArchiveIcon className="size-4" />
+              Archive
+            </TabsTrigger>
+          )}
 
-          <TabsTrigger value="backup" className="cursor-pointer gap-2 px-3 py-1.5 text-xs font-semibold">
-            <Cloud className="size-4" />
-            Backup
-          </TabsTrigger>
+          {!isHidden("settings.backup") && (
+            <TabsTrigger
+              value="backup"
+              className="cursor-pointer gap-2 px-3 py-1.5 text-xs font-semibold"
+            >
+              <Cloud className="size-4" />
+              Backup
+            </TabsTrigger>
+          )}
         </TabsList>
 
-        <TabsContent value="general" className="focus-visible:outline-none">
-          <GeneralSettings />
+        {!isHidden("settings.general") && (
+          <TabsContent
+            value="general"
+            className="space-y-4 focus-visible:outline-none"
+          >
+            <ReadOnlyNotice
+              feature="settings.general"
+              label="General Settings"
+            />
+            <GeneralSettings />
+          </TabsContent>
+        )}
+
+        <TabsContent value="myProfile" className="focus-visible:outline-none">
+          <MyProfile />
         </TabsContent>
 
-        <TabsContent value="manageAccounts" className="focus-visible:outline-none">
-          <ManageAccounts />
-        </TabsContent>
+        {isSuperAdmin && (
+          <TabsContent
+            value="userManagement"
+            className="focus-visible:outline-none"
+          >
+            <UserManagement />
+          </TabsContent>
+        )}
 
-        <TabsContent value="activityLog" className="focus-visible:outline-none">
-          <ActivityLog />
-        </TabsContent>
+        {!isHidden("settings.activityLog") && (
+          <TabsContent
+            value="activityLog"
+            className="space-y-4 focus-visible:outline-none"
+          >
+            <ReadOnlyNotice
+              feature="settings.activityLog"
+              label="Activity Log"
+            />
+            <ActivityLog />
+          </TabsContent>
+        )}
 
-        <TabsContent value="archive" className="focus-visible:outline-none">
-          <Archive />
-        </TabsContent>
+        {!isHidden("settings.archive") && (
+          <TabsContent
+            value="archive"
+            className="space-y-4 focus-visible:outline-none"
+          >
+            <ReadOnlyNotice feature="settings.archive" label="Archive" />
+            <Archive />
+          </TabsContent>
+        )}
 
-        <TabsContent value="backup" className="focus-visible:outline-none">
-          <Backup />
-        </TabsContent>
+        {!isHidden("settings.backup") && (
+          <TabsContent
+            value="backup"
+            className="space-y-4 focus-visible:outline-none"
+          >
+            <ReadOnlyNotice feature="settings.backup" label="Backup" />
+            <Backup />
+          </TabsContent>
+        )}
       </Tabs>
     </div>
   );
 }
 
 export default SettingsPage;
-

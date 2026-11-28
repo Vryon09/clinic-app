@@ -1,6 +1,8 @@
 import type { Request } from "express";
+import type { RoleAccess } from "../rbac/accessService";
 
 export interface UserRequest extends Request {
   userId?: string;
-  role?: "ADMIN" | "DOCTOR" | "ASSISTANT";
+  role?: string;
+  access?: RoleAccess;
 }

@@ -15,9 +15,16 @@ import { useToggleUserStatus } from "@/services/apiAuth";
 import { cn, formatUserName } from "@/lib/utils";
 import { toast } from "sonner";
 import { useState } from "react";
+import { Pen } from "lucide-react";
 import ConfirmDialog from "@/ui/components/common/ConfirmDialog";
 
-function UsersTable({ users }: { users: IUser[] }) {
+function UsersTable({
+  users,
+  onEditUser,
+}: {
+  users: IUser[];
+  onEditUser?: (user: IUser) => void;
+}) {
   const { mutate: handleToggleUserStatus } = useToggleUserStatus();
   const [userToDisable, setUserToDisable] = useState<IUser | null>(null);
 
@@ -74,7 +81,7 @@ function UsersTable({ users }: { users: IUser[] }) {
                   variant="secondary"
                   className="rounded-md text-xs font-semibold"
                 >
-                  {user.role}
+                  {user.roleName || user.role}
                 </Badge>
               </TableCell>
 
@@ -92,9 +99,20 @@ function UsersTable({ users }: { users: IUser[] }) {
               </TableCell>
 
               <TableCell className="py-3 text-right">
-                <Button
-                  size="sm"
-                  variant={user.isActive ? "destructive" : "default"}
+                <div className="flex items-center justify-end gap-2">
+                  {onEditUser && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-8 cursor-pointer rounded-lg px-2.5 text-xs font-semibold"
+                      onClick={() => onEditUser(user)}
+                    >
+                      <Pen className="size-3.5 mr-1" /> Edit
+                    </Button>
+                  )}
+                  <Button
+                    size="sm"
+                    variant={user.isActive ? "destructive" : "default"}
                   className={cn(
                     "h-8 cursor-pointer rounded-lg px-3 text-xs font-semibold shadow-xs",
                     !user.isActive &&
@@ -109,7 +127,8 @@ function UsersTable({ users }: { users: IUser[] }) {
                   }}
                 >
                   {user.isActive ? "Disable" : "Enable"}
-                </Button>
+                  </Button>
+                </div>
               </TableCell>
             </TableRow>
           ))}

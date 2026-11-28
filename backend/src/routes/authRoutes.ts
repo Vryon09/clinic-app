@@ -24,7 +24,7 @@ import {
   updateUsernameSchema,
 } from "../schemas/authSchema";
 import { verifyToken } from "../middleware/verifyToken";
-import { authorize } from "../middleware/authorize";
+import { requireSuperAdmin } from "../middleware/authorize";
 
 const router = Router();
 
@@ -33,7 +33,7 @@ router.post("/register", validateSchema(registerSchema), registerUser);
 router.post(
   "/addUser",
   verifyToken,
-  authorize("user:create"),
+  requireSuperAdmin,
   validateSchema(addUserSchema),
   addUser,
 );
@@ -42,10 +42,10 @@ router.post("/login", validateSchema(loginSchema), loginUser);
 router.post("/logout", logoutUser);
 router.get("/me", verifyToken, getMe);
 router.get("/status", getAuthStatus);
-router.get("/users", verifyToken, getUsers);
+router.get("/users", verifyToken, requireSuperAdmin, getUsers);
 router.get("/doctors", verifyToken, getDoctors);
 
-router.patch("/update", verifyToken, authorize("user:update"), updateUser);
+router.patch("/update", verifyToken, requireSuperAdmin, updateUser);
 
 router.patch(
   "/changeUsername",
@@ -64,7 +64,7 @@ router.patch("/changeLicenseNum", verifyToken, changeLicenseNum);
 router.patch(
   "/toggleStatus",
   verifyToken,
-  authorize("user:toggleStatus"),
+  requireSuperAdmin,
   toggleUserStatus,
 );
 
