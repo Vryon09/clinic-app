@@ -1,4 +1,8 @@
 import api from "@/lib/api";
+import {
+  clearPatientReturnContext,
+  resetClientSessionState,
+} from "@/lib/patientNavigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { toast } from "sonner";
@@ -45,6 +49,7 @@ export function useRegister() {
     {
       mutationFn: handleRegister,
       onSuccess: () => {
+        clearPatientReturnContext();
         queryClient.invalidateQueries({ queryKey: ["users"] });
         toast.success("Registration Successful", {
           description:
@@ -347,6 +352,7 @@ export function useLogin() {
   return useMutation<unknown, AxiosError<{ message: string }>, LoginPayload>({
     mutationFn: handleLogin,
     onSuccess: () => {
+      clearPatientReturnContext();
       queryClient.invalidateQueries({ queryKey: ["me"] });
     },
   });
@@ -361,9 +367,7 @@ export function useLogout() {
   return useMutation({
     mutationFn: handleLogout,
     onSuccess: () => {
-      localStorage.removeItem("token");
-      queryClient.setQueryData(["me"], null);
-      queryClient.removeQueries({ queryKey: ["me"] });
+      resetClientSessionState(queryClient);
       toast.info("Logged Out", {
         description: "You have been logged out of the application.",
       });

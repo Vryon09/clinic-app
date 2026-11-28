@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import { resetClientSessionState } from "@/lib/patientNavigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 async function handleResetDatabase() {
@@ -11,9 +12,7 @@ export function useResetDatabase() {
   return useMutation({
     mutationFn: handleResetDatabase,
     onSuccess: () => {
-      localStorage.removeItem("token");
-      queryClient.setQueryData(["me"], null);
-      queryClient.removeQueries({ queryKey: ["me"] });
+      resetClientSessionState(queryClient);
     },
   });
 }

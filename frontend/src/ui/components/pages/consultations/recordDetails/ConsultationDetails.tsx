@@ -65,10 +65,8 @@ function ConsultationDetails() {
   });
 
   useEffect(() => {
-    if (patientId) {
-      const patientName = patient
-        ? `${patient.firstName} ${patient.lastName}`.trim()
-        : undefined;
+    if (patientId && patient?.id) {
+      const patientName = `${patient.firstName} ${patient.lastName}`.trim();
 
       savePatientReturnContext({
         returnUrl: `${location.pathname}${location.search}`,

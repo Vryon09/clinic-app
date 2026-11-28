@@ -31,8 +31,10 @@ function SettingsPage() {
   const navigate = useNavigate();
   const [isDismissed, setIsDismissed] = useState(false);
   const { isSuperAdmin, isHidden } = useAccess();
+  const canAccessPatients = !isHidden("patients");
 
   const returnContext: PatientNavigationContext | null = (() => {
+    if (!canAccessPatients) return null;
     if (location.state?.returnUrl) {
       return {
         returnUrl: location.state.returnUrl,

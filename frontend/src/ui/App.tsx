@@ -1,8 +1,11 @@
+import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { AppLayout } from "./components/layout/AppLayout";
 import DashboardPage from "./components/pages/dashboard/DashboardPage";
 import PatientsPage from "./components/pages/patients/PatientsPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { registerUnauthorizedHandler } from "@/lib/api";
+import { resetClientSessionState } from "@/lib/patientNavigation";
 import PatientsHome from "./components/pages/patients/PatientsHome";
 import PatientPage from "./components/pages/patients/PatientPage";
 import ConsultationsForm from "./components/pages/consultations/consultationForms/ConsultationsForm";
@@ -29,6 +32,24 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  useEffect(() => {
+    const unregisterUnauthorized = registerUnauthorizedHandler(() => {
+      resetClientSessionState(queryClient);
+    });
+
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === "token" && !event.newValue) {
+        resetClientSessionState(queryClient);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      unregisterUnauthorized();
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>

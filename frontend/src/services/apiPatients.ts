@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import { clearPatientReturnContextIfMatches } from "@/lib/patientNavigation";
 import type {
   CreatePatientInput,
   UpdatePatientInput,
@@ -22,7 +23,7 @@ export async function handleGetArchivedPatients({ page }: { page: number }) {
 export async function handleGetPatient({ id }: { id: string }) {
   const res = await api.get(`/api/patients/${id}`);
 
-  return res.data ?? {};
+  return res.data ?? null;
 }
 
 export async function handleSearchPatients(params: PatientFilterParams = {}) {
@@ -107,7 +108,9 @@ export function useDeletePatient() {
 
   return useMutation({
     mutationFn: handleDeletePatient,
-    onSuccess: () => {
+    onSuccess: (_data, id) => {
+      clearPatientReturnContextIfMatches(id);
+      queryClient.removeQueries({ queryKey: ["patient", id] });
       queryClient.invalidateQueries({ queryKey: ["patients"] });
       queryClient.invalidateQueries({ queryKey: ["records"] });
       toast.success("Patient Deleted", {
@@ -134,7 +137,9 @@ export function useArchivePatient() {
 
   return useMutation({
     mutationFn: handleArchivePatient,
-    onSuccess: () => {
+    onSuccess: (_data, id) => {
+      clearPatientReturnContextIfMatches(id);
+      queryClient.removeQueries({ queryKey: ["patient", id] });
       queryClient.invalidateQueries({ queryKey: ["patients"] });
       queryClient.invalidateQueries({ queryKey: ["records"] });
       toast.success("Patient Archived", {

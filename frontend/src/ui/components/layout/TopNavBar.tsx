@@ -6,21 +6,24 @@ import { useTheme } from "next-themes";
 import dayjs from "dayjs";
 import { SidebarTrigger } from "../shadcn/sidebar";
 import { getPatientReturnContext } from "@/lib/patientNavigation";
+import { useAccess } from "@/hooks/useAccess";
 
 export function TopNavBar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
+  const { isHidden } = useAccess();
 
   const isSettingsPage = location.pathname.startsWith("/settings");
-  const returnContext = isSettingsPage
-    ? (location.state?.returnUrl
-        ? {
-            returnUrl: location.state.returnUrl,
-            patientName: location.state.patientName,
-          }
-        : getPatientReturnContext())
-    : null;
+  const returnContext =
+    isSettingsPage && !isHidden("patients")
+      ? (location.state?.returnUrl
+          ? {
+              returnUrl: location.state.returnUrl,
+              patientName: location.state.patientName,
+            }
+          : getPatientReturnContext())
+      : null;
 
   const getBreadcrumbs = () => {
     const parts = location.pathname.split("/").filter(Boolean);

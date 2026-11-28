@@ -3,9 +3,21 @@ import type { IPatient } from "@/types/PatientType";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
 import { Button } from "../../shadcn/button";
-import { ClipboardList, FileCheck2, Pen, Plus, ReceiptText, Stethoscope, TestTubes } from "lucide-react";
+import {
+  ClipboardList,
+  FileCheck2,
+  Pen,
+  Plus,
+  ReceiptText,
+  Stethoscope,
+  TestTubes,
+  UserX,
+} from "lucide-react";
 import { useEffect, useState } from "react";
-import { savePatientReturnContext } from "@/lib/patientNavigation";
+import {
+  clearPatientReturnContextIfMatches,
+  savePatientReturnContext,
+} from "@/lib/patientNavigation";
 import PatientForm from "./PatientForm";
 import PatientCard from "./PatientCard";
 import ConsultationRecords from "../consultations/ConsultationRecords";
@@ -28,28 +40,76 @@ function PatientPage() {
   const navigate = useNavigate();
   const { can, isHidden, isReadOnly } = useAccess();
 
-  const { data: patient, isPending: isPatientPending } = useQuery<IPatient>({
+  const {
+    data: patient,
+    isPending: isPatientPending,
+    isError: isPatientError,
+  } = useQuery<IPatient | null>({
     queryKey: ["patient", patientId],
     queryFn: () => handleGetPatient({ id: patientId }),
+    retry: false,
   });
+
+  const isPatientMissing =
+    !isPatientPending && (isPatientError || !patient || !patient.id);
 
   const { data: cases, isLoading: isCasesLoading } = useQuery<ICase[]>({
     queryKey: ["cases", patientId],
     queryFn: () => handleGetCases({ patientId }),
-    enabled: !isHidden("patients.consultations"),
+    enabled:
+      !isHidden("patients.consultations") && !isPatientMissing && !!patient?.id,
   });
 
   const { mutate: handleUpdatePatient } = useUpdatePatient();
 
   useEffect(() => {
-    if (patient) {
+    if (patient?.id) {
       savePatientReturnContext({
         returnUrl: `/patients/${patientId}`,
         patientName: `${patient.firstName} ${patient.lastName}`.trim(),
         contextLabel: "Patient Profile",
       });
+    } else if (isPatientMissing && patientId) {
+      clearPatientReturnContextIfMatches(patientId);
     }
-  }, [patient, patientId]);
+  }, [patient, patientId, isPatientMissing]);
+
+  if (isPatientMissing) {
+    return (
+      <div className="flex h-full flex-col space-y-5 pb-8">
+        <div className="flex items-center gap-3">
+          <BackButton location="/patients" />
+          <div>
+            <h1 className="text-foreground text-xl font-bold tracking-tight">
+              Patient Not Found
+            </h1>
+            <p className="text-muted-foreground text-xs">
+              This patient record may have been removed or reset.
+            </p>
+          </div>
+        </div>
+        <Card className="border-border/80 bg-card flex flex-col items-center justify-center rounded-2xl border p-10 text-center shadow-2xs">
+          <div className="bg-muted text-muted-foreground mb-3 flex size-12 items-center justify-center rounded-full">
+            <UserX className="size-6" />
+          </div>
+          <h2 className="text-foreground text-base font-semibold">
+            Patient record unavailable
+          </h2>
+          <p className="text-muted-foreground mt-1 max-w-sm text-xs">
+            The requested patient record does not exist or is no longer
+            accessible.
+          </p>
+          <Button
+            size="sm"
+            className="mt-5 cursor-pointer rounded-lg text-xs font-semibold"
+            onClick={() => navigate("/patients")}
+          >
+            Return to Patients Directory
+          </Button>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-full flex-col space-y-5 pb-8">
@@ -58,10 +118,12 @@ function PatientPage() {
         <div className="flex items-center gap-3">
           <BackButton location="/patients" />
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-foreground">
-              {patient ? `${patient.lastName}, ${patient.firstName}` : "Patient Details"}
+            <h1 className="text-foreground text-xl font-bold tracking-tight">
+              {patient
+                ? `${patient.lastName}, ${patient.firstName}`
+                : "Patient Details"}
             </h1>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-xs">
               Patient Clinical Record &amp; Consultation Timeline
             </p>
           </div>
@@ -72,9 +134,15 @@ function PatientPage() {
             <Button
               variant="outline"
               size="sm"
-              className="h-8.5 gap-1.5 rounded-lg text-xs font-semibold cursor-pointer shadow-2xs"
-              disabled={isReadOnly("patients.labRequests") || !can("labRequest:manage")}
-              onClick={() => navigate(`/patients/${patientId}/lab-requests/print?mode=digital`)}
+              className="h-8.5 cursor-pointer gap-1.5 rounded-lg text-xs font-semibold shadow-2xs"
+              disabled={
+                isReadOnly("patients.labRequests") || !can("labRequest:manage")
+              }
+              onClick={() =>
+                navigate(
+                  `/patients/${patientId}/lab-requests/print?mode=digital`,
+                )
+              }
             >
               <ClipboardList className="size-3.5" />
               <span>New Lab Request</span>
@@ -83,9 +151,13 @@ function PatientPage() {
           {!isHidden("patients.consultations") && (
             <Button
               size="sm"
-              className="h-8.5 gap-1.5 rounded-lg text-xs font-semibold cursor-pointer shadow-xs"
-              disabled={isReadOnly("patients.consultations") || !can("record:create")}
-              onClick={() => navigate(`/patients/${patientId}/consultations/new`)}
+              className="h-8.5 cursor-pointer gap-1.5 rounded-lg text-xs font-semibold shadow-xs"
+              disabled={
+                isReadOnly("patients.consultations") || !can("record:create")
+              }
+              onClick={() =>
+                navigate(`/patients/${patientId}/consultations/new`)
+              }
             >
               <Plus className="size-3.5" />
               <span>New Consultation</span>
@@ -97,18 +169,18 @@ function PatientPage() {
       {/* Clinical 360 Summary Banner */}
       <PatientClinicalSummaryBanner
         cases={cases}
-        patient={patient}
+        patient={patient ?? undefined}
         isCasesLoading={isCasesLoading}
       />
 
       {/* Main Content: Left Demographic Card + Right Clinical Tabs */}
-      <div className="flex flex-col lg:flex-row items-start gap-5">
+      <div className="flex flex-col items-start gap-5 lg:flex-row">
         {/* Left Column: Patient Profile Card */}
         <PatientCard patient={patient!} isPatientPending={isPatientPending}>
           <Button
             variant="outline"
             size="sm"
-            className="h-8 gap-1.5 rounded-lg border-border/80 text-xs font-semibold hover:bg-muted cursor-pointer"
+            className="border-border/80 hover:bg-muted h-8 cursor-pointer gap-1.5 rounded-lg text-xs font-semibold"
             disabled={isReadOnly("patients") || !can("patient:update")}
             onClick={(e) => {
               e.stopPropagation();
@@ -121,7 +193,7 @@ function PatientPage() {
         </PatientCard>
 
         {/* Right Column: Encounters & Lab Results Tabs */}
-        <Card className="flex-1 min-w-0 w-full overflow-hidden rounded-2xl border border-border/80 bg-card p-0 shadow-2xs">
+        <Card className="border-border/80 bg-card w-full min-w-0 flex-1 overflow-hidden rounded-2xl border p-0 shadow-2xs">
           <Tabs
             defaultValue={
               !isHidden("patients.consultations")
@@ -136,7 +208,7 @@ function PatientPage() {
             }
             className="w-full gap-0"
           >
-            <div className="border-b border-border/60 bg-muted/20 px-4 pt-2.5 sm:px-6">
+            <div className="border-border/60 bg-muted/20 border-b px-4 pt-2.5 sm:px-6">
               <TabsList
                 variant="line"
                 className="h-auto w-full flex-wrap justify-start gap-x-3 gap-y-1 p-0"
@@ -144,7 +216,7 @@ function PatientPage() {
                 {!isHidden("patients.consultations") && (
                   <TabsTrigger
                     value="consultations"
-                    className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
+                    className="data-[state=active]:text-primary flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0"
                   >
                     <Stethoscope className="size-3.5" />
                     Consultations
@@ -153,7 +225,7 @@ function PatientPage() {
                 {!isHidden("patients.labRequests") && (
                   <TabsTrigger
                     value="lab-requests"
-                    className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
+                    className="data-[state=active]:text-primary flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0"
                   >
                     <ClipboardList className="size-3.5" />
                     Lab Requests
@@ -162,7 +234,7 @@ function PatientPage() {
                 {!isHidden("patients.medicalCertificates") && (
                   <TabsTrigger
                     value="medical-certificates"
-                    className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
+                    className="data-[state=active]:text-primary flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0"
                   >
                     <FileCheck2 className="size-3.5" />
                     Med Certs
@@ -171,7 +243,7 @@ function PatientPage() {
                 {!isHidden("patients.labResults") && (
                   <TabsTrigger
                     value="lab-results"
-                    className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
+                    className="data-[state=active]:text-primary flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0"
                   >
                     <TestTubes className="size-3.5" />
                     Lab Results
@@ -180,7 +252,7 @@ function PatientPage() {
                 {!isHidden("billing") && (
                   <TabsTrigger
                     value="billing"
-                    className="flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0 data-[state=active]:text-primary"
+                    className="data-[state=active]:text-primary flex-none cursor-pointer gap-1.5 px-2 py-2.5 text-xs font-semibold after:bottom-0"
                   >
                     <ReceiptText className="size-3.5" />
                     Billing
@@ -191,35 +263,62 @@ function PatientPage() {
 
             <div className="p-6">
               {!isHidden("patients.consultations") && (
-                <TabsContent value="consultations" className="mt-0 outline-none space-y-4">
-                  <ReadOnlyNotice feature="patients.consultations" label="Consultations" />
+                <TabsContent
+                  value="consultations"
+                  className="mt-0 space-y-4 outline-none"
+                >
+                  <ReadOnlyNotice
+                    feature="patients.consultations"
+                    label="Consultations"
+                  />
                   <ConsultationRecords patient={patient!} />
                 </TabsContent>
               )}
 
               {!isHidden("patients.labRequests") && (
-                <TabsContent value="lab-requests" className="mt-0 outline-none space-y-4">
-                  <ReadOnlyNotice feature="patients.labRequests" label="Lab Requests" />
+                <TabsContent
+                  value="lab-requests"
+                  className="mt-0 space-y-4 outline-none"
+                >
+                  <ReadOnlyNotice
+                    feature="patients.labRequests"
+                    label="Lab Requests"
+                  />
                   <PatientLabRequestsTab />
                 </TabsContent>
               )}
 
               {!isHidden("patients.medicalCertificates") && (
-                <TabsContent value="medical-certificates" className="mt-0 outline-none space-y-4">
-                  <ReadOnlyNotice feature="patients.medicalCertificates" label="Medical Certificates" />
+                <TabsContent
+                  value="medical-certificates"
+                  className="mt-0 space-y-4 outline-none"
+                >
+                  <ReadOnlyNotice
+                    feature="patients.medicalCertificates"
+                    label="Medical Certificates"
+                  />
                   <PatientMedicalCertificatesTab />
                 </TabsContent>
               )}
 
               {!isHidden("patients.labResults") && (
-                <TabsContent value="lab-results" className="mt-0 outline-none space-y-4">
-                  <ReadOnlyNotice feature="patients.labResults" label="Lab Results" />
+                <TabsContent
+                  value="lab-results"
+                  className="mt-0 space-y-4 outline-none"
+                >
+                  <ReadOnlyNotice
+                    feature="patients.labResults"
+                    label="Lab Results"
+                  />
                   <LabResultSection />
                 </TabsContent>
               )}
 
               {!isHidden("billing") && (
-                <TabsContent value="billing" className="mt-0 outline-none p-0 -m-6">
+                <TabsContent
+                  value="billing"
+                  className="-m-6 mt-0 p-0 outline-none"
+                >
                   <div className="p-6 pb-0 empty:hidden">
                     <ReadOnlyNotice feature="billing" label="Billing" />
                   </div>

@@ -1,3 +1,5 @@
+import type { QueryClient } from "@tanstack/react-query";
+
 export interface PatientNavigationContext {
   returnUrl: string;
   patientName?: string;
@@ -40,4 +42,26 @@ export function clearPatientReturnContext(): void {
   } catch {
     // Ignore storage errors
   }
+}
+
+export function clearPatientReturnContextIfMatches(patientId: string): void {
+  if (!patientId) return;
+  const current = getPatientReturnContext();
+  if (!current?.returnUrl) return;
+  if (
+    current.returnUrl === `/patients/${patientId}` ||
+    current.returnUrl.startsWith(`/patients/${patientId}/`)
+  ) {
+    clearPatientReturnContext();
+  }
+}
+
+export function resetClientSessionState(queryClient: QueryClient): void {
+  localStorage.removeItem("token");
+  clearPatientReturnContext();
+  void queryClient.cancelQueries();
+  queryClient.setQueryData(["me"], null);
+  queryClient.removeQueries({
+    predicate: (query) => query.queryKey[0] !== "me",
+  });
 }

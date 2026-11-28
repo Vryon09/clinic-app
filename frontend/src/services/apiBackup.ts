@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import { resetClientSessionState } from "@/lib/patientNavigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { toast } from "sonner";
@@ -65,6 +66,7 @@ export function useImportBackup() {
   >({
     mutationFn: handleImportBackup,
     onSuccess: () => {
+      resetClientSessionState(queryClient);
       toast.success("Backup File Imported", {
         description:
           "The backup archive was validated and imported into the system.",
@@ -114,6 +116,7 @@ export function useRestoreBackup() {
   >({
     mutationFn: handleRestoreBackup,
     onSuccess: () => {
+      resetClientSessionState(queryClient);
       toast.success("Database Restored Successfully", {
         description:
           "Database records have been restored. Please log in with credentials from the backup.",

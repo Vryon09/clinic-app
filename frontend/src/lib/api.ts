@@ -3,6 +3,17 @@ import { toast } from "sonner";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
+let onUnauthorizedCallback: (() => void) | null = null;
+
+export function registerUnauthorizedHandler(handler: () => void): () => void {
+  onUnauthorizedCallback = handler;
+  return () => {
+    if (onUnauthorizedCallback === handler) {
+      onUnauthorizedCallback = null;
+    }
+  };
+}
+
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -26,6 +37,14 @@ api.interceptors.response.use(
     const status = error?.response?.status;
     const code = error?.response?.data?.code;
     const message = error?.response?.data?.message;
+    const requestUrl: string = error?.config?.url || "";
+    const isAuthAttempt =
+      requestUrl.includes("/api/auth/login") ||
+      requestUrl.includes("/api/auth/register");
+
+    if (status === 401 && !isAuthAttempt && localStorage.getItem("token")) {
+      onUnauthorizedCallback?.();
+    }
 
     if (
       status === 403 &&

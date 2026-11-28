@@ -48,6 +48,7 @@ export function AppSidebar() {
   };
 
   const getRoleLabel = (role?: string, roleName?: string) => {
+    if (!user) return "";
     if (roleName) return roleName;
     switch (role) {
       case "SUPER_ADMIN":

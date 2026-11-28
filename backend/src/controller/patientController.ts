@@ -152,6 +152,10 @@ export async function getPatient(req: Request, res: Response) {
       include: { records: true },
     });
 
+    if (!patient) {
+      return res.status(404).json({ error: "Patient not found" });
+    }
+
     res.status(200).json(patient);
   } catch (error) {
     console.log(error);
