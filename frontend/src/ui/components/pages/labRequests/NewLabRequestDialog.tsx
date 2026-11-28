@@ -30,6 +30,7 @@ import {
   useUpdateLabRequest,
 } from "@/services/apiLabRequests";
 import { useAuth } from "@/hooks/useAuth";
+import { useAccess } from "@/hooks/useAccess";
 import { formatUserName } from "@/lib/utils";
 import type { IDoctor } from "@/types/User";
 import type { ICase } from "@/types/CaseType";
@@ -66,6 +67,8 @@ export function NewLabRequestDialog({
   const [customTests, setCustomTests] = useState<ILabRequestCustomTests>({});
   const [otherExaminations, setOtherExaminations] = useState("");
 
+  const { isHidden } = useAccess();
+
   const { data: doctors = [] } = useQuery<IDoctor[]>({
     queryFn: handleGetDoctors,
     queryKey: ["doctors"],
@@ -75,7 +78,7 @@ export function NewLabRequestDialog({
   const { data: cases = [] } = useQuery<ICase[]>({
     queryFn: () => handleGetCases({ patientId }),
     queryKey: ["cases", patientId],
-    enabled: open,
+    enabled: open && !isHidden("patients.consultations"),
   });
 
   const { mutate: createLabRequest, isPending: isCreating } =

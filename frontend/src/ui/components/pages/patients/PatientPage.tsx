@@ -33,9 +33,10 @@ function PatientPage() {
     queryFn: () => handleGetPatient({ id: patientId }),
   });
 
-  const { data: cases, isPending: isCasesLoading } = useQuery<ICase[]>({
+  const { data: cases, isLoading: isCasesLoading } = useQuery<ICase[]>({
     queryKey: ["cases", patientId],
     queryFn: () => handleGetCases({ patientId }),
+    enabled: !isHidden("patients.consultations"),
   });
 
   const { mutate: handleUpdatePatient } = useUpdatePatient();
@@ -67,23 +68,29 @@ function PatientPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-8.5 gap-1.5 rounded-lg text-xs font-semibold cursor-pointer shadow-2xs"
-            onClick={() => navigate(`/patients/${patientId}/lab-requests/print?mode=digital`)}
-          >
-            <ClipboardList className="size-3.5" />
-            <span>New Lab Request</span>
-          </Button>
-          <Button
-            size="sm"
-            className="h-8.5 gap-1.5 rounded-lg text-xs font-semibold cursor-pointer shadow-xs"
-            onClick={() => navigate(`/patients/${patientId}/consultations/new`)}
-          >
-            <Plus className="size-3.5" />
-            <span>New Consultation</span>
-          </Button>
+          {!isHidden("patients.labRequests") && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8.5 gap-1.5 rounded-lg text-xs font-semibold cursor-pointer shadow-2xs"
+              disabled={isReadOnly("patients.labRequests") || !can("labRequest:manage")}
+              onClick={() => navigate(`/patients/${patientId}/lab-requests/print?mode=digital`)}
+            >
+              <ClipboardList className="size-3.5" />
+              <span>New Lab Request</span>
+            </Button>
+          )}
+          {!isHidden("patients.consultations") && (
+            <Button
+              size="sm"
+              className="h-8.5 gap-1.5 rounded-lg text-xs font-semibold cursor-pointer shadow-xs"
+              disabled={isReadOnly("patients.consultations") || !can("record:create")}
+              onClick={() => navigate(`/patients/${patientId}/consultations/new`)}
+            >
+              <Plus className="size-3.5" />
+              <span>New Consultation</span>
+            </Button>
+          )}
         </div>
       </div>
 

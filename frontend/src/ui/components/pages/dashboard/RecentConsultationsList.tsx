@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import dayjs from "dayjs";
 import { ArrowUpRight, Clock } from "lucide-react";
 import PaginationBar from "../../PaginationBar";
+import { useAccess } from "@/hooks/useAccess";
 
 interface RecentConsultationsListProps {
   consultations: RecentConsultationItem[];
@@ -15,6 +16,10 @@ export function RecentConsultationsList({
 }: RecentConsultationsListProps) {
   const [page, setPage] = useState<number>(1);
   const pageSize = 5;
+  const { isHidden } = useAccess();
+  const canViewPatients = !isHidden("patients");
+  const canViewConsultations =
+    canViewPatients && !isHidden("patients.consultations");
 
   const totalPages = Math.ceil(consultations.length / pageSize) || 1;
   const clampedPage = Math.min(page, totalPages);
@@ -39,13 +44,15 @@ export function RecentConsultationsList({
             <h3 className="text-sm font-bold text-foreground">Recent Consultations</h3>
             <p className="text-xs text-muted-foreground">Latest patient encounters</p>
           </div>
-          <Link
-            to="/patients"
-            className="inline-flex items-center gap-1 text-xs font-semibold text-primary dark:text-teal-300 hover:underline"
-          >
-            <span>View all</span>
-            <ArrowUpRight className="size-3" />
-          </Link>
+          {canViewPatients && (
+            <Link
+              to="/patients"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-primary dark:text-teal-300 hover:underline"
+            >
+              <span>View all</span>
+              <ArrowUpRight className="size-3" />
+            </Link>
+          )}
         </div>
 
         {!consultations.length ? (
@@ -54,32 +61,47 @@ export function RecentConsultationsList({
           </div>
         ) : (
           <div className="divide-y divide-border/50">
-            {paginatedConsultations.map((c) => (
-              <Link
-                key={c.id}
-                to={`/patients/${c.patient.id}/consultations/${c.id}/details`}
-                className="flex items-center justify-between py-2.5 transition-colors hover:bg-muted/40 rounded-lg px-2 -mx-2"
-              >
-                <div className="min-w-0 pr-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-foreground truncate">
-                      {c.patient.lastName}, {c.patient.firstName}
-                    </span>
-                    <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
-                      {c.case.caseName}
-                    </span>
+            {paginatedConsultations.map((c) => {
+              const rowContent = (
+                <>
+                  <div className="min-w-0 pr-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-foreground truncate">
+                        {c.patient.lastName}, {c.patient.firstName}
+                      </span>
+                      <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                        {c.case.caseName}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground truncate mt-0.5">
+                      {c.diagnosis ? `Dx: ${c.diagnosis}` : "No formal diagnosis entered"}
+                    </p>
                   </div>
-                  <p className="text-[11px] text-muted-foreground truncate mt-0.5">
-                    {c.diagnosis ? `Dx: ${c.diagnosis}` : "No formal diagnosis entered"}
-                  </p>
-                </div>
 
-                <div className="flex items-center gap-1 text-right text-[11px] text-muted-foreground shrink-0">
-                  <Clock className="size-3 text-muted-foreground/70" />
-                  <span>{dayjs(c.visitDate).format("MMM D, YYYY")}</span>
+                  <div className="flex items-center gap-1 text-right text-[11px] text-muted-foreground shrink-0">
+                    <Clock className="size-3 text-muted-foreground/70" />
+                    <span>{dayjs(c.visitDate).format("MMM D, YYYY")}</span>
+                  </div>
+                </>
+              );
+
+              return canViewConsultations ? (
+                <Link
+                  key={c.id}
+                  to={`/patients/${c.patient.id}/consultations/${c.id}/details`}
+                  className="flex items-center justify-between py-2.5 transition-colors hover:bg-muted/40 rounded-lg px-2 -mx-2"
+                >
+                  {rowContent}
+                </Link>
+              ) : (
+                <div
+                  key={c.id}
+                  className="flex items-center justify-between py-2.5 px-2 -mx-2"
+                >
+                  {rowContent}
                 </div>
-              </Link>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

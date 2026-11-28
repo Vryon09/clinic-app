@@ -45,6 +45,7 @@ import {
   useUpdateMedicalCertificate,
 } from "@/services/apiMedicalCertificates";
 import { useAuth } from "@/hooks/useAuth";
+import { useAccess } from "@/hooks/useAccess";
 import { formatUserName } from "@/lib/utils";
 import type { IClinicInfo } from "@/types/ClinicInfo";
 import type { IPatient } from "@/types/PatientType";
@@ -126,9 +127,12 @@ export default function MedicalCertificatePrintView() {
     queryKey: ["doctors"],
   });
 
+  const { isHidden } = useAccess();
+
   const { data: cases = [] } = useQuery<ICase[]>({
     queryFn: () => handleGetCases({ patientId }),
     queryKey: ["cases", patientId],
+    enabled: !isHidden("patients.consultations"),
   });
 
   const { data: existingCertificate } = useMedicalCertificate(certificateId);

@@ -41,6 +41,7 @@ import {
   useUpdateLabRequest,
 } from "@/services/apiLabRequests";
 import { useAuth } from "@/hooks/useAuth";
+import { useAccess } from "@/hooks/useAccess";
 import { formatUserName } from "@/lib/utils";
 import type { IClinicInfo } from "@/types/ClinicInfo";
 import type { IPatient } from "@/types/PatientType";
@@ -101,9 +102,12 @@ export default function LabRequestPrintView() {
     queryKey: ["doctors"],
   });
 
+  const { isHidden } = useAccess();
+
   const { data: cases = [] } = useQuery<ICase[]>({
     queryFn: () => handleGetCases({ patientId }),
     queryKey: ["cases", patientId],
+    enabled: !isHidden("patients.consultations"),
   });
 
   const { data: existingRequest } = useLabRequest(requestId);

@@ -32,6 +32,7 @@ import {
 } from "@/ui/components/shadcn/dialog";
 import { AlertCircle, CalendarDays, CheckCircle2, History, Plus, ReceiptText, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useAccess } from "@/hooks/useAccess";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addCaseSchema, type AddCaseInput } from "@/schemas/caseSchema";
 import type { CreateRecordInput } from "@/schemas/recordSchema";
@@ -50,6 +51,9 @@ function ConsultationsForm() {
   const [isBillingOpen, setIsBillingOpen] = useState<boolean>(false);
 
   const { user, isUserLoading } = useAuth();
+  const { isHidden, isReadOnly, can } = useAccess();
+  const canBill =
+    !isHidden("billing") && !isReadOnly("billing") && can("billing:create");
 
   const { patientId, consultationId } = useParams() as {
     patientId: string;
@@ -415,7 +419,9 @@ function ConsultationsForm() {
               </DialogTitle>
             </div>
             <DialogDescription className="pt-2 text-xs text-muted-foreground leading-relaxed">
-              The consultation record has been saved. Would you like to create an invoice and proceed to billing now?
+              {canBill
+                ? "The consultation record has been saved. Would you like to create an invoice and proceed to billing now?"
+                : "The consultation record has been saved."}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end pt-3">
@@ -444,30 +450,34 @@ function ConsultationsForm() {
             >
               View Record
             </Button>
-            <Button
-              type="button"
-              size="sm"
-              onClick={() => setIsBillingOpen(true)}
-              className="text-xs gap-1.5 cursor-pointer"
-            >
-              <ReceiptText className="size-3.5" />
-              Proceed to Billing
-            </Button>
+            {canBill && (
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => setIsBillingOpen(true)}
+                className="text-xs gap-1.5 cursor-pointer"
+              >
+                <ReceiptText className="size-3.5" />
+                Proceed to Billing
+              </Button>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      <InvoiceFormDialog
-        open={isBillingOpen}
-        onOpenChange={setIsBillingOpen}
-        defaultPatientId={patientId}
-        defaultRecordId={completedRecordId || undefined}
-        onSuccess={(invoiceId) => {
-          setIsBillingOpen(false);
-          setCompletedRecordId(null);
-          navigate(`/billing/invoices/${invoiceId}`);
-        }}
-      />
+      {canBill && (
+        <InvoiceFormDialog
+          open={isBillingOpen}
+          onOpenChange={setIsBillingOpen}
+          defaultPatientId={patientId}
+          defaultRecordId={completedRecordId || undefined}
+          onSuccess={(invoiceId) => {
+            setIsBillingOpen(false);
+            setCompletedRecordId(null);
+            navigate(`/billing/invoices/${invoiceId}`);
+          }}
+        />
+      )}
     </div>
   );
 }

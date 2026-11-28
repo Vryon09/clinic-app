@@ -9,11 +9,13 @@ import { RecentConsultationsList } from "./RecentConsultationsList";
 import { DemographicsCard } from "./DemographicsCard";
 import { Button } from "../../shadcn/button";
 import { Skeleton } from "../../shadcn/skeleton";
+import { useAccess } from "@/hooks/useAccess";
 
 export default function DashboardPage() {
   const [range, setRange] = useState<DashboardRange>("30d");
   const { data, isLoading } = useDashboardSummary(range);
   const navigate = useNavigate();
+  const { isHidden } = useAccess();
 
   return (
     <div className="space-y-6 pb-8">
@@ -51,14 +53,16 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          <Button
-            onClick={() => navigate("/patients")}
-            size="sm"
-            className="h-9 gap-2 rounded-lg px-3.5 text-xs font-semibold cursor-pointer"
-          >
-            <UserPlus className="size-4" />
-            <span>Add / Search Patients</span>
-          </Button>
+          {!isHidden("patients") && (
+            <Button
+              onClick={() => navigate("/patients")}
+              size="sm"
+              className="h-9 gap-2 rounded-lg px-3.5 text-xs font-semibold cursor-pointer"
+            >
+              <UserPlus className="size-4" />
+              <span>Add / Search Patients</span>
+            </Button>
+          )}
         </div>
       </div>
 

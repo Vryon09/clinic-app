@@ -111,10 +111,14 @@ export function useBillingSummary() {
   });
 }
 
-export function useServices(activeOnly = false) {
+export function useServices(
+  activeOnly = false,
+  options?: { enabled?: boolean },
+) {
   return useQuery<IServiceCatalog[]>({
     queryKey: ["billing-services", activeOnly],
     queryFn: () => handleGetServices(activeOnly),
+    enabled: options?.enabled,
   });
 }
 
@@ -161,10 +165,14 @@ export function useDeleteService() {
   });
 }
 
-export function useInvoices(filters: InvoiceFilters = {}) {
+export function useInvoices(
+  filters: InvoiceFilters = {},
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: ["invoices", filters],
     queryFn: () => handleGetInvoices(filters),
+    enabled: options?.enabled,
   });
 }
 

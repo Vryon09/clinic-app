@@ -17,6 +17,7 @@ import { Eye, Printer, ReceiptText } from "lucide-react";
 import { Button } from "../../../shadcn/button";
 import { useInvoices } from "@/services/apiBilling";
 import { InvoiceFormDialog } from "../../billing/InvoiceFormDialog";
+import { useAccess } from "@/hooks/useAccess";
 
 function ConsultationDetails() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,16 +25,23 @@ function ConsultationDetails() {
   const navigate = useNavigate();
   const [billDialogOpen, setBillDialogOpen] = useState(false);
   const isPrintMode = searchParams.get("view") === "print";
+  const { isHidden, isReadOnly, can } = useAccess();
+  const billingHidden = isHidden("billing");
+  const canCreateInvoice =
+    !billingHidden && !isReadOnly("billing") && can("billing:create");
 
   const { consultationId, patientId } = useParams() as {
     consultationId: string;
     patientId: string;
   };
 
-  const { data: existingInvoicesRes } = useInvoices({
-    recordId: consultationId,
-    limit: 1,
-  });
+  const { data: existingInvoicesRes } = useInvoices(
+    {
+      recordId: consultationId,
+      limit: 1,
+    },
+    { enabled: !billingHidden },
+  );
   const linkedInvoice = existingInvoicesRes?.data?.[0];
 
   const { data: record } = useQuery<IRecord>({
@@ -92,26 +100,27 @@ function ConsultationDetails() {
         <BackButton location={`/patients/${patientId}`} />
 
         <div className="flex items-center gap-2.5">
-          {linkedInvoice ? (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => navigate(`/billing/invoices/${linkedInvoice.id}`)}
-              className="h-8 gap-1.5 text-xs cursor-pointer"
-            >
-              <ReceiptText className="size-3.5" />
-              View Invoice ({linkedInvoice.invoiceNumber})
-            </Button>
-          ) : (
-            <Button
-              size="sm"
-              onClick={() => setBillDialogOpen(true)}
-              className="h-8 gap-1.5 text-xs cursor-pointer"
-            >
-              <ReceiptText className="size-3.5" />
-              Bill Consultation
-            </Button>
-          )}
+          {!billingHidden &&
+            (linkedInvoice ? (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => navigate(`/billing/invoices/${linkedInvoice.id}`)}
+                className="h-8 gap-1.5 text-xs cursor-pointer"
+              >
+                <ReceiptText className="size-3.5" />
+                View Invoice ({linkedInvoice.invoiceNumber})
+              </Button>
+            ) : canCreateInvoice ? (
+              <Button
+                size="sm"
+                onClick={() => setBillDialogOpen(true)}
+                className="h-8 gap-1.5 text-xs cursor-pointer"
+              >
+                <ReceiptText className="size-3.5" />
+                Bill Consultation
+              </Button>
+            ) : null)}
 
           {/* View mode switcher */}
           <div className="flex items-center overflow-hidden rounded-lg border border-border/80 bg-muted/30 p-0.5">
@@ -143,13 +152,15 @@ function ConsultationDetails() {
         </div>
       </div>
 
-      <InvoiceFormDialog
-        open={billDialogOpen}
-        onOpenChange={setBillDialogOpen}
-        defaultPatientId={patientId}
-        defaultRecordId={consultationId}
-        onSuccess={(id) => navigate(`/billing/invoices/${id}`)}
-      />
+      {canCreateInvoice && (
+        <InvoiceFormDialog
+          open={billDialogOpen}
+          onOpenChange={setBillDialogOpen}
+          defaultPatientId={patientId}
+          defaultRecordId={consultationId}
+          onSuccess={(id) => navigate(`/billing/invoices/${id}`)}
+        />
+      )}
 
       {/* Content */}
       {isPrintMode ? (

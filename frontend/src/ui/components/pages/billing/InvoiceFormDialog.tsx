@@ -29,6 +29,7 @@ import type {
 } from "@/types/BillingType";
 import { Plus, Trash2 } from "lucide-react";
 import { formatPHP, SERVICE_CATEGORY_LABELS } from "./billingUtils";
+import { useAccess } from "@/hooks/useAccess";
 
 interface InvoiceFormDialogProps {
   open: boolean;
@@ -52,13 +53,17 @@ export function InvoiceFormDialog({
   prefillItems,
   onSuccess,
 }: InvoiceFormDialogProps) {
+  const { isHidden } = useAccess();
+
   const { data: patients = [] } = useQuery<IPatient[]>({
     queryKey: ["patients-all"],
     queryFn: handleGetPatients,
-    enabled: open && !defaultPatientId,
+    enabled: open && !defaultPatientId && !isHidden("patients"),
   });
 
-  const { data: services = [] } = useServices(true);
+  const { data: services = [] } = useServices(true, {
+    enabled: open && !isHidden("billing"),
+  });
   const { mutate: createInvoice, isPending } = useCreateInvoice();
 
   const [patientId, setPatientId] = useState(defaultPatientId || "");
